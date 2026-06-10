@@ -40,7 +40,8 @@
 
     .hero {
         padding: 100px 20px;
-        background: linear-gradient(rgba(11, 15, 20, 0.7), #0b0f14), url('banner.png') no-repeat center center;
+        /* CAMINHO ATUALIZADO PARA A PASTA IMAGES */
+        background: linear-gradient(rgba(11, 15, 20, 0.7), #0b0f14), url('images/banner.png') no-repeat center center;
         background-size: cover;
     }
 
@@ -103,7 +104,7 @@
         padding: 20px;
     }
 
-    /* BARRA DE PESQUISA ROBUSTA */
+    /* BARRA DE PESQUISA */
     .search-container {
         margin: 30px auto;
         max-width: 500px;
@@ -158,7 +159,7 @@
         object-fit: cover;
         border-radius: 4px;
         margin-bottom: 15px;
-        background: #070a0e; /* Fundo enquanto não tem foto */
+        background: #070a0e;
     }
 
     .warbond-card h3 {
@@ -179,9 +180,9 @@
         margin-bottom: 10px;
     }
 
-    /* JANELA MODAL (EXPANSÃO) */
+    /* JANELA MODAL EXPANSÍVEL */
     .modal {
-        display: none; /* Escondido por padrão */
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
@@ -256,7 +257,8 @@
         width: 100%;
         margin: 60px 0;
         padding: 80px 20px;
-        background: linear-gradient(rgba(11, 15, 20, 0.85), rgba(11, 15, 20, 0.85)), url('criadores-fundo.png') no-repeat center center;
+        /* CAMINHO ATUALIZADO PARA A PASTA IMAGES */
+        background: linear-gradient(rgba(11, 15, 20, 0.85), rgba(11, 15, 20, 0.85)), url('images/criadores-fundo.png') no-repeat center center;
         background-size: cover;
         box-sizing: border-box;
         border-top: 2px solid #ffcc00;
@@ -383,29 +385,28 @@
 </div>
 
 <script>
-    // 1. Banco de Dados dos Itens (Adicione ou mude as fotos e armas aqui!)
+    // Banco de dados interno dos Warbonds (Atualmente lendo imagens na raiz)
     const warbondDatabase = {
         mobilizacao: {
             title: "Mobilização de Helldivers",
-            image: "banner-mobilizacao-detalhe.png", // Sua foto expandida na pasta
+            image: "banner-mobilizacao-detalhe.png", 
             desc: "Equipamentos fundamentais fornecidos pela Super Terra para a sobrevivência inicial na Guerra Galáctica.",
             items: ["Rifle de Assalto AR-23 Liberadora", "Metralhadora Leve MG-43", "Escopeta SG-8 Demolidora", "Armadura Tática Padrão"]
         },
         veteranos: {
             title: "Veteranos de Elite",
-            image: "banner-veteranos-detalhe.png", // Sua foto expandida na pasta
+            image: "banner-veteranos-detalhe.png", 
             desc: "Liberado para os soldados veteranos mais condecorados. Contém armamentos com alto poder de supressão por fogo.",
             items: ["Escopeta SG-225 Disparadora Incendiária", "Revólver de Alto Calibre P-4 Senador", "Rifle Explosivo JAR-5 Dominadora", "Armadura Pesada de Titã"]
         },
         vanguarda: {
             title: "Agentes de Vanguarda",
-            image: "banner-vanguarda-detalhe.png", // Sua foto expandida na pasta
+            image: "banner-vanguarda-detalhe.png", 
             desc: "Projetos experimentais de última tecnologia para neutralizar ameaças Autômatas e Terminídias com eletricidade.",
             items: ["Arma de Energia LAS-16 Foice", "Pistola de Plasma SG-8P", "Granada de Atordoamento G-23", "Armadura de Isolamento Elétrico Exclusiva"]
         }
     };
 
-    // 2. Função para Abrir a Janela Expandida
     function openWarbond(key) {
         const data = warbondDatabase[key];
         if (!data) return;
@@ -414,7 +415,6 @@
         document.getElementById('modalDesc').innerText = data.desc;
         document.getElementById('modalImg').src = data.image;
 
-        // Limpa e reconstrói a lista de itens
         const itemsList = document.getElementById('modalItems');
         itemsList.innerHTML = "";
         data.items.forEach(item => {
@@ -423,12 +423,10 @@
             itemsList.appendChild(li);
         });
 
-        // Exibe a janela com animação suave
         const modal = document.getElementById('warbondModal');
         modal.classList.add('active');
     }
 
-    // 3. Função para Fechar a Janela
     function closeWarbond() {
         document.getElementById('warbondModal').classList.remove('active');
     }
@@ -439,7 +437,6 @@
         }
     }
 
-    // 4. Mecanismo de Pesquisa Inteligente (Filtro Dinâmico)
     document.getElementById('warbondSearch').addEventListener('input', function(e) {
         const searchText = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.warbond-card');
@@ -448,7 +445,6 @@
             const cardTitle = card.querySelector('h3').innerText.toLowerCase();
             const cardDesc = card.querySelector('p').innerText.toLowerCase();
             
-            // Verifica se o termo pesquisado está no título ou na breve descrição do card
             if (cardTitle.includes(searchText) || cardDesc.includes(searchText)) {
                 card.style.display = "block";
             } else {

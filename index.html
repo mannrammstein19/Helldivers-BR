@@ -16,7 +16,7 @@
 
     .hero {
         padding: 80px 20px;
-        /* Aqui puxa a imagem "banner.jpg" que você subiu */
+        /* IMAGEM PRINCIPAL (TOPO): Usando banner.png */
         background: linear-gradient(rgba(11, 15, 20, 0.75), #0b0f14), url('banner.png') no-repeat center center;
         background-size: cover;
     }
@@ -28,10 +28,10 @@
         color: #ffcc00;
     }
 
-    /* Efeito especial usando o seu banner no título da seção Sobre */
+    /* Título de seção com a imagem principal banner.png */
     .titulo-efeito {
         font-size: 2.2rem;
-        background: url('banner.jpg') center center;
+        background: url('banner.png') center center;
         background-size: cover;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -66,6 +66,27 @@
         max-width: 900px;
         margin: 50px auto;
         padding: 20px;
+    }
+
+    /* NOVA CLASSE: Usando a imagem específica (criadores-fundo.jpg) */
+    .section-criadores {
+        width: 100%;
+        margin: 60px 0;
+        padding: 80px 20px;
+        /* IMAGEM DOS CRIADORES: Usando criadores-fundo.jpg.
+           Eu usei um linear-gradient mais escuro (0.85) para garantir
+           que os botões amarelos e textos fiquem perfeitamente legíveis. */
+        background: linear-gradient(rgba(11, 15, 20, 0.85), rgba(11, 15, 20, 0.85)), url('criadores-fundo.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: scroll;
+        box-sizing: border-box;
+        border-top: 1px solid #1c2530;
+        border-bottom: 1px solid #1c2530;
+    }
+
+    .section-criadores .container {
+        max-width: 900px;
+        margin: 0 auto;
     }
 
     iframe {
@@ -103,12 +124,14 @@
     </p>
 </div>
 
-<div class="section">
-    <h2>📺 Criadores de Conteúdo</h2>
-    <p>
-        <a class="btn" href="https://www.youtube.com/@LuisPlayGamesOficial" target="_blank">📺 Luis Play Games</a>
-        <a class="btn" href="https://www.youtube.com/@HELLDIVERS-PirataPerdido" target="_blank">🎥 Helldivers Pirata Perdido</a>
-    </p>
+<div class="section-criadores">
+    <div class="container">
+        <h2>📺 Criadores de Conteúdo</h2>
+        <p>
+            <a class="btn" href="https://www.youtube.com/@LuisPlayGamesOficial" target="_blank">📺 Luis Play Games</a>
+            <a class="btn" href="https://www.youtube.com/@HELLDIVERS-PirataPerdido" target="_blank">🎥 Helldivers Pirata Perdido</a>
+        </p>
+    </div>
 </div>
 
 <div class="section">

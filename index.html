@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HELLDIVERS BR</title>
+<title>HELLDIVERS BR - DATABASE</title>
 
 <style>
     body {
@@ -14,7 +14,7 @@
         text-align: center;
     }
 
-    /* Menu de navegação estilo militar */
+    /* Menu de navegação */
     .navbar {
         background: rgba(11, 15, 20, 0.95);
         border-bottom: 2px solid #ffcc00;
@@ -88,6 +88,7 @@
         border-radius: 4px;
         border: 2px solid #ffcc00;
         transition: all 0.2s;
+        cursor: pointer;
     }
 
     .btn:hover {
@@ -102,7 +103,32 @@
         padding: 20px;
     }
 
-    /* GRID DE WARBONDS (Bônus de Guerra) */
+    /* BARRA DE PESQUISA ROBUSTA */
+    .search-container {
+        margin: 30px auto;
+        max-width: 500px;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 15px 20px;
+        background: #11161d;
+        border: 2px solid #222c3a;
+        border-radius: 4px;
+        color: white;
+        font-size: 1rem;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #ffcc00;
+    }
+
+    /* GRID DE WARBONDS */
     .warbond-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -118,6 +144,7 @@
         padding: 20px;
         text-align: left;
         transition: transform 0.3s, border-color 0.3s;
+        cursor: pointer;
     }
 
     .warbond-card:hover {
@@ -125,9 +152,18 @@
         border-color: #ffcc00;
     }
 
+    .warbond-img-preview {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        background: #070a0e; /* Fundo enquanto não tem foto */
+    }
+
     .warbond-card h3 {
         color: white;
-        margin-top: 0;
+        margin: 0 0 10px 0;
         text-transform: uppercase;
         font-size: 1.2rem;
     }
@@ -143,11 +179,76 @@
         margin-bottom: 10px;
     }
 
-    .warbond-card ul {
+    /* JANELA MODAL (EXPANSÃO) */
+    .modal {
+        display: none; /* Escondido por padrão */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(5, 7, 10, 0.9);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .modal-content {
+        background: #11161d;
+        border: 2px solid #ffcc00;
+        max-width: 600px;
+        width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 30px;
+        border-radius: 6px;
+        text-align: left;
+        position: relative;
+        box-shadow: 0px 0px 20px rgba(255, 204, 0, 0.2);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        color: #ffcc00;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+        color: white;
+    }
+
+    .modal-hero-img {
+        width: 100%;
+        max-height: 250px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #222c3a;
+        margin-bottom: 20px;
+    }
+
+    .modal h3 {
+        color: #ffcc00;
+        font-size: 1.8rem;
+        margin-top: 0;
+        text-transform: uppercase;
+    }
+
+    .modal ul {
         padding-left: 20px;
-        color: #b0b5bc;
+        color: #d0d0d0;
         font-family: Arial, sans-serif;
-        font-size: 0.95rem;
+        line-height: 1.8;
     }
 
     /* SEÇÃO DOS CRIADORES */
@@ -212,42 +313,48 @@
 </div>
 
 <div class="section" id="warbonds">
-    <h2>🗃️ Categorias de Warbonds (Bônus de Guerra)</h2>
-    <p>Fique por dentro dos principais pacotes de equipamentos disponíveis para os soldados da Super Terra.</p>
+    <h2>🗃️ Banco de Dados de Warbonds</h2>
+    <p>Consulte armamentos, itens e bônus táticos liberados pelo Ministério da Verdade.</p>
     
-    <div class="warbond-container">
-        <div class="warbond-card">
+    <div class="search-container">
+        <input type="text" id="warbondSearch" class="search-input" placeholder="🔍 Pesquisar por Warbond ou arma...">
+    </div>
+    
+    <div class="warbond-container" id="warbondGrid">
+        
+        <div class="warbond-card" onclick="openWarbond('mobilizacao')">
+            <img class="warbond-img-preview" src="capa-mobilizacao.png" alt="Mobilização de Helldivers">
             <span class="warbond-badge">Gratuito</span>
             <h3>Mobilização de Helldivers</h3>
-            <p style="font-size: 0.9rem; color: #888;">O Warbond básico e essencial para todo recruta.</p>
-            <ul>
-                <li>Rifle de Assalto Liberadora</li>
-                <li>Escopeta Demolidora</li>
-                <li>Estratégias Básicas</li>
-            </ul>
+            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">O Warbond padrão distribuído para todas as Forças de Elite.</p>
         </div>
 
-        <div class="warbond-card">
+        <div class="warbond-card" onclick="openWarbond('veteranos')">
+            <img class="warbond-img-preview" src="capa-veteranos.png" alt="Veteranos de Elite">
             <span class="warbond-badge" style="color: #ff9900;">Premium</span>
             <h3>Veteranos de Elite</h3>
-            <p style="font-size: 0.9rem; color: #888;">Focado em munição incendiária e armaduras pesadas.</p>
-            <ul>
-                <li>Disparadora Incendiária</li>
-                <li>Revólver Senador</li>
-                <li>Armadura de Veterano</li>
-            </ul>
+            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Equipamentos reforçados e armamentos com munição incendiária.</p>
         </div>
 
-        <div class="warbond-card">
+        <div class="warbond-card" onclick="openWarbond('vanguarda')">
+            <img class="warbond-img-preview" src="capa-vanguarda.png" alt="Agentes de Vanguarda">
             <span class="warbond-badge" style="color: #ff9900;">Premium</span>
             <h3>Agentes de Vanguarda</h3>
-            <p style="font-size: 0.9rem; color: #888;">Equipamentos baseados em tecnologia de arco elétrico.</p>
-            <ul>
-                <li>Foice (Arma de Energia)</li>
-                <li>Granada de Atordoamento</li>
-                <li>Armaduras Isolantes</li>
-            </ul>
+            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Tecnologia avançada baseada em armas de plasma e energia elétrica.</p>
         </div>
+
+    </div>
+</div>
+
+<div class="modal" id="warbondModal" onclick="closeModalOutside(event)">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeWarbond()">&times;</span>
+        <img id="modalImg" class="modal-hero-img" src="" alt="Banner do Warbond">
+        <h3 id="modalTitle">Nome do Warbond</h3>
+        <p id="modalDesc" style="font-family: Arial, sans-serif; color: #a0a5bc;"></p>
+        <h4 style="color: #ffcc00; text-transform: uppercase; margin-bottom: 5px;">Conteúdo em Destaque:</h4>
+        <ul id="modalItems">
+            </ul>
     </div>
 </div>
 
@@ -274,6 +381,82 @@
 <div class="footer">
     HELLDIVERS BR © 2026
 </div>
+
+<script>
+    // 1. Banco de Dados dos Itens (Adicione ou mude as fotos e armas aqui!)
+    const warbondDatabase = {
+        mobilizacao: {
+            title: "Mobilização de Helldivers",
+            image: "banner-mobilizacao-detalhe.png", // Sua foto expandida na pasta
+            desc: "Equipamentos fundamentais fornecidos pela Super Terra para a sobrevivência inicial na Guerra Galáctica.",
+            items: ["Rifle de Assalto AR-23 Liberadora", "Metralhadora Leve MG-43", "Escopeta SG-8 Demolidora", "Armadura Tática Padrão"]
+        },
+        veteranos: {
+            title: "Veteranos de Elite",
+            image: "banner-veteranos-detalhe.png", // Sua foto expandida na pasta
+            desc: "Liberado para os soldados veteranos mais condecorados. Contém armamentos com alto poder de supressão por fogo.",
+            items: ["Escopeta SG-225 Disparadora Incendiária", "Revólver de Alto Calibre P-4 Senador", "Rifle Explosivo JAR-5 Dominadora", "Armadura Pesada de Titã"]
+        },
+        vanguarda: {
+            title: "Agentes de Vanguarda",
+            image: "banner-vanguarda-detalhe.png", // Sua foto expandida na pasta
+            desc: "Projetos experimentais de última tecnologia para neutralizar ameaças Autômatas e Terminídias com eletricidade.",
+            items: ["Arma de Energia LAS-16 Foice", "Pistola de Plasma SG-8P", "Granada de Atordoamento G-23", "Armadura de Isolamento Elétrico Exclusiva"]
+        }
+    };
+
+    // 2. Função para Abrir a Janela Expandida
+    function openWarbond(key) {
+        const data = warbondDatabase[key];
+        if (!data) return;
+
+        document.getElementById('modalTitle').innerText = data.title;
+        document.getElementById('modalDesc').innerText = data.desc;
+        document.getElementById('modalImg').src = data.image;
+
+        // Limpa e reconstrói a lista de itens
+        const itemsList = document.getElementById('modalItems');
+        itemsList.innerHTML = "";
+        data.items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = item;
+            itemsList.appendChild(li);
+        });
+
+        // Exibe a janela com animação suave
+        const modal = document.getElementById('warbondModal');
+        modal.classList.add('active');
+    }
+
+    // 3. Função para Fechar a Janela
+    function closeWarbond() {
+        document.getElementById('warbondModal').classList.remove('active');
+    }
+
+    function closeModalOutside(event) {
+        if (event.target.id === 'warbondModal') {
+            closeWarbond();
+        }
+    }
+
+    // 4. Mecanismo de Pesquisa Inteligente (Filtro Dinâmico)
+    document.getElementById('warbondSearch').addEventListener('input', function(e) {
+        const searchText = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.warbond-card');
+
+        cards.forEach(card => {
+            const cardTitle = card.querySelector('h3').innerText.toLowerCase();
+            const cardDesc = card.querySelector('p').innerText.toLowerCase();
+            
+            // Verifica se o termo pesquisado está no título ou na breve descrição do card
+            if (cardTitle.includes(searchText) || cardDesc.includes(searchText)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

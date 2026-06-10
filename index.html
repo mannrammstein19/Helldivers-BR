@@ -16,7 +16,7 @@
 
     .hero {
         padding: 80px 20px;
-        /* IMAGEM PRINCIPAL (TOPO): Usando banner.png */
+        /* CONFIGURADO PARA PNG */
         background: linear-gradient(rgba(11, 15, 20, 0.75), #0b0f14), url('banner.png') no-repeat center center;
         background-size: cover;
     }
@@ -28,15 +28,14 @@
         color: #ffcc00;
     }
 
-    /* Título de seção com a imagem principal banner.png */
+    /* Título corrigido com cor sólida para máxima legibilidade */
     .titulo-efeito {
         font-size: 2.2rem;
-        background: url('banner.png') center center;
-        background-size: cover;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #ffe066; 
+        font-weight: 700;
         filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
         display: inline-block;
+        margin-top: 0;
     }
 
     p {
@@ -68,15 +67,13 @@
         padding: 20px;
     }
 
-    /* NOVA CLASSE: Usando a imagem específica (criadores-fundo.png) */
+    /* Seção de Criadores mantendo o visual com a imagem em PNG */
     .section-criadores {
         width: 100%;
         margin: 60px 0;
         padding: 80px 20px;
-        /* IMAGEM DOS CRIADORES: Usando criadores-fundo.jpg.
-           Eu usei um linear-gradient mais escuro (0.85) para garantir
-           que os botões amarelos e textos fiquem perfeitamente legíveis. */
-        background: linear-gradient(rgba(11, 15, 20, 0.85), rgba(11, 15, 20, 0.85)), url('criadores-fundo.png') no-repeat center center;
+        /* CONFIGURADO PARA PNG COM OPACIDADE EM 0.9 */
+        background: linear-gradient(rgba(11, 15, 20, 0.9), rgba(11, 15, 20, 0.9)), url('banner.png') no-repeat center center;
         background-size: cover;
         background-attachment: scroll;
         box-sizing: border-box;

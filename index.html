@@ -105,7 +105,7 @@
 
     /* BARRA DE PESQUISA */
     .search-container {
-        margin: 30px auto;
+        margin: 20px auto 30px auto;
         max-width: 500px;
         position: relative;
     }
@@ -128,7 +128,7 @@
         border-color: #ffcc00;
     }
 
-    /* GRID COLETIVO (WARBONDS E INIMIGOS) */
+    /* GRID DO WARBOND (VERTICAL TRADICIONAL) */
     .grid-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -161,19 +161,6 @@
         background: #070a0e;
     }
 
-    /* Foco total no infográfico do ponto fraco dentro do card */
-    .enemy-img-preview {
-        object-fit: contain;
-        height: 180px;
-    }
-
-    .custom-card h3 {
-        color: white;
-        margin: 0 0 10px 0;
-        text-transform: uppercase;
-        font-size: 1.2rem;
-    }
-
     .custom-badge {
         display: inline-block;
         background: #222c3a;
@@ -188,6 +175,93 @@
     .badge-automatons { color: #ff3333; }
     .badge-terminids { color: #ffcc00; }
     .badge-ambiente { color: #55ff55; }
+
+    /* ================= ESTRUTURA DO CARROSSEL HORIZONTAL ================= */
+    .carousel-wrapper {
+        position: relative;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 40px; /* Espaço para as setas nas pontas */
+        box-sizing: border-box;
+    }
+
+    .carousel-container {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 15px 5px;
+        scrollbar-width: none; /* Oculta barra no Firefox */
+    }
+
+    .carousel-container::-webkit-scrollbar {
+        display: none; /* Oculta barra no Chrome/Safari */
+    }
+
+    /* Card adaptado para a linha deslizante */
+    .carousel-card {
+        flex: 0 0 280px; /* Garante tamanho fixo para correr horizontalmente */
+        background: #11161d;
+        border: 1px solid #222c3a;
+        border-top: 4px solid #ffcc00;
+        border-radius: 4px;
+        padding: 20px;
+        text-align: left;
+        transition: transform 0.3s, border-color 0.3s;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .carousel-card:hover {
+        transform: translateY(-5px);
+        border-color: #ffcc00;
+    }
+
+    .enemy-img-preview {
+        object-fit: contain;
+        height: 150px;
+        width: 100%;
+        background: #070a0e;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .carousel-card h3 {
+        color: white;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Botões de navegação do carrossel */
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #ffcc00;
+        color: black;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .carousel-btn:hover {
+        background: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-btn.prev { left: 0; }
+    .carousel-btn.next { right: 0; }
 
     /* JANELA MODAL EXPANSÍVEL */
     .modal {
@@ -241,7 +315,7 @@
     .modal-hero-img {
         width: 100%;
         max-height: 550px;
-        object-fit: contain; /* Deixa o ponto fraco 100% nítido */
+        object-fit: contain;
         border-radius: 4px;
         border: 1px solid #222c3a;
         margin-bottom: 20px;
@@ -352,105 +426,110 @@
 
 <div class="section" id="dicas">
     <h2>🎯 Ameaças à Democracia (Pontos Fracos)</h2>
-    <p>Clique no card para expandir o infográfico de combate em tela cheia.</p>
+    <p>Use as setas para navegar horizontalmente e clique no card para ver o guia completo.</p>
     
     <div class="search-container">
         <input type="text" id="enemySearch" class="search-input" placeholder="🔍 Filtrar guias táticos...">
     </div>
     
-    <div class="grid-container" id="enemyGrid">
+    <div class="carousel-wrapper">
+        <button class="carousel-btn prev" onclick="scrollCarousel(-1)">&#10094;</button>
+        <button class="carousel-btn next" onclick="scrollCarousel(1)">&#10095;</button>
         
-        <div class="custom-card enemy-card" onclick="openEnemy('dica1')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 1.jpg" alt="Guia Tático 1">
-            <span class="custom-badge badge-terminids">Estratégia</span>
-            <h3>Amostras e Coleta</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Dicas essenciais para localização e extração de amostras do mapa.</p>
-        </div>
+        <div class="carousel-container" id="enemyGrid">
+            
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica1')">
+                <img class="enemy-img-preview" src="dicas/Dica 1.jpg" alt="Guia Tático 1">
+                <span class="custom-badge badge-terminids">Estratégia</span>
+                <h3>Amostras e Coleta</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Dicas essenciais para localização e extração de amostras.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica2')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 2.jpg" alt="Guia Tático 2">
-            <span class="custom-badge badge-automatons">Autômatos</span>
-            <h3>Batedor de Campo</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Identificação de pontos vulneráveis e armas recomendadas contra o batedor.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica2')">
+                <img class="enemy-img-preview" src="dicas/Dica 2.jpg" alt="Guia Tático 2">
+                <span class="custom-badge badge-automatons">Autômatos</span>
+                <h3>Batedor de Campo</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Identificação de pontos vulneráveis no robô batedor.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica3')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 3.jpg" alt="Guia Tático 3">
-            <span class="custom-badge badge-automatons">Autômatos</span>
-            <h3>Devastador</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Como neutralizar as variantes de suporte e infantaria pesada dos robôs.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica3')">
+                <img class="enemy-img-preview" src="dicas/Dica 3.jpg" alt="Guia Tático 3">
+                <span class="custom-badge badge-automatons">Autômatos</span>
+                <h3>Devastador</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Como neutralizar as variantes de infantaria pesada.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica4')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 4.jpg" alt="Guia Tático 4">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Dracoburata</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Dicas táticas de posicionamento para derrubar a ameaça voadora dos insetos.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica4')">
+                <img class="enemy-img-preview" src="dicas/Dica 4.jpg" alt="Guia Tático 4">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Dracoburata</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Posicionamento tático para derrubar ameaças voadoras.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica5')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 5.jpg" alt="Guia Tático 5">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Atropelador Behemoth</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Quebra de blindagem pesada e pontos fracos expostos desta variante.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica5')">
+                <img class="enemy-img-preview" src="dicas/Dica 5.jpg" alt="Guia Tático 5">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Atropelador Behemoth</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Quebra de blindagem pesada e pontos fracos expostos.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica6')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 6.jpg" alt="Guia Tático 6">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Empalador</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Análise tática de fraquezas quando os tentáculos estão fincados no solo.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica6')">
+                <img class="enemy-img-preview" src="dicas/Dica 6.jpg" alt="Guia Tático 6">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Empalador</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Fraquezas críticas enquanto os tentáculos estão no solo.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica7')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 7.jpg" alt="Guia Tático 7">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Comandante Alfa</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Como impedir os chamados de reforço e as investidas velozes do líder.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica7')">
+                <img class="enemy-img-preview" src="dicas/Dica 7.jpg" alt="Guia Tático 7">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Comandante Alfa</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Como impedir os chamados de reforço e investidas velozes.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica8')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 8.jpg" alt="Guia Tático 8">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Titã de Bilis</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Zonas de dano crítico por armas pesadas e pontos sensíveis inferiores.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica8')">
+                <img class="enemy-img-preview" src="dicas/Dica 8.jpg" alt="Guia Tático 8">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Titã de Bilis</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Zonas de dano crítico por armas pesadas e anti-tanque.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica9')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 9.jpg" alt="Guia Tático 9">
-            <span class="custom-badge badge-automatons">Autômatos</span>
-            <h3>Fabrica de Insetos</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Pontos ideais de arremesso de granadas e uso de estratagemas.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica9')">
+                <img class="enemy-img-preview" src="dicas/Dica 9.jpg" alt="Guia Tático 9">
+                <span class="custom-badge badge-automatons">Autômatos</span>
+                <h3>Fabrica de Insetos</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Pontos ideais de arremesso para selar ninhos rapidamente.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica10')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 10.jpg" alt="Guia Tático 10">
-            <span class="custom-badge badge-automatons">Autômatos</span>
-            <h3>Titã de Carga</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Estratégias de armas pesadas contra a blindagem frontal mecânica.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica10')">
+                <img class="enemy-img-preview" src="dicas/Dica 10.jpg" alt="Guia Tático 10">
+                <span class="custom-badge badge-automatons">Autômatos</span>
+                <h3>Titã de Carga</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Estratégias de armas pesadas contra a blindagem mecânica.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica11')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 11.jpg" alt="Guia Tático 11">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Leviatã</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Análise de blindagem e vulnerabilidades críticas da colossal criatura.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica11')">
+                <img class="enemy-img-preview" src="dicas/Dica 11.jpg" alt="Guia Tático 11">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Leviatã</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Zonas de impacto prioritárias para ataques orbitais focados.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica12')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 12.png" alt="Guia Tático 12">
-            <span class="custom-badge badge-terminids">Terminídios</span>
-            <h3>Hive Lord</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Instruções táticas de combate massivo contra o soberano da colônia.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica12')">
+                <img class="enemy-img-preview" src="dicas/Dica 12.png" alt="Guia Tático 12">
+                <span class="custom-badge badge-terminids">Terminídios</span>
+                <h3>Hive Lord</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Coordenação de esquadrão contra o soberano da colônia.</p>
+            </div>
 
-        <div class="custom-card enemy-card" onclick="openEnemy('dica13')">
-            <img class="card-img-preview enemy-img-preview" src="dicas/Dica 13.png" alt="Guia Tático 13">
-            <span class="custom-badge badge-ambiente">Ambiente</span>
-            <h3>Efeitos Planetários</h3>
-            <p style="font-size: 0.9rem; color: #888; font-family: Arial, sans-serif;">Como os modificadores de clima e ambiente impactam seu Helldiver.</p>
-        </div>
+            <div class="carousel-card enemy-card" onclick="openEnemy('dica13')">
+                <img class="enemy-img-preview" src="dicas/Dica 13.png" alt="Guia Tático 13">
+                <span class="custom-badge badge-ambiente">Ambiente</span>
+                <h3>Efeitos Planetários</h3>
+                <p style="font-size: 0.85rem; color: #888; font-family: Arial, sans-serif;">Como modificadores de clima impactam seu vigor.</p>
+            </div>
 
+        </div>
     </div>
 </div>
 
@@ -522,7 +601,6 @@
         }
     };
 
-    // Banco de dados mapeado perfeitamente para ler os arquivos da pasta dicas/
     const enemyDatabase = {
         dica1: { title: "Amostras e Coleta", image: "dicas/Dica 1.jpg", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Consulte o infográfico para rotas de mapeamento eficientes.</p>` },
         dica2: { title: "Batedor de Campo", image: "dicas/Dica 2.jpg", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Guia de pontos fracos e armas leves recomendadas.</p>` },
@@ -539,6 +617,13 @@
         dica13: { title: "Efeitos Planetários", image: "dicas/Dica 13.png", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Fique atento às penalidades de vigor e visibilidade listadas.</p>` }
     };
 
+    // Função para rodar o carrossel via botões
+    function scrollCarousel(direction) {
+        const container = document.getElementById('enemyGrid');
+        const scrollAmount = 300 * direction; // Move um bloco de tamanho aproximado de card por clique
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+
     // Funções de Controle de Modais
     function openWarbond(key) {
         const data = warbondDatabase[key];
@@ -552,6 +637,7 @@
         showModal(data.title, data.image, data.html);
     }
 
+    // Modal unificado inteligente
     function showModal(title, imgSrc, htmlContent) {
         document.getElementById('modalTitle').innerText = title;
         document.getElementById('modalImg').src = imgSrc;
@@ -578,13 +664,15 @@
         });
     });
 
-    // Filtro de Busca de Inimigos / Guias
+    // Filtro de Busca de Inimigos / Carrossel dinâmico
     document.getElementById('enemySearch').addEventListener('input', function(e) {
         const txt = e.target.value.toLowerCase();
         document.querySelectorAll('#enemyGrid .enemy-card').forEach(card => {
             const title = card.querySelector('h3').innerText.toLowerCase();
             const desc = card.querySelector('p').innerText.toLowerCase();
-            card.style.display = (title.includes(txt) || desc.includes(txt)) ? "block" : "none";
+            
+            // Em carrossel flex, usamos display: none para esconder e flex para exibir
+            card.style.display = (title.includes(txt) || desc.includes(txt)) ? "flex" : "none";
         });
     });
 </script>

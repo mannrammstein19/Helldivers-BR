@@ -794,17 +794,44 @@
 
     // Banco de Dados de Warbonds (ORGANIZADO)
     const warbondDatabase = {
-        mobilizacao: {
-            title: "Mobilização de Helldivers",
-            image: "teste.png",
-            html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Equipamentos fundamentais fornecidos para a sobrevivência inicial.</p>
-                   <h4 style="color:#ffcc00; text-align: left;">DESTAQUES:</h4>
-                   <ul style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left;">
-                     <li>Rifle de Assalto AR-23 Liberadora</li>
-                     <li>Metralhadora Leve MG-43</li>
-                   </ul>`
-        },
-        veteranos: {
+mobilizacao: {
+    title: "Mobilização de Helldivers",
+    image: "warbonds/mobilizacao/capa-mobilizacao.jpg", 
+    html: `
+        <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
+            Warbond padrão distribuído para todas as Forças de Elite da Super Terra. Selecione a página para inspecionar os armamentos e custos.
+        </p>
+        
+        <!-- Menu de Abas em Grid para caber todas as 10 Páginas -->
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;">
+            <button onclick="mudarPaginaMobilizacao(1)" id="btn-mob-1" style="padding: 10px 5px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 1</button>
+            <button onclick="mudarPaginaMobilizacao(2)" id="btn-mob-2" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 2</button>
+            <button onclick="mudarPaginaMobilizacao(3)" id="btn-mob-3" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 3</button>
+            <button onclick="mudarPaginaMobilizacao(4)" id="btn-mob-4" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 4</button>
+            <button onclick="mudarPaginaMobilizacao(5)" id="btn-mob-5" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 5</button>
+            <button onclick="mudarPaginaMobilizacao(6)" id="btn-mob-6" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 6</button>
+            <button onclick="mudarPaginaMobilizacao(7)" id="btn-mob-7" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 7</button>
+            <button onclick="mudarPaginaMobilizacao(8)" id="btn-mob-8" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 8</button>
+            <button onclick="mudarPaginaMobilizacao(9)" id="btn-mob-9" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 9</button>
+            <button onclick="mudarPaginaMobilizacao(10)" id="btn-mob-10" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 10</button>
+        </div>
+
+        <!-- Área do Print da Página -->
+        <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; margin-bottom: 20px;">
+            <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+        </div>
+
+        <!-- Lista de Conteúdo que muda via JavaScript -->
+        <h4 id="titulo-itens-mob" style="color:#ffcc00; text-align: left; text-transform: uppercase; margin-bottom: 10px;">Destaques da Página 1:</h4>
+        <ul id="lista-itens-mob" style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left; padding-left: 20px;">
+            <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
+            <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
+            <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
+            <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
+            <li><strong>100 Super Créditos</strong> — 1 🏅</li>
+        </ul>
+    `
+}        veteranos: {
             title: "Veteranos de Elite (Steeled Veterans)",
             image: "warbonds/veteranos/Steeled_Veterans.png",
             html: `

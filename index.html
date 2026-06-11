@@ -792,17 +792,18 @@
     overlay.addEventListener('click', toggleSidebar);
 
 
-    // Banco de Dados de Warbonds (ORGANIZADO E CORRIGIDO)
+    // ==============================================================
+    // BANCO DE DADOS DE WARBONDS (PASSES) - CENTRALIZADO E CONFIGURÁVEL
+    // ==============================================================
     const warbondDatabase = {
         mobilizacao: {
             title: "Mobilização de Helldivers",
-            image: "warbonds/mobilizacao/capa-mobilizacao.png", 
+            image: "capa-mobilizacao.png", 
             html: `
                 <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
                     Warbond padrão distribuído para todas as Forças de Elite da Super Terra. Selecione a página para inspecionar os armamentos e custos.
                 </p>
                 
-                <!-- Menu de Abas em Grid para caber todas as 10 Páginas -->
                 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;">
                     <button onclick="mudarPaginaMobilizacao(1)" id="btn-mob-1" style="padding: 10px 5px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 1</button>
                     <button onclick="mudarPaginaMobilizacao(2)" id="btn-mob-2" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 2</button>
@@ -816,20 +817,13 @@
                     <button onclick="mudarPaginaMobilizacao(10)" id="btn-mob-10" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 10</button>
                 </div>
 
-                <!-- Área do Print da Página -->
                 <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; margin-bottom: 20px;">
-                    <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.png" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+                    <img id="img-mobilizacao" src="Pagina1.png" style="width: 100%; height: auto; display: block; border-radius: 2px;">
                 </div>
 
-                <!-- Lista de Conteúdo que muda via JavaScript -->
                 <h4 id="titulo-itens-mob" style="color:#ffcc00; text-align: left; text-transform: uppercase; margin-bottom: 10px;">Destaques da Página 1:</h4>
                 <ul id="lista-itens-mob" style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left; padding-left: 20px;">
-                    <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
-                    <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
-                    <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
-                    <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
-                    <li><strong>100 Super Créditos</strong> — 1 🏅</li>
-                </ul>
+                    </ul>
             `
         },
         veteranos: {
@@ -865,6 +859,49 @@
         }
     };
 
+
+    // ==============================================================
+    // AQUI ESTÃO OS DADOS DAS 10 PÁGINAS DA MOBILIZAÇÃO PARA VOCÊ EDITAR
+    // ==============================================================
+    // Altere o texto entre <li> e </li> para colocar as recompensas do jogo!
+    const paginasMobilizacaoConteudo = {
+        1: {
+            imagem: "Pagina1.png", 
+            itens: `
+                <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
+                <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
+                <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
+                <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
+                <li><strong>100 Super Créditos</strong> — 1 🏅</li>
+            `
+        },
+        2: {
+            imagem: "Pagina2.png",
+            itens: `
+                <li><strong>P-2 Peacemaker / SMG-37 Defender</strong> (Armamento) — 5 🏅</li>
+                <li><strong>Armadura Média</strong> — 6 🏅</li>
+                <li><strong>Capacete Médio</strong> — 5 🏅</li>
+                <li><strong>100 Super Créditos</strong> — 2 🏅</li>
+            `
+        },
+        3: {
+            imagem: "Pagina3.png",
+            itens: `
+                <li><strong>Rifle de Assalto R-63 Diligence</strong> — 20 🏅</li>
+                <li>Item de Destaque Pág 3 — X 🏅</li>
+                <li>(Depois você completa o resto aqui!)</li>
+            `
+        },
+        4: { imagem: "Pagina4.png", itens: `<li>Complete a lista da página 4 conforme o jogo!</li>` },
+        5: { imagem: "Pagina5.png", itens: `<li>Complete a lista da página 5 conforme o jogo!</li>` },
+        6: { imagem: "Pagina6.png", itens: `<li>Complete a lista da página 6 conforme o jogo!</li>` },
+        7: { imagem: "Pagina7.png", itens: `<li>Complete a lista da página 7 conforme o jogo!</li>` },
+        8: { imagem: "Pagina8.png", itens: `<li>Complete a lista da página 8 conforme o jogo!</li>` },
+        9: { imagem: "Pagina9.png", itens: `<li>Complete a lista da página 9 conforme o jogo!</li>` },
+        10: { imagem: "Pagina10.png", itens: `<li>Complete a lista da página 10 conforme o jogo!</li>` }
+    };
+
+
     // Banco de dados das Dicas
     const enemyDatabase = {
         dica1: { title: "Dracobarata", image: "dicas/Dica 1.jpg", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Infográfico detalhado de eliminação de alvos voadores.</p>` },
@@ -894,9 +931,13 @@
         const data = warbondDatabase[key];
         if(!data) return;
         showModal(data.title, data.image, data.html);
+
+        // Se abrir a mobilização, força o carregamento inicial automático da página 1
+        if(key === 'mobilizacao') {
+            mudarPaginaMobilizacao(1);
+        }
     }
 
-    // OBS: O Luis arrumou o link de watch do YouTube para /embed/ para o iframe carregar liso dentro do site!
     function openEnemy(key) {
         const data = enemyDatabase[key];
         if(!data) return;
@@ -947,48 +988,27 @@
         }
     }
 
+    // LÓGICA QUE TROCA AS PÁGINAS DA MOBILIZAÇÃO USANDO O BANCO DO TOPO
     function mudarPaginaMobilizacao(numPagina) {
-        // 1. Atualiza o print na tela usando o número da página clicada (Configurado para .png)
+        const dados = paginasMobilizacaoConteudo[numPagina];
+        if (!dados) return;
+
+        // 1. Atualiza o print central do modal dinamicamente
         const imgElement = document.getElementById('img-mobilizacao');
         if (imgElement) {
-            imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.png`;
+            imgElement.src = dados.imagem;
         }
 
-        // 2. Atualiza os títulos das listas dinamicamente
+        // 2. Atualiza o título identificador da aba
         const tituloElement = document.getElementById('titulo-itens-mob');
         if (tituloElement) {
             tituloElement.innerText = `Destaques da Página ${numPagina}:`;
         }
 
-        // 3. Banco de dados com os itens de cada uma das 10 páginas
-        const dadosPaginas = {
-            1: `
-                <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
-                <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
-                <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
-                <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
-                <li><strong>100 Super Créditos</strong> — 1 🏅</li>
-            `,
-            2: `
-                <li><strong>P-2 Peacemaker / SMG-37 Defender</strong> (Armamento) — 5 🏅</li>
-                <li><strong>Armadura Média</strong> — 6 🏅</li>
-                <li><strong>Capacete Médio</strong> — 5 🏅</li>
-                <li><strong>100 Super Créditos</strong> — 2 🏅</li>
-            `,
-            3: `<li><strong>Item de Destaque Pág 3</strong> — X 🏅</li><li>(Depois você completa o resto aqui!)</li>`,
-            4: `<li>Complete a lista da página 4 conforme o jogo!</li>`,
-            5: `<li>Complete a lista da página 5 conforme o jogo!</li>`,
-            6: `<li>Complete a lista da página 6 conforme o jogo!</li>`,
-            7: `<li>Complete a lista da página 7 conforme o jogo!</li>`,
-            8: `<li>Complete a lista da página 8 conforme o jogo!</li>`,
-            9: `<li>Complete a lista da página 9 conforme o jogo!</li>`,
-            10: `<li>Complete a lista da página 10 conforme o jogo!</li>`
-        };
-
-        // Injeta a lista de HTML correspondente à página selecionada
+        // 3. Altera a lista de recompensas
         const listaElement = document.getElementById('lista-itens-mob');
         if (listaElement) {
-            listaElement.innerHTML = dadosPaginas[numPagina];
+            listaElement.innerHTML = dados.itens;
         }
 
         // 4. Reseta o estilo de todos os 10 botões para o padrão escuro

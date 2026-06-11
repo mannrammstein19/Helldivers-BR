@@ -804,16 +804,29 @@
                      <li>Rifle de Assalto AR-23 Liberadora</li>
                      <li>Metralhadora Leve MG-43</li>
                    </ul>`
-        },
-        veteranos: {
-            title: "Veteranos de Elite",
-            image: "capa-veteranos.png",
-            html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Armamentos pesados com alto poder de supressão por fogo incendiário.</p>
-                   <h4 style="color:#ffcc00; text-align: left;">DESTAQUES:</h4>
-                   <ul style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left;">
-                     <li>Escopeta SG-225 Incendiária</li>
-                     <li>Revólver P-4 Senador</li>
-                   </ul>`
+veteranos: {
+        title: "Veteranos de Elite (Steeled Veterans)",
+        image: "warbonds/veteranos/capa-veteranos.jpg",
+        html: `
+            <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
+                Painel de Equipamentos do Ministério da Verdade. Selecione a página abaixo para inspecionar os armamentos táticos disponíveis.
+            </p>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button onclick="mudarPaginaWarbond('p1')" id="btn-p1" style="flex: 1; padding: 12px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 1 (90 🏅)</button>
+                <button onclick="mudarPaginaWarbond('p2')" id="btn-p2" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 2 (229 🏅)</button>
+                <button onclick="mudarPaginaWarbond('p3')" id="btn-p3" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 3 (367 🏅)</button>
+            </div>
+
+            <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; overflow: hidden;">
+                <img id="warbond-p1" src="warbonds/veteranos/pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+                
+                <img id="warbond-p2" src="warbonds/veteranos/pagina2.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
+                
+                <img id="warbond-p3" src="warbonds/veteranos/pagina3.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
+            </div>
+        `
+    },
         },
         vanguarda: {
             title: "Agentes de Vanguarda",

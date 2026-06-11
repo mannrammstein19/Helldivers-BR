@@ -14,7 +14,7 @@
         text-align: center;
     }
 
-    /* Navbar fixa no topo (Modificada para abrigar o botão do menu) */
+    /* Navbar fixa no topo */
     .navbar {
         background: rgba(11, 15, 20, 0.95);
         border-bottom: 2px solid #ffcc00;
@@ -60,11 +60,11 @@
         height: 100%;
         width: 280px;
         position: fixed;
-        z-index: 2500; /* Fica acima de tudo, inclusive do modal */
+        z-index: 2500;
         top: 0;
-        left: -285px; /* Escondido para a esquerda */
-        background: #11161d; /* Sua cor escura de card */
-        border-right: 3px solid #ffcc00; /* Sua cor amarela */
+        left: -285px;
+        background: #11161d;
+        border-right: 3px solid #ffcc00;
         overflow-x: hidden;
         transition: 0.3s ease;
         padding-top: 60px;
@@ -72,7 +72,6 @@
         box-sizing: border-box;
     }
 
-    /* Classe ativada via JavaScript para abrir */
     .sidebar.active {
         left: 0;
     }
@@ -166,7 +165,7 @@
         text-transform: uppercase;
     }
 
-    /* SEÇÃO DE VÍDEOS (Ajustes para a Grid de Vídeos Embutidos) */
+    /* SEÇÃO DE VÍDEOS */
     .video-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -185,7 +184,7 @@
 
     .video-wrapper {
         position: relative;
-        padding-bottom: 56.25%; /* Proporção 16:9 para ficar responsivo */
+        padding-bottom: 56.25%;
         height: 0;
         overflow: hidden;
         border-radius: 4px;
@@ -208,14 +207,14 @@
         color: #ffe066;
     }
 
-    /* SEUS ESTILOS ORIGINAIS (Preservados) */
+    /* SEUS ESTILOS ORIGINAIS */
     .hero {
         padding: 100px 20px;
         background: linear-gradient(rgba(11, 15, 20, 0.7), #0b0f14), url('images/banner.png') no-repeat center center;
         background-size: cover;
     }
 
-    h1 {
+    <h1> {
         font-size: 3.5rem;
         margin-bottom: 10px;
         font-weight: 900;
@@ -530,7 +529,8 @@
 <nav class="navbar">
     <button class="menu-btn" id="openSidebarBtn">☰ Menu Tático</button>
     <div class="navbar-title">HELLDIVERS BR</div>
-    <div style="width: 110px;"></div> </nav>
+    <div style="width: 110px;"></div> 
+</nav>
 
 <div class="sidebar" id="sidebarMenu">
     <span class="close-sidebar" id="closeSidebarBtn">&times;</span>
@@ -547,7 +547,6 @@
     </nav>
 </div>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
 
 <div class="hero">
     <h1>🦅 HELLDIVERS BR</h1>
@@ -569,7 +568,7 @@
 
 <div class="section" id="noticias">
     <h2>📰 Notícias da Frente</h2>
-    <p>Fique por dentro das últimas ordens e atualizações diretas do Ministério da Verdade.</p>
+    <p>Fique por dentro das últimas ordens e updates diretas do Ministério da Verdade.</p>
     <div class="news-container">
         <div class="news-card">
             <div class="news-date">11 JUNHO, 2026</div>
@@ -793,7 +792,7 @@
     overlay.addEventListener('click', toggleSidebar);
 
 
-    // Bancos de Dados de Warbonds
+    // Banco de Dados de Warbonds (ORGANIZADO)
     const warbondDatabase = {
         mobilizacao: {
             title: "Mobilização de Helldivers",
@@ -804,29 +803,27 @@
                      <li>Rifle de Assalto AR-23 Liberadora</li>
                      <li>Metralhadora Leve MG-43</li>
                    </ul>`
-veteranos: {
-        title: "Veteranos de Elite (Steeled Veterans)",
-        image: "warbonds/veteranos/capa-veteranos.jpg",
-        html: `
-            <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
-                Painel de Equipamentos do Ministério da Verdade. Selecione a página abaixo para inspecionar os armamentos táticos disponíveis.
-            </p>
-            
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button onclick="mudarPaginaWarbond('p1')" id="btn-p1" style="flex: 1; padding: 12px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 1 (90 🏅)</button>
-                <button onclick="mudarPaginaWarbond('p2')" id="btn-p2" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 2 (229 🏅)</button>
-                <button onclick="mudarPaginaWarbond('p3')" id="btn-p3" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 3 (367 🏅)</button>
-            </div>
+        },
+        veteranos: {
+            title: "Veteranos de Elite (Steeled Veterans)",
+            image: "warbonds/veteranos/capa-veteranos.jpg",
+            html: `
+                <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
+                    Painel de Equipamentos do Ministério da Verdade. Selecione a página abaixo para inspecionar os armamentos táticos disponíveis.
+                </p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button onclick="mudarPaginaWarbond('p1')" id="btn-p1" style="flex: 1; padding: 12px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 1 (90 🏅)</button>
+                    <button onclick="mudarPaginaWarbond('p2')" id="btn-p2" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 2 (229 🏅)</button>
+                    <button onclick="mudarPaginaWarbond('p3')" id="btn-p3" style="flex: 1; padding: 12px; background: #11161d; color: white; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif; transition: all 0.2s;">PÁGINA 3 (367 🏅)</button>
+                </div>
 
-            <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; overflow: hidden;">
-                <img id="warbond-p1" src="warbonds/veteranos/pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
-                
-                <img id="warbond-p2" src="warbonds/veteranos/pagina2.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
-                
-                <img id="warbond-p3" src="warbonds/veteranos/pagina3.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
-            </div>
-        `
-    },
+                <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; overflow: hidden;">
+                    <img id="warbond-p1" src="warbonds/veteranos/pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+                    <img id="warbond-p2" src="warbonds/veteranos/pagina2.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
+                    <img id="warbond-p3" src="warbonds/veteranos/pagina3.jpg" style="width: 100%; height: auto; display: none; border-radius: 2px;">
+                </div>
+            `
         },
         vanguarda: {
             title: "Agentes de Vanguarda",
@@ -840,7 +837,7 @@ veteranos: {
         }
     };
 
-    // Banco de dados mapeado na ordem oficial repassada
+    // Banco de dados das Dicas
     const enemyDatabase = {
         dica1: { title: "Dracobarata", image: "dicas/Dica 1.jpg", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Infográfico detalhado de eliminação de alvos voadores.</p>` },
         dica2: { title: "Atropelador Behemoth", image: "dicas/Dica 2.jpg", html: `<p style="font-family: Arial; color: #a0a5bc; text-align: left;">Guia avançado de perfuração e remoção de blindagem.</p>` },
@@ -877,9 +874,9 @@ veteranos: {
         showModal(data.title, data.image, data.html);
     }
 
-    function showModal(title, imgSrc, htmlContent) {
+    function showModal(title, image, htmlContent) {
         document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalImg').src = imgSrc;
+        document.getElementById('modalImg').src = image;
         document.getElementById('modalDynamicContent').innerHTML = htmlContent;
         document.getElementById('infoModal').classList.add('active');
     }
@@ -889,60 +886,37 @@ veteranos: {
     }
 
     function closeModalOutside(event) {
-        if (event.target.id === 'infoModal') {
+        if(event.target.id === 'infoModal') {
             closeModal();
         }
     }
 
-    // Filtro de Busca de Warbonds
-    document.getElementById('warbondSearch').addEventListener('input', function(e) {
-        const txt = e.target.value.toLowerCase();
-        document.querySelectorAll('#warbondGrid .custom-card').forEach(card => {
-            const title = card.querySelector('h3').innerText.toLowerCase();
-            card.style.display = title.includes(txt) ? "block" : "none";
-        });
-    });
-
-    // Filtro de Busca de Inimigos / Carrossel dinâmico
-    document.getElementById('enemySearch').addEventListener('input', function(e) {
-        const txt = e.target.value.toLowerCase();
-        document.querySelectorAll('#enemyGrid .enemy-card').forEach(card => {
-            const title = card.querySelector('h3').innerText.toLowerCase();
-            const desc = card.querySelector('p').innerText.toLowerCase();
-            
-            card.style.display = (title.includes(txt) || desc.includes(txt)) ? "flex" : "none";
-        });
-    });
-function mudarPaginaWarbond(pagina) {
-    const paginas = ['p1', 'p2', 'p3'];
-    
-    paginas.forEach(p => {
-        // Esconde a imagem da página
-        const img = document.getElementById('warbond-' + p);
-        if (img) img.style.display = 'none';
+    // FUNÇÃO QUE ALTERNA OS PRINTS EM 4K DOS VETERANOS
+    function mudarPaginaWarbond(pagina) {
+        const paginas = ['p1', 'p2', 'p3'];
         
-        // Reseta o estilo do botão para o padrão escuro
-        const btn = document.getElementById('btn-' + p);
-        if (btn) {
-            btn.style.background = '#11161d';
-            btn.style.color = 'white';
-            btn.style.border = '1px solid #222c3a';
+        paginas.forEach(p => {
+            const img = document.getElementById('warbond-' + p);
+            if (img) img.style.display = 'none';
+            
+            const btn = document.getElementById('btn-' + p);
+            if (btn) {
+                btn.style.background = '#11161d';
+                btn.style.color = 'white';
+                btn.style.border = '1px solid #222c3a';
+            }
+        });
+        
+        const imgAtiva = document.getElementById('warbond-' + pagina);
+        if (imgAtiva) imgAtiva.style.display = 'block';
+        
+        const btnAtivo = document.getElementById('btn-' + pagina);
+        if (btnAtivo) {
+            btnAtivo.style.background = '#ffcc00';
+            btnAtivo.style.color = 'black';
+            btnAtivo.style.border = 'none';
         }
-    });
-    
-    // Mostra a imagem da página clicada
-    const imgAtiva = document.getElementById('warbond-' + pagina);
-    if (imgAtiva) imgAtiva.style.display = 'block';
-    
-    // Deixa o botão clicado amarelo
-    const btnAtivo = document.getElementById('btn-' + pagina);
-    if (btnAtivo) {
-        btnAtivo.style.background = '#ffcc00';
-        btnAtivo.style.color = 'black';
-        btnAtivo.style.border = 'none';
     }
-}
 </script>
-
 </body>
 </html>

@@ -944,6 +944,68 @@ mobilizacao: {
             btnAtivo.style.border = 'none';
         }
     }
+function mudarPaginaMobilizacao(numPagina) {
+    // 1. Atualiza o print na tela usando o número da página clicada
+    const imgElement = document.getElementById('img-mobilizacao');
+    if (imgElement) {
+        imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.jpg`;
+    }
+
+    // 2. Atualiza os títulos das listas dinamicamente
+    const tituloElement = document.getElementById('titulo-itens-mob');
+    if (tituloElement) {
+        tituloElement.innerText = `Destaques da Página ${numPagina}:`;
+    }
+
+    // 3. Banco de dados com os itens de cada uma das 10 páginas
+    const dadosPaginas = {
+        1: `
+            <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
+            <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
+            <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
+            <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
+            <li><strong>100 Super Créditos</strong> — 1 🏅</li>
+        `,
+        2: `
+            <li><strong>P-2 Peacemaker / SMG-37 Defender</strong> (Armamento) — 5 🏅</li>
+            <li><strong>Armadura Média</strong> — 6 🏅</li>
+            <li><strong>Capacete Médio</strong> — 5 🏅</li>
+            <li><strong>100 Super Créditos</strong> — 2 🏅</li>
+        `,
+        3: `<li><strong>Item de Destaque Pág 3</strong> — X 🏅</li><li>(Depois você completa o resto aqui!)</li>`,
+        4: `<li>Complete a lista da página 4 conforme o jogo!</li>`,
+        5: `<li>Complete a lista da página 5 conforme o jogo!</li>`,
+        6: `<li>Complete a lista da página 6 conforme o jogo!</li>`,
+        7: `<li>Complete a lista da página 7 conforme o jogo!</li>`,
+        8: `<li>Complete a lista da página 8 conforme o jogo!</li>`,
+        9: `<li>Complete a lista da página 9 conforme o jogo!</li>`,
+        10: `<li>Complete a lista da página 10 conforme o jogo!</li>`
+    };
+
+    // Injeta a lista de HTML correspondente à página selecionada
+    const listaElement = document.getElementById('lista-itens-mob');
+    if (listaElement) {
+        listaElement.innerHTML = dadosPaginas[numPagina];
+    }
+
+    // 4. Reseta o estilo de todos os 10 botões para o padrão escuro
+    for (let i = 1; i <= 10; i++) {
+        const btn = document.getElementById(`btn-mob-${i}`);
+        if (btn) {
+            btn.style.background = '#11161d';
+            btn.style.color = '#a0a5bc';
+            btn.style.border = '1px solid #222c3a';
+        }
+    }
+
+    // 5. Destaca o botão da página atual com o amarelo clássico
+    const btnAtivo = document.getElementById(`btn-mob-${numPagina}`);
+    if (btnAtivo) {
+        btnAtivo.style.background = '#ffcc00';
+        btnAtivo.style.color = 'black';
+        btnAtivo.style.border = 'none';
+    }
+}
 </script>
 </body>
 </html>

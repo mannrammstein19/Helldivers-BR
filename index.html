@@ -796,7 +796,7 @@
     const warbondDatabase = {
         mobilizacao: {
             title: "Mobilização de Helldivers",
-            image: "warbonds/mobilizacao/capa-mobilizacao.jpg", 
+            image: "warbonds/mobilizacao/capa-mobilizacao.png", 
             html: `
                 <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
                     Warbond padrão distribuído para todas as Forças de Elite da Super Terra. Selecione a página para inspecionar os armamentos e custos.
@@ -818,7 +818,7 @@
 
                 <!-- Área do Print da Página -->
                 <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; margin-bottom: 20px;">
-                    <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+                    <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.png" style="width: 100%; height: auto; display: block; border-radius: 2px;">
                 </div>
 
                 <!-- Lista de Conteúdo que muda via JavaScript -->
@@ -831,7 +831,7 @@
                     <li><strong>100 Super Créditos</strong> — 1 🏅</li>
                 </ul>
             `
-        }, // <--- Vírgula de separação adicionada com sucesso!
+        },
         veteranos: {
             title: "Veteranos de Elite (Steeled Veterans)",
             image: "warbonds/veteranos/Steeled_Veterans.png",
@@ -948,10 +948,10 @@
     }
 
     function mudarPaginaMobilizacao(numPagina) {
-        // 1. Atualiza o print na tela usando o número da página clicada
+        // 1. Atualiza o print na tela usando o número da página clicada (Configurado para .png)
         const imgElement = document.getElementById('img-mobilizacao');
         if (imgElement) {
-            imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.jpg`;
+            imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.png`;
         }
 
         // 2. Atualiza os títulos das listas dinamicamente

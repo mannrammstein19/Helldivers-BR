@@ -913,6 +913,35 @@ veteranos: {
             card.style.display = (title.includes(txt) || desc.includes(txt)) ? "flex" : "none";
         });
     });
+function mudarPaginaWarbond(pagina) {
+    const paginas = ['p1', 'p2', 'p3'];
+    
+    paginas.forEach(p => {
+        // Esconde a imagem da página
+        const img = document.getElementById('warbond-' + p);
+        if (img) img.style.display = 'none';
+        
+        // Reseta o estilo do botão para o padrão escuro
+        const btn = document.getElementById('btn-' + p);
+        if (btn) {
+            btn.style.background = '#11161d';
+            btn.style.color = 'white';
+            btn.style.border = '1px solid #222c3a';
+        }
+    });
+    
+    // Mostra a imagem da página clicada
+    const imgAtiva = document.getElementById('warbond-' + pagina);
+    if (imgAtiva) imgAtiva.style.display = 'block';
+    
+    // Deixa o botão clicado amarelo
+    const btnAtivo = document.getElementById('btn-' + pagina);
+    if (btnAtivo) {
+        btnAtivo.style.background = '#ffcc00';
+        btnAtivo.style.color = 'black';
+        btnAtivo.style.border = 'none';
+    }
+}
 </script>
 
 </body>

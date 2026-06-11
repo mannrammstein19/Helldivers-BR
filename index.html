@@ -214,7 +214,7 @@
         background-size: cover;
     }
 
-    <h1> {
+    h1 {
         font-size: 3.5rem;
         margin-bottom: 10px;
         font-weight: 900;
@@ -519,7 +519,7 @@
         color: #666;
         font-size: 0.9rem;
         border-top: 1px solid #11161d;
-        background: #070a0e;
+        background: #070e0e;
     }
 </style>
 </head>
@@ -741,7 +741,7 @@
         <div class="video-grid">
             <div class="video-card">
                 <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/watch?v=WH5XTtkhX3w" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/WH5XTtkhX3w" allowfullscreen></iframe>
                 </div>
                 <h3>Últimos Envios - Luis Play Games</h3>
             </div>
@@ -792,46 +792,47 @@
     overlay.addEventListener('click', toggleSidebar);
 
 
-    // Banco de Dados de Warbonds (ORGANIZADO)
+    // Banco de Dados de Warbonds (ORGANIZADO E CORRIGIDO)
     const warbondDatabase = {
-mobilizacao: {
-    title: "Mobilização de Helldivers",
-    image: "warbonds/mobilizacao/capa-mobilizacao.jpg", 
-    html: `
-        <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
-            Warbond padrão distribuído para todas as Forças de Elite da Super Terra. Selecione a página para inspecionar os armamentos e custos.
-        </p>
-        
-        <!-- Menu de Abas em Grid para caber todas as 10 Páginas -->
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;">
-            <button onclick="mudarPaginaMobilizacao(1)" id="btn-mob-1" style="padding: 10px 5px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 1</button>
-            <button onclick="mudarPaginaMobilizacao(2)" id="btn-mob-2" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 2</button>
-            <button onclick="mudarPaginaMobilizacao(3)" id="btn-mob-3" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 3</button>
-            <button onclick="mudarPaginaMobilizacao(4)" id="btn-mob-4" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 4</button>
-            <button onclick="mudarPaginaMobilizacao(5)" id="btn-mob-5" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 5</button>
-            <button onclick="mudarPaginaMobilizacao(6)" id="btn-mob-6" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 6</button>
-            <button onclick="mudarPaginaMobilizacao(7)" id="btn-mob-7" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 7</button>
-            <button onclick="mudarPaginaMobilizacao(8)" id="btn-mob-8" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 8</button>
-            <button onclick="mudarPaginaMobilizacao(9)" id="btn-mob-9" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 9</button>
-            <button onclick="mudarPaginaMobilizacao(10)" id="btn-mob-10" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 10</button>
-        </div>
+        mobilizacao: {
+            title: "Mobilização de Helldivers",
+            image: "warbonds/mobilizacao/capa-mobilizacao.jpg", 
+            html: `
+                <p style="font-family: Arial, sans-serif; color: #a0a5bc; text-align: left; margin-bottom: 20px;">
+                    Warbond padrão distribuído para todas as Forças de Elite da Super Terra. Selecione a página para inspecionar os armamentos e custos.
+                </p>
+                
+                <!-- Menu de Abas em Grid para caber todas as 10 Páginas -->
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;">
+                    <button onclick="mudarPaginaMobilizacao(1)" id="btn-mob-1" style="padding: 10px 5px; background: #ffcc00; color: black; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 1</button>
+                    <button onclick="mudarPaginaMobilizacao(2)" id="btn-mob-2" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 2</button>
+                    <button onclick="mudarPaginaMobilizacao(3)" id="btn-mob-3" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 3</button>
+                    <button onclick="mudarPaginaMobilizacao(4)" id="btn-mob-4" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 4</button>
+                    <button onclick="mudarPaginaMobilizacao(5)" id="btn-mob-5" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 5</button>
+                    <button onclick="mudarPaginaMobilizacao(6)" id="btn-mob-6" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 6</button>
+                    <button onclick="mudarPaginaMobilizacao(7)" id="btn-mob-7" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 7</button>
+                    <button onclick="mudarPaginaMobilizacao(8)" id="btn-mob-8" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 8</button>
+                    <button onclick="mudarPaginaMobilizacao(9)" id="btn-mob-9" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 9</button>
+                    <button onclick="mudarPaginaMobilizacao(10)" id="btn-mob-10" style="padding: 10px 5px; background: #11161d; color: #a0a5bc; font-weight: bold; border: 1px solid #222c3a; border-radius: 4px; cursor: pointer; font-family: Arial; font-size: 12px;">PÁG 10</button>
+                </div>
 
-        <!-- Área do Print da Página -->
-        <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; margin-bottom: 20px;">
-            <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
-        </div>
+                <!-- Área do Print da Página -->
+                <div style="position: relative; background: #070a0e; border: 1px solid #222c3a; border-radius: 4px; padding: 5px; margin-bottom: 20px;">
+                    <img id="img-mobilizacao" src="warbonds/mobilizacao/Pagina1.jpg" style="width: 100%; height: auto; display: block; border-radius: 2px;">
+                </div>
 
-        <!-- Lista de Conteúdo que muda via JavaScript -->
-        <h4 id="titulo-itens-mob" style="color:#ffcc00; text-align: left; text-transform: uppercase; margin-bottom: 10px;">Destaques da Página 1:</h4>
-        <ul id="lista-itens-mob" style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left; padding-left: 20px;">
-            <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
-            <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
-            <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
-            <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
-            <li><strong>100 Super Créditos</strong> — 1 🏅</li>
-        </ul>
-    `
-}        veteranos: {
+                <!-- Lista de Conteúdo que muda via JavaScript -->
+                <h4 id="titulo-itens-mob" style="color:#ffcc00; text-align: left; text-transform: uppercase; margin-bottom: 10px;">Destaques da Página 1:</h4>
+                <ul id="lista-itens-mob" style="color:#d0d0d0; font-family:Arial; line-height:1.8; text-align: left; padding-left: 20px;">
+                    <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
+                    <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
+                    <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
+                    <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
+                    <li><strong>100 Super Créditos</strong> — 1 🏅</li>
+                </ul>
+            `
+        }, // <--- Vírgula de separação adicionada com sucesso!
+        veteranos: {
             title: "Veteranos de Elite (Steeled Veterans)",
             image: "warbonds/veteranos/Steeled_Veterans.png",
             html: `
@@ -895,6 +896,7 @@ mobilizacao: {
         showModal(data.title, data.image, data.html);
     }
 
+    // OBS: O Luis arrumou o link de watch do YouTube para /embed/ para o iframe carregar liso dentro do site!
     function openEnemy(key) {
         const data = enemyDatabase[key];
         if(!data) return;
@@ -944,68 +946,69 @@ mobilizacao: {
             btnAtivo.style.border = 'none';
         }
     }
-function mudarPaginaMobilizacao(numPagina) {
-    // 1. Atualiza o print na tela usando o número da página clicada
-    const imgElement = document.getElementById('img-mobilizacao');
-    if (imgElement) {
-        imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.jpg`;
-    }
 
-    // 2. Atualiza os títulos das listas dinamicamente
-    const tituloElement = document.getElementById('titulo-itens-mob');
-    if (tituloElement) {
-        tituloElement.innerText = `Destaques da Página ${numPagina}:`;
-    }
+    function mudarPaginaMobilizacao(numPagina) {
+        // 1. Atualiza o print na tela usando o número da página clicada
+        const imgElement = document.getElementById('img-mobilizacao');
+        if (imgElement) {
+            imgElement.src = `warbonds/mobilizacao/Pagina${numPagina}.jpg`;
+        }
 
-    // 3. Banco de dados com os itens de cada uma das 10 páginas
-    const dadosPaginas = {
-        1: `
-            <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
-            <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
-            <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
-            <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
-            <li><strong>100 Super Créditos</strong> — 1 🏅</li>
-        `,
-        2: `
-            <li><strong>P-2 Peacemaker / SMG-37 Defender</strong> (Armamento) — 5 🏅</li>
-            <li><strong>Armadura Média</strong> — 6 🏅</li>
-            <li><strong>Capacete Médio</strong> — 5 🏅</li>
-            <li><strong>100 Super Créditos</strong> — 2 🏅</li>
-        `,
-        3: `<li><strong>Item de Destaque Pág 3</strong> — X 🏅</li><li>(Depois você completa o resto aqui!)</li>`,
-        4: `<li>Complete a lista da página 4 conforme o jogo!</li>`,
-        5: `<li>Complete a lista da página 5 conforme o jogo!</li>`,
-        6: `<li>Complete a lista da página 6 conforme o jogo!</li>`,
-        7: `<li>Complete a lista da página 7 conforme o jogo!</li>`,
-        8: `<li>Complete a lista da página 8 conforme o jogo!</li>`,
-        9: `<li>Complete a lista da página 9 conforme o jogo!</li>`,
-        10: `<li>Complete a lista da página 10 conforme o jogo!</li>`
-    };
+        // 2. Atualiza os títulos das listas dinamicamente
+        const tituloElement = document.getElementById('titulo-itens-mob');
+        if (tituloElement) {
+            tituloElement.innerText = `Destaques da Página ${numPagina}:`;
+        }
 
-    // Injeta a lista de HTML correspondente à página selecionada
-    const listaElement = document.getElementById('lista-itens-mob');
-    if (listaElement) {
-        listaElement.innerHTML = dadosPaginas[numPagina];
-    }
+        // 3. Banco de dados com os itens de cada uma das 10 páginas
+        const dadosPaginas = {
+            1: `
+                <li><strong>SG-8 Punisher</strong> (Espingarda Primária) — 4 🏅</li>
+                <li><strong>SC-34 Infiltrador</strong> (Armadura Leve) — 3 🏅</li>
+                <li><strong>SC-34 Infiltrador</strong> (Capacete) — 2 🏅</li>
+                <li><strong>G-6 Fragmentação</strong> (Granada) — 2 🏅</li>
+                <li><strong>100 Super Créditos</strong> — 1 🏅</li>
+            `,
+            2: `
+                <li><strong>P-2 Peacemaker / SMG-37 Defender</strong> (Armamento) — 5 🏅</li>
+                <li><strong>Armadura Média</strong> — 6 🏅</li>
+                <li><strong>Capacete Médio</strong> — 5 🏅</li>
+                <li><strong>100 Super Créditos</strong> — 2 🏅</li>
+            `,
+            3: `<li><strong>Item de Destaque Pág 3</strong> — X 🏅</li><li>(Depois você completa o resto aqui!)</li>`,
+            4: `<li>Complete a lista da página 4 conforme o jogo!</li>`,
+            5: `<li>Complete a lista da página 5 conforme o jogo!</li>`,
+            6: `<li>Complete a lista da página 6 conforme o jogo!</li>`,
+            7: `<li>Complete a lista da página 7 conforme o jogo!</li>`,
+            8: `<li>Complete a lista da página 8 conforme o jogo!</li>`,
+            9: `<li>Complete a lista da página 9 conforme o jogo!</li>`,
+            10: `<li>Complete a lista da página 10 conforme o jogo!</li>`
+        };
 
-    // 4. Reseta o estilo de todos os 10 botões para o padrão escuro
-    for (let i = 1; i <= 10; i++) {
-        const btn = document.getElementById(`btn-mob-${i}`);
-        if (btn) {
-            btn.style.background = '#11161d';
-            btn.style.color = '#a0a5bc';
-            btn.style.border = '1px solid #222c3a';
+        // Injeta a lista de HTML correspondente à página selecionada
+        const listaElement = document.getElementById('lista-itens-mob');
+        if (listaElement) {
+            listaElement.innerHTML = dadosPaginas[numPagina];
+        }
+
+        // 4. Reseta o estilo de todos os 10 botões para o padrão escuro
+        for (let i = 1; i <= 10; i++) {
+            const btn = document.getElementById(`btn-mob-${i}`);
+            if (btn) {
+                btn.style.background = '#11161d';
+                btn.style.color = '#a0a5bc';
+                btn.style.border = '1px solid #222c3a';
+            }
+        }
+
+        // 5. Destaca o botão da página atual com o amarelo clássico
+        const btnAtivo = document.getElementById(`btn-mob-${numPagina}`);
+        if (btnAtivo) {
+            btnAtivo.style.background = '#ffcc00';
+            btnAtivo.style.color = 'black';
+            btnAtivo.style.border = 'none';
         }
     }
-
-    // 5. Destaca o botão da página atual com o amarelo clássico
-    const btnAtivo = document.getElementById(`btn-mob-${numPagina}`);
-    if (btnAtivo) {
-        btnAtivo.style.background = '#ffcc00';
-        btnAtivo.style.color = 'black';
-        btnAtivo.style.border = 'none';
-    }
-}
 </script>
 </body>
 </html>

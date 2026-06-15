@@ -1,45 +1,170 @@
-<div class="weapon-card">
-    <h2>FAF-14 SPEAR</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Detailed Weapon Statistics - FAF-14 SPEAR</title>
+  <style>
+    /* Variáveis de Cores Oficiais e Estilo Helldivers */
+    :root {
+      --hd-yellow: #dee516;      /* Amarelo neon da Super Terra */
+      --hd-dark-green: #525624;  /* Verde-oliva militar de fundo */
+      --hd-light-green: #5b5f2b; /* Verde-oliva claro para sub-divisões */
+      --hd-black: #111111;       /* Preto absoluto para o título */
+      --hd-text-light: #ffffff;  /* Branco puro para os números */
+    }
 
-    <table>
-        <tr>
-            <td>Fire Rate</td>
-            <td>240 rpm</td>
-        </tr>
-        <tr>
-            <td>Recoil</td>
-            <td>6.25</td>
-        </tr>
-        <tr>
-            <td>Capacity</td>
-            <td>1</td>
-        </tr>
-    </table>
-</div>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
-.weapon-card{
-    width:400px;
-    background:#5d5d22;
-    color:white;
-    border:2px solid #d4d42c;
-    font-family:Arial;
-}
+    body {
+      background-color: transparent; /* Permite que herde o fundo do Notion se configurado */
+      font-family: 'Arial Black', 'Impact', sans-serif; /* Fontes brutas bem militares */
+      padding: 10px;
+      display: block;
+    }
 
-.weapon-card h2{
-    background:#d4d42c;
-    color:black;
-    padding:10px;
-    margin:0;
-}
+    /* Container Principal da Tabela Estilo Wiki Mostrão */
+    .hd-wiki-wrapper {
+      background-color: var(--hd-dark-green);
+      border: 4px solid var(--hd-yellow);
+      width: 100%;
+      max-width: 360px; /* Largura perfeita para janelas e colunas do Notion */
+      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
+      text-transform: uppercase;
+    }
 
-.weapon-card table{
-    width:100%;
-    border-collapse:collapse;
-}
+    /* Cabeçalho Principal com o nome da Arma */
+    .hd-main-title {
+      background-color: var(--hd-yellow);
+      color: var(--hd-black);
+      font-size: 18px;
+      font-weight: 900;
+      text-align: center;
+      padding: 12px 8px;
+      letter-spacing: 1px;
+    }
 
-.weapon-card td{
-    border:1px solid #d4d42c;
-    padding:8px;
-}
-</style>
+    /* Estrutura das Linhas de Atributos */
+    .hd-stat-row {
+      display: table;
+      width: 100%;
+      border-bottom: 1px solid rgba(222, 229, 22, 0.25);
+    }
+
+    .hd-stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .hd-cell {
+      display: table-cell;
+      padding: 8px 14px;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    /* Atributo (Esquerda) */
+    .hd-label {
+      color: var(--hd-yellow);
+      font-weight: bold;
+      width: 55%;
+      letter-spacing: 0.5px;
+    }
+
+    /* Valor Numérico (Direita) */
+    .hd-value {
+      color: var(--hd-text-light);
+      text-align: right;
+      font-family: 'Arial', sans-serif; /* Fonte padrão limpa para os números não quebrarem */
+      font-weight: bold;
+    }
+
+    /* Divisórias Internas (Ex: Attacks, Projectile, AoE) */
+    .hd-section-divider {
+      background-color: var(--hd-light-green);
+      color: var(--hd-yellow);
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      padding: 6px 0;
+      border-top: 2px solid var(--hd-yellow);
+      border-bottom: 2px solid var(--hd-yellow);
+      letter-spacing: 2px;
+    }
+
+    /* Destaque para o Dano Monstro de 4000 da Lança */
+    .hd-damage-boost {
+      color: #ff4444 !important; /* Vermelho de destruição tática */
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Card que vai aparecer direto dentro do seu Notion via Embed -->
+  <div class="hd-wiki-wrapper">
+    <div class="hd-main-title">FAF-14 SPEAR</div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Fire Rate</div>
+      <div class="hd-cell hd-value">240 rpm</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Recoil</div>
+      <div class="hd-cell hd-value">6.25</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Horizontal Recoil</div>
+      <div class="hd-cell hd-value">2.5</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Vertical Recoil</div>
+      <div class="hd-cell hd-value">10</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Spread</div>
+      <div class="hd-cell hd-value">-[0.00] [0.00]</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Ergonomics</div>
+      <div class="hd-cell hd-value">10</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Capacity</div>
+      <div class="hd-cell hd-value">1</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Spare Magazines</div>
+      <div class="hd-cell hd-value">3</div>
+    </div>
+
+    <!-- Divisória de Ataques idêntica ao print -->
+    <div class="hd-section-divider">DAMAGE PROFILE</div>
+
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Standard</div>
+      <div class="hd-cell hd-value hd-damage-boost">4000 Ballistic</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">vs. Durable</div>
+      <div class="hd-cell hd-value hd-damage-boost">4000 Ballistic</div>
+    </div>
+    
+    <div class="hd-stat-row">
+      <div class="hd-cell hd-label">Penetration</div>
+      <div class="hd-cell hd-value">7 Anti-Tank III</div>
+    </div>
+  </div>
+
+</body>
+</html>

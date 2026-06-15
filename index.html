@@ -2,15 +2,18 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detailed Weapon Statistics - FAF-14 SPEAR</title>
+  <!-- Biblioteca de Ícones Gratuita -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    /* Variáveis de Cores Oficiais e Estilo Helldivers */
     :root {
-      --hd-yellow: #dee516;      /* Amarelo neon da Super Terra */
-      --hd-dark-green: #525624;  /* Verde-oliva militar de fundo */
-      --hd-light-green: #5b5f2b; /* Verde-oliva claro para sub-divisões */
-      --hd-black: #111111;       /* Preto absoluto para o título */
-      --hd-text-light: #ffffff;  /* Branco puro para os números */
+      --hd-yellow: #dee516;      /* Amarelo Super Terra */
+      --hd-bg-green: #545726;    /* Verde-oliva escuro do fundo das tabelas */
+      --hd-border-yellow: #dee516;
+      --hd-text-white: #ffffff;
+      --hd-black: #111111;
     }
 
     * {
@@ -20,150 +23,194 @@
     }
 
     body {
-      background-color: transparent; /* Permite que herde o fundo do Notion se configurado */
-      font-family: 'Arial Black', 'Impact', sans-serif; /* Fontes brutas bem militares */
+      background-color: transparent; /* Combina com o fundo do Notion */
+      font-family: 'Arial Black', 'Impact', sans-serif;
       padding: 10px;
-      display: block;
-    }
-
-    /* Container Principal da Tabela Estilo Wiki Mostrão */
-    .hd-wiki-wrapper {
-      background-color: var(--hd-dark-green);
-      border: 4px solid var(--hd-yellow);
-      width: 100%;
-      max-width: 360px; /* Largura perfeita para janelas e colunas do Notion */
-      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
       text-transform: uppercase;
     }
 
-    /* Cabeçalho Principal com o nome da Arma */
-    .hd-main-title {
-      background-color: var(--hd-yellow);
-      color: var(--hd-black);
-      font-size: 18px;
-      font-weight: 900;
-      text-align: center;
-      padding: 12px 8px;
+    /* Título Geral Superior */
+    .hd-page-title {
+      color: var(--hd-yellow);
+      font-size: 24px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--hd-yellow);
+      padding-bottom: 5px;
       letter-spacing: 1px;
     }
 
-    /* Estrutura das Linhas de Atributos */
-    .hd-stat-row {
-      display: table;
+    /* CONTAINER PRINCIPAL: Alinha as 3 colunas lado a lado */
+    .hd-columns-container {
+      display: flex;
+      flex-direction: row;
+      gap: 15px; /* Espaço entre as tabelas */
+      flex-wrap: wrap; /* Se a tela for pequena (celular), elas quebram para baixo organizadas */
       width: 100%;
-      border-bottom: 1px solid rgba(222, 229, 22, 0.25);
     }
 
-    .hd-stat-row:last-child {
-      border-bottom: none;
+    /* Estilo padrão para cada uma das 3 tabelas */
+    .hd-wiki-table {
+      background-color: var(--hd-bg-green);
+      border: 3px solid var(--hd-border-yellow);
+      flex: 1;
+      min-width: 280px; /* Largura mínima para não esmagar os dados */
+      max-width: 340px; /* Mantém o visual compacto idêntico ao print */
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
     }
 
-    .hd-cell {
-      display: table-cell;
-      padding: 8px 14px;
-      vertical-align: middle;
-      font-size: 13px;
-    }
-
-    /* Atributo (Esquerda) */
-    .hd-label {
-      color: var(--hd-yellow);
-      font-weight: bold;
-      width: 55%;
+    /* Cabeçalhos principais amarelos */
+    .hd-table-header {
+      background-color: var(--hd-yellow);
+      color: var(--hd-black);
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      padding: 10px 5px;
       letter-spacing: 0.5px;
     }
 
-    /* Valor Numérico (Direita) */
-    .hd-value {
-      color: var(--hd-text-light);
-      text-align: right;
-      font-family: 'Arial', sans-serif; /* Fonte padrão limpa para os números não quebrarem */
-      font-weight: bold;
-    }
-
-    /* Divisórias Internas (Ex: Attacks, Projectile, AoE) */
-    .hd-section-divider {
-      background-color: var(--hd-light-green);
+    /* Sub-seções internas centralizadas (Ex: Projectile, Damage, Attacks) */
+    .hd-sub-header {
       color: var(--hd-yellow);
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 13px;
       text-align: center;
       padding: 6px 0;
-      border-top: 2px solid var(--hd-yellow);
-      border-bottom: 2px solid var(--hd-yellow);
-      letter-spacing: 2px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    /* Destaque para o Dano Monstro de 4000 da Lança */
-    .hd-damage-boost {
-      color: #ff4444 !important; /* Vermelho de destruição tática */
-      font-weight: 900;
+    /* Linhas de atributos */
+    .hd-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(222, 229, 22, 0.2);
+    }
+
+    .hd-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Textos da Esquerda (Labels) */
+    .hd-label {
+      color: var(--hd-yellow);
+      font-size: 11px;
+      font-weight: bold;
+      width: 55%;
+    }
+
+    /* Textos da Direita (Valores) */
+    .hd-value {
+      color: var(--hd-text-white);
+      font-size: 12px;
+      text-align: right;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px; /* Espaço entre o ícone e o texto */
+    }
+
+    /* Estilização dos Ícones Táticos */
+    .icon-muni { color: var(--hd-yellow); font-size: 11px; }
+    .icon-explosao { color: #ffa500; font-size: 11px; }
+    .icon-shield { color: #bbb; font-size: 11px; }
+    
+    /* Badge de Penetração (Quadrado com o número dentro igual ao jogo) */
+    .penetration-badge {
+      background-color: #333;
+      border: 1px solid var(--hd-yellow);
+      color: var(--hd-yellow);
+      padding: 1px 5px;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 2px;
+      margin-right: 3px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Card que vai aparecer direto dentro do seu Notion via Embed -->
-  <div class="hd-wiki-wrapper">
-    <div class="hd-main-title">FAF-14 SPEAR</div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Fire Rate</div>
-      <div class="hd-cell hd-value">240 rpm</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Recoil</div>
-      <div class="hd-cell hd-value">6.25</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Horizontal Recoil</div>
-      <div class="hd-cell hd-value">2.5</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Vertical Recoil</div>
-      <div class="hd-cell hd-value">10</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Spread</div>
-      <div class="hd-cell hd-value">-[0.00] [0.00]</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Ergonomics</div>
-      <div class="hd-cell hd-value">10</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Capacity</div>
-      <div class="hd-cell hd-value">1</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Spare Magazines</div>
-      <div class="hd-cell hd-value">3</div>
+  <h1 class="hd-page-title">Detailed Weapon Statistics</h1>
+
+  <!-- Container das 3 Colunas -->
+  <div class="hd-columns-container">
+
+    <!-- COLUNA 1: FAF-14 SPEAR -->
+    <div class="hd-wiki-table">
+      <div class="hd-table-header">FAF-14 SPEAR</div>
+      <div class="hd-row"><span class="hd-label">Fire Rate</span><span class="hd-value">240 rpm</span></div>
+      <div class="hd-row"><span class="hd-label">Recoil</span><span class="hd-value">6.25</span></div>
+      <div class="hd-row"><span class="hd-label">Horizontal Recoil</span><span class="hd-value">2.5</span></div>
+      <div class="hd-row"><span class="hd-label">Vertical Recoil</span><span class="hd-value">10</span></div>
+      <div class="hd-row"><span class="hd-label">Spread</span><span class="hd-value">-[0.00] [0.00]</span></div>
+      <div class="hd-row"><span class="hd-label">Sway</span><span class="hd-value">1</span></div>
+      <div class="hd-row"><span class="hd-label">Ergonomics</span><span class="hd-value">10</span></div>
+      <div class="hd-row"><span class="hd-label">Capacity</span><span class="hd-value">1</span></div>
+      <div class="hd-row"><span class="hd-label">Spare Magazines</span><span class="hd-value">3</span></div>
+      <div class="hd-row"><span class="hd-label">Starting Magazines</span><span class="hd-value">3</span></div>
+      <div class="hd-row"><span class="hd-label">Mags from Supply</span><span class="hd-value">2</span></div>
+      <div class="hd-row"><span class="hd-label">Mags from Ammo Box</span><span class="hd-value">1</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Attacks</div>
+      <div class="hd-row"><span class="hd-label">*HOMING GROU...</span><span class="hd-value" style="font-family: sans-serif;">Projectile</span></div>
+      <div class="hd-row"><span class="hd-label">**HOMING GROU...</span><span class="hd-value" style="font-family: sans-serif;">Explosion</span></div>
     </div>
 
-    <!-- Divisória de Ataques idêntica ao print -->
-    <div class="hd-section-divider">DAMAGE PROFILE</div>
+    <!-- COLUNA 2: HOMING GROUND MISSILE P -->
+    <div class="hd-wiki-table">
+      <div class="hd-table-header">HOMING GROUND MISSILE P</div>
+      <div class="hd-sub-header">Projectile</div>
+      <div class="hd-row"><span class="hd-label">Mass</span><span class="hd-value">350 g</span></div>
+      <div class="hd-row"><span class="hd-label">Initial Velocity</span><span class="hd-value">70 m/s</span></div>
+      <div class="hd-row"><span class="hd-label">Drag Factor</span><span class="hd-value">30%</span></div>
+      <div class="hd-row"><span class="hd-label">Gravity Factor</span><span class="hd-value">100%</span></div>
+      <div class="hd-row"><span class="hd-label">Lifetime</span><span class="hd-value">15 sec</span></div>
+      <div class="hd-row"><span class="hd-label">Penetration Slowdown</span><span class="hd-value">25%</span></div>
+      <div class="hd-row"><span class="hd-label">Explosion On Impact</span><span class="hd-value" style="font-size: 10px;">HOMING GROU...</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Damage</div>
+      <div class="hd-row"><span class="hd-label">Standard</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Ballistic</span></div>
+      <div class="hd-row"><span class="hd-label">vs. Durable</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Ballistic</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Penetration</div>
+      <div class="hd-row"><span class="hd-label">Direct</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
+      <div class="hd-row"><span class="hd-label">Slight Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
+      <div class="hd-row"><span class="hd-label">Large Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
+      <div class="hd-row"><span class="hd-label">Extreme Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Special Effects</div>
+      <div class="hd-row"><span class="hd-label">Demolition Force</span><span class="hd-value">40</span></div>
+      <div class="hd-row"><span class="hd-label">Stagger Force</span><span class="hd-value">50</span></div>
+      <div class="hd-row"><span class="hd-label">Push Force</span><span class="hd-value">25</span></div>
+    </div>
 
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Standard</div>
-      <div class="hd-cell hd-value hd-damage-boost">4000 Ballistic</div>
+    <!-- COLUNA 3: HOMING GROUND MISSILE P IE -->
+    <div class="hd-wiki-table">
+      <div class="hd-table-header">HOMING GROUND MISSILE P IE</div>
+      <div class="hd-sub-header">Area of Effect</div>
+      <div class="hd-row"><span class="hd-label">Inner Radius</span><span class="hd-value">1.5 m</span></div>
+      <div class="hd-row"><span class="hd-label">Outer Radius</span><span class="hd-value">3 m</span></div>
+      <div class="hd-row"><span class="hd-label">Shockwave Radius</span><span class="hd-value">6 m</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Damage</div>
+      <div class="hd-row"><span class="hd-label">Damage Element</span><span class="hd-value" style="font-family: sans-serif;">None</span></div>
+      <div class="hd-row"><span class="hd-label">Inner Radius</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosion</span></div>
+      <div class="hd-row"><span class="hd-label">Inner Durable</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosion</span></div>
+      <div class="hd-row"><span class="hd-label">Outer Radius</span><span class="hd-value">199 - 0</span></div>
+      <div class="hd-row"><span class="hd-label">Outer Durable</span><span class="hd-value">199 - 0</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Penetration</div>
+      <div class="hd-row"><span class="hd-label">Direct</span><span class="hd-value"><span class="penetration-badge" style="color: #fff; border-color: #fff;">3</span> Medium</span></div>
+      
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">AoE Effect</div>
+      <div class="hd-row"><span class="hd-label">Demolition Force</span><span class="hd-value">30</span></div>
+      <div class="hd-row"><span class="hd-label">Stagger Force</span><span class="hd-value">60</span></div>
+      <div class="hd-row"><span class="hd-label">Push Force</span><span class="hd-value">75</span></div>
     </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">vs. Durable</div>
-      <div class="hd-cell hd-value hd-damage-boost">4000 Ballistic</div>
-    </div>
-    
-    <div class="hd-stat-row">
-      <div class="hd-cell hd-label">Penetration</div>
-      <div class="hd-cell hd-value">7 Anti-Tank III</div>
-    </div>
+
   </div>
 
 </body>

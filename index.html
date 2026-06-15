@@ -8,12 +8,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
+    /* ==========================================================================
+       AQUI ESTÁ A SUA PALETA DE CORES (É SÓ ALTERAR OS VALORES ABAIXO PARA MUDAR TUDO)
+       ========================================================================== */
     :root {
-      --hd-orange: #ff6a00;       /* Laranja marcante e original */
-      --hd-bg-dark: #111111;      /* Fundo Preto Fosco absoluto */
-      --hd-card-bg: #22251a;      /* Verde-oliva bem escuro para o fundo das tabelas */
-      --hd-text-white: #ffffff;
-      --hd-text-gray: #aaaaaa;
+      --hd-orange: #ff6a00;       /* Cor dos títulos das tabelas, divisórias e bordas */
+      --hd-yellow: #dee516;       /* Nova cor para os nomes dos atributos (esquerda) */
+      --hd-bg-dark: #111111;      /* Fundo Preto Fosco absoluto da página */
+      --hd-card-bg: #22251a;      /* Verde-oliva escuro do fundo das tabelas */
+      --hd-text-white: #ffffff;   /* Cor dos resultados/valores (direita) */
     }
 
     * {
@@ -23,7 +26,7 @@
     }
 
     body {
-      background-color: var(--hd-bg-dark); /* Força o fundo a ser PRETO */
+      background-color: var(--hd-bg-dark);
       font-family: 'Arial Black', 'Impact', sans-serif;
       padding: 20px;
       text-transform: uppercase;
@@ -40,7 +43,7 @@
       letter-spacing: 1px;
     }
 
-    /* CONTAINER PRINCIPAL: Mantém as tabelas lado a lado */
+    /* CONTAINER PRINCIPAL: Tabelas lado a lado */
     .hd-columns-container {
       display: flex;
       flex-direction: row;
@@ -70,7 +73,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Sub-seções internas centralizadas */
+    /* Sub-seções internas centralizadas (Mantidas em LARANJA) */
     .hd-sub-header {
       color: var(--hd-orange);
       font-size: 13px;
@@ -86,22 +89,22 @@
       justify-content: space-between;
       align-items: center;
       padding: 6px 10px;
-      border-bottom: 1px solid rgba(255, 106, 0, 0.2); /* Linha divisória sutil em laranja */
+      border-bottom: 1px solid rgba(255, 106, 0, 0.2);
     }
 
     .hd-row:last-child {
       border-bottom: none;
     }
 
-    /* Nomes dos atributos (Esquerda) */
+    /* Nomes dos atributos com resultados (Esquerda) -> AGORA EM AMARELO */
     .hd-label {
-      color: var(--hd-orange);
+      color: var(--hd-yellow);
       font-size: 11px;
       font-weight: bold;
       width: 55%;
     }
 
-    /* Valores (Direita) */
+    /* Valores/Resultados (Direita) -> MANTIDOS EM BRANCO */
     .hd-value {
       color: var(--hd-text-white);
       font-size: 12px;
@@ -114,11 +117,10 @@
       gap: 5px;
     }
 
-    /* Ícones */
-    .icon-muni { color: var(--hd-orange); font-size: 11px; }
+    /* Ícones e Badges ajustados para o novo padrão */
+    .icon-muni { color: var(--hd-yellow); font-size: 11px; }
     .icon-explosao { color: #ff3700; font-size: 11px; }
     
-    /* Quadrado de Penetração de Armadura */
     .penetration-badge {
       background-color: #111;
       border: 1px solid var(--hd-orange);
@@ -196,8 +198,8 @@
       
       <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Dano</div>
       <div class="hd-row"><span class="hd-label">Elemento de Dano</span><span class="hd-value" style="font-family: sans-serif;">Nenhum</span></div>
-      <div class="hd-row"><span class="hd-label">Raio Interno</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
-      <div class="hd-row"><span class="hd-label">Durável Interno</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
+      <div class="hd-row"><span class="hd-label">Raio Interno</span><span class="hd-value" style="color: #ff5500;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
+      <div class="hd-row"><span class="hd-label">Durável Interno</span><span class="hd-value" style="color: #ff5500;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
       <div class="hd-row"><span class="hd-label">Raio Externo</span><span class="hd-value">199 - 0</span></div>
       <div class="hd-row"><span class="hd-label">Durável Externo</span><span class="hd-value">199 - 0</span></div>
       

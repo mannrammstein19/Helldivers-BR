@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detailed Weapon Statistics - FAF-14 SPEAR</title>
+  <title>Estatísticas Detalhadas da Arma - FAF-14 SPEAR</title>
   <!-- Biblioteca de Ícones Gratuita -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
-      --hd-yellow: #dee516;      /* Amarelo Super Terra */
-      --hd-bg-green: #545726;    /* Verde-oliva escuro do fundo das tabelas */
-      --hd-border-yellow: #dee516;
+      --hd-orange: #ff6a00;       /* Laranja marcante e original */
+      --hd-bg-dark: #111111;      /* Fundo Preto Fosco absoluto */
+      --hd-card-bg: #22251a;      /* Verde-oliva bem escuro para o fundo das tabelas */
       --hd-text-white: #ffffff;
-      --hd-black: #111111;
+      --hd-text-gray: #aaaaaa;
     }
 
     * {
@@ -23,45 +23,46 @@
     }
 
     body {
-      background-color: transparent; /* Combina com o fundo do Notion */
+      background-color: var(--hd-bg-dark); /* Força o fundo a ser PRETO */
       font-family: 'Arial Black', 'Impact', sans-serif;
-      padding: 10px;
+      padding: 20px;
       text-transform: uppercase;
+      color: var(--hd-text-white);
     }
 
     /* Título Geral Superior */
     .hd-page-title {
-      color: var(--hd-yellow);
+      color: var(--hd-orange);
       font-size: 24px;
-      margin-bottom: 15px;
-      border-bottom: 2px solid var(--hd-yellow);
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--hd-orange);
       padding-bottom: 5px;
       letter-spacing: 1px;
     }
 
-    /* CONTAINER PRINCIPAL: Alinha as 3 colunas lado a lado */
+    /* CONTAINER PRINCIPAL: Mantém as tabelas lado a lado */
     .hd-columns-container {
       display: flex;
       flex-direction: row;
-      gap: 15px; /* Espaço entre as tabelas */
-      flex-wrap: wrap; /* Se a tela for pequena (celular), elas quebram para baixo organizadas */
+      gap: 15px;
+      flex-wrap: wrap;
       width: 100%;
     }
 
-    /* Estilo padrão para cada uma das 3 tabelas */
+    /* Tabelas com fundo verde militar escuro e borda LARANJA */
     .hd-wiki-table {
-      background-color: var(--hd-bg-green);
-      border: 3px solid var(--hd-border-yellow);
+      background-color: var(--hd-card-bg);
+      border: 3px solid var(--hd-orange);
       flex: 1;
-      min-width: 280px; /* Largura mínima para não esmagar os dados */
-      max-width: 340px; /* Mantém o visual compacto idêntico ao print */
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+      min-width: 280px;
+      max-width: 340px;
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.8);
     }
 
-    /* Cabeçalhos principais amarelos */
+    /* Cabeçalhos principais em Laranja */
     .hd-table-header {
-      background-color: var(--hd-yellow);
-      color: var(--hd-black);
+      background-color: var(--hd-orange);
+      color: var(--hd-bg-dark);
       font-size: 15px;
       font-weight: 900;
       text-align: center;
@@ -69,9 +70,9 @@
       letter-spacing: 0.5px;
     }
 
-    /* Sub-seções internas centralizadas (Ex: Projectile, Damage, Attacks) */
+    /* Sub-seções internas centralizadas */
     .hd-sub-header {
-      color: var(--hd-yellow);
+      color: var(--hd-orange);
       font-size: 13px;
       text-align: center;
       padding: 6px 0;
@@ -85,22 +86,22 @@
       justify-content: space-between;
       align-items: center;
       padding: 6px 10px;
-      border-bottom: 1px solid rgba(222, 229, 22, 0.2);
+      border-bottom: 1px solid rgba(255, 106, 0, 0.2); /* Linha divisória sutil em laranja */
     }
 
     .hd-row:last-child {
       border-bottom: none;
     }
 
-    /* Textos da Esquerda (Labels) */
+    /* Nomes dos atributos (Esquerda) */
     .hd-label {
-      color: var(--hd-yellow);
+      color: var(--hd-orange);
       font-size: 11px;
       font-weight: bold;
       width: 55%;
     }
 
-    /* Textos da Direita (Valores) */
+    /* Valores (Direita) */
     .hd-value {
       color: var(--hd-text-white);
       font-size: 12px;
@@ -110,19 +111,18 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 5px; /* Espaço entre o ícone e o texto */
+      gap: 5px;
     }
 
-    /* Estilização dos Ícones Táticos */
-    .icon-muni { color: var(--hd-yellow); font-size: 11px; }
-    .icon-explosao { color: #ffa500; font-size: 11px; }
-    .icon-shield { color: #bbb; font-size: 11px; }
+    /* Ícones */
+    .icon-muni { color: var(--hd-orange); font-size: 11px; }
+    .icon-explosao { color: #ff3700; font-size: 11px; }
     
-    /* Badge de Penetração (Quadrado com o número dentro igual ao jogo) */
+    /* Quadrado de Penetração de Armadura */
     .penetration-badge {
-      background-color: #333;
-      border: 1px solid var(--hd-yellow);
-      color: var(--hd-yellow);
+      background-color: #111;
+      border: 1px solid var(--hd-orange);
+      color: var(--hd-orange);
       padding: 1px 5px;
       font-size: 10px;
       font-weight: bold;
@@ -133,82 +133,81 @@
 </head>
 <body>
 
-  <h1 class="hd-page-title">Detailed Weapon Statistics</h1>
+  <h1 class="hd-page-title">Estatísticas Detalhadas da Arma</h1>
 
-  <!-- Container das 3 Colunas -->
   <div class="hd-columns-container">
 
     <!-- COLUNA 1: FAF-14 SPEAR -->
     <div class="hd-wiki-table">
       <div class="hd-table-header">FAF-14 SPEAR</div>
-      <div class="hd-row"><span class="hd-label">Fire Rate</span><span class="hd-value">240 rpm</span></div>
-      <div class="hd-row"><span class="hd-label">Recoil</span><span class="hd-value">6.25</span></div>
-      <div class="hd-row"><span class="hd-label">Horizontal Recoil</span><span class="hd-value">2.5</span></div>
-      <div class="hd-row"><span class="hd-label">Vertical Recoil</span><span class="hd-value">10</span></div>
-      <div class="hd-row"><span class="hd-label">Spread</span><span class="hd-value">-[0.00] [0.00]</span></div>
-      <div class="hd-row"><span class="hd-label">Sway</span><span class="hd-value">1</span></div>
-      <div class="hd-row"><span class="hd-label">Ergonomics</span><span class="hd-value">10</span></div>
-      <div class="hd-row"><span class="hd-label">Capacity</span><span class="hd-value">1</span></div>
-      <div class="hd-row"><span class="hd-label">Spare Magazines</span><span class="hd-value">3</span></div>
-      <div class="hd-row"><span class="hd-label">Starting Magazines</span><span class="hd-value">3</span></div>
-      <div class="hd-row"><span class="hd-label">Mags from Supply</span><span class="hd-value">2</span></div>
-      <div class="hd-row"><span class="hd-label">Mags from Ammo Box</span><span class="hd-value">1</span></div>
+      <div class="hd-row"><span class="hd-label">Cadência de Tiro</span><span class="hd-value">240 dpm</span></div>
+      <div class="hd-row"><span class="hd-label">Recuo</span><span class="hd-value">6.25</span></div>
+      <div class="hd-row"><span class="hd-label">Recuo Horizontal</span><span class="hd-value">2.5</span></div>
+      <div class="hd-row"><span class="hd-label">Recuo Vertical</span><span class="hd-value">10</span></div>
+      <div class="hd-row"><span class="hd-label">Dispersão</span><span class="hd-value">-[0.00] [0.00]</span></div>
+      <div class="hd-row"><span class="hd-label">Oscilação</span><span class="hd-value">1</span></div>
+      <div class="hd-row"><span class="hd-label">Ergonomia</span><span class="hd-value">10</span></div>
+      <div class="hd-row"><span class="hd-label">Capacidade</span><span class="hd-value">1</span></div>
+      <div class="hd-row"><span class="hd-label">Pentes Reserva</span><span class="hd-value">3</span></div>
+      <div class="hd-row"><span class="hd-label">Pentes Iniciais</span><span class="hd-value">3</span></div>
+      <div class="hd-row"><span class="hd-label">Munição por Suprimento</span><span class="hd-value">2</span></div>
+      <div class="hd-row"><span class="hd-label">Munição por Caixa</span><span class="hd-value">1</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Attacks</div>
-      <div class="hd-row"><span class="hd-label">*HOMING GROU...</span><span class="hd-value" style="font-family: sans-serif;">Projectile</span></div>
-      <div class="hd-row"><span class="hd-label">**HOMING GROU...</span><span class="hd-value" style="font-family: sans-serif;">Explosion</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Ataques</div>
+      <div class="hd-row"><span class="hd-label">*Míssil Guiado...</span><span class="hd-value" style="font-family: sans-serif;">Projétil</span></div>
+      <div class="hd-row"><span class="hd-label">**Míssil Guiado...</span><span class="hd-value" style="font-family: sans-serif;">Explosão</span></div>
     </div>
 
-    <!-- COLUNA 2: HOMING GROUND MISSILE P -->
+    <!-- COLUNA 2: MÍSSIL GUIADO DE TERRA P -->
     <div class="hd-wiki-table">
-      <div class="hd-table-header">HOMING GROUND MISSILE P</div>
-      <div class="hd-sub-header">Projectile</div>
-      <div class="hd-row"><span class="hd-label">Mass</span><span class="hd-value">350 g</span></div>
-      <div class="hd-row"><span class="hd-label">Initial Velocity</span><span class="hd-value">70 m/s</span></div>
-      <div class="hd-row"><span class="hd-label">Drag Factor</span><span class="hd-value">30%</span></div>
-      <div class="hd-row"><span class="hd-label">Gravity Factor</span><span class="hd-value">100%</span></div>
-      <div class="hd-row"><span class="hd-label">Lifetime</span><span class="hd-value">15 sec</span></div>
-      <div class="hd-row"><span class="hd-label">Penetration Slowdown</span><span class="hd-value">25%</span></div>
-      <div class="hd-row"><span class="hd-label">Explosion On Impact</span><span class="hd-value" style="font-size: 10px;">HOMING GROU...</span></div>
+      <div class="hd-table-header">MÍSSIL GUIADO DE TERRA P</div>
+      <div class="hd-sub-header">Projétil</div>
+      <div class="hd-row"><span class="hd-label">Massa</span><span class="hd-value">350 g</span></div>
+      <div class="hd-row"><span class="hd-label">Velocidade Inicial</span><span class="hd-value">70 m/s</span></div>
+      <div class="hd-row"><span class="hd-label">Fator de Arrasto</span><span class="hd-value">30%</span></div>
+      <div class="hd-row"><span class="hd-label">Fator de Gravidade</span><span class="hd-value">100%</span></div>
+      <div class="hd-row"><span class="hd-label">Tempo de Vida</span><span class="hd-value">15 seg</span></div>
+      <div class="hd-row"><span class="hd-label">Desaceleração de Pen.</span><span class="hd-value">25%</span></div>
+      <div class="hd-row"><span class="hd-label">Explosão no Impacto</span><span class="hd-value" style="font-size: 10px;">Míssil Guiado...</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Damage</div>
-      <div class="hd-row"><span class="hd-label">Standard</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Ballistic</span></div>
-      <div class="hd-row"><span class="hd-label">vs. Durable</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Ballistic</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Dano</div>
+      <div class="hd-row"><span class="hd-label">Padrão</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Balístico</span></div>
+      <div class="hd-row"><span class="hd-label">vs. Durável</span><span class="hd-value"><i class="fa-solid fa-list-ol icon-muni"></i> 4000 Balístico</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Penetration</div>
-      <div class="hd-row"><span class="hd-label">Direct</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
-      <div class="hd-row"><span class="hd-label">Slight Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
-      <div class="hd-row"><span class="hd-label">Large Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
-      <div class="hd-row"><span class="hd-label">Extreme Angle</span><span class="hd-value"><span class="penetration-badge">7</span> Anti-Tank III</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Penetração</div>
+      <div class="hd-row"><span class="hd-label">Direta</span><span class="hd-value"><span class="penetration-badge">7</span> Antitanque III</span></div>
+      <div class="hd-row"><span class="hd-label">Ângulo Leve</span><span class="hd-value"><span class="penetration-badge">7</span> Antitanque III</span></div>
+      <div class="hd-row"><span class="hd-label">Ângulo Grande</span><span class="hd-value"><span class="penetration-badge">7</span> Antitanque III</span></div>
+      <div class="hd-row"><span class="hd-label">Ângulo Extremo</span><span class="hd-value"><span class="penetration-badge">7</span> Antitanque III</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Special Effects</div>
-      <div class="hd-row"><span class="hd-label">Demolition Force</span><span class="hd-value">40</span></div>
-      <div class="hd-row"><span class="hd-label">Stagger Force</span><span class="hd-value">50</span></div>
-      <div class="hd-row"><span class="hd-label">Push Force</span><span class="hd-value">25</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Efeitos Especiais</div>
+      <div class="hd-row"><span class="hd-label">Força de Demolição</span><span class="hd-value">40</span></div>
+      <div class="hd-row"><span class="hd-label">Força de Impacto</span><span class="hd-value">50</span></div>
+      <div class="hd-row"><span class="hd-label">Força de Empurrão</span><span class="hd-value">25</span></div>
     </div>
 
-    <!-- COLUNA 3: HOMING GROUND MISSILE P IE -->
+    <!-- COLUNA 3: MÍSSIL GUIADO DE TERRA P IE -->
     <div class="hd-wiki-table">
-      <div class="hd-table-header">HOMING GROUND MISSILE P IE</div>
-      <div class="hd-sub-header">Area of Effect</div>
-      <div class="hd-row"><span class="hd-label">Inner Radius</span><span class="hd-value">1.5 m</span></div>
-      <div class="hd-row"><span class="hd-label">Outer Radius</span><span class="hd-value">3 m</span></div>
-      <div class="hd-row"><span class="hd-label">Shockwave Radius</span><span class="hd-value">6 m</span></div>
+      <div class="hd-table-header">MÍSSIL GUIADO DE TERRA P IE</div>
+      <div class="hd-sub-header">Área de Efeito</div>
+      <div class="hd-row"><span class="hd-label">Raio Interno</span><span class="hd-value">1.5 m</span></div>
+      <div class="hd-row"><span class="hd-label">Raio Externo</span><span class="hd-value">3 m</span></div>
+      <div class="hd-row"><span class="hd-label">Raio da Onda de Choque</span><span class="hd-value">6 m</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Damage</div>
-      <div class="hd-row"><span class="hd-label">Damage Element</span><span class="hd-value" style="font-family: sans-serif;">None</span></div>
-      <div class="hd-row"><span class="hd-label">Inner Radius</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosion</span></div>
-      <div class="hd-row"><span class="hd-label">Inner Durable</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosion</span></div>
-      <div class="hd-row"><span class="hd-label">Outer Radius</span><span class="hd-value">199 - 0</span></div>
-      <div class="hd-row"><span class="hd-label">Outer Durable</span><span class="hd-value">199 - 0</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Dano</div>
+      <div class="hd-row"><span class="hd-label">Elemento de Dano</span><span class="hd-value" style="font-family: sans-serif;">Nenhum</span></div>
+      <div class="hd-row"><span class="hd-label">Raio Interno</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
+      <div class="hd-row"><span class="hd-label">Durável Interno</span><span class="hd-value" style="color: #ffaa44;"><i class="fa-solid fa-burst icon-explosao"></i> 200 Explosão</span></div>
+      <div class="hd-row"><span class="hd-label">Raio Externo</span><span class="hd-value">199 - 0</span></div>
+      <div class="hd-row"><span class="hd-label">Durável Externo</span><span class="hd-value">199 - 0</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">Penetration</div>
-      <div class="hd-row"><span class="hd-label">Direct</span><span class="hd-value"><span class="penetration-badge" style="color: #fff; border-color: #fff;">3</span> Medium</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Penetração</div>
+      <div class="hd-row"><span class="hd-label">Direta</span><span class="hd-value"><span class="penetration-badge" style="color: #fff; border-color: #fff;">3</span> Média</span></div>
       
-      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-border-yellow); border-bottom: 1px solid var(--hd-border-yellow); background: rgba(0,0,0,0.1);">AoE Effect</div>
-      <div class="hd-row"><span class="hd-label">Demolition Force</span><span class="hd-value">30</span></div>
-      <div class="hd-row"><span class="hd-label">Stagger Force</span><span class="hd-value">60</span></div>
-      <div class="hd-row"><span class="hd-label">Push Force</span><span class="hd-value">75</span></div>
+      <div class="hd-sub-header" style="border-top: 1px solid var(--hd-orange); border-bottom: 1px solid var(--hd-orange); background: rgba(0,0,0,0.3);">Efeito de Área (AoE)</div>
+      <div class="hd-row"><span class="hd-label">Força de Demolição</span><span class="hd-value">30</span></div>
+      <div class="hd-row"><span class="hd-label">Força de Impacto</span><span class="hd-value">60</span></div>
+      <div class="hd-row"><span class="hd-label">Força de Empurrão</span><span class="hd-value">75</span></div>
     </div>
 
   </div>

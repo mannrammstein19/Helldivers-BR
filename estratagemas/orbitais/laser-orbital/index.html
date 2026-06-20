@@ -1,315 +1,343 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Estatísticas Detalhadas - Lr Orbital</title>
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Estatísticas Detalhadas de Armas - Laser Orbital</title>
+
 <style>
-:root {
-    --hd-yellow: #d7d52c;
-    --hd-line: #b8b61d;
-    --hd-bg: #141414;
-    --hd-panel: #1f1f1f;
-    --hd-text: #ffffff;
-    --hd-orange: #ff7b00;
+
+:root{
+    --hd-yellow:#d7d52c;
+    --hd-orange:#ff7b00;
+    --hd-bg:#141414;
+    --hd-card:#1f1f1f;
+    --hd-text:#ffffff;
 }
-*{box-sizing:border-box}
-body{margin:0;padding:20px;background:var(--hd-bg);color:var(--hd-text);font-family:Arial,Helvetica,sans-serif}
-.wiki-container{max-width:1400px;margin:auto}
-.main-title{color:var(--hd-yellow);text-align:center;font-size:28px;font-weight:bold;margin-bottom:25px;border-bottom:2px solid var(--hd-line);padding-bottom:10px}
-.layout-table{width:100%;border-collapse:separate;border-spacing:15px}
-.layout-cell{width:33%;vertical-align:top}
-.card-table{width:100%;border-collapse:collapse;background:var(--hd-panel);border:2px solid var(--hd-line)}
-.card-header{background:rgba(215,213,44,.15);color:var(--hd-yellow);text-align:center;font-size:18px;font-weight:bold;padding:12px;border-bottom:2px solid var(--hd-line)}
-.section-divider{background:rgba(215,213,44,.08);color:var(--hd-yellow);text-align:center;font-weight:bold;padding:8px;border-top:1px solid var(--hd-line);border-bottom:1px solid var(--hd-line)}
-.data-row td{padding:8px 12px;border-bottom:1px solid rgba(215,213,44,.15)}
-.label{color:var(--hd-yellow);font-weight:bold}
-.value{color:white;text-align:right;font-weight:bold}
-.value-highlight{color:var(--hd-orange);text-align:right;font-weight:bold}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:var(--hd-bg);
+    color:var(--hd-text);
+    font-family:Arial,Helvetica,sans-serif;
+    padding:20px;
+}
+
+.page-title{
+    color:var(--hd-yellow);
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    margin-bottom:25px;
+    border-bottom:2px solid var(--hd-yellow);
+    padding-bottom:10px;
+}
+
+.cards-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.card{
+    flex:1 1 320px;
+    background:var(--hd-card);
+    border:2px solid var(--hd-yellow);
+}
+
+.card-header{
+    background:rgba(215,213,44,.15);
+    color:var(--hd-yellow);
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    padding:12px;
+    border-bottom:2px solid var(--hd-yellow);
+}
+
+.section{
+    text-align:center;
+    color:var(--hd-yellow);
+    font-weight:bold;
+    padding:8px;
+    background:rgba(215,213,44,.08);
+    border-top:1px solid rgba(215,213,44,.3);
+    border-bottom:1px solid rgba(215,213,44,.3);
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 12px;
+    border-bottom:1px solid rgba(215,213,44,.12);
+}
+
+.label{
+    color:var(--hd-yellow);
+    font-weight:bold;
+}
+
+.value{
+    color:white;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
 
 .icon{
-    height:22px;
+    height:20px;
     width:auto;
-    vertical-align:middle;
-    margin-right:5px;
-    object-fit:contain;
-}
-
-@media (max-width: 900px){
-
-    body{
-        padding:10px;
-    }
-
-    .main-title{
-        font-size:20px;
-    }
-
-    .layout-table,
-    .layout-table tbody,
-    .layout-table tr{
-        display:block;
-        width:100%;
-    }
-
-    .layout-cell{
-        display:block;
-        width:100%;
-        margin-bottom:20px;
-    }
-
-    .card-table{
-        width:100%;
-    }
-
-    .label,
-    .value{
-        font-size:14px;
-    }
-
-    .card-header{
-        font-size:16px;
-    }
 }
 
 </style>
-
 </head>
+
 <body>
 
-<div class="wiki-container">
-    <div class="main-title">Estatísticas Detalhadas de Armas - Laser Orbital</div>
-    
-    <table class="layout-table">
-        <tr>
-            <!-- COLUNA 1: CONFIGURAÇÃO GERAL -->
-            <td class="layout-cell">
-                <table class="card-table">
-                    <tr>
-                        <td colspan="2" class="card-header">Laser Orbital</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Esfriar</td>
-                        <td class="value">300 s</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Usos</td>
-                        <td class="value">3</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Duração</td>
-                        <td class="value">25 s</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Intervalo de pesquisa</td>
-                        <td class="value">50 m</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Velocidade de movimento</td>
-                        <td class="value">10 m/s</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Ataques</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">*LASER ORBITAL...</td>
-                        <td class="value">Spray</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">**Fogo</td>
-                        <td class="value">status</td>
-                    </tr>
-                </table>
-            </td>
-            
-            <!-- COLUNA 2: DANO DE SPRAY (DPS) -->
-            <td class="layout-cell">
-                <table class="card-table">
-                    <tr>
-                        <td colspan="2" class="card-header">LASER ORBITAL_DPS</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Dano</td>
-                    </tr>
+<div class="page-title">
+Estatísticas Detalhadas de Armas - Laser Orbital
+</div>
 
-<tr class="data-row">
-<td class="label">Padrão</td>
-<td class="value">
-<img src="../../../dano-balistico.png" 
-class="icon" 
-alt="600 Laser" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-600 Laser
-</td>
-</tr>
+<div class="cards-container">
 
-<tr class="data-row">
-<td class="label">vs. Durável</td>
-<td class="value">
-<img src="../../../dano-balistico.png" 
-class="icon" 
-alt="600 Laser" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-600 Laser
-</td>
-</tr>
+<!-- CARD 1 -->
+<div class="card">
+    <div class="card-header">
+        Laser Orbital
+    </div>
 
-                        <td colspan="2" class="section-divider">Penetração</td>
-</tr>
+    <div class="row">
+        <div class="label">Esfriar</div>
+        <div class="value">300 s</div>
+    </div>
 
-<tr class="data-row">
-<td class="label">Direto</td>
-<td class="value">
-<img src="../../../penetracao-tank-2.png" 
-class="icon" 
-alt="Anti-Tank II" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-Anti-Tank II
-</td>
-</tr>
+    <div class="row">
+        <div class="label">Usos</div>
+        <div class="value">3</div>
+    </div>
 
-<tr class="data-row">
-<td class="label">Ângulo Ligeiro</td>
-<td class="value">
-<img src="../../../penetracao-tank-2.png" class="icon" alt="Anti-Tank II" style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-Anti-Tank II
-</td>
-</tr>
+    <div class="row">
+        <div class="label">Duração</div>
+        <div class="value">25 s</div>
+    </div>
 
+    <div class="row">
+        <div class="label">Intervalo de pesquisa</div>
+        <div class="value">50 m</div>
+    </div>
 
+    <div class="row">
+        <div class="label">Velocidade de movimento</div>
+        <div class="value">10 m/s</div>
+    </div>
 
-<tr class="data-row">
-<td class="label">Ângulo Amplo</td>
-<td class="value">
-<img src="../../../penetracao-tank-2.png" 
-class="icon" 
-alt="Anti-Tank II" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-Anti-Tank II
-</td>
-</tr>
+    <div class="section">
+        Ataques
+    </div>
 
-<tr class="data-row">
-<td class="label">Ângulo Extremo</td>
-<td class="value">
-<img src="../../../penetracao-unarmored-1.png" 
-class="icon" 
-alt="Anti-Tank II" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-Sem armadura I
-</td>
-</tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Efeitos especiais</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Status</td>
-                        <td class="value">Fogo</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força do status</td>
-                        <td class="value">2</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de Demolição</td>
-                        <td class="value">50</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de escalonamento</td>
-                        <td class="value">30</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de Empurrão</td>
-                        <td class="value">30</td>
-                    </tr>
-                </table>
-            </td>
-            
-            <!-- COLUNA 3: DANO SECUNDÁRIO DO FOGO (STATUS) -->
-            <td class="layout-cell">
-                <table class="card-table">
-                    <tr>
-                        <td colspan="2" class="card-header">Fogo</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Status</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força do status</td>
-                        <td class="value">5</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Duração do status</td>
-                        <td class="value">3 seg</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Dano</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Elemento</td>
-                        <td class="value">Fogo</td>
-                    </tr>
+    <div class="row">
+        <div class="label">*LASER ORBITAL...</div>
+        <div class="value">Spray</div>
+    </div>
 
-<tr class="data-row">
-<td class="label">Padrão</td>
-<td class="value">
-<img src="../../../dano-fogo.png" 
-class="icon" 
-alt="600 Laser" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-100 Fogo
-</td>
-</tr>
+    <div class="row">
+        <div class="label">**Fogo</div>
+        <div class="value">status</div>
+    </div>
+</div>
 
+<!-- CARD 2 -->
+<div class="card">
+    <div class="card-header">
+        LASER ORBITAL_DPS
+    </div>
 
-<tr class="data-row">
-<td class="label">Padrão</td>
-<td class="value">
-<img src="../../../dano-fogo.png" 
-class="icon" 
-alt="600 Laser" 
-style="height: 22px; width: 19px; vertical-align: middle; object-fit: contain; margin-right: 5px;">
-100 Fogo
-</td>
-</tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Penetração</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Direto</td>
-                        <td class="value">[4] Heavy</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Ângulo Ligeiro</td>
-                        <td class="value">[4] Heavy</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Ângulo amplo</td>
-                        <td class="value">[4] Heavy</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Ângulo extremo</td>
-                        <td class="value">⬜ [0] Sem armadura I</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="section-divider">Efeitos especiais</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de Demolição</td>
-                        <td class="value">0</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de escalonamento</td>
-                        <td class="value">0</td>
-                    </tr>
-                    <tr class="data-row">
-                        <td class="label">Força de Empurrão</td>
-                        <td class="value">0</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+    <div class="section">
+        Dano
+    </div>
+
+    <div class="row">
+        <div class="label">Padrão</div>
+        <div class="value">
+            <img src="../../../dano-balistico.png" class="icon">
+            600 Laser
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">vs. Durável</div>
+        <div class="value">
+            <img src="../../../dano-balistico.png" class="icon">
+            600 Laser
+        </div>
+    </div>
+
+    <div class="section">
+        Penetração
+    </div>
+
+    <div class="row">
+        <div class="label">Direto</div>
+        <div class="value">
+            <img src="../../../penetracao-tank-2.png" class="icon">
+            Anti-Tank II
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo Ligeiro</div>
+        <div class="value">
+            <img src="../../../penetracao-tank-2.png" class="icon">
+            Anti-Tank II
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo Amplo</div>
+        <div class="value">
+            <img src="../../../penetracao-tank-2.png" class="icon">
+            Anti-Tank II
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo Extremo</div>
+        <div class="value">
+            <img src="../../../penetracao-unarmored-1.png" class="icon">
+            Sem armadura I
+        </div>
+    </div>
+
+    <div class="section">
+        Efeitos especiais
+    </div>
+
+    <div class="row">
+        <div class="label">Status</div>
+        <div class="value">Fogo</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força do status</div>
+        <div class="value">2</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força de Demolição</div>
+        <div class="value">50</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força de escalonamento</div>
+        <div class="value">30</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força de Empurrão</div>
+        <div class="value">30</div>
+    </div>
+</div>
+
+<!-- CARD 3 -->
+<div class="card">
+    <div class="card-header">
+        Fogo
+    </div>
+
+    <div class="section">
+        Status
+    </div>
+
+    <div class="row">
+        <div class="label">Força do status</div>
+        <div class="value">5</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Duração do status</div>
+        <div class="value">3 seg</div>
+    </div>
+
+    <div class="section">
+        Dano
+    </div>
+
+    <div class="row">
+        <div class="label">Elemento</div>
+        <div class="value">Fogo</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Padrão</div>
+        <div class="value">
+            <img src="../../../dano-fogo.png" class="icon">
+            100 Fogo
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Padrão</div>
+        <div class="value">
+            <img src="../../../dano-fogo.png" class="icon">
+            100 Fogo
+        </div>
+    </div>
+
+    <div class="section">
+        Penetração
+    </div>
+
+    <div class="row">
+        <div class="label">Direto</div>
+        <div class="value">[4] Heavy</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo Ligeiro</div>
+        <div class="value">[4] Heavy</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo amplo</div>
+        <div class="value">[4] Heavy</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Ângulo extremo</div>
+        <div class="value">
+            <img src="../../../penetracao-unarmored-1.png" class="icon">
+            [0] Sem armadura I
+        </div>
+    </div>
+
+    <div class="section">
+        Efeitos especiais
+    </div>
+
+    <div class="row">
+        <div class="label">Força de Demolição</div>
+        <div class="value">0</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força de escalonamento</div>
+        <div class="value">0</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Força de Empurrão</div>
+        <div class="value">0</div>
+    </div>
+</div>
+
 </div>
 
 </body>

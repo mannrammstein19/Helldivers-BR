@@ -26,6 +26,52 @@ body{margin:0;padding:20px;background:var(--hd-bg);color:var(--hd-text);font-fam
 .label{color:var(--hd-yellow);font-weight:bold}
 .value{color:white;text-align:right;font-weight:bold}
 .value-highlight{color:var(--hd-orange);text-align:right;font-weight:bold}
+
+.icon{
+    height:22px;
+    width:auto;
+    vertical-align:middle;
+    margin-right:5px;
+    object-fit:contain;
+}
+
+@media (max-width: 900px){
+
+    body{
+        padding:10px;
+    }
+
+    .main-title{
+        font-size:20px;
+    }
+
+    .layout-table,
+    .layout-table tbody,
+    .layout-table tr{
+        display:block;
+        width:100%;
+    }
+
+    .layout-cell{
+        display:block;
+        width:100%;
+        margin-bottom:20px;
+    }
+
+    .card-table{
+        width:100%;
+    }
+
+    .label,
+    .value{
+        font-size:14px;
+    }
+
+    .card-header{
+        font-size:16px;
+    }
+}
+
 </style>
 
 </head>

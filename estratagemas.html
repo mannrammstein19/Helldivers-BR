@@ -38,7 +38,7 @@ a {
 }
 
 /* ==========================================================================
-   BARRA LATERAL FIXA (MANTENDO O PADRÃO PERFEITO)
+   BARRA LATERAL FIXA (MANTENDO O PADRÃO PERFEITO) - DESKTOP
    ========================================================================== */
 .sidebar {
     width: var(--sidebar-width);
@@ -228,14 +228,113 @@ a {
     height: 16px;
 }
 
+/* ==========================================================================
+   MENU MOBILE RETRÁTIL (PADRONIZADO ESTILO WIKI.GG)
+   ========================================================================== */
+.mobile-header {
+    display: none;
+}
+
 @media (max-width: 768px) {
-    body { flex-direction: column; }
-    .sidebar { width: 100%; position: relative; border-right: none; border-bottom: 2px solid var(--hd-yellow); }
-    .main-content { margin-left: 0; padding: 20px; }
+    body {
+        flex-direction: column;
+        padding-top: 50px !important;
+    }
+    
+    .mobile-header {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #0f0f0f;
+        border-bottom: 2px solid var(--hd-yellow);
+        z-index: 1000;
+        padding: 5px 10px;
+        box-sizing: border-box;
+    }
+
+    .mobile-menu-btn {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        color: var(--hd-yellow);
+        border: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .sidebar {
+        display: none;
+        width: 100% !important;
+        position: fixed;
+        top: 50px !important;
+        height: calc(100vh - 50px) !important;
+        z-index: 999;
+        border-right: none;
+        border-bottom: 2px solid var(--hd-yellow);
+        padding: 20px;
+    }
+
+    .sidebar.active {
+        display: flex !important;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    /* === MÁGICA DO ESTILO BOTÕES LADO A LADO (WIKI.GG STYLE) === */
+    .sidebar .menu-section {
+        margin-bottom: 18px;
+    }
+
+    .sidebar .section-header {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .sidebar .menu-list {
+        display: flex;
+        flex-wrap: wrap; /* Alinha os botões horizontalmente e joga pra baixo se faltar espaço */
+        gap: 8px;        /* Espaçamento perfeito entre as caixas */
+    }
+
+    .sidebar .menu-list li {
+        width: auto;     /* Remove a obrigatoriedade de ocupar 100% da largura */
+    }
+
+    .sidebar .menu-list li a {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 12px;
+        background: rgba(26, 26, 26, 0.9);
+        color: #eee;
+        border: 1px solid var(--hd-yellow); /* Moldura amarela fina ao redor */
+        border-radius: 0px 8px 0px 8px;     /* Visual chanfrado/cortado militar tático */
+        transition: all 0.15s ease;
+    }
+
+    /* Inversão de contraste no foco/hover mobile */
+    .sidebar .menu-list li a:hover,
+    .sidebar .menu-list li a.active {
+        color: #0a0a0a;                  /* Letra escura para dar leitura */
+        background: var(--hd-yellow);    /* Fundo brilhante preenchido */
+        padding-left: 12px;              /* Cancela o recuo configurado no desktop */
+        font-weight: bold;
+    }
 }
 </style>
 </head>
 <body>
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">☰ Menu Wiki</button>
+    </div>
 
     <nav class="sidebar">
         <div class="logo-container">
@@ -511,6 +610,25 @@ a {
         </div>
 
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // ---- CONTROLE DO MENU MOBILE ----
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ Menu Wiki";
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>

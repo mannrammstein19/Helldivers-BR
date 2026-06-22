@@ -25,34 +25,34 @@ const searchData = [
         icon: "imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" 
     },
 	    {
-        title: "Metralhadora",
+        title: "Rifle Antimaterial",
         category: "Arma de Apoio",
         url: "estratagemas.html",
         icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" 
     },
     {
-        title: "Rifle Sem Recuo",
+        title: "Lança-Granadas",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/rifle-sem-recuo.png" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" 
     },
     {
-        title: "Vigorosa",
+        title: "Rifle sem Recuo",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/armaduras/vigorosa.png" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" 
     },
     {
-        title: "Canhão Automático",
+        title: "Lança-chamas",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/canhao-automatico.png" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" 
     },
 	    {
-        title: "Canhão Automático",
+        title: "Metralhadora Pesada",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/canhao-automatico.png" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" 
     },
 	    {
         title: "Laser Orbital",

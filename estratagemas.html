@@ -23,7 +23,7 @@
 
 body {
     background: #0a0a0a;
-    background-image: url('imagens/banners/wallpaper-principal.jpg'); 
+    background-image: url('imagens/0-banners/wallpaper-principal.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -153,6 +153,7 @@ a {
     border-collapse: collapse;
     text-align: left;
     font-size: 14px;
+    table-layout: fixed; /* Força o navegador a respeitar as larguras das colunas abaixo */
 }
 
 /* Cabeçalho da Tabela */
@@ -191,7 +192,6 @@ a {
 
 /* Células específicas */
 .cell-icon {
-    width: 50px;
     text-align: center;
 }
 
@@ -239,7 +239,7 @@ a {
 
     <nav class="sidebar">
         <div class="logo-container">
-            <img src="imagens/banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
         </div>
 
         <div class="menu-section">
@@ -247,7 +247,7 @@ a {
             <ul class="menu-list">
                 <li><a href="index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
-                <li><a href="https://discord.gg/SEU_CONVITE" target="_blank">Nosso Servidor Discord</a></li>
+                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
 
@@ -290,17 +290,132 @@ a {
             <table class="hd-table">
                 <thead>
                     <tr>
-                        <th style="width: 60px;">Ícone</th>
-                        <th>Nome</th>
-                        <th>Código de Ativação</th>
-                        <th>Recarga</th>
-                        <th>Custo</th>
+                        <th style="width: 8%;">Ícone</th>
+                        <th style="width: 27%;">Nome</th>
+                        <th style="width: 25%;">Código de Ativação</th>
+                        <th style="width: 12%;">Nível</th> <th style="width: 13%;">Recarga</th>
+                        <th style="width: 15%;">Custo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="cell-icon"><img src="imagens/estratagemas/1-armas-de-apoio/Recoilless_Rifle_Stratagem_Icon_Background.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Rifle Sem Recuo GR-8</a></td>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Metralhadora</a></td>
+                        <td>
+                            <div class="code-container">
+	                            <img src="imagens/icones/seta-baixo.png" class="arrow">
+		                        <img src="imagens/icones/seta-esquerda.png" class="arrow">
+			                    <img src="imagens/icones/seta-baixo.png" class="arrow">
+				                <img src="imagens/icones/seta-cima.png" class="arrow">
+				                <img src="imagens/icones/seta-direita.png" class="arrow">
+		                </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Antitanque Descartável.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Antitanque Descartável</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Vigorosa.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Vigorosa</a></td>
+                        <td>
+                            <div class="code-container">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+							</div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Canhão a Laser</a></td>
+                        <td>
+                            <div class="code-container">
+							    <img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">	
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rifle Antimaterial</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-direita.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">lancador de granadas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rifle sem Recuo</a></td>
                         <td>
                             <div class="code-container">
                                 <img src="imagens/icones/seta-baixo.png" class="arrow">
@@ -310,7 +425,45 @@ a {
                                 <img src="imagens/icones/seta-esquerda.png" class="arrow">
                             </div>
                         </td>
-                        <td>480s</td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança-chamas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                    </tr>
+					<tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Metralhadora Pesada</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5</td> <td>480s</td>
                         <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
@@ -326,17 +479,17 @@ a {
             <table class="hd-table">
                 <thead>
                     <tr>
-                        <th style="width: 60px;">Ícone</th>
-                        <th>Nome</th>
-                        <th>Código de Ativação</th>
-                        <th>Recarga</th>
-                        <th>Custo</th>
+                        <th style="width: 8%;">Ícone</th>
+                        <th style="width: 27%;">Nome</th>
+                        <th style="width: 25%;">Código de Ativação</th>
+                        <th style="width: 12%;">Nível</th> <th style="width: 13%;">Recarga</th>
+                        <th style="width: 15%;">Custo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="cell-icon"><img src="imagens/estratagemas/2-orbitais/Orbital_Laser_Stratagem_Icon_Background.svg" class="strat-icon"></td>
-                        <td><a href="estratagemas/orbitais/laser-orbital/index.html" class="strat-link">Laser Orbital</a></td>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Orbital_Laser_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/1-orbitais/laser-orbital/index.html" class="strat-link">Laser Orbital</a></td>
                         <td>
                             <div class="code-container">
                                 <img src="imagens/icones/seta-direita.png" class="arrow">
@@ -346,7 +499,7 @@ a {
                                 <img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>300s</td>
+                        <td>15</td> <td>300s</td>
                         <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000

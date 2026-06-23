@@ -151,7 +151,7 @@ a { text-decoration: none; }
     margin-bottom: 25px;
 }
 
-/* CARD DETALHADO DA DIREITA (Igual ao da imagem image_127f85.jpg) */
+/* CARD DETALHADO DA DIREITA */
 .stratagem-infobox {
     width: 320px;
     background: var(--hd-card);
@@ -216,7 +216,7 @@ a { text-decoration: none; }
 
 
 /* ==========================================================================
-   ESTATÍSTICAS DETALHADAS (SUAS JÁ EXISTENTES)
+   ESTATÍSTICAS DETALHADAS
    ========================================================================== */
 .section-title {
     color: var(--hd-yellow);
@@ -281,6 +281,29 @@ a { text-decoration: none; }
 }
 .flex-td img { width: 16px; height: 16px; }
 
+/* ==========================================================================
+   SEÇÃO DE VÍDEO NO FINAL (NOVO)
+   ========================================================================== */
+.video-section {
+    margin-top: 40px;
+    background: var(--hd-card);
+    border: 1px solid var(--hd-yellow);
+    padding: 20px;
+}
+
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.video-wrapper video {
+    max-width: 100%;
+    width: 700px; /* Tamanho bacana para desktop */
+    border: 2px solid rgba(215, 213, 44, 0.3);
+    background: #000;
+}
+
 @media (max-width: 900px) {
     .wiki-overview-section { flex-direction: column; }
     .stratagem-infobox { width: 100%; }
@@ -297,7 +320,6 @@ a { text-decoration: none; }
     <!-- BARRA LATERAL FIXA -->
     <nav class="sidebar">
         <div class="logo-container">
-            <!-- Caminho corrigido com ../../../ para achar o escudo da divisão -->
             <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
         </div>
 
@@ -321,13 +343,13 @@ a { text-decoration: none; }
         </div>
     </nav>
 
-    <!-- CONTEÚDO PRINCIPAL (ESTILO WIKI INTEGRADO) -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-content">
         <div class="page-title-block">
             <h1>Laser Orbital</h1>
         </div>
 
-        <!-- SEÇÃO SUPERIOR: TEXTOS + INFOBOX DA DIREITA (Baseado na Wiki Oficial) -->
+        <!-- SEÇÃO SUPERIOR: TEXTOS + INFOBOX DA DIREITA -->
         <div class="wiki-overview-section">
             
             <div class="wiki-left-text">
@@ -349,11 +371,10 @@ a { text-decoration: none; }
                 </table>
             </div>
 
-            <!-- CARD DE DETALHES DA DIREITA (O FAMOSO BOX DA WIKI) -->
+            <!-- CARD DE DETALHES DA DIREITA -->
             <aside class="stratagem-infobox">
                 <div class="infobox-title">Detalhes da Estratagemas</div>
                 <div class="infobox-media">
-                    <!-- Ícone Gigante da Estratagema -->
                     <img src="../../../imagens/2-estratagemas/2-orbitais/Orbital_Laser_Stratagem_Icon_Background.svg" alt="Laser Orbital" class="main-art">
                 </div>
                 <table class="infobox-table">
@@ -404,7 +425,6 @@ a { text-decoration: none; }
 
         </div>
 
-        <!-- SEÇÃO INFERIOR: SUAS TABELAS DETALHADAS DE DANO (MANTIDAS EXATAMENTE COMO ESTAVAM) -->
         <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
         
         <div class="stats-grid">
@@ -457,6 +477,18 @@ a { text-decoration: none; }
                     <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
                     <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png"> Sem armadura I</td></tr>
                 </table>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DE VÍDEO (ADICIONADA NO FINAL) -->
+        <div class="video-section">
+            <h2 class="section-title">Demonstração em Vídeo</h2>
+            <div class="video-wrapper">
+                <!-- Adicionado o atributo "controls" para aparecer o player de volume/tela cheia que você quer -->
+                <video autoplay loop muted playsinline controls>
+                    <source src="Orbital_Laser_Preview_Video (2).mp4" type="video/mp4">
+                    Seu navegador não suporta a visualização de vídeos.
+                </video>
             </div>
         </div>
 

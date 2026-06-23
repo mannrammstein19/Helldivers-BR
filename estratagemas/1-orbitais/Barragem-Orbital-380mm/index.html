@@ -36,6 +36,24 @@ body {
 a { text-decoration: none; }
 
 /* ==========================================================================
+   BOTÃO DO MENU MOBILE
+   ========================================================================== */
+.mobile-menu-toggle {
+    display: none;
+    background: var(--hd-yellow);
+    color: #141414;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    z-index: 200;
+}
+
+/* ==========================================================================
    BARRA LATERAL FIXA
    ========================================================================== */
 .sidebar {
@@ -51,6 +69,7 @@ a { text-decoration: none; }
     z-index: 100;
     overflow-y: auto;
     padding: 15px;
+    transition: left 0.3s ease;
 }
 
 .logo-container {
@@ -101,7 +120,7 @@ a { text-decoration: none; }
 }
 
 /* ==========================================================================
-   CONTEÚDO PRINCIPAL (LAYOUT WIKI INTEGRADO)
+   CONTEÚDO PRINCIPAL
    ========================================================================== */
 .main-content {
     margin-left: var(--sidebar-width);
@@ -255,6 +274,7 @@ a { text-decoration: none; }
     padding: 6px;
     text-align: center;
     font-size: 12px;
+    text-transform: uppercase;
 }
 
 .stats-table td {
@@ -276,7 +296,7 @@ a { text-decoration: none; }
 .flex-td img { width: 16px; height: 16px; }
 
 /* ==========================================================================
-   SEÇÃO DE VÍDEO NO FINAL
+   SEÇÃO DE VÍDEO
    ========================================================================== */
 .video-section {
     margin-top: 40px;
@@ -298,20 +318,42 @@ a { text-decoration: none; }
     background: #000;
 }
 
+/* ==========================================================================
+   RESPONSIVIDADE (CELULAR)
+   ========================================================================== */
 @media (max-width: 900px) {
     .wiki-overview-section { flex-direction: column; }
     .stratagem-infobox { width: 100%; }
 }
 @media (max-width: 768px) {
     body { flex-direction: column; }
-    .sidebar { width: 100%; position: relative; border-right: none; border-bottom: 2px solid var(--hd-yellow); }
+    .mobile-menu-toggle { display: block; }
+    
+    .sidebar { 
+        position: fixed; 
+        top: 43px; /* Fica logo abaixo do botão mobile */
+        left: -100%; /* Escondido por padrão */
+        width: 250px; 
+        height: calc(100vh - 43px);
+        border-right: 2px solid var(--hd-yellow); 
+        box-shadow: 2px 0 15px rgba(0,0,0,0.8);
+    }
+    
+    /* Classe que o Javascript ativa para o menu entrar na tela */
+    .sidebar.active {
+        left: 0;
+    }
+    
     .main-content { margin-left: 0; padding: 20px; }
 }
 </style>
 </head>
 <body>
 
-    <nav class="sidebar">
+    <!-- BOTÃO MENU MOBILE -->
+    <button class="mobile-menu-toggle" id="menu-btn">☰ Menu de Navegação</button>
+
+    <nav class="sidebar" id="sidebar">
         <div class="logo-container">
             <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
         </div>
@@ -356,7 +398,7 @@ a { text-decoration: none; }
                 <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
                 <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
                     <tr><td>Tempo de Chamada (Call-in Time)</td><td>3 segundos</td></tr>
-                    <tr><td>Usos por Missão</td><td>Ilimitado</td></tr>
+                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
                     <tr><td>Tempo de Recarga (Cooldown)</td><td>240 segundos</td></tr>
                 </table>
             </div>
@@ -364,7 +406,6 @@ a { text-decoration: none; }
             <aside class="stratagem-infobox">
                 <div class="infobox-title">Detalhes da Estratagemas</div>
                 <div class="infobox-media">
-                    <!-- Atualizei o nome da imagem para o ícone da 380mm -->
                     <img src="../../../imagens/2-estratagemas/2-orbitais/Orbital_380mm_HE_Barrage_Icon.svg" alt="Barragem de 380mm" class="main-art">
                 </div>
                 <table class="infobox-table">
@@ -420,49 +461,67 @@ a { text-decoration: none; }
         <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
         
         <div class="stats-grid">
-            <!-- Bloco 1: Status Base da Barragem -->
+            <!-- BLOCO 1: STATUS BASE (Ref. Imagem 1000071436) -->
             <div class="stats-box">
-                <h3>Barragem de 380mm</h3>
+                <h3>BARRAGEM HE DE 380MM ORBITAL</h3>
                 <table class="stats-table">
-                    <tr><td>Tempo de Recarga</td><td>240 s</td></tr>
-                    <tr><td>Usos</td><td>Ilimitado</td></tr>
-                    <tr><td>Duração</td><td>Aprox. 15 s</td></tr>
-                    <tr><td>Raio de Dispersão</td><td>50 m</td></tr>
-                    <tr><td>Quantidade de Tiros</td><td>Vários</td></tr>
+                    <tr><td>Esfriar (Cooldown)</td><td>240 s</td></tr>
+                    <tr><td>Usos</td><td>∞</td></tr>
+                    <tr><td>Bombas</td><td>3</td></tr>
+                    <tr><td>Salvas</td><td>5</td></tr>
+                    <tr><td>Tamanho da Área de Bombardeio</td><td>36 m</td></tr>
                     <tr><th colspan="2">Ataques</th></tr>
-                    <tr><td>*Artilharia Orbital...</td><td>Projétil</td></tr>
-                    <tr><td>**Dano em Área</td><td>Explosão</td></tr>
+                    <tr><td>*CANHÃO HE DE 380mm...</td><td>Projétil</td></tr>
+                    <tr><td>**CANHÃO HE DE 380mm...</td><td>Explosão</td></tr>
                 </table>
             </div>
 
-            <!-- Bloco 2: Dano do Projétil Direto -->
+            <!-- BLOCO 2: PROJÉTIL E PENETRAÇÃO (Ref. Imagem 1000071437) -->
             <div class="stats-box">
-                <h3>Projétil (Impacto Direto)</h3>
+                <h3>CANHÃO HE DE 380mm ROUND P1</h3>
                 <table class="stats-table">
+                    <tr><th colspan="2">Projétil</th></tr>
+                    <tr><td>Massa</td><td>30 kg</td></tr>
+                    <tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
+                    <tr><td>Fator de Arrasto</td><td>0%</td></tr>
+                    <tr><td>Fator de Gravidade</td><td>100%</td></tr>
+                    <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
+                    <tr><td>Explosão no Impacto</td><td>Sim</td></tr>
                     <tr><th colspan="2">Dano</th></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 1000 Balístico</td></tr>
-                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 1000 Balístico</td></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 4000 Dano</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 4000 Dano</td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
-                    <tr><th colspan="2">Efeitos especiais</th></tr>
-                    <tr><td>Força de Demolição</td><td>60 (Destrói Ninhos/Fábricas)</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-4.png"> Anti-Tank IV (8)</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png"> Anti-Tank III (7)</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
+                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr><td>Força de Demolição</td><td>50</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>50</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>20</td></tr>
                 </table>
             </div>
 
-            <!-- Bloco 3: Dano da Explosão -->
+            <!-- BLOCO 3: DANO DE ÁREA E EXPLOSÃO (Ref. Imagem 1000071438) -->
             <div class="stats-box">
-                <h3>Explosão (Área)</h3>
+                <h3>CANHÃO HE DE 380mm ROUND P1 IE</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Raio</th></tr>
-                    <tr><td>Raio Máximo</td><td>Aprox. 15 m</td></tr>
+                    <tr><th colspan="2">Área de Efeito (AoE)</th></tr>
+                    <tr><td>Raio Interno</td><td>4 m</td></tr>
+                    <tr><td>Raio Externo</td><td>12 m</td></tr>
+                    <tr><td>Raio da Onda de Choque</td><td>18 m</td></tr>
                     <tr><th colspan="2">Dano</th></tr>
-                    <tr><td>Elemento</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1000 Explosivo</td></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1000 Explosivo</td></tr>
+                    <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1500 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1500 Explosão</td></tr>
+                    <tr><td>Raio Externo</td><td>1499 - 0</td></tr>
+                    <tr><td>Externo Durável</td><td>1499 - 0</td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png"> Médio</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png"> Médio</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
+                    <tr><th colspan="2">Efeito AoE</th></tr>
+                    <tr><td>Força de Demolição</td><td>50</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>70</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>60</td></tr>
                 </table>
             </div>
         </div>
@@ -470,15 +529,25 @@ a { text-decoration: none; }
         <div class="video-section">
             <h2 class="section-title">Demonstração em Vídeo</h2>
             <div class="video-wrapper">
-                <!-- Coloque o arquivo de vídeo correspondente à 380mm aqui -->
                 <video autoplay loop muted playsinline controls>
-                    <source src="Orbital_380mm_HE_Barrage_Preview_Video.mp4" type="video/mp4">
+                    <source src="Orbital_380mm_Preview_Video.mp4" type="video/mp4">
                     Seu navegador não suporta a visualização de vídeos.
                 </video>
             </div>
         </div>
 
     </main>
+
+    <!-- SCRIPT SIMPLES PARA O MENU DE CELULAR FUNCIONAR -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            // A classe "active" é quem puxa a barra pro lado zero da tela (left: 0)
+            sidebar.classList.toggle('active'); 
+        });
+    </script>
 
 </body>
 </html>

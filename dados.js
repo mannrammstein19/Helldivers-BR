@@ -163,9 +163,75 @@ const searchData = [
         icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança Granadas com Fitas.svg" 
     },
 	    {
+        title: "Ataque de Precisão Orbital",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Ataque de Precisão Orbital.svg" 
+    },
+		{
+        title: "Barregem Orbital Gatling",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Barregem Orbital Gatling.svg" 
+    },
+		{	
+        title: "Impacto de Gás Orbital",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Impacto de Gás Orbital.svg" 
+    },
+		{	
+        title: "Barragem Orbital 120mm",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital 120mm.svg" 
+    },
+		{	
+        title: "Ataque Orbital Aéreo",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Ataque Orbital Aéreo.svg" 
+    },
+		{	
+        title: "Ataque de Fumaça Orbital",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Ataque de Fumaça Orbital.svg" 
+    },
+		{	
+        title: "Ataque EMS Orbital",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Ataque EMS Orbital.svg" 
+    },
+		{	
+        title: "Barragem Orbital 380mm",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital 380mm.svg" 
+    },
+		{	
+        title: "Barragem Orbital Movel",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital Movel.svg" 
+    },
+		{	
         title: "Laser Orbital",
-        category: "Estratagema",
+        category: "Orbital",
         url: "estratagemas/1-orbitais/laser-orbital/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" 
+    },
+		{	
+        title: "Barragem Orbital de Napalm",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital de Napalm.svg" 
+    },
+		{	
+        title: "Ataque Orbital com Canhão Eletrico",
+        category: "Orbital",
+        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        icon: "imagens/2-estratagemas/2-orbitais/Ataque Orbital com Canhão Eletrico.svg" 
     },
 ];

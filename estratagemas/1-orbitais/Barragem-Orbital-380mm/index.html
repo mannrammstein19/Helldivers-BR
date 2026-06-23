@@ -244,6 +244,7 @@ a { text-decoration: none; }
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+	align-items: start;
 }
 
 .stats-box {
@@ -303,6 +304,14 @@ a { text-decoration: none; }
     background: var(--hd-card);
     border: 1px solid var(--hd-yellow);
     padding: 20px;
+    
+    /* === AS DICAS ENTRAM AQUI === */
+    width: fit-content; /* Faz a borda da caixa "encolher" para o tamanho exato do vídeo */
+    margin-left: auto;  /* Empurra a caixa para o centro da tela */
+    margin-right: auto; /* Empurra a caixa para o centro da tela */
+    text-align: center; /* Centraliza o título "Demonstração em Vídeo" lá dentro */
+    max-width: 100%;    /* Medida de segurança para a caixa não vazar da tela no celular */
+}
 }
 
 .video-wrapper {

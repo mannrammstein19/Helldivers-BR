@@ -168,5 +168,4 @@ const searchData = [
         url: "estratagemas/1-orbitais/laser-orbital/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Orbital_Laser_Stratagem_Icon_Background.svg" 
     },
-
 ];

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barragem HE de 380mm Orbital - Helldivers BR</title>
+
+<style>
+:root {
+    --hd-yellow: #d7d52c;
+    --hd-orange: #ff7b00;
+    --hd-bg: #141414;
+    --hd-card: rgba(20, 20, 20, 0.85);
+    --hd-text: #ffffff;
+    --sidebar-width: 250px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #0a0a0a;
+    background-image: url('../../../imagens/0-banners/wallpaper-principal.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--hd-text);
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    min-height: 100vh;
+}
+
+a { text-decoration: none; }
+
+/* ==========================================================================
+   BARRA LATERAL FIXA
+   ========================================================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background: rgba(15, 15, 15, 0.95);
+    border-right: 2px solid var(--hd-yellow);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.logo-container {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.3);
+    margin-bottom: 15px;
+}
+
+.logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.menu-section { margin-bottom: 20px; }
+
+.section-header {
+    color: var(--hd-yellow);
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
+}
+
+.menu-list { list-style: none; }
+
+.menu-list li a {
+    display: block;
+    color: #ccc;
+    font-size: 13px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(215, 213, 44, 0.15);
+    border-left: 3px solid rgba(215, 213, 44, 0.4);
+    transition: all 0.15s ease;
+}
+
+.menu-list li a:hover, .menu-list li a.active {
+    color: var(--hd-yellow);
+    background: rgba(215, 213, 44, 0.08);
+    border-color: var(--hd-yellow);
+    border-left: 3px solid var(--hd-yellow);
+    padding-left: 14px;
+}
+
+/* ==========================================================================
+   CONTEÚDO PRINCIPAL (LAYOUT WIKI INTEGRADO)
+   ========================================================================== */
+.main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 40px;
+    background: rgba(10, 10, 10, 0.65);
+}
+
+.page-title-block {
+    border-bottom: 2px solid var(--hd-yellow);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.page-title-block h1 {
+    color: var(--hd-yellow);
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
+.wiki-overview-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.wiki-left-text {
+    flex: 1;
+}
+
+.lore-quote {
+    background: rgba(215, 213, 44, 0.05);
+    border-left: 4px solid var(--hd-yellow);
+    padding: 15px;
+    font-style: italic;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.description-text {
+    line-height: 1.6;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* CARD DETALHADO DA DIREITA */
+.stratagem-infobox {
+    width: 320px;
+    background: var(--hd-card);
+    border: 2px solid var(--hd-yellow);
+    padding: 15px;
+}
+
+.infobox-title {
+    background: rgba(215, 213, 44, 0.2);
+    color: var(--hd-yellow);
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.infobox-media {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.infobox-media img.main-art {
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(215, 213, 44, 0.3);
+    background: #000;
+}
+
+.infobox-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.infobox-table th {
+    background: rgba(215, 213, 44, 0.1);
+    color: var(--hd-yellow);
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
+}
+
+.infobox-table td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+}
+
+.code-inline {
+    display: flex;
+    gap: 3px;
+}
+.code-inline img { width: 14px; height: 14px; }
+
+.req-inline { display: flex; align-items: center; gap: 4px; font-weight: bold; }
+.req-inline img { width: 14px; height: 14px; }
+
+/* ==========================================================================
+   ESTATÍSTICAS DETALHADAS
+   ========================================================================== */
+.section-title {
+    color: var(--hd-yellow);
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+    padding-bottom: 5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.stats-box {
+    background: var(--hd-card);
+    border: 1px solid var(--hd-yellow);
+    padding: 15px;
+}
+
+.stats-box h3 {
+    color: var(--hd-yellow);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-bottom: 2px solid var(--hd-yellow);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.stats-table th {
+    background: rgba(215, 213, 44, 0.1);
+    color: var(--hd-yellow);
+    padding: 6px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.stats-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+}
+
+.stats-table td:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+.flex-td {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+.flex-td img { width: 16px; height: 16px; }
+
+/* ==========================================================================
+   SEÇÃO DE VÍDEO NO FINAL
+   ========================================================================== */
+.video-section {
+    margin-top: 40px;
+    background: var(--hd-card);
+    border: 1px solid var(--hd-yellow);
+    padding: 20px;
+}
+
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.video-wrapper video {
+    max-width: 100%;
+    width: 700px;
+    border: 2px solid rgba(215, 213, 44, 0.3);
+    background: #000;
+}
+
+@media (max-width: 900px) {
+    .wiki-overview-section { flex-direction: column; }
+    .stratagem-infobox { width: 100%; }
+}
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; position: relative; border-right: none; border-bottom: 2px solid var(--hd-yellow); }
+    .main-content { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../../../index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="../../../estratagemas.html" class="active">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title-block">
+            <h1>Barragem HE de 380mm Orbital</h1>
+        </div>
+
+        <div class="wiki-overview-section">
+            
+            <div class="wiki-left-text">
+                <div class="lore-quote">
+                    "Uma barragem de artilharia prolongada e devastadora que cobre uma vasta área. É altamente recomendável manter distância até que a barragem termine." <br>
+                    — Terminal de Gerenciamento da Nave
+                </div>
+                
+                <p class="description-text">
+                    A <strong>Barragem HE de 380mm Orbital</strong> dispara projéteis de artilharia de alto calibre sobre uma área ampla durante um período prolongado. É extremamente eficaz para obliterar grandes concentrações inimigas, bases de Autômatos ou ninhos pesados de Terminídeos. Devido à sua grande dispersão, o risco de baixas por fogo amigo é altíssimo — atire e corra.
+                </p>
+                
+                <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
+                <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>3 segundos</td></tr>
+                    <tr><td>Usos por Missão</td><td>Ilimitado</td></tr>
+                    <tr><td>Tempo de Recarga (Cooldown)</td><td>240 segundos</td></tr>
+                </table>
+            </div>
+
+            <aside class="stratagem-infobox">
+                <div class="infobox-title">Detalhes da Estratagemas</div>
+                <div class="infobox-media">
+                    <!-- Atualizei o nome da imagem para o ícone da 380mm -->
+                    <img src="../../../imagens/2-estratagemas/2-orbitais/Orbital_380mm_HE_Barrage_Icon.svg" alt="Barragem de 380mm" class="main-art">
+                </div>
+                <table class="infobox-table">
+                    <tr>
+                        <th colspan="2">Informações de Combate</th>
+                    </tr>
+                    <tr>
+                        <td>Tipo de Permissão:</td>
+                        <td style="color: var(--hd-orange); font-weight: bold;">Ofensivo</td>
+                    </tr>
+                    <tr>
+                        <td>Características:</td>
+                        <td>Orbital • Explosivo • Área</td>
+                    </tr>
+                    <tr>
+                        <td>Código de Ativação:</td>
+                        <td>
+                            <div class="code-inline">
+                                <img src="../../../imagens/icones/seta-direita.png">
+                                <img src="../../../imagens/icones/seta-baixo.png">
+                                <img src="../../../imagens/icones/seta-cima.png">
+                                <img src="../../../imagens/icones/seta-cima.png">
+                                <img src="../../../imagens/icones/seta-esquerda.png">
+                                <img src="../../../imagens/icones/seta-baixo.png">
+                                <img src="../../../imagens/icones/seta-baixo.png">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Recarga Base:</td>
+                        <td>240s</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Aquisição de Guerra</th>
+                    </tr>
+                    <tr>
+                        <td>Nível de Liberação:</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>Custo de Liberação:</td>
+                        <td>
+                            <div class="req-inline">
+                                <img src="../../../imagens/icones/Requisition_Slip.svg"> 7.500 Slips
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </aside>
+
+        </div>
+
+        <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+        
+        <div class="stats-grid">
+            <!-- Bloco 1: Status Base da Barragem -->
+            <div class="stats-box">
+                <h3>Barragem de 380mm</h3>
+                <table class="stats-table">
+                    <tr><td>Tempo de Recarga</td><td>240 s</td></tr>
+                    <tr><td>Usos</td><td>Ilimitado</td></tr>
+                    <tr><td>Duração</td><td>Aprox. 15 s</td></tr>
+                    <tr><td>Raio de Dispersão</td><td>50 m</td></tr>
+                    <tr><td>Quantidade de Tiros</td><td>Vários</td></tr>
+                    <tr><th colspan="2">Ataques</th></tr>
+                    <tr><td>*Artilharia Orbital...</td><td>Projétil</td></tr>
+                    <tr><td>**Dano em Área</td><td>Explosão</td></tr>
+                </table>
+            </div>
+
+            <!-- Bloco 2: Dano do Projétil Direto -->
+            <div class="stats-box">
+                <h3>Projétil (Impacto Direto)</h3>
+                <table class="stats-table">
+                    <tr><th colspan="2">Dano</th></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 1000 Balístico</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 1000 Balístico</td></tr>
+                    <tr><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png"> Pesado</td></tr>
+                    <tr><th colspan="2">Efeitos especiais</th></tr>
+                    <tr><td>Força de Demolição</td><td>60 (Destrói Ninhos/Fábricas)</td></tr>
+                </table>
+            </div>
+
+            <!-- Bloco 3: Dano da Explosão -->
+            <div class="stats-box">
+                <h3>Explosão (Área)</h3>
+                <table class="stats-table">
+                    <tr><th colspan="2">Raio</th></tr>
+                    <tr><td>Raio Máximo</td><td>Aprox. 15 m</td></tr>
+                    <tr><th colspan="2">Dano</th></tr>
+                    <tr><td>Elemento</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1000 Explosivo</td></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1000 Explosivo</td></tr>
+                    <tr><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png"> Médio</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png"> Médio</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="video-section">
+            <h2 class="section-title">Demonstração em Vídeo</h2>
+            <div class="video-wrapper">
+                <!-- Coloque o arquivo de vídeo correspondente à 380mm aqui -->
+                <video autoplay loop muted playsinline controls>
+                    <source src="Orbital_380mm_Preview_Video.mp4" type="video/mp4">
+                    Seu navegador não suporta a visualização de vídeos.
+                </video>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

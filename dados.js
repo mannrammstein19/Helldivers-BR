@@ -136,7 +136,7 @@ const searchData = [
         title: "Esterilizador",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Esterilizador.svg" 
     },
     {
         title: "Napalm Descartável",
@@ -148,19 +148,19 @@ const searchData = [
         title: "Desobstrutora",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Desobstrutora.svg" 
     },
     {
         title: "Desescalador",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Desescalador.svg" 
     },
 	    {
         title: "Lança Granadas com Fitas",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança Granadas com Fitas.svg" 
     },
 	    {
         title: "Laser Orbital",

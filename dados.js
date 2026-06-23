@@ -58,79 +58,79 @@ const searchData = [
         title: "Canhão Automático",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Metralhadora.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Canhão Automático.svg" 
     },
 	    {
         title: "Lançador de Arco",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Antitanque Descartável.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lançador de Arco.svg" 
     },
 	    {
         title: "Canhão Quasar",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Vigorosa.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Canhão Quasar.svg" 
     },
 	    {
         title: "Lança Foguetes de Explosão Atmosférica",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança Foguetes de Explosão Atmosférica.svg" 
     },
 	    {
         title: "Comando",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Comando.svg" 
     },
     {
         title: "Lança",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança.svg" 
     },
     {
         title: "Railgun",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Railgun.svg" 
     },
     {
         title: "Lança Mísseis V.E.S.P.A",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Lança Mísseis V.E.S.P.A.svg" 
     },
 	    {
         title: "Martelo Rompedor",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Martelo Rompedor.svg" 
     },
     {
         title: "Época",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Metralhadora.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Época.svg" 
     },
 	    {
         title: "Tempestade de Balas",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Antitanque Descartável.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Tempestade de Balas.svg" 
     },
 	    {
         title: "Arbalete",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Vigorosa.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Arbalete.svg" 
     },
 	    {
         title: "Ferramenta de Desfolhamento",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Ferramentas de Desfolhamento.svg" 
     },
 	    {
         title: "Esterilizador",
@@ -142,7 +142,7 @@ const searchData = [
         title: "Napalm Descartável",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Napalm Descartável.svg" 
     },
     {
         title: "Desobstrutora",
@@ -166,6 +166,6 @@ const searchData = [
         title: "Laser Orbital",
         category: "Estratagema",
         url: "estratagemas/1-orbitais/laser-orbital/index.html",
-        icon: "imagens/2-estratagemas/2-orbitais/Orbital_Laser_Stratagem_Icon_Background.svg" 
+        icon: "imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" 
     },
 ];

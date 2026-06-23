@@ -244,6 +244,7 @@ a { text-decoration: none; }
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    align-items: start; /* <-- O AJUSTE FOI FEITO AQUI */
 }
 
 .stats-box {
@@ -303,6 +304,14 @@ a { text-decoration: none; }
     background: var(--hd-card);
     border: 1px solid var(--hd-yellow);
     padding: 20px;
+    
+    /* === AS DICAS ENTRAM AQUI === */
+    width: fit-content; /* Faz a borda da caixa "encolher" para o tamanho exato do vídeo */
+    margin-left: auto;  /* Empurra a caixa para o centro da tela */
+    margin-right: auto; /* Empurra a caixa para o centro da tela */
+    text-align: center; /* Centraliza o título "Demonstração em Vídeo" lá dentro */
+    max-width: 100%;    /* Medida de segurança para a caixa não vazar da tela no celular */
+}
 }
 
 .video-wrapper {
@@ -405,7 +414,6 @@ a { text-decoration: none; }
             <aside class="stratagem-infobox">
                 <div class="infobox-title">Detalhes da Estratagema</div>
                 <div class="infobox-media">
-                    <!-- Atualize o nome da imagem para refletir o Precision Strike -->
                     <img src="../../../imagens/2-estratagemas/2-orbitais/Orbital_Precision_Strike_Icon.svg" alt="Ataque de Precisão Orbital" class="main-art">
                 </div>
                 <table class="infobox-table">
@@ -472,10 +480,10 @@ a { text-decoration: none; }
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano <span class="cite-hide"></span></td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano <span class="cite-hide"></span></td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank IV (8) <span class="cite-hide"></span></td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank III (7) <span class="cite-hide"></span></td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank II (6) <span class="cite-hide"></span></td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank II (6) <span class="cite-hide"></span></td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-4.png" alt="Penetração"> Anti-Tank IV<span class="cite-hide"></span></td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III<span class="cite-hide"></span></td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II<span class="cite-hide"></span></td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II<span class="cite-hide"></span></td></tr>
                     <tr><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>50 <span class="cite-hide"></span></td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>50 <span class="cite-hide"></span></td></tr>
@@ -498,7 +506,7 @@ a { text-decoration: none; }
                     <tr><td>Raio Externo</td><td>1499 - 0 <span class="cite-hide"></span></td></tr>
                     <tr><td>Externo Durável</td><td>1499 - 0 <span class="cite-hide"></span></td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank II (6) <span class="cite-hide"></span></td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II (6) <span class="cite-hide"></span></td></tr>
                     <tr><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>50 <span class="cite-hide"></span></td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>70 <span class="cite-hide"></span></td></tr>
@@ -511,7 +519,6 @@ a { text-decoration: none; }
         <div class="video-section">
             <h2 class="section-title">Demonstração em Vídeo</h2>
             <div class="video-wrapper">
-                <!-- Lembre-se de atualizar o nome do arquivo de vídeo -->
                 <video autoplay loop muted playsinline controls preload="metadata">
                     <source src="Orbital_Precision_Strike_Preview.mp4" type="video/mp4">
                     Seu navegador não suporta a visualização de vídeos.

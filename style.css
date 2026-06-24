@@ -4,7 +4,7 @@
     --hd-bg: #141414;
     --hd-card: rgba(31, 31, 31, 0.85);
     --hd-text: #ffffff;
-    --sidebar-width: 280px; /* Largura ajustada para o padrão da sua print */
+    --sidebar-width: 280px;
 }
 
 * {
@@ -20,7 +20,7 @@ img {
 
 body {
     background: #0a0a0a;
-    background-image: url('imagens/0-banners/wallpaper-principal.jpg'); 
+    background-image: url('imagens/0-banners/wallpaper-principal.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -34,9 +34,10 @@ a {
     text-decoration: none;
 }
 
-/* ==========================================================================
-   BARRA LATERAL (FIXA NO DESKTOP)
-   ========================================================================== */
+/* =========================
+   SIDEBAR DESKTOP
+   ========================= */
+
 .sidebar {
     width: var(--sidebar-width);
     background: rgba(15, 15, 15, 0.95);
@@ -52,19 +53,18 @@ a {
     padding: 20px;
 }
 
-/* Logo reduzida conforme solicitado */
 .logo-container {
     text-align: center;
     padding-bottom: 20px;
 }
 
 .logo-container img {
-    width: 150px; /* Tamanho controlado para não ficar gigante */
+    width: 220px;
     height: auto;
 }
 
 .menu-section {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .section-header {
@@ -73,98 +73,127 @@ a {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
+    border-bottom: 1px solid rgba(215,213,44,.3);
+    padding-bottom: 5px;
 }
 
 .menu-list {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap; /* Permite botões lado a lado */
-    gap: 8px;
+}
+
+.menu-list li {
+    margin-bottom: 8px;
 }
 
 .menu-list li a {
-    display: inline-block;
+    display: block;
+    width: 100%;
+
     color: #ccc;
-    font-size: 13px;
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+
+    padding: 10px 12px;
+
+    background: rgba(255,255,255,.03);
+
     border: 1px solid var(--hd-yellow);
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    border-left: 3px solid var(--hd-yellow);
+
+    transition: .2s;
 }
 
 .menu-list li a:hover,
 .menu-list li a.active {
-    color: #000;
     background: var(--hd-yellow);
+    color: #000;
     font-weight: bold;
 }
 
-/* ==========================================================================
-   CONTEÚDO PRINCIPAL
-   ========================================================================== */
+/* =========================
+   CONTEÚDO
+   ========================= */
+
 .main-content {
     margin-left: var(--sidebar-width);
     flex: 1;
     padding: 40px;
 }
 
-/* ==========================================================================
-   MENU MOBILE (DESLIZA DA ESQUERDA)
-   ========================================================================== */
+/* =========================
+   MOBILE
+   ========================= */
+
 .mobile-header {
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
+
     .mobile-header {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
 
-    background: var(--hd-yellow);
+        width: 100%;
+        height: 60px;
 
-    border-bottom: 2px solid #000;
+        background: var(--hd-yellow);
 
-    z-index: 1000;
+        border-bottom: 2px solid #000;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        z-index: 2000;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     .mobile-menu-btn {
-    width: 100%;
-    height: 100%;
+        width: 100%;
+        height: 100%;
 
-    background: transparent;
-    border: none;
+        border: none;
+        background: transparent;
 
-    color: #000;
+        color: #000;
 
-    font-size: 18px;
-    font-weight: 700;
-    text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
 
-    cursor: pointer;
-}
+        cursor: pointer;
+    }
 
     .sidebar {
-        width: 80% !important; /* Largura do menu mobile */
-        left: -80% !important; /* Escondido à esquerda */
-        transition: left 0.3s ease-in-out;
-        border-right: 2px solid var(--hd-yellow);
+        width: 320px !important;
+
+        left: -320px !important;
+
+        top: 60px;
+        height: calc(100vh - 60px);
+
+        transition: left .3s ease;
+
+        background: rgba(10,10,10,.97);
+
+        z-index: 1500;
     }
 
     .sidebar.active {
-        left: 0 !important; /* Desliza da esquerda */
+        left: 0 !important;
+    }
+
+    .logo-container img {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .menu-list li a {
+        width: 100%;
     }
 
     .main-content {
         margin-left: 0;
-        padding: 70px 20px 20px 20px;
+        padding: 80px 20px 20px 20px;
     }
 }

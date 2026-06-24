@@ -246,7 +246,7 @@ a {
 
 .hd-table {
     width: 100%;
-    min-width: 750px; /* <-- É ESSA LINHA QUE IMPEDE O TEXTO DE ENCAVALAR */
+    min-width: 550px; /* <-- É ESSA LINHA QUE IMPEDE O TEXTO DE ENCAVALAR */
     border-collapse: collapse;
     text-align: left;
     font-size: 14px;

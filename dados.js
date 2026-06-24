@@ -130,7 +130,7 @@ const searchData = [
         title: "Ferramenta de Desfolhamento",
         category: "Arma de Apoio",
         url: "estratagemas.html",
-        icon: "imagens/2-estratagemas/1-armas-de-apoio/Ferramentas de Desfolhamento.svg" 
+        icon: "imagens/2-estratagemas/1-armas-de-apoio/Ferramenta de Desfolhamento.svg" 
     },
 	    {
         title: "Esterilizador",

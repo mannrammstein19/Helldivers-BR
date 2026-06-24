@@ -245,49 +245,81 @@ a {
 @media (max-width: 768px) {
     body {
         flex-direction: column;
-        padding-top: 50px !important;
+        padding-top: 60px !important;
     }
-    
+
     .mobile-header {
-        display: block;
+        display: flex;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 50px;
-        background-color: #0f0f0f;
-        border-bottom: 2px solid var(--hd-yellow);
+        height: 60px;
+
+        background: var(--hd-yellow);
+
+        border-bottom: 2px solid #000;
+
         z-index: 1000;
-        padding: 5px 10px;
-        box-sizing: border-box;
+
+        align-items: center;
+        justify-content: center;
     }
 
     .mobile-menu-btn {
         width: 100%;
         height: 100%;
-        background-color: transparent;
-        color: var(--hd-yellow);
+
+        background: transparent;
         border: none;
-        font-weight: bold;
+
+        color: #000;
+
+        font-size: 18px;
+        font-weight: 700;
         text-transform: uppercase;
+
         cursor: pointer;
-        font-size: 16px;
     }
 
     .sidebar {
         display: none;
-        width: 100% !important;
+
+        width: 85% !important;
+        max-width: 420px;
+
         position: fixed;
-        top: 50px !important;
-        height: calc(100vh - 50px) !important;
+        top: 60px !important;
+        left: 0;
+
+        height: calc(100vh - 60px);
+
+        background: rgba(15,15,15,0.98);
+
         z-index: 999;
-        border-right: none;
-        border-bottom: 2px solid var(--hd-yellow);
+
+        border-right: 2px solid var(--hd-yellow);
+
         padding: 20px;
+
+        overflow-y: auto;
     }
 
     .sidebar.active {
         display: flex !important;
+        flex-direction: column;
+    }
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-container img {
+        width: 220px;
+        max-width: 100%;
+        height: auto;
+        border: none;
     }
 
     .main-content {
@@ -295,9 +327,8 @@ a {
         padding: 20px;
     }
 
-    /* === MÁGICA DO ESTILO BOTÕES LADO A LADO (WIKI.GG STYLE) === */
     .sidebar .menu-section {
-        margin-bottom: 18px;
+        margin-bottom: 20px;
     }
 
     .sidebar .section-header {
@@ -306,33 +337,36 @@ a {
     }
 
     .sidebar .menu-list {
-        display: flex;
-        flex-wrap: wrap; /* Alinha os botões horizontalmente e joga pra baixo se faltar espaço */
-        gap: 8px;        /* Espaçamento perfeito entre as caixas */
+        display: block;
+        list-style: none;
     }
 
     .sidebar .menu-list li {
-        width: auto;     /* Remove a obrigatoriedade de ocupar 100% da largura */
+        width: 100%;
+        margin-bottom: 8px;
     }
 
     .sidebar .menu-list li a {
-        display: inline-block;
-        padding: 6px 12px;
-        font-size: 12px;
-        background: rgba(26, 26, 26, 0.9);
-        color: #eee;
-        border: 1px solid var(--hd-yellow); /* Moldura amarela fina ao redor */
-        border-radius: 0px 8px 0px 8px;     /* Visual chanfrado/cortado militar tático */
-        transition: all 0.15s ease;
+        display: block;
+        width: 100%;
+
+        padding: 10px 12px;
+
+        background: rgba(255,255,255,0.03);
+
+        border: 1px solid rgba(215,213,44,0.25);
+        border-left: 3px solid var(--hd-yellow);
+
+        color: #ccc;
+
+        border-radius: 0;
     }
 
-    /* Inversão de contraste foda no foco/hover mobile */
     .sidebar .menu-list li a:hover,
     .sidebar .menu-list li a.active {
-        color: #0a0a0a;                  /* Letra escura para dar leitura */
-        background: var(--hd-yellow);    /* Fundo brilhante preenchido */
-        padding-left: 12px;              /* Cancela o recuo configurado no desktop */
-        font-weight: bold;
+        background: rgba(215,213,44,0.12);
+        color: var(--hd-yellow);
+        border-color: var(--hd-yellow);
     }
 }
 </style>

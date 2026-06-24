@@ -254,14 +254,10 @@ a {
         top: 0;
         left: 0;
         width: 100%;
-        height: 60px;
-
+        height: 47px;
         background: var(--hd-yellow);
-
         border-bottom: 2px solid #000;
-
         z-index: 1000;
-
         align-items: center;
         justify-content: center;
     }
@@ -269,45 +265,36 @@ a {
     .mobile-menu-btn {
         width: 100%;
         height: 100%;
-
         background: transparent;
         border: none;
-
         color: #000;
-
         font-size: 18px;
         font-weight: 700;
         text-transform: uppercase;
-
         cursor: pointer;
     }
 
+    /* AQUI ESTÁ A CORREÇÃO PRINCIPAL */
     .sidebar {
-        display: none;
-
-        width: 85% !important;
-        max-width: 420px;
-
+        display: flex !important; /* Garante estrutura flex no mobile */
+        flex-direction: column;
         position: fixed;
-        top: 60px !important;
-        left: 0;
-
+        top: 60px !important; /* Logo abaixo do cabeçalho amarelo */
+        left: -100%; /* Inicia fora da tela à esquerda */
+        width: 250px !important; /* LARGURA FIXADA */
         height: calc(100vh - 60px);
-
         background: rgba(15,15,15,0.98);
-
-        z-index: 999;
-
         border-right: 2px solid var(--hd-yellow);
-
+        box-shadow: 2px 0 15px rgba(0,0,0,0.8); /* Sombra igual da outra página */
         padding: 20px;
-
         overflow-y: auto;
+        transition: left 0.3s ease; /* Animação de deslizar suave */
+        z-index: 999;
     }
 
+    /* Quando o botão é clicado, essa classe traz o menu pra dentro da tela */
     .sidebar.active {
-        display: flex !important;
-        flex-direction: column;
+        left: 0; 
     }
 
     .logo-container {
@@ -349,16 +336,11 @@ a {
     .sidebar .menu-list li a {
         display: block;
         width: 100%;
-
         padding: 10px 12px;
-
         background: rgba(255,255,255,0.03);
-
         border: 1px solid rgba(215,213,44,0.25);
         border-left: 3px solid var(--hd-yellow);
-
         color: #ccc;
-
         border-radius: 0;
     }
 

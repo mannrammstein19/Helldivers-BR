@@ -10,10 +10,10 @@
 <body>
 
     <div class="mobile-header">
-        <button id="menu-toggle" class="mobile-menu-btn">☰ Menu Wiki</button>
+        <button id="menu-btn" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
     </div>
 
-    <nav class="sidebar">
+    <nav id="sidebar" class="sidebar">
         <div class="logo-container">
             <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
         </div>
@@ -34,27 +34,8 @@
                 <li><a href="#">Superloja</a></li>
             </ul>
         </div>
-
-        <div class="menu-section">
-            <div class="section-header">Equipamento</div>
-            <ul class="menu-list">
-                <li><a href="estratagemas.html" class="active">Estratagemas</a></li>
-                <li><a href="#">Armas Primárias</a></li>
-                <li><a href="#">Armas Secundárias</a></li>
-                <li><a href="#">Granadas</a></li>
-                <li><a href="#">Armaduras & Passivas</a></li>
-                <li><a href="#">Boosters</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-section">
-            <div class="section-header">Inimigos & Facções</div>
-            <ul class="menu-list">
-                <li><a href="#">Termínios</a></li>
-                <li><a href="#">Autômatos</a></li>
-            </ul>
-        </div>
-    </nav>
+        
+        </nav>
 
     <main class="main-content">
         <div class="page-title-block">
@@ -328,24 +309,23 @@
 
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // ---- CONTROLE DO MENU MOBILE ----
-            const menuBtn = document.getElementById("menu-toggle");
-            const sidebar = document.querySelector(".sidebar");
+		<script>
+				document.addEventListener("DOMContentLoaded", function() {
+					const menuBtn = document.getElementById("menu-btn");
+					const sidebar = document.getElementById("sidebar");
 
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener("click", function() {
-                    sidebar.classList.toggle("active");
-                    if (sidebar.classList.contains("active")) {
-                        menuBtn.innerHTML = "✕ Fechar Menu";
-                    } else {
-                        menuBtn.innerHTML = "☰ Menu Wiki";
-                    }
-                });
-            }
-        });
-    </script>
+					if (menuBtn && sidebar) {
+						menuBtn.addEventListener("click", function() {
+							sidebar.classList.toggle("active");
+							if (sidebar.classList.contains("active")) {
+								menuBtn.innerHTML = "✕ Fechar Menu";
+							} else {
+								menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+							}
+						});
+					}
+				});
+			</script>
 
 </body>
 </html>

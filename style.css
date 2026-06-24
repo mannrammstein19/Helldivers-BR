@@ -106,7 +106,7 @@ a {
 }
 
 /* ==========================================================================
-   CONTEÚDO PRINCIPAL (DIREITA) & WIKI CARDS
+   CONTEÚDO PRINCIPAL (DIREITA) & WIKI CARDS GERAIS
    ========================================================================== */
 .main-content {
     margin-left: var(--sidebar-width);
@@ -234,7 +234,7 @@ a {
 }
 
 /* ==========================================================================
-   TABELAS TÁTICAS (PARA ESTRATAGEMAS/ARMAS)
+   TABELAS TÁTICAS BÁSICAS (PARA LISTAGEM GERAL)
    ========================================================================== */
 .table-responsive {
     width: 100%;
@@ -246,7 +246,7 @@ a {
 
 .hd-table {
     width: 100%;
-    min-width: 550px; /* <-- É ESSA LINHA QUE IMPEDE O TEXTO DE ENCAVALAR */
+    min-width: 550px;
     border-collapse: collapse;
     text-align: left;
     font-size: 14px;
@@ -319,10 +319,202 @@ a {
 }
 
 /* ==========================================================================
-   MENU MOBILE RETRÁTIL (RESPONSIVO)
+   ESTILOS ADICIONAIS PARA INFOCARDS E GRIDS DA WIKI DETALHADA
+   ========================================================================== */
+.wiki-overview-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.wiki-left-text {
+    flex: 1;
+}
+
+.lore-quote {
+    background: rgba(215, 213, 44, 0.05);
+    border-left: 4px solid var(--hd-orange);
+    padding: 15px;
+    font-style: italic;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.description-text {
+    line-height: 1.6;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* CARD DETALHADO DA DIREITA (INFOBOX DE COMBATE) */
+.stratagem-infobox {
+    width: 320px;
+    background: var(--hd-card);
+    border: 2px solid var(--hd-yellow);
+    padding: 15px;
+}
+
+.infobox-title {
+    background: rgba(215, 213, 44, 0.2);
+    color: var(--hd-yellow);
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.infobox-media {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.infobox-media img.main-art {
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(215, 213, 44, 0.3);
+    background: #000;
+}
+
+.infobox-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.infobox-table th {
+    background: rgba(215, 213, 44, 0.1);
+    color: var(--hd-yellow);
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
+}
+
+.infobox-table td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+}
+
+/* Força as setinhas de ativação a terem o tamanho exato de 14px */
+.code-inline {
+    display: flex;
+    gap: 3px;
+}
+.code-inline img { 
+    width: 14px !important; 
+    height: 14px !important; 
+}
+
+/* GRIDS E CAIXAS DE ESTATÍSTICAS DETALHADAS (MUNIÇÃO/DANO) */
+.section-title {
+    color: var(--hd-yellow);
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+    padding-bottom: 5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.stats-box {
+    background: var(--hd-card);
+    border: 1px solid var(--hd-yellow);
+    padding: 15px;
+}
+
+.stats-box h3 {
+    color: var(--hd-yellow);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-bottom: 2px solid var(--hd-orange);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.stats-table th {
+    background: rgba(215, 213, 44, 0.1);
+    color: var(--hd-yellow);
+    padding: 6px;
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.stats-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+}
+
+.stats-table td:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Força os pequenos ícones de tipo de dano/penetração nas tabelas */
+.flex-td {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+.flex-td img { 
+    width: 16px !important; 
+    height: 16px !important; 
+}
+
+/* SEÇÃO DE VÍDEO DEMONSTRATIVO */
+.video-section {
+    margin-top: 40px;
+    background: var(--hd-card);
+    border: 1px solid var(--hd-yellow);
+    padding: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 100%;
+}
+
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.video-wrapper video {
+    max-width: 100%;
+    width: 700px;
+    border: 2px solid rgba(255, 123, 0, 0.4);
+    background: #000;
+}
+
+/* ==========================================================================
+   MENU MOBILE RETRÁTIL (RESPONSIVO) & ADAPTAÇÕES
    ========================================================================== */
 .mobile-header {
     display: none;
+}
+
+@media (max-width: 900px) {
+    .wiki-overview-section { flex-direction: column; }
+    .stratagem-infobox { width: 100%; }
 }
 
 @media (max-width: 768px) {
@@ -337,7 +529,7 @@ a {
         top: 0;
         left: 0;
         width: 100%;
-        height: 47px;
+        height: 60px;
         background: var(--hd-yellow);
         border-bottom: 2px solid #000;
         z-index: 1000;
@@ -351,34 +543,30 @@ a {
         background: transparent;
         border: none;
         color: #000;
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 700;
         text-transform: uppercase;
         cursor: pointer;
     }
 
-.sidebar {
-        /* Fixamos em 260px pra ficar comportado */
-        width: 260px !important;
+    .sidebar {
+        display: none;
+        width: 85% !important;
+        max-width: 420px;
         position: fixed;
         top: 60px !important;
-        /* Jogamos ele pra fora da tela (esquerda) */
-        left: -260px; 
+        left: 0;
         height: calc(100vh - 60px);
         background: rgba(15,15,15,0.98);
         z-index: 999;
         border-right: 2px solid var(--hd-yellow);
         padding: 20px;
         overflow-y: auto;
-        /* A mágica do deslize suave */
-        transition: left 0.3s ease;
-        display: flex; /* Mantemos sempre display flex */
-        flex-direction: column;
     }
 
-    /* Quando clicar, ele desliza para a posição 0 */
     .sidebar.active {
-        left: 0;
+        display: flex !important;
+        flex-direction: column;
     }
 
     .logo-container {

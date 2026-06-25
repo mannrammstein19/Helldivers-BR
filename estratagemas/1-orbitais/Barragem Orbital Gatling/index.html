@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guia completo e status detalhados da Barragem Giratória Orbital em Helldivers 2. Confira raio de explosão, penetração de armadura e tempo de recarga.">
-    <title>Barragem Giratória Orbital - Helldivers BR</title>
+    <meta name="description" content="Guia completo e status detalhados da Barragem Gatling Orbital em Helldivers 2.">
+    <title>Barragem Gatling Orbital - Helldivers BR</title>
 
-    <!-- Linkando a folha de estilos padrão do seu projeto -->
     <link rel="stylesheet" href="../../../style.css">
 </head>
 <body>
 
-    <!-- BOTÃO MENU MOBILE -->
-    <button class="mobile-menu-toggle" id="menu-btn">☰ Menu de Navegação</button>
+    <div class="mobile-header">
+        <button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+    </div>
 
     <nav class="sidebar" id="sidebar">
         <div class="logo-container">
@@ -41,24 +41,24 @@
 
     <main class="main-content">
         <div class="page-title-block">
-            <h1>Barragem Giratória Orbital</h1>
+            <h1>Barragem Gatling Orbital</h1>
         </div>
 
         <div class="wiki-overview-section">
             
             <div class="wiki-left-text">
                 <div class="lore-quote">
-                    "Uma barragem de munições altamente explosivas disparadas pelos canhões automáticos rotativos do Supercontratorpedo." <br>
-                    — Oficial de Armamento
+                    "Uma barragem de munições altamente explosivas, disparadas pelos autocanhões rotativos de alta velocidade do Contratorpedeiro." <br>
+                    — Banco de Dados de Treinamento Tático
                 </div>
                 
                 <p class="description-text">
-                    A <strong>Barragem Giratória Orbital</strong> é uma excelente ferramenta de negação de área e controle de multidão. Ela despeja uma saraivada contínua de munições explosivas de 23mm em um pequeno raio. Graças ao seu tempo de recarga extremamente curto e área de bombardeio focada, é perfeita para ser acionada diretamente sobre fendas de Insetos (Bug Breaches) ou gargalos táticos, triturando alvos com armadura leve a média de forma implacável.
+                    A <strong>Barragem Gatling Orbital</strong> dispara uma rajada contínua contendo cartuchos explosivos Anti-Tank ao longo de um curto período. É excelente para dominar pontos de controle, eliminar grandes concentrações de infantaria leve como brechas de insetos (Bug Breaches) e causar dano sustentado em áreas médias.
                 </p>
                 
                 <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
                 <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
-                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>2.0s (padrão)</td></tr>
+                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>2 segundos</td></tr>
                     <tr><td>Tempo de Recarga (Cooldown)</td><td>70 segundos</td></tr>
                     <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
                 </table>
@@ -67,7 +67,7 @@
             <aside class="stratagem-infobox">
                 <div class="infobox-title">Detalhes da Estratagema</div>
                 <div class="infobox-media">
-                    <img src="../../../imagens/2-estratagemas/2-orbitais/Barregem Orbital Gatling.svg" alt="Barragem Giratória Orbital" class="main-art">
+                    <img src="../../../imagens/2-estratagemas/2-orbitais/Orbital_Gatling_Barrage.svg" alt="Barragem Gatling Orbital" class="main-art">
                 </div>
                 <table class="infobox-table">
                     <tr>
@@ -79,7 +79,7 @@
                     </tr>
                     <tr>
                         <td>Características:</td>
-                        <td>Orbital • Explosivo • Barragem</td>
+                        <td>Orbital • Explosivo • Área de Efeito</td>
                     </tr>
                     <tr>
                         <td>Código de Ativação:</td>
@@ -105,9 +105,8 @@
         <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
         
         <div class="stats-grid">
-            <!-- BLOCO 1: STATUS BASE -->
             <div class="stats-box">
-                <h3>BARRAGEM GIRATÓRIA ORBITAL</h3>
+                <h3>BARRAGEM GATLING ORBITAL</h3>
                 <table class="stats-table">
                     <tr><td>Esfriar (Cooldown)</td><td>70 s</td></tr>
                     <tr><td>Usos</td><td>∞</td></tr>
@@ -115,15 +114,14 @@
                     <tr><td>Salvas</td><td>4</td></tr>
                     <tr><td>Tamanho da Área de Bombardeio</td><td>7 m</td></tr>
                     <tr><th colspan="2">Ataques</th></tr>
-                    <tr><td>*CANHÃO HE DE 23mm P1</td><td>Projétil</td></tr>
-                    <tr><td>*CANHÃO HE DE 23mm P2</td><td>Projétil</td></tr>
-                    <tr><td>**CANHÃO HE DE 23mm P1 IE</td><td>Explosão</td></tr>
+                    <tr><td>*23mm HE CANNON P1</td><td>Projétil</td></tr>
+                    <tr><td>*23mm HE CANNON P2</td><td>Projétil</td></tr>
+                    <tr><td>**23mm HE CANNON P1 IE</td><td>Explosão</td></tr>
                 </table>
             </div>
 
-            <!-- BLOCO 2: PROJÉTIL P1 -->
             <div class="stats-box">
-                <h3>CANHÃO HE DE 23mm P1</h3>
+                <h3>23mm HE CANNON P1</h3>
                 <table class="stats-table">
                     <tr><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>400 g</td></tr>
@@ -131,15 +129,15 @@
                     <tr><td>Fator de Arrasto</td><td>30%</td></tr>
                     <tr><td>Fator de Gravidade</td><td>100%</td></tr>
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explosão no Impacto</td><td>Sim</td></tr>
+                    <tr><td>Explosão no Impacto</td><td>Sim (23mm HE P1 IE)</td></tr>
                     <tr><th colspan="2">Dano</th></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 350 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 200 Dano</td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração">Anti-Tank I</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração">Anti-Tank I</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração">Pesado</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração">Unarmored I</td></tr>
+                    <tr><td>Direto</td><td class="flex-td">Anti-Tank I [5]</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td">Anti-Tank I [5]</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td">Heavy [4]</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td">Unarmored I [0]</td></tr>
                     <tr><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>35</td></tr>
@@ -147,9 +145,8 @@
                 </table>
             </div>
 
-            <!-- BLOCO 3: EXPLOSÃO (IE) -->
             <div class="stats-box">
-                <h3>CANHÃO HE DE 23mm P1 IE</h3>
+                <h3>23mm HE CANNON P1 IE</h3>
                 <table class="stats-table">
                     <tr><th colspan="2">Área de Efeito (AoE)</th></tr>
                     <tr><td>Raio Interno</td><td>1.5 m</td></tr>
@@ -157,22 +154,21 @@
                     <tr><td>Raio da Onda de Choque</td><td>6.5 m</td></tr>
                     <tr><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
                     <tr><td>Raio Externo</td><td>349 - 0</td></tr>
                     <tr><td>Externo Durável</td><td>349 - 0</td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração">Medium</td></tr>
+                    <tr><td>Direto</td><td class="flex-td">Medium [3]</td></tr>
                     <tr><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>35</td></tr>
                     <tr><td>Força de Empurrão (Push)</td><td>5</td></tr>
                 </table>
             </div>
-
-            <!-- BLOCO 4: PROJÉTIL P2 -->
+            
             <div class="stats-box">
-                <h3>CANHÃO HE DE 23mm P2</h3>
+                <h3>23mm HE CANNON P2</h3>
                 <table class="stats-table">
                     <tr><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>400 g</td></tr>
@@ -184,10 +180,10 @@
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 350 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 200 Dano</td></tr>
                     <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração">Anti-Tank I</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração">Pesado</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração">Unarmored I</td></tr>
+                    <tr><td>Direto</td><td class="flex-td">Anti-Tank I [5]</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td">Anti-Tank I [5]</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td">Heavy [4]</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td">Unarmored I [0]</td></tr>
                     <tr><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>35</td></tr>
@@ -201,8 +197,7 @@
             <h2 class="section-title">Demonstração em Vídeo</h2>
             <div class="video-wrapper">
                 <video autoplay loop muted playsinline controls preload="metadata">
-                    <!-- Substitua pelo nome do seu vídeo da Gatling -->
-                    <source src="Orbital_Gatling_Barrage_Preview_Video.mp4" type="video/mp4">
+                    <source src="Orbital_Gatling_Barrage_Preview.mp4" type="video/mp4">
                     Seu navegador não suporta a visualização de vídeos.
                 </video>
             </div>
@@ -211,11 +206,20 @@
     </main>
 
     <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
 
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('active'); 
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('active'); 
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ FECHAR MENU";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
         });
     </script>
 

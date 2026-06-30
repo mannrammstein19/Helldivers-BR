@@ -76,69 +76,120 @@ a { text-decoration: none; }
 /* ==========================================================================
    VISÃO GERAL E INFOBOX
    ========================================================================== */
+/* ==========================================================================
+   VISÃO GERAL E INFOBOX (ESTILO WIKI)
+   ========================================================================== */
 .overview-section {
     display: flex;
-    gap: 30px;
+    gap: 30px; 
     margin-bottom: 40px;
     align-items: flex-start;
+    justify-content: space-between;
 }
 
 .overview-text {
     flex: 1;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #e0e0e0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #cccccc;
 }
 
-.overview-text p { margin-bottom: 15px; }
+.overview-text p { 
+    margin-bottom: 18px; 
+}
 
-.infobox {
+/* Caixa principal estilo Wiki */
+.wiki-infobox {
     width: 320px;
-    background: var(--hd-card);
-    border: 1px solid rgba(215, 213, 44, 0.3);
-    border-top: 4px solid var(--hd-yellow);
-    padding: 15px;
+    background-color: #121212; /* Fundo bem escuro */
+    border: 1px solid #333333; /* Borda sutil */
+    border-radius: 4px;
+    overflow: hidden; /* Pra imagem não vazar os cantos */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0; /* Impede a caixa de espremer */
 }
 
-.infobox h3 {
+/* Título principal no topo */
+.wiki-infobox-title {
     text-align: center;
-    color: var(--hd-yellow);
-    margin-bottom: 10px;
     font-size: 20px;
-    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 12px 10px;
+    background-color: #1a1a1a;
+    margin: 0;
+    border-bottom: 1px solid #333333;
 }
 
-.infobox img.cover {
+/* Container da imagem */
+.wiki-infobox-image {
     width: 100%;
-    height: auto;
-    border: 1px solid #444;
-    margin-bottom: 15px;
+    display: block;
+    background-color: #000;
 }
 
-.infobox table {
+.wiki-infobox-image img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Subtítulo (Informações do Passe de Guerra) */
+.wiki-infobox-header {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #242424; /* Fundo cinza um pouco mais claro */
+    padding: 8px;
+    margin: 0;
+    border-top: 1px solid #444;
+    border-bottom: 1px solid #444;
+}
+
+/* Tabela de informações */
+.wiki-infobox-table {
     width: 100%;
     border-collapse: collapse;
+}
+
+.wiki-infobox-table tr {
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.wiki-infobox-table tr:last-child {
+    border-bottom: none;
+}
+
+.wiki-infobox-table th, 
+.wiki-infobox-table td {
+    padding: 10px 12px;
     font-size: 14px;
 }
 
-.infobox th, .infobox td {
-    padding: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.infobox th {
+/* Lado esquerdo da tabela (Tipo, Custo...) */
+.wiki-infobox-table th {
     text-align: left;
-    color: #aaa;
-    width: 40%;
+    color: #aaaaaa;
+    background-color: #161616;
+    font-weight: bold;
+    width: 45%;
+    border-right: 1px solid #2a2a2a; /* Linha dividindo as colunas */
 }
 
-.infobox td {
-    text-align: right;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 5px;
+/* Lado direito da tabela (Valores) */
+.wiki-infobox-table td {
+    text-align: left;
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+/* Alinhamento do ícone de Super Créditos com o texto */
+.icon-inline {
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -2px;
 }
 
 /* ==========================================================================
@@ -294,26 +345,50 @@ a { text-decoration: none; }
                 <p>Para desbloquear todas as três páginas de conteúdo e obter todos os equipamentos, capas, e recursos, os jogadores precisarão acumular um total de <strong>686 Medalhas</strong>.</p>
             </div>
             
-            <aside class="infobox">
-                <h3>Veteranos de Aço</h3>
-                <img src="images/Steeled_Veterans_Premium_Warbond_Cover.jpg" alt="Capa Veteranos de Aço" class="cover" onerror="this.src='https://via.placeholder.com/300x150?text=Capa+do+Passe'">
-                <table>
-                    <tr>
-                        <th>Tipo</th>
-                        <td>Premium</td>
-                    </tr>
-                    <tr>
-                        <th>Custo</th>
-                        <td><img src="images/Super_Credit_3.png" style="width: 14px;" alt="SC"> 1.000</td>
-                    </tr>
-                    <tr>
-                        <th>Lançamento</th>
-                        <td>8 de Fev, 2024</td>
-                    </tr>
-                    <tr>
-                        <th>Medalhas (Total)</th>
-                        <td><img src="../../imagens/icones/medals.png" style="width: 14px;" alt="Medalhas"> 686</td>
-                    </tr>
+            <aside class="wiki-infobox">
+                <h2 class="wiki-infobox-title">Veteranos de Aço</h2>
+                
+                <div class="wiki-infobox-image">
+                    <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Steeled_Veterans_Premium_Warbond_Cover.png" alt="Capa Veteranos de Aço">
+                </div>
+                
+                <h3 class="wiki-infobox-header">Informações do Passe de Guerra</h3>
+                
+                <table class="wiki-infobox-table">
+                    <tbody>
+                        <tr>
+                            <th>Tipo</th>
+                            <td>Premium</td>
+                        </tr>
+                        <tr>
+                            <th>Custo</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg" alt="SC" class="icon-inline">1000 Super Créditos
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Super Créditos Disponiveis</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg" alt="SC" class="icon-inline">300 Super Créditos
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Todas as Paginas Desbloqueadas</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Requisition_Slip.svg" alt="SC" class="icon-inline"> 200 Medalhas
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Tudo Desbloqueado</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Requisition_Slip.svg" alt="SC" class="icon-inline"> 686 Medalhas
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Data de Lançamento</th>
+                            <td>8 de Fevereiro de 2024</td>
+                        </tr>
+                    </tbody>
                 </table>
             </aside>
         </div>

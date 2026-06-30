@@ -67,19 +67,90 @@ a { text-decoration: none; }
     flex: 1;
     padding: 40px;
     background: rgba(10, 10, 10, 0.6); 
+    max-width: 1200px; 
 }
 
 .wiki-title-block { border-bottom: 2px solid var(--hd-yellow); padding-bottom: 10px; margin-bottom: 30px; }
 .wiki-title-block h1 { color: var(--hd-yellow); font-size: 32px; text-transform: uppercase; }
 
+/* ==========================================================================
+   VISÃO GERAL E INFOBOX
+   ========================================================================== */
+.overview-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.overview-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.overview-text p { margin-bottom: 15px; }
+
+.infobox {
+    width: 320px;
+    background: var(--hd-card);
+    border: 1px solid rgba(215, 213, 44, 0.3);
+    border-top: 4px solid var(--hd-yellow);
+    padding: 15px;
+}
+
+.infobox h3 {
+    text-align: center;
+    color: var(--hd-yellow);
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.infobox img.cover {
+    width: 100%;
+    height: auto;
+    border: 1px solid #444;
+    margin-bottom: 15px;
+}
+
+.infobox table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.infobox th, .infobox td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.infobox th {
+    text-align: left;
+    color: #aaa;
+    width: 40%;
+}
+
+.infobox td {
+    text-align: right;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+/* ==========================================================================
+   CONTAINER DO PASSE DE GUERRA
+   ========================================================================== */
 .wiki-card {
     background: var(--hd-card);
     border: 1px solid rgba(215, 213, 44, 0.3);
     padding: 25px;
-    margin-bottom: 30px; /* Mais espaço entre as páginas */
+    margin-bottom: 30px; 
 }
 
-/* Ajuste no cabeçalho das páginas para caber os textos de desbloqueio */
 .wiki-card h2 {
     color: var(--hd-yellow);
     font-size: 22px;
@@ -88,7 +159,7 @@ a { text-decoration: none; }
     padding-bottom: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end; /* Alinha o texto por baixo */
+    align-items: flex-end; 
 }
 
 .page-stats {
@@ -96,81 +167,89 @@ a { text-decoration: none; }
     color: #ccc;
     text-align: right;
     font-family: Arial, sans-serif;
+    font-weight: normal;
     text-transform: none;
     line-height: 1.5;
 }
 
-/* ==========================================================================
-   CSS DO PASSE DE GUERRA (GRID DAS ARMAS)
-   ========================================================================== */
-.warbond-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 140px; 
-    gap: 10px;
+.grid-wrapper {
     width: 100%;
+    overflow-x: auto; 
+    padding-bottom: 10px;
 }
 
+.grid-wrapper::-webkit-scrollbar { height: 8px; }
+.grid-wrapper::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); border-radius: 4px; }
+.grid-wrapper::-webkit-scrollbar-thumb { background: var(--hd-yellow); border-radius: 4px; }
+
+.warbond-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 130px); /* Define exatamente 3 linhas de altura */
+    gap: 8px;
+    min-width: 850px; /* Garante que a grid nunca amasse! */
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   O CARD 
+   ========================================================================== */
 .wb-card {
-    background: rgba(10, 20, 28, 0.9);
-    border: 2px solid #1a3a4c;
-    position: relative;
+    background-color: #022336; 
+    border: 1px solid #1c4b64;
+    border-left: 4px dashed #13a1a4; 
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
     text-decoration: none;
+    transition: all 0.2s ease;
     overflow: hidden;
 }
 
-.wb-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0, 255, 255, 0.03) 10px, rgba(0, 255, 255, 0.03) 20px);
-    pointer-events: none;
+.wb-card:hover {
+    background-color: #09374d; 
+    border-color: var(--hd-yellow);
+    border-left: 4px solid var(--hd-yellow);
+    cursor: pointer;
 }
 
-.wb-card:hover { background: rgba(15, 35, 50, 0.9); border-color: var(--hd-yellow); box-shadow: 0 0 15px rgba(215, 213, 44, 0.2); }
-.wb-item-img { max-width: 85%; max-height: 85%; object-fit: contain; z-index: 1; }
+.wb-item-img { max-width: 85%; max-height: 85%; object-fit: contain; }
 
 .wb-cost {
-    position: absolute; top: 5px; right: 5px; background: rgba(0, 0, 0, 0.85);
-    color: var(--hd-yellow); font-size: 14px; font-weight: bold; padding: 3px 6px;
-    display: flex; align-items: center; gap: 4px; border: 1px solid rgba(215, 213, 44, 0.3); z-index: 2;
+    position: absolute; top: 5px; right: 5px; background: rgba(0, 0, 0, 0.8);
+    color: var(--hd-yellow); font-size: 14px; font-weight: bold; padding: 2px 6px;
+    display: flex; align-items: center; gap: 4px; border: 1px solid var(--hd-yellow); 
 }
 .wb-cost img { width: 14px; height: 14px; }
 
-.card-tall { grid-row: span 2; }
-.card-wide { grid-column: span 2; }
-
 /* ==========================================================================
-   RESPONSIVIDADE MOBILE (O SEGREDO PARA FICAR IGUAL A WIKI OFICIAL)
+   RESPONSIVIDADE MOBILE
    ========================================================================== */
 .mobile-header { display: none; }
 
-@media (max-width: 900px) {
-    .warbond-grid { grid-template-columns: repeat(3, 1fr); } /* Em tablets, 3 colunas */
-}
-
 @media (max-width: 768px) {
     body { flex-direction: column; padding-top: 60px !important; }
+    
     .mobile-header { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 47px; background: var(--hd-yellow); border-bottom: 2px solid #000; z-index: 1000; align-items: center; justify-content: center; }
     .mobile-menu-btn { width: 100%; height: 100%; background: transparent; border: none; color: #000; font-size: 18px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
     .sidebar { display: flex !important; flex-direction: column; position: fixed; top: 60px !important; left: -100%; width: 250px !important; height: calc(100vh - 60px); background: rgba(15,15,15,0.98); border-right: 2px solid var(--hd-yellow); box-shadow: 2px 0 15px rgba(0,0,0,0.8); padding: 20px; overflow-y: auto; transition: left 0.3s ease; z-index: 999; }
     .sidebar.active { left: 0; }
     
-    .main-content { margin-left: 0; padding: 15px; } /* Menos margem no celular */
+    .main-content { margin-left: 0; padding: 15px; } 
     
-    .wiki-card h2 { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .page-stats { text-align: left; }
+    .overview-section { flex-direction: column-reverse; gap: 20px; }
+    .infobox { width: 100%; } 
+    
+    .wiki-card { padding: 15px; }
+    .wiki-card h2 { flex-direction: column; align-items: flex-start; gap: 10px; font-size: 18px; }
+    .page-stats { text-align: left; font-size: 12px; }
 
-    /* AQUI ESTÁ A CORREÇÃO DO GRID PARA CELULAR */
+    /* MANTÉM AS 3 LINHAS NO CELULAR, APENAS REDUZ O TAMANHO */
     .warbond-grid { 
-        grid-template-columns: repeat(2, 1fr); /* Força a ter 2 colunas */
-        grid-auto-rows: 110px; /* Diminui a altura dos quadrados para caber melhor na tela */
-        gap: 8px; /* Menos espaço entre os itens no celular */
+        grid-template-rows: repeat(3, 100px); 
+        min-width: 700px; /* Habilita o scroll lateral perfeito (swipe) */
     }
-    .card-wide { grid-column: span 2; } /* Itens largos continuam pegando as 2 colunas */
-    .card-tall { grid-row: span 2; } /* Itens altos continuam pegando 2 linhas */
 }
 </style>
 </head>
@@ -180,10 +259,9 @@ a { text-decoration: none; }
         <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
     </div>
 
-    <!-- MENU LATERAL -->
     <nav class="sidebar">
         <div class="logo-container">
-            <img src="../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/200x80?text=LOGO'">
         </div>
 
         <div class="menu-section">
@@ -209,7 +287,37 @@ a { text-decoration: none; }
             <h1>Veteranos de Aço (Steeled Veterans)</h1>
         </div>
 
-        <!-- ================= PÁGINA 1 ================= -->
+        <div class="overview-section">
+            <div class="overview-text">
+                <p><strong>Veteranos de Aço</strong> (<em>Steeled Veterans</em>) é um Passe de Guerra Premium (Premium Warbond) no Helldivers 2. Foi lançado junto com o jogo no dia 8 de fevereiro de 2024.</p>
+                <p>Este passe foca em equipamentos táticos para Helldivers feridos em combate que receberam próteses cibernéticas. Ele introduz armas com munição incendiária, armaduras com a passiva "Kit de Servomotor" (que aumenta a distância de arremesso de granadas e saúde dos membros), e novas opções estéticas.</p>
+                <p>Para desbloquear todas as três páginas de conteúdo e obter todos os equipamentos, capas, e recursos, os jogadores precisarão acumular um total de <strong>686 Medalhas</strong>.</p>
+            </div>
+            
+            <aside class="infobox">
+                <h3>Veteranos de Aço</h3>
+                <img src="images/Steeled_Veterans_Premium_Warbond_Cover.jpg" alt="Capa Veteranos de Aço" class="cover" onerror="this.src='https://via.placeholder.com/300x150?text=Capa+do+Passe'">
+                <table>
+                    <tr>
+                        <th>Tipo</th>
+                        <td>Premium</td>
+                    </tr>
+                    <tr>
+                        <th>Custo</th>
+                        <td><img src="images/Super_Credit_3.png" style="width: 14px;" alt="SC"> 1.000</td>
+                    </tr>
+                    <tr>
+                        <th>Lançamento</th>
+                        <td>8 de Fev, 2024</td>
+                    </tr>
+                    <tr>
+                        <th>Medalhas (Total)</th>
+                        <td><img src="../../imagens/icones/medals.png" style="width: 14px;" alt="Medalhas"> 686</td>
+                    </tr>
+                </table>
+            </aside>
+        </div>
+
         <div class="wiki-card">
             <h2>Página 1 
                 <div class="page-stats">
@@ -217,44 +325,51 @@ a { text-decoration: none; }
                 </div>
             </h2>
             
-            <div class="warbond-grid">
-                <!-- Mantivemos a Página 1 idêntica à que tínhamos construído -->
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 2</div>
-                    <img src="images/Tyrant_Hunter_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
-                </a>
-                <a href="../../armas/senator.html" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 15</div>
-                    <img src="images/P-4_Senator_Secondary_Render.png" alt="Senator" class="wb-item-img">
-                </a>
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 7</div>
-                    <img src="images/Super_Credit_3.png" alt="Super Credits" class="wb-item-img">
-                </a>
-                <a href="../../armas/liberator_concussive.html" class="wb-card card-wide">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
-                    <img src="images/AR-23C_Liberator_Concussive_Primary_Render.png" alt="Liberator" class="wb-item-img">
-                </a>
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
-                    <img src="images/Super_Person_Victory_Pose_Icon.png" alt="Pose" class="wb-item-img">
-                </a>
-                <a href="../../armaduras/steeled_trooper.html" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 18</div>
-                    <img src="images/SA-25_Steel_Trooper_Armor_Render.png" alt="Armor" class="wb-item-img">
-                </a>
-                <a href="../../capacetes/steeled_trooper.html" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
-                    <img src="images/SA-25_Steel_Trooper_Helmet_Render.png" alt="Helmet" class="wb-item-img">
-                </a>
-                <a href="../../capas/tyrant_hunter.html" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
-                    <img src="images/Tyrant_Hunter_Cape_Armory.png" alt="Cape" class="wb-item-img">
-                </a>
+            <div class="grid-wrapper">
+				<div class="warbond-grid">
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 2</div>
+					<img src="images/Tyrant_Hunter_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/senator.html" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 15</div>
+					<img src="images/P-4_Senator_Secondary_Render.png" alt="Senator" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 7</div>
+					<img src="images/Super_Credit_3.png" alt="Super Credits" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/liberator_concussive.html" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
+					<img src="images/AR-23C_Liberator_Concussive_Primary_Render.png" alt="Liberator" class="wb-item-img">
+				</a>
+
+				<a href="../../armaduras/steeled_trooper.html" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 18</div>
+					<img src="images/SA-25_Steel_Trooper_Armor_Render.png" alt="Armor" class="wb-item-img">
+				</a>
+
+				<a href="../../capacetes/steeled_trooper.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
+					<img src="images/SA-25_Steel_Trooper_Helmet_Render.png" alt="Helmet" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
+					<img src="images/Super_Person_Victory_Pose_Icon.png" alt="Pose" class="wb-item-img">
+				</a>
+
+				<a href="../../capas/tyrant_hunter.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
+					<img src="images/Tyrant_Hunter_Cape_Armory.png" alt="Cape" class="wb-item-img">
+				</a>
+			</div>
             </div>
         </div>
 
-        <!-- ================= PÁGINA 2 ================= -->
         <div class="wiki-card">
             <h2>Página 2 
                 <div class="page-stats">
@@ -263,58 +378,49 @@ a { text-decoration: none; }
                 </div>
             </h2>
             
-            <div class="warbond-grid">
-                <!-- Pose (Canto Superior Esquerdo) -->
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 15</div>
-                    <img src="images/placeholder.png" alt="Pose" class="wb-item-img">
-                </a>
-
-                <!-- Granada Incendiária (Alta) -->
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 25</div>
-                    <img src="images/placeholder.png" alt="Incendiary Grenade" class="wb-item-img">
-                </a>
-
-                <!-- Armadura (Alta) -->
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 45</div>
-                    <img src="images/placeholder.png" alt="Armor" class="wb-item-img">
-                </a>
-
-                <!-- Capacete -->
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 35</div>
-                    <img src="images/placeholder.png" alt="Helmet" class="wb-item-img">
-                </a>
-
-                <!-- Player Card (Alto) -->
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 5</div>
-                    <img src="images/placeholder.png" alt="Player Card" class="wb-item-img">
-                </a>
-
-                <!-- Capa -->
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
-                    <img src="images/placeholder.png" alt="Cape" class="wb-item-img">
-                </a>
-
-                <!-- Super Créditos -->
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
-                    <img src="images/Super_Credit_3.png" alt="Super Credits" class="wb-item-img">
-                </a>
-
-                <!-- Arma Primária: Breaker Incendiary (Largo) -->
-                <a href="#" class="wb-card card-wide">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 60</div>
-                    <img src="images/placeholder.png" alt="Breaker Incendiary" class="wb-item-img">
-                </a>
+            <div class="grid-wrapper">
+                <div class="warbond-grid">
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-column: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 5</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Roll_'Em_Victory_Pose_Icon.png" alt="Player Card" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 25</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/G-10_Incendiary_Throwable_Render.png" alt="Incendiary Grenade" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 45</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/SA-12_Servo_Assisted_Armor_Render.png" alt="Super Credits" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 35</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/SA-12_Servo_Assisted_Helmet_Render.png" alt="Breaker Incendiary" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 5</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Cloak_of_Posterity's_Gratitude_Player_Card_Icon.png" alt="Armor" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Cloak_of_Posterity's_Gratitude_Cape_Armory.png" alt="Helmet" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Drape_of_Glory_Cape_Render.png" alt="Pose" class="wb-item-img">
+                    </a>
+					<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Super_Credit_3.png" alt="Pose" class="wb-item-img">
+                    </a>
+					<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/SG-225IE_Breaker_Incendiary_Primary_Render.png" alt="Cape" class="wb-item-img">
+                    </a>
+                    <div style="grid-column: span 1; grid-row: span 1;"></div>
+                </div>
             </div>
         </div>
 
-        <!-- ================= PÁGINA 3 ================= -->
         <div class="wiki-card">
             <h2>Página 3 
                 <div class="page-stats">
@@ -323,47 +429,48 @@ a { text-decoration: none; }
                 </div>
             </h2>
             
-            <div class="warbond-grid">
-                <!-- Estrutura base para você preencher com os itens da Página 3 -->
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
-                    <img src="images/placeholder.png" alt="Item" class="wb-item-img">
-                </a>
-                
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 64</div>
-                    <img src="images/placeholder.png" alt="Armor" class="wb-item-img">
-                </a>
-                
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 48</div>
-                    <img src="images/placeholder.png" alt="Helmet" class="wb-item-img">
-                </a>
-                
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
-                    <img src="images/placeholder.png" alt="Cape" class="wb-item-img">
-                </a>
+            <div class="grid-wrapper">
+				<div class="warbond-grid">
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/Bastion_of_Integrity_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
+				</a>
 
-                <a href="#" class="wb-card card-tall">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
-                    <img src="images/placeholder.png" alt="Card" class="wb-item-img">
-                </a>
+				<a href="../../armas/senator.html" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 75</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/Flexible_Reinforcement_Budget_Booster_Icon.svg" alt="Reforçador" class="wb-item-img">
+				</a>
 
-                <a href="#" class="wb-card card-wide">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 80</div>
-                    <img src="images/placeholder.png" alt="Weapon" class="wb-item-img">
-                </a>
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/Super_Credit_3.png" alt="Super Creditos" class="wb-item-img">
+				</a>
 
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
-                    <img src="images/Super_Credit_3.png" alt="Super Credits" class="wb-item-img">
-                </a>
-                
-                <a href="#" class="wb-card">
-                    <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 75</div>
-                    <img src="images/placeholder.png" alt="Booster" class="wb-item-img">
-                </a>
+				<a href="../../armas/liberator_concussive.html" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 80</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/JAR-5_Dominator_Primary_Render.png" alt="Libertador Perfurante" class="wb-item-img">
+				</a>
+
+				<a href="../../armaduras/steeled_trooper.html" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 64</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/SA-32_Dynamo_Armor_Render.png" alt="Armadura" class="wb-item-img">
+				</a>
+
+				<a href="../../capacetes/steeled_trooper.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 48</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/SA-32_Dynamo_Helmet_Render.png" alt="Capaceete" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/You're_Next_Victory_Pose_Icon.png" alt="Pose" class="wb-item-img">
+				</a>
+
+				<a href="../../capas/tyrant_hunter.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/Bastion_of_Integrity_Cape_Render.png" alt="Capa" class="wb-item-img">
+				</a>
+			</div>
             </div>
         </div>
 

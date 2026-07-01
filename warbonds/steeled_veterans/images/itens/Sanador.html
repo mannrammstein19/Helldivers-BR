@@ -6,8 +6,34 @@
     <meta name="description" content="Guia completo e status detalhados da Pistola P-4 Senator em Helldivers 2. Confira dano, penetração de armadura e estatísticas balísticas.">
     <title>P-4 Senator - Helldivers BR</title>
 
-    <!-- Ajuste o caminho do CSS dependendo de onde for salvar a página -->
-    <link rel="stylesheet" href="../../../../style.css">
+    <!-- O CSS que você arrumou -->
+    <link class="styles" rel="stylesheet" href="../../../../style.css">
+
+    <!-- CÓDIGO DAS ASPAS AQUI -->
+    <style>
+        /* Estilo da caixa de texto e linha vertical */
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px; 
+            padding-left: 20px; 
+            border-left: 3px solid #ffffff; 
+            font-style: italic;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* Criando as aspas gigantes do lado esquerdo */
+        .lore-quote::before {
+            content: "“"; 
+            position: absolute;
+            left: -45px; 
+            top: -10px; 
+            font-size: 60px; 
+            color: #ffffff;
+            font-family: Georgia, serif; 
+            line-height: 1;
+        }
+    </style>
 </head>
 <body>
 
@@ -17,13 +43,13 @@
 
     <nav id="sidebar" class="sidebar">
         <div class="logo-container">
-            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
+            <img src="../../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
         </div>
 
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="../../../index.html">Página Principal</a></li>
+                <li><a href="../../../../index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
@@ -31,7 +57,7 @@
         <div class="menu-section">
             <div class="section-header">Equipamento</div>
             <ul class="menu-list">
-                <li><a href="../../../estratagemas.html">Estratagemas</a></li>
+                <li><a href="../../../../estratagemas.html">Estratagemas</a></li>
                 <li><a href="#">Armas Primárias</a></li>
                 <li><a href="#" class="active">Armas Secundárias</a></li>
                 <li><a href="#">Granadas</a></li>
@@ -49,7 +75,7 @@
             
             <div class="wiki-left-text">
                 <div class="lore-quote">
-                    "Um revólver de alto dano, que pode ser recarregado com balas individuais. Uma arma secundária pesada e confiável."
+                    Um revólver de alto dano, que pode ser recarregado com balas individuais. Uma arma secundária pesada e confiável.
                     <br>— Descrição do Arsenal
                 </div>
                 
@@ -62,12 +88,12 @@
                 </p>
             </div>
 
-            <!-- INFOBOX ADAPTADO PARA ARMAS -->
+            <!-- INFOBOX DA ARMA -->
             <div class="stratagem-infobox">
                 <div class="infobox-title">P-4 Senator</div>
                 <div class="infobox-media">
-                    <!-- Substitua o link abaixo pela imagem real da arma recortada -->
-                    <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/P-4_Senator_Secondary_Render.png" alt="Imagem da P-4 Senator" class="main-art" onerror="this.src='https://via.placeholder.com/150x100/111/d7d52c?text=IMAGEM+ARMA'">
+                    <!-- Imagem preparada para o efeito de Zoom -->
+                    <img id="armaImg" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/P-4_Senator_Secondary_Render.png" alt="Imagem da P-4 Senator" class="main-art" style="cursor: pointer; transition: opacity 0.3s;" title="Clique para ampliar" onerror="this.src='https://via.placeholder.com/150x100/111/d7d52c?text=IMAGEM+ARMA'">
                 </div>
                 <table class="infobox-table">
                     <tr>
@@ -94,11 +120,15 @@
                     </tr>
                     <tr>
                         <th>Dano Padrão</th>
-                        <td class="flex-td"><img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/dano/dano-balistico.png" alt="Pesada"> 225 Balístico</td>
+                        <td style="display: flex; align-items: center; justify-content: flex-start; gap: 8px;">
+                            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/dano/dano-balistico.png" alt="Balístico" style="width: 20px; height: auto;"> 225 Balístico
+                        </td>
                     </tr>
                     <tr>
                         <th>Penetração</th>
-                        <td class="flex-td"><img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/penetracao/penetracao-heavy.png" alt="Pesada"> Pesada</td>
+                        <td style="display: flex; align-items: center; justify-content: flex-start; gap: 8px;">
+                            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/penetracao/penetracao-heavy.png" alt="Pesada" style="width: 20px; height: auto;"> Pesada
+                        </td>
                     </tr>
                     <tr>
                         <th>Cadência</th>
@@ -112,6 +142,12 @@
                         <th>Capacidade</th>
                         <td>6 Tiros</td>
                     </tr>
+                    <tr>
+                        <th>Passe de Guerra</th>
+                        <td>
+                            <a href="../../index.html" style="color: #d7d52c; text-decoration: underline; font-weight: bold;">Veteranos de Aço</a>
+                        </td>
+                    </tr>
                 </table>
             </div>
 
@@ -121,7 +157,6 @@
         
         <div class="stats-grid">
             
-            <!-- CAIXA 1: ESTATÍSTICAS GERAIS DA ARMA -->
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">P-4 SENATOR</h3>
                 <table class="stats-table">
@@ -145,7 +180,6 @@
                 </table>
             </div>
 
-            <!-- CAIXA 2: ESTATÍSTICAS BALÍSTICAS DO PROJÉTIL -->
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">13x40mm FULL METAL JACKET P</h3>
                 <table class="stats-table">
@@ -190,7 +224,6 @@
         <div class="video-section">
             <h2 class="section-title">Demonstração em Vídeo</h2>
             <div class="video-wrapper">
-                <!-- Se tiver um vídeo dela, é só trocar o nome do arquivo aqui embaixo -->
                 <video autoplay loop muted playsinline controls preload="metadata">
                     <source src="P-4_Senator_Preview_Video.mp4" type="video/mp4">
                     Seu navegador atual não suporta a visualização de vídeos.
@@ -200,8 +233,16 @@
 
     </main>
 
+    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+    </div>
+
+    <!-- SCRIPTS INTERNOS (MENU + MODAL) -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Lógica do Menu Retrátil Lateral
             const menuBtn = document.getElementById('menu-btn');
             const sidebar = document.getElementById('sidebar');
 
@@ -209,6 +250,29 @@
                 menuBtn.addEventListener('click', () => {
                     sidebar.classList.toggle('active');
                 });
+            }
+
+            // Lógica do Zoom da Imagem (Modal)
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                }
+                
+                btnFechar.onclick = function() {
+                    modal.style.display = "none";
+                }
+                
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
             }
         });
     </script>

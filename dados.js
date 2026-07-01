@@ -165,73 +165,73 @@ const searchData = [
 	    {
         title: "Ataque de Precisão Orbital",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Ataque de Precisão Orbital/index.html",
+        url: "estratagemas/1-orbitais/1-Ataque de Precisão Orbital/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Ataque de Precisão Orbital.svg" 
     },
 		{
         title: "Barragem Orbital Gatling",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Barragem Orbital Gatling/index.html",
+        url: "estratagemas/1-orbitais/2-Barragem Orbital Gatling/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Barregem Orbital Gatling.svg" 
     },
 		{	
         title: "Impacto de Gás Orbital",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Impacto de Gás Orbital/index.html",
+        url: "estratagemas/1-orbitais/3-Impacto de Gás Orbital/Ataque de Gás Orbital.html",
         icon: "imagens/2-estratagemas/2-orbitais/Impacto de Gás Orbital.svg" 
     },
 		{	
         title: "Barragem Orbital 120mm",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Barragem Orbital 120mm/index.html",
+        url: "estratagemas/1-orbitais/4-Barragem Orbital 120mm/Barragem-Orbital-120mm.html",
         icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital 120mm.svg" 
     },
 		{	
         title: "Ataque Orbital Aéreo",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Ataque Orbital Aéreo/index.html",
+        url: "estratagemas/1-orbitais/5-Ataque Orbital Aéreo/Ataque Orbital Aéreo.html",
         icon: "imagens/2-estratagemas/2-orbitais/Ataque Orbital Aéreo.svg" 
     },
 		{	
         title: "Ataque de Fumaça Orbital",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Ataque de Fumaça Orbital/index.html",
+        url: "estratagemas/1-orbitais/6-Ataque de Fumaça Orbital/Ataque de Fumaça Orbital.html",
         icon: "imagens/2-estratagemas/2-orbitais/Ataque de Fumaça Orbital.svg" 
     },
 		{	
         title: "Ataque EMS Orbital",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Ataque EMS Orbital/index.html",
+        url: "estratagemas/1-orbitais/7-Ataque EMS Orbital/Ataque EMS Orbital.html",
         icon: "imagens/2-estratagemas/2-orbitais/Ataque EMS Orbital.svg" 
     },
 		{	
         title: "Barragem Orbital 380mm",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Barragem Orbital 380mm/index.html",
+        url: "estratagemas/1-orbitais/8-Barragem Orbital 380mm/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital 380mm.svg" 
     },
 		{	
         title: "Barragem Orbital Movel",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Barragem Orbital Movel/index.html",
+        url: "estratagemas/1-orbitais/9-Barragem Orbital Movel/Barragem Orbital Movel.html",
         icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital Movel.svg" 
     },
 		{	
         title: "Laser Orbital",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/laser-orbital/index.html",
+        url: "estratagemas/1-orbitais/10-laser-orbital/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" 
     },
 		{	
         title: "Barragem Orbital de Napalm",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Barragem Orbital de Napalm/index.html",
+        url: "estratagemas/1-orbitais/11-Barragem Orbital de Napalm/index.html",
         icon: "imagens/2-estratagemas/2-orbitais/Barragem Orbital de Napalm.svg" 
     },
 		{	
         title: "Ataque Orbital com Canhão Eletrico",
         category: "Orbital",
-        url: "estratagemas/1-orbitais/Ataque Orbital com Canhão Eletrico/index.html",
+        url: "estratagemas/1-orbitais/12-Ataque Orbital com Canhão Eletrico/Orbital Railcannon.html",
         icon: "imagens/2-estratagemas/2-orbitais/Ataque Orbital com Canhão Eletrico.svg" 
     },
 ];

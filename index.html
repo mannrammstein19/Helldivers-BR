@@ -431,6 +431,7 @@ a {
 
     <!-- Vinculação do arquivo de dados externa -->
     <script src="dados.js"></script>
+	<script src="warbonds.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -463,20 +464,27 @@ a {
                         return;
                     }
 
-                    // Evita falhas ou travamento se o script dados.js falhar ou atrasar
-                    if (typeof searchData === 'undefined') {
-                        dropdown.innerHTML = `
-                            <div style="padding:12px;color:#ff7b00;">
-                                ⚠️ Erro: Banco de dados (dados.js) não foi localizado.
-                            </div>`;
-                        dropdown.style.display = "block";
-                        return;
-                    }
+                    // 1. Puxamos as duas bases de dados. Se uma delas der erro ou não carregar, usamos um array vazio [] pra não quebrar a página.
+					const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
+					const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
 
-                    // Filtra o array searchData que veio lá do dados.js
-                    const results = searchData.filter(item =>
-                        item.title.toLowerCase().includes(query)
-                    );
+					// 2. Juntamos as duas usando o spread operator (...)
+					const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
+
+					// 3. Verificamos se pelo menos um banco carregou
+					if (bancoDeDadosCompleto.length === 0) {
+						dropdown.innerHTML = `
+							<div style="padding:12px;color:#ff7b00;">
+								⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
+							</div>`;
+						dropdown.style.display = "block";
+						return;
+					}
+
+					// 4. Filtramos no banco completo!
+					const results = bancoDeDadosCompleto.filter(item =>
+						item.title.toLowerCase().includes(query)
+					);
 
                     if (results.length === 0) {
                         dropdown.innerHTML = `

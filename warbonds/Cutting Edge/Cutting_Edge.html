@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veteranos de Aço - Helldivers BR</title>
+
+<style>
+/* ==========================================================================
+   VARIÁVEIS E BASE DO SITE
+   ========================================================================== */
+:root {
+    --hd-yellow: #d7d52c;
+    --hd-orange: #ff7b00;
+    --hd-bg: #141414;
+    --hd-card: rgba(31, 31, 31, 0.85); 
+    --hd-text: #ffffff;
+    --sidebar-width: 250px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #0a0a0a;
+    background-image: url('../../imagens/0-banners/wallpaper-principal.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--hd-text);
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    min-height: 100vh;
+}
+
+a { text-decoration: none; }
+
+/* ==========================================================================
+   BARRA LATERAL E DESKTOP
+   ========================================================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background: rgba(15, 15, 15, 0.95);
+    border-right: 2px solid var(--hd-yellow);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    z-index: 100;
+    overflow-y: auto; 
+    padding: 15px;
+}
+
+.logo-container { text-align: center; padding-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.3); margin-bottom: 15px; }
+.logo-container img { max-width: 100%; height: auto; }
+.menu-section { margin-bottom: 20px; }
+.section-header { color: var(--hd-yellow); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px solid rgba(215, 213, 44, 0.2); }
+.menu-list { list-style: none; }
+.menu-list li a { display: block; color: #ccc; font-size: 13px; padding: 6px 10px; margin-bottom: 4px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(215, 213, 44, 0.15); border-left: 3px solid rgba(215, 213, 44, 0.4); transition: all 0.15s ease; }
+.menu-list li a:hover, .menu-list li a.active { color: var(--hd-yellow); background: rgba(215, 213, 44, 0.08); border-color: var(--hd-yellow); border-left: 3px solid var(--hd-yellow); padding-left: 14px; }
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 40px;
+    background: rgba(10, 10, 10, 0.6); 
+    max-width: 1200px; 
+}
+
+.wiki-title-block { border-bottom: 2px solid var(--hd-yellow); padding-bottom: 10px; margin-bottom: 30px; }
+.wiki-title-block h1 { color: var(--hd-yellow); font-size: 32px; text-transform: uppercase; }
+
+/* ==========================================================================
+   VISÃO GERAL E INFOBOX
+   ========================================================================== */
+/* ==========================================================================
+   VISÃO GERAL E INFOBOX (ESTILO WIKI)
+   ========================================================================== */
+.overview-section {
+    display: flex;
+    gap: 30px; 
+    margin-bottom: 40px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.overview-text {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #cccccc;
+}
+
+.overview-text p { 
+    margin-bottom: 18px; 
+}
+
+/* Caixa principal estilo Wiki */
+.wiki-infobox {
+    width: 320px;
+    background-color: #121212; /* Fundo bem escuro */
+    border: 1px solid #333333; /* Borda sutil */
+    border-radius: 4px;
+    overflow: hidden; /* Pra imagem não vazar os cantos */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0; /* Impede a caixa de espremer */
+}
+
+/* Título principal no topo */
+.wiki-infobox-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 12px 10px;
+    background-color: #1a1a1a;
+    margin: 0;
+    border-bottom: 1px solid #333333;
+}
+
+/* Container da imagem */
+.wiki-infobox-image {
+    width: 100%;
+    display: block;
+    background-color: #000;
+}
+
+.wiki-infobox-image img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Subtítulo (Informações do Passe de Guerra) */
+.wiki-infobox-header {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #242424; /* Fundo cinza um pouco mais claro */
+    padding: 8px;
+    margin: 0;
+    border-top: 1px solid #444;
+    border-bottom: 1px solid #444;
+}
+
+/* Tabela de informações */
+.wiki-infobox-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wiki-infobox-table tr {
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.wiki-infobox-table tr:last-child {
+    border-bottom: none;
+}
+
+.wiki-infobox-table th, 
+.wiki-infobox-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+/* Lado esquerdo da tabela (Tipo, Custo...) */
+.wiki-infobox-table th {
+    text-align: left;
+    color: #aaaaaa;
+    background-color: #161616;
+    font-weight: bold;
+    width: 45%;
+    border-right: 1px solid #2a2a2a; /* Linha dividindo as colunas */
+}
+
+/* Lado direito da tabela (Valores) */
+.wiki-infobox-table td {
+    text-align: left;
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+/* Alinhamento do ícone de Super Créditos com o texto */
+.icon-inline {
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -2px;
+}
+
+/* ==========================================================================
+   CONTAINER DO PASSE DE GUERRA
+   ========================================================================== */
+.wiki-card {
+    background: var(--hd-card);
+    border: 1px solid rgba(215, 213, 44, 0.3);
+    padding: 25px;
+    margin-bottom: 30px; 
+}
+
+.wiki-card h2 {
+    color: var(--hd-yellow);
+    font-size: 22px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+}
+
+.page-stats {
+    font-size: 14px;
+    color: #ccc;
+    text-align: right;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    text-transform: none;
+    line-height: 1.5;
+}
+
+.grid-wrapper {
+    width: 100%;
+    overflow-x: auto; 
+    padding-bottom: 10px;
+}
+
+.grid-wrapper::-webkit-scrollbar { height: 8px; }
+.grid-wrapper::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.5); border-radius: 4px; }
+.grid-wrapper::-webkit-scrollbar-thumb { background: var(--hd-yellow); border-radius: 4px; }
+
+.warbond-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 130px); /* Define exatamente 3 linhas de altura */
+    gap: 8px;
+    min-width: 850px; /* Garante que a grid nunca amasse! */
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   O CARD 
+   ========================================================================== */
+.wb-card {
+    background-color: #022336; 
+    border: 1px solid #1c4b64;
+    border-left: 4px dashed #13a1a4; 
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.wb-card:hover {
+    background-color: #09374d; 
+    border-color: var(--hd-yellow);
+    border-left: 4px solid var(--hd-yellow);
+    cursor: pointer;
+}
+
+.wb-item-img { max-width: 85%; max-height: 85%; object-fit: contain; }
+
+.wb-cost {
+    position: absolute; top: 5px; right: 5px; background: rgba(0, 0, 0, 0.8);
+    color: var(--hd-yellow); font-size: 14px; font-weight: bold; padding: 2px 6px;
+    display: flex; align-items: center; gap: 4px; border: 1px solid var(--hd-yellow); 
+}
+.wb-cost img { width: 14px; height: 14px; }
+
+/* ==========================================================================
+   RESPONSIVIDADE MOBILE
+   ========================================================================== */
+.mobile-header { display: none; }
+
+@media (max-width: 768px) {
+    body { flex-direction: column; padding-top: 60px !important; }
+    
+    .mobile-header { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 47px; background: var(--hd-yellow); border-bottom: 2px solid #000; z-index: 1000; align-items: center; justify-content: center; }
+    .mobile-menu-btn { width: 100%; height: 100%; background: transparent; border: none; color: #000; font-size: 18px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+    .sidebar { display: flex !important; flex-direction: column; position: fixed; top: 60px !important; left: -100%; width: 250px !important; height: calc(100vh - 60px); background: rgba(15,15,15,0.98); border-right: 2px solid var(--hd-yellow); box-shadow: 2px 0 15px rgba(0,0,0,0.8); padding: 20px; overflow-y: auto; transition: left 0.3s ease; z-index: 999; }
+    .sidebar.active { left: 0; }
+    
+    .main-content { margin-left: 0; padding: 15px; } 
+    
+    .overview-section { flex-direction: column-reverse; gap: 20px; }
+    .infobox { width: 100%; } 
+    
+    .wiki-card { padding: 15px; }
+    .wiki-card h2 { flex-direction: column; align-items: flex-start; gap: 10px; font-size: 18px; }
+    .page-stats { text-align: left; font-size: 12px; }
+
+    /* MANTÉM AS 3 LINHAS NO CELULAR, APENAS REDUZ O TAMANHO */
+    .warbond-grid { 
+        grid-template-rows: repeat(3, 100px); 
+        min-width: 700px; /* Habilita o scroll lateral perfeito (swipe) */
+    }
+}
+
+/* ==========================================================================
+   CITAÇÃO LORE (EFEITO LARANJA HELLDIVERS)
+   ========================================================================== */
+.citacao-lore {
+    border-left: 4px solid var(--hd-orange); 
+    background-color: rgba(255, 123, 0, 0.05); /* Fundo bem fraquinho pra dar profundidade */
+    padding: 12px 18px;
+    margin: 0 0 20px 0; /* Dá um respiro entre a citação e o texto de baixo */
+    font-style: italic;
+    color: #e0e0e0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.citacao-lore cite {
+    display: block;
+    font-size: 0.9em;
+    color: #888888;
+    margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
+    </div>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/200x80?text=LOGO'">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../../index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="https://discord.gg/SEU_CONVITE" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Aquisições</div>
+            <ul class="menu-list">
+                <li><a href="../index.html" class="active">Passes de Guerra</a></li>
+                <li><a href="#">Superloja</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="wiki-title-block">
+            <h1>Veteranos de Aço (Steeled Veterans)</h1>
+        </div>
+
+        <div class="overview-section">
+			<div class="overview-text">
+				
+				<blockquote class="citacao-lore">
+					"Para aqueles que sacrificaram muito, a Superterra oferece mais do que apenas próteses. Oferece a chance de continuar lutando pela Liberdade com estilo."
+					<cite>— Ministério da Expansão Galáctica</cite>
+				</blockquote>
+
+				<p><strong>Veteranos de Aço</strong> (<em>Cutting Edge</em>) é um Passe de Guerra Premium (Premium Warbond) no Helldivers 2. Foi lançado junto com o jogo no dia 14 de Março de 2024.</p>
+				<p>Os jogadores podem usar Medalhas para resgatar diversos itens, incluindo um <strong>reforço , 5 armas , 3 armaduras , 6 itens cosméticos e 300 Super Créditos.</strong> Essas recompensas estão distribuídas em três páginas, cada uma exigindo um número crescente de Medalhas (variando de 2 a 80).</p>
+				<p>Os jogadores começam na página um e desbloqueiam as páginas subsequentes à medida que gastam mais Medalhas, expandindo gradualmente suas opções de personalização. <strong>672 Medalhas</strong>.</p>
+			</div>
+            
+            <aside class="wiki-infobox">
+                <h2 class="wiki-infobox-title">Cutting Edge</h2>
+                
+                <div class="wiki-infobox-image">
+                    <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/Cutting_Edge_Premium_Warbond_Cover.png" alt="Capa Veteranos de Aço">
+                </div>
+                
+                <h3 class="wiki-infobox-header">Informações do Passe de Guerra</h3>
+                
+                <table class="wiki-infobox-table">
+                    <tbody>
+                        <tr>
+                            <th>Tipo</th>
+                            <td>Premium</td>
+                        </tr>
+                        <tr>
+                            <th>Custo</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg" alt="SC" class="icon-inline">1000 Super Créditos
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Super Créditos Disponiveis</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg" alt="SC" class="icon-inline">300 Super Créditos
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Todas as Paginas Desbloqueadas</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Requisition_Slip.svg" alt="SC" class="icon-inline"> 230 Medalhas
+                            </td>
+                        </tr>
+						<tr>
+                            <th>Tudo Desbloqueado</th>
+                            <td>
+                                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Requisition_Slip.svg" alt="SC" class="icon-inline"> 672 Medalhas
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Data de Lançamento</th>
+                            <td>14 de Março de 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </aside>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Página 1 
+                <div class="page-stats">
+                    Custo total da página: <img src="../../imagens/icones/medals.png" style="width: 14px;"> 90
+                </div>
+            </h2>
+            
+            <div class="grid-wrapper">
+				<div class="warbond-grid">
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 2</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/Botslayer_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/senator.html" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 18</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/Refor%C3%A7ador.png" alt="Reforcador" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 7</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.png" alt="Super Credits" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/liberator_concussive.html" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/LAS-16_Sickle_Primary_Render.png" alt="Arma Primaria" class="wb-item-img">
+				</a>
+
+				<a href="../../armaduras/steeled_trooper.html" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 18</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/EX-03_Prototype_3_Armor_Render.png" alt="Armadura" class="wb-item-img">
+				</a>
+
+				<a href="../../capacetes/steeled_trooper.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/EX-03_Prototype_3_Helmet_Render.png" alt="Capacete" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/Head_Tap_Victory_Pose_Icon.png" alt="Pose" class="wb-item-img">
+				</a>
+
+				<a href="../../capas/tyrant_hunter.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 8</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-1/Botslayer_Cape_Render.png" alt="Capa" class="wb-item-img">
+				</a>
+			</div>
+            </div>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Página 2 
+                <div class="page-stats">
+                    Medalhas gastas para desbloquear: <img src="../../imagens/icones/medals.png" style="width: 14px;"> 60 <br>
+                    Custo total da página: <img src="../../imagens/icones/medals.png" style="width: 14px;"> 217
+                </div>
+            </h2>
+            
+            <div class="grid-wrapper">
+                <div class="warbond-grid">
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-column: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 15</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/Shotgun_Show_Victory_Pose_Icon.png" alt="Pose" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 45</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/EX-16_Prototype_16_Armor_Render.png" alt="Armadura" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 35</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/EX-16_Prototype_16_Helmet_Render.png" alt="Capacete" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 5</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/Martyris_Rex_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 25</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/G-23_Stun_Throwable_Render.png" alt="Granada" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 20</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/Martyris_Rex_Cape_Render.png" alt="Capa" class="wb-item-img">
+                    </a>
+                    <a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 12</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.png" alt="Super Creditos" class="wb-item-img">
+                    </a>
+					<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+                        <div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 60</div>
+                        <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-2/SG-8P_Punisher_Plasma_Primary_Render.png" alt="Arma Primaria" class="wb-item-img">
+                    </a>
+                    <div style="grid-column: span 1; grid-row: span 1;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Página 3 
+                <div class="page-stats">
+                    Medalhas gastas para desbloquear: <img src="../../imagens/icones/medals.png" style="width: 14px;"> 230 <br>
+                    Custo total da página: <img src="../../imagens/icones/medals.png" style="width: 14px;"> 362
+                </div>
+            </h2>
+            
+            <div class="grid-wrapper">
+				<div class="warbond-grid">
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 16</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/Agent_of_Oblivion_Player_Card_Icon.png" alt="Player Card" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/senator.html" class="wb-card" style="grid-column: span 1; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 60</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/LAS-7_Dagger_Secondary_Render.png" alt="LAS-7_Dagger" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.png" alt="Super Credits" class="wb-item-img">
+				</a>
+
+				<a href="../../armas/liberator_concussive.html" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 80</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/ARC-12_Blitzer_Primary_Render.png" alt="ARC-12_Blitzer" class="wb-item-img">
+				</a>
+
+				<a href="../../armaduras/steeled_trooper.html" class="wb-card" style="grid-column: span 2; grid-row: span 2;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 64</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/EX-00_Prototype_X_Armor_Render.png" alt="EX-00_Prototype_X" class="wb-item-img">
+				</a>
+
+				<a href="../../capacetes/steeled_trooper.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 48</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/EX-00_Prototype_X_Helmet_Render.png" alt="EX-00_Prototype_X" class="wb-item-img">
+				</a>
+
+				<a href="#" class="wb-card" style="grid-column: span 2; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 32</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/Presentable_Victory_Pose_Icon.png" alt="Presentable_Victory_Pose" class="wb-item-img">
+				</a>
+
+				<a href="../../capas/tyrant_hunter.html" class="wb-card" style="grid-column: span 1; grid-row: span 1;">
+					<div class="wb-cost"><img src="../../imagens/icones/medals.png" alt="Medalhas"> 30</div>
+					<img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting%20Edge/pagina-3/Agent_of_Oblivion_Cape_Render.png" alt="Agent_of_Oblivion" class="wb-item-img">
+				</a>
+			</div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

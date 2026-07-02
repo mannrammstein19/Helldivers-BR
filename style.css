@@ -18,12 +18,30 @@ img { max-width: 100%; height: auto; }
 a { text-decoration: none; }
 .cite-hide { display: none; }
 
+/* Isso aqui é o que já existe no seu site */
 body {
     background: #0a0a0a url('imagens/0-banners/wallpaper-principal.jpg') center/cover fixed;
     color: var(--hd-text);
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     min-height: 100vh;
+}
+
+/* --- NOVAS REGRAS PARA MUDAR O FUNDO --- */
+
+/* Quando o body tiver a classe 'fundo-principal', ele ignora o wallpaper principal */
+body.fundo-principal {
+    background: #0a0a0a url('imagens/0-banners/wallpaper-principal.jpg') center/cover fixed;
+}
+
+/* Quando o body tiver a classe 'fundo-estrategema', ele usa outro */
+body.fundo-estrategema {
+    background: #0a0a0a url('imagens/0-banners/estratagema.png') center/cover fixed;
+}
+
+/* Quando o body tiver a classe 'fundo-warbond', ele usa outro */
+body.fundo-warbonds {
+    background: #0a0a0a url('imagens/0-banners/warbonds.png') center/cover fixed;
 }
 
 /* ==========================================================================

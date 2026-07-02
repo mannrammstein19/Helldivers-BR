@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Passes de Guerra - Helldivers BR</title>
 
+<!-- 1. CHAMAMOS O SEU STYLE.CSS AQUI -->
+<link rel="stylesheet" href="../style.css">
+
 <style>
 /* ==========================================================================
    VARIÁVEIS E BASE DO SITE
@@ -24,13 +27,8 @@
     padding: 0;
 }
 
+/* 2. LIMPAMOS O FUNDO ANTIGO DAQUI PARA NÃO DAR CONFLITO */
 body {
-    background: #0a0a0a;
-    /* Retorna uma pasta (../) para achar a imagem a partir da pasta warbonds */
-    background-image: url('../imagens/0-banners/wallpaper-principal.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     color: var(--hd-text);
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
@@ -132,7 +130,6 @@ a { text-decoration: none; }
 
 .warbonds-list-grid {
     display: grid;
-    /* Cria colunas responsivas: no mínimo 280px de largura, preenchendo o espaço disponível */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
     margin-bottom: 40px;
@@ -151,7 +148,7 @@ a { text-decoration: none; }
     border-radius: 6px;
     border: 2px solid rgba(215, 213, 44, 0.2);
     transition: all 0.3s ease;
-    background: #000; /* Fundo preto caso a imagem demore a carregar */
+    background: #000; 
 }
 
 .warbond-banner-card span {
@@ -163,11 +160,10 @@ a { text-decoration: none; }
     transition: color 0.3s ease;
 }
 
-/* Efeito Hover nos Banners */
 .warbond-banner-card:hover img {
     border-color: var(--hd-yellow);
     box-shadow: 0 0 20px rgba(215, 213, 44, 0.3);
-    transform: scale(1.03); /* Dá um leve zoom no banner */
+    transform: scale(1.03); 
 }
 
 .warbond-banner-card:hover span {
@@ -200,11 +196,13 @@ a { text-decoration: none; }
     }
     .sidebar.active { left: 0; }
     .main-content { margin-left: 0; padding: 20px; }
-    .warbonds-list-grid { grid-template-columns: 1fr; /* 1 coluna no celular */ }
+    .warbonds-list-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
+
+<!-- 3. CHAMAMOS A CLASSE NOVA AQUI -->
+<body class="fundo-warbonds">
 
     <div class="mobile-header">
         <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>

@@ -1,218 +1,127 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #c5c6c7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    overflow-x: hidden;
+body{
+
+background:#111;
+
+font-family:Arial,Helvetica,sans-serif;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+height:100vh;
+
+color:white;
+
+overflow:hidden;
+
 }
 
-/* ==================================================================== */
-/* 🌌 IMAGEM DE FUNDO DO SITE (TELA CHEIA E DESFOCADA)                  */
-/* ==================================================================== */
-body::before {
-    content: "";
-    position: absolute;
-    inset: -20px;
-    background: url("https://mannrammstein19.github.io/Helldivers-BR/discord/discord-preview.png") center center/cover no-repeat;
-    filter: blur(8px) brightness(0.35);
-    z-index: -1;
+body::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:url("discord-preview.png") center center/cover no-repeat;
+
+filter:blur(10px) brightness(.35);
+
+transform:scale(1.1);
+
 }
 
-/* --- Tela de Intro --- */
-#intro-screen {
-    position: fixed;
-    inset: 0;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    transition: opacity 1s ease;
+.container{
+
+position:relative;
+
+z-index:10;
+
+text-align:center;
+
+padding:40px;
+
+background:rgba(0,0,0,.55);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:20px;
+
+backdrop-filter:blur(12px);
+
+max-width:500px;
+
 }
 
-.typewriter {
-    color: #FFE800;
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-family: monospace;
+.logo{
+
+width:70px;
+
+margin-bottom:20px;
+
 }
 
-.hidden { display: none !important; }
-.fade-in { animation: fadeIn 1.5s ease forwards; }
+h1{
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+font-size:40px;
+
+color:#d7d52c;
+
+margin-bottom:15px;
+
 }
 
-/* --- Cartão Principal --- */
-#main-content {
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-    z-index: 10;
+p{
+
+font-size:18px;
+
+line-height:1.6;
+
 }
 
-.card {
-    background: rgba(10, 10, 15, 0.70);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 232, 0, 0.15);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-    margin-bottom: 25px;
+.small{
+
+margin-top:20px;
+
+opacity:.8;
+
+font-size:15px;
+
 }
 
-/* Formatação do Banner dentro do cartão */
-.banner {
-    width: 100%;
-    height: 180px;
-    border-bottom: 2px solid #FFE800;
+.loader{
+
+margin:30px auto;
+
+width:55px;
+
+height:55px;
+
+border:5px solid rgba(255,255,255,.15);
+
+border-top:5px solid #d7d52c;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
 }
 
-.content-body {
-    padding: 30px 20px;
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
 }
 
-h1 {
-    color: #FFF;
-    font-size: 26px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.subtitle {
-    color: #FFE800;
-    font-size: 14px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-}
-
-.server-status {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    font-size: 13px;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-.online { color: #43b581; }
-.members { color: #7289da; }
-
-.divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 20px 0;
-}
-
-.highlight-text {
-    color: #FFF;
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.description {
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: #b9bbbe;
-}
-
-.perks {
-    list-style: none;
-    text-align: left;
-    margin: 0 auto 30px;
-    display: inline-block;
-}
-
-.perks li {
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: #e0e0e0;
-}
-
-/* Botão principal Discord */
-.cta-button {
-    display: block;
-    background-color: #5865F2;
-    color: #FFF;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 15px 20px;
-    border-radius: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    animation: pulse 2s infinite;
-}
-
-.cta-button:hover {
-    background-color: #4752C4;
-    transform: scale(1.02);
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(88, 101, 242, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); }
-}
-
-/* --- NOVO Rodapé e Botão do Site Oficial --- */
-footer {
-    text-align: center;
-    font-size: 14px;
-    padding: 10px;
-}
-
-.footer-title {
-    color: #FFF;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.footer-tags {
-    color: #888;
-    margin-bottom: 15px;
-    font-size: 12px;
-}
-
-/* O novo botão secundário para o site */
-.site-button {
-    display: inline-block;
-    padding: 10px 25px;
-    border: 2px solid #FFE800; /* Borda amarela Helldivers */
-    color: #FFE800;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    text-transform: uppercase;
-    font-size: 13px;
-    transition: all 0.3s ease;
-    background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-}
-
-.site-button:hover {
-    background-color: #FFE800;
-    color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 232, 0, 0.3);
 }

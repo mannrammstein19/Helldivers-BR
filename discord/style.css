@@ -32,7 +32,7 @@ position:absolute;
 
 inset:0;
 
-background:url("discord-preview.jpg") center center/cover no-repeat;
+background:url("discord-preview.png") center center/cover no-repeat;
 
 filter:blur(10px) brightness(.35);
 

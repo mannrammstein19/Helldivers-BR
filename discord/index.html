@@ -1,57 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helldivers BR | Discord</title>
 
-<title>Helldivers BR | Discord</title>
+    <!-- ==================================================================== -->
+    <!-- 📱 IMAGEM DO WHATSAPP / TELEGRAM (ISSO NÃO APARECE NO SITE)          -->
+    <!-- Coloque aqui a imagem leve (até 300kb) para aparecer no celular      -->
+    <!-- ==================================================================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Junte-se à Elite de Super Earth!">
+    <meta property="og:description" content="Cansado de jogar sozinho? Entre na maior comunidade brasileira de Helldivers 2 e monte seu esquadrão.">
+    <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/discord-preview.png">
+    <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/discord/">
+    <meta name="theme-color" content="#FFE800">
 
-<meta name="description" content="Junte-se à maior comunidade brasileira de Helldivers 2.">
-
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Helldivers BR 🇧🇷">
-<meta property="og:description" content="A maior comunidade brasileira de Helldivers 2. Eventos, Warbonds, Esquadrões e muito mais.">
-<meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/discord-preview.png">
-<meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/discord/">
-<meta property="og:site_name" content="Helldivers BR">
-
-<!-- Twitter/X -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Helldivers BR 🇧🇷">
-<meta name="twitter:description" content="Junte-se à maior comunidade brasileira de Helldivers 2.">
-<meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/discord-preview.png">
-
-<meta name="theme-color" content="#d7d52c">
-
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
+    <!-- Tela de Carregamento Temática -->
+    <div id="intro-screen">
+        <p class="typewriter">🛰️ Um sinal de recrutamento foi detectado...</p>
+    </div>
 
-    <img class="logo" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1e7-1f1f7.svg" alt="Brasil">
+    <!-- Conteúdo Principal -->
+    <div id="main-content" class="hidden">
+        
+        <div class="card">
+            
+            <!-- ==================================================================== -->
+            <!-- 🖼️ IMAGEM DO BANNER (A QUE FICA NO TOPO DENTRO DO CARTÃO)            -->
+            <!-- (A imagem de fundo da tela inteira a gente mexe lá no style.css!)    -->
+            <!-- ==================================================================== -->
+			<div class="banner" style="background: url('https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/discord/helldiver_like.png') top/cover no-repeat;"></div>
+            
+            <div class="content-body">
+                <!-- Corrigido o bug do "BR BR" -->
+                <h1>HELLDIVERS BR</h1>
+                <h2 class="subtitle">Pela Super Terra!</h2>
+                
+                <!-- Status do Servidor em Tempo Real -->
+                <div class="server-status">
+                    <span id="online-count" class="online">🟢 Carregando...</span>
+                    <span id="members-count" class="members">👥 Carregando...</span>
+                </div>
 
-    <h1>Helldivers BR</h1>
+                <div class="divider"></div>
 
-    <p>
-        Entrando na maior comunidade brasileira de Helldivers 2...
-    </p>
+                <p class="highlight-text">🎮 Cansado de jogar sozinho?</p>
+                <p class="description">
+                    Entre na comunidade, monte um esquadrão, dê boas risadas, troque experiências e encontre Helldivers brasileiros para enfrentar qualquer missão.
+                </p>
+                
+                <ul class="perks">
+                    <li>🤝 Encontre esquadrões para jogar.</li>
+                    <li>😂 Troque uma resenha saudável.</li>
+                    <li>🚀 Conheça novos jogadores.</li>
+                    <li>🛡️ Ajude recrutas e veteranos.</li>
+                </ul>
 
-    <div class="loader"></div>
+                <!-- Botão Piscando do Discord -->
+                <a href="https://discord.gg/helldiversbr" class="cta-button">🚀 ENTRAR NO DISCORD</a>
+            </div>
+        </div>
 
-    <p class="small">
-        Redirecionando para o Discord...
-    </p>
+        <!-- NOVO RODAPÉ COM BOTÃO CHAMATIVO -->
+        <footer>
+            <p class="footer-title">🌐 Procurando guias, Warbonds e armas?</p>
+            <p class="footer-tags">Visite a nossa biblioteca oficial</p>
+            <a href="https://mannrammstein19.github.io/Helldivers-BR/" class="site-button">ACESSAR SITE OFICIAL</a>
+        </footer>
 
-</div>
+    </div>
 
-<script>
-setTimeout(function(){
-    window.location.replace("https://discord.gg/helldiversbr");
-},1000);
-</script>
+    <script>
+        // Animação inicial
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                intro.style.opacity = '0';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    const mainContent = document.getElementById('main-content');
+                    mainContent.classList.remove('hidden');
+                    mainContent.classList.add('fade-in');
+                }, 1000);
+            }, 2500);
+        });
 
+        // Puxar jogadores ao vivo do Discord
+        fetch("https://discord.com/api/invites/helldiversbr?with_counts=true")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('online-count').innerText = `🟢 ${data.approximate_presence_count} online`;
+                document.getElementById('members-count').innerText = `👥 ${data.approximate_member_count} membros`;
+            })
+            .catch(error => {
+                document.getElementById('online-count').innerText = `🟢 Helldivers Ativos`;
+                document.getElementById('members-count').innerText = `👥 Comunidade BR`;
+            });
+    </script>
 </body>
 </html>

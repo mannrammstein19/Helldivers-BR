@@ -83,6 +83,10 @@ body::before {
 
 .content-body {
     padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Força tudo a ficar no centro, independente da tela */
+    text-align: center;
 }
 
 h1 {
@@ -138,9 +142,9 @@ h1 {
 
 .perks {
     list-style: none;
-    text-align: left;
-    margin: 0 auto 30px;
-    display: inline-block;
+    text-align: left; /* Mantém os emojis e o texto alinhados bonitinhos entre si */
+    margin: 0 auto 30px auto;
+    width: fit-content; /* A mágica que centraliza o bloco todo no celular! */
 }
 
 .perks li {

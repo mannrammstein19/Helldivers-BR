@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helldivers BR - Autômatos: Lore</title>
+
+    <!-- Open Graph (WhatsApp, Telegram, Discord) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Helldivers BR | Autômatos - Lore">
+    <meta property="og:description" content="A história por trás da Legião Automaton: dos Ciborgues exilados em Cyberstan à guerra mecanizada contra a Super Terra.">
+    <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+    <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/automatons.html">
+    <meta property="og:site_name" content="Helldivers BR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Helldivers BR | Autômatos - Lore">
+    <meta name="twitter:description" content="A história por trás da Legião Automaton que ameaça a Super Terra.">
+    <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+
+    <meta name="theme-color" content="#e60000">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos específicos da página de lore -->
+    <style>
+        :root {
+            --lore-color: #e60000;
+        }
+
+        /* Trava o crescimento do conteúdo no zoom out / telas muito largas,
+           mantendo tudo colado à esquerda (ao lado da sidebar), igual ao
+           padrão usado nas páginas de estratagema. Usamos flex-grow: 0 para
+           que o item pare de esticar ao atingir max-width, em vez de
+           depender de margens automáticas dentro do container flex do body
+           (isso é o que causava a centralização inconsistente ao mudar o zoom). */
+        main.main-content {
+            flex-grow: 0;
+            flex-basis: 1400px;
+            max-width: 1400px;
+        }
+
+        .lore-hero {
+            position: relative;
+            padding: 32px 28px;
+            margin-bottom: 26px;
+            background: linear-gradient(180deg, rgba(20,20,20,0.94), rgba(8,8,8,0.96));
+            border: 1px solid #333;
+            border-top: 3px solid var(--lore-color);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+            overflow: hidden;
+        }
+
+        /* Imagem de um Automaton no lado direito do hero, sem alterar o
+           tamanho do retângulo. Troque o "background-image" abaixo pelo
+           caminho definitivo da arte quando tiver o arquivo em mãos. */
+        .lore-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("../imagens/0-banners/faccoes/robos/automatons-hero.png");
+            background-repeat: no-repeat;
+            background-position: center 70%;
+            background-size: cover;
+            opacity: 0.9;
+            z-index: 0;
+        }
+
+        /* Degradê por cima da imagem: 100% da cor de fundo à esquerda,
+           dissolvendo a imagem conforme se aproxima da direita. */
+        .lore-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(90deg, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.75) 35%, rgba(8,8,8,0.3) 65%, rgba(8,8,8,0) 100%),
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 100% 100%, 24px 24px, 24px 24px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .lore-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            width: fit-content;
+            background-color: var(--lore-color);
+            color: #000;
+            clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .lore-badge::before {
+            content: "◆";
+            font-size: 0.65rem;
+        }
+
+        .lore-hero h1 {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 2.1rem;
+            letter-spacing: 0.5px;
+            color: #fff;
+            margin: 0 0 6px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lore-hero .lore-subtitle {
+            color: var(--lore-color);
+            font-size: 1rem;
+            font-style: italic;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lore-section {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(8,8,8,0.94));
+            border: 1px solid #2c2c2c;
+            border-left: 3px solid var(--lore-color);
+            padding: 22px 24px;
+            margin-bottom: 20px;
+        }
+
+        .lore-section h2 {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            color: var(--lore-color);
+            text-transform: uppercase;
+            margin: 0 0 14px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lore-section h2::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--lore-color);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            flex-shrink: 0;
+        }
+
+        .lore-section p {
+            color: #c9c9c9;
+            font-size: 0.96rem;
+            line-height: 1.7;
+            margin: 0 0 12px 0;
+        }
+
+        .lore-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Destaque amarelo para termos e conceitos-chave dentro do texto corrido */
+        .lore-highlight {
+            color: #ffd400;
+            font-weight: 600;
+        }
+
+        .lore-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .lore-fact {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #2c2c2c;
+            border-top: 2px solid var(--lore-color);
+            padding: 14px 16px;
+        }
+
+        .lore-fact .fact-label {
+            display: block;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--lore-color);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .lore-fact .fact-value {
+            color: #eaeaea;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .lore-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 24px;
+            color: var(--lore-color);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .lore-back-link:hover {
+            text-decoration: underline;
+        }
+
+        .lore-timeline {
+            list-style: none;
+            margin: 18px 0 0 0;
+            padding: 0;
+        }
+
+        .lore-timeline li {
+            position: relative;
+            padding: 0 0 16px 22px;
+            border-left: 2px solid #2c2c2c;
+            margin-left: 4px;
+        }
+
+        .lore-timeline li:last-child {
+            padding-bottom: 0;
+        }
+
+        .lore-timeline li::before {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 3px;
+            width: 10px;
+            height: 10px;
+            background: var(--lore-color);
+            border-radius: 50%;
+        }
+
+        .lore-timeline .timeline-date {
+            display: block;
+            color: var(--lore-color);
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .lore-timeline .timeline-text {
+            color: #c9c9c9;
+            font-size: 0.94rem;
+            line-height: 1.6;
+        }
+
+        .lore-strain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .lore-strain {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #2c2c2c;
+            border-top: 2px solid var(--lore-color);
+            padding: 14px 16px;
+        }
+
+        .lore-strain h3 {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-size: 0.92rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+
+        .lore-strain p {
+            color: #b8b8b8;
+            font-size: 0.86rem;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Link inline para a palavra "Automatons" ao longo do texto,
+           apontando para a futura página de Wiki (inimigos/Automatons/index.html) */
+        .lore-term-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(230,0,0,0.65);
+        }
+
+        .lore-term-link:hover {
+            border-bottom-style: solid;
+        }
+
+        /* Ícone da logo da facção ao lado de cada ocorrência clicável da palavra */
+        .lore-term-link .lore-term-icon {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            vertical-align: -3px;
+            margin-right: 4px;
+            object-fit: contain;
+        }
+
+        /* Logo maior ao lado do título principal (h1) */
+        .lore-title-icon {
+            width: 44px;
+            height: 44px;
+            display: inline-block;
+            vertical-align: -10px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+
+        /* ===== SEÇÃO GALERIA =====
+           Miniaturas de tamanho fixo (proporção 4:3), não esticam mesmo
+           com poucas fotos. Para adicionar mais, duplique um bloco
+           <figure>...</figure> dentro de .lore-gallery e troque o "src". */
+        .lore-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+            justify-content: start;
+        }
+
+        .lore-gallery figure {
+            margin: 0;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #2c2c2c;
+            border-top: 2px solid var(--lore-color);
+            padding: 8px;
+        }
+
+        .lore-gallery img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .lore-gallery img:hover {
+            opacity: 0.85;
+        }
+
+        .lore-gallery figcaption {
+            margin-top: 8px;
+            font-size: 0.76rem;
+            color: #999;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* ===== MODAL DE ZOOM (compartilhado por toda foto clicável) ===== */
+        .lore-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lore-modal.active {
+            display: flex;
+        }
+
+        .lore-modal img {
+            max-width: 90%;
+            max-height: 88%;
+            border: 2px solid var(--lore-color);
+        }
+
+        .lore-modal .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 32px;
+            color: #fff;
+            font-size: 2.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            line-height: 1;
+        }
+        /* ===== SEÇÃO COM FOTO INTEGRADA (texto + imagem no mesmo card) =====
+           Para adicionar foto em qualquer seção: envolva os <p> num
+           <div class="lore-text"> e adicione um <figure class="lore-inline-photo">
+           logo depois, os dois dentro de um <div class="lore-section-grid">. */
+        .lore-section-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        .lore-section-grid .lore-text {
+            flex: 1 1 320px;
+            min-width: 260px;
+        }
+
+        .lore-section-grid .lore-text p {
+            margin: 0 0 12px 0;
+        }
+
+        .lore-section-grid .lore-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .lore-inline-photo {
+            flex: 0 0 260px;
+            max-width: 260px;
+            margin: 0;
+        }
+
+        .lore-inline-photo img {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+            border: 1px solid #2c2c2c;
+            border-top: 2px solid var(--lore-color);
+            transition: opacity 0.2s ease;
+        }
+
+        .lore-inline-photo img:hover {
+            opacity: 0.85;
+        }
+
+        .lore-inline-photo figcaption {
+            margin-top: 8px;
+            font-size: 0.76rem;
+            color: #999;
+            font-style: italic;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .lore-inline-photo {
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="fundo-automatos">
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">
+            ☰ MENU DE NAVEGAÇÃO
+        </button>
+    </div>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="../discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Aquisições</div>
+            <ul class="menu-list">
+                <li><a href="../warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+                <li><a href="#">Superloja</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="../estratagemas.html">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Boosters</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Inimigos & Facções</div>
+            <ul class="menu-list">
+                <li><a href="../faccoes.html">Visão Geral das Facções</a></li>
+                <li><a href="automatos.html" class="active">Autômatos</a></li>
+                <li><a href="terminideos.html">Terminídeos</a></li>
+                <li><a href="iluminados.html">Iluminados</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title-block">
+            <h1>
+                <a href="../inimigos/Automatons/index.html" class="lore-term-link">
+                    <img src="../imagens/icones/logo automatons.png" alt="" class="lore-title-icon">Automatons
+                </a>
+            </h1>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box-wrapper">
+                <input type="text" id="wiki-search" placeholder="🔍 Pesquisar itens nesta página..." autocomplete="off">
+                <button class="search-btn">⚙️</button>
+            </div>
+            <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <a href="../faccoes.html" class="lore-back-link">← Voltar para Visão Geral das Facções</a>
+
+        <!-- HERO -->
+        <div class="lore-hero">
+            <span class="lore-badge">Ameaça Mecanizada</span>
+            <h1>
+                <a href="../inimigos/Automatons/index.html" class="lore-term-link">
+                    <img src="../imagens/icones/logo automatons.png" alt="" class="lore-title-icon">Automatons
+                </a>
+            </h1>
+            <div class="lore-subtitle">"Eles não sentem medo. Eles não sentem cansaço. Eles apenas marcham."</div>
+        </div>
+
+        <!-- ORIGEM -->
+        <div class="lore-section">
+            <h2>Origem</h2>
+            <div class="lore-section-grid">
+                <div class="lore-text">
+                    <p>
+                        Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não surgiram do nada: eles são a herança mecânica dos <span class="lore-highlight">Ciborgues</span>, os secessionistas meio-humanos que declararam independência da Super Terra em seu mundo natal, <span class="lore-highlight">Cyberstan</span>, ainda durante a <span class="lore-highlight">Primeira Guerra Galáctica</span>. Derrotados e aprisionados, os Ciborgues foram condenados a trabalhar nas minas profundas do planeta, extraindo minérios para a Federação.
+                    </p>
+                    <p>
+                        Foi em segredo, nas profundezas de Cyberstan, que os Ciborgues sobreviventes conceberam seus sucessores: uma legião de máquinas de guerra construída ao longo de décadas, escondida das forças de Super Terra em instalações subterrâneas protegidas de bombardeios orbitais.
+                    </p>
+                    <p>
+                        A pista mais concreta sobre essa origem veio da decodificação da <span class="lore-highlight">"Embarcação 00"</span>, uma nave não identificada que partiu de Cyberstan em <span class="lore-highlight">2180</span> — cerca de quatro anos antes do primeiro ataque em larga escala dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>. A carga e o destino da viagem permanecem desconhecidos, mas a nave é tratada por eles quase como um artefato sagrado, citada com reverência em suas transmissões.
+                    </p>
+                </div>
+                <figure class="lore-inline-photo">
+                    <img src="../imagens/inimigos/robos/logo.png" alt="Automatons em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <figcaption>Clique para ampliar</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <!-- OS CIBORGUES -->
+        <div class="lore-section">
+            <h2>Os Ciborgues de Cyberstan</h2>
+            <div class="lore-section-grid">
+                <div class="lore-text">
+                    <p>
+                        Antes de dar origem aos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>, a <span class="lore-highlight">Nação Ciborgue</span> era formada por humanos que abraçaram o socialismo e romperam unilateralmente com a Federação, fundando seu próprio governo em Cyberstan. A retaliação de Super Terra foi rápida: após um ataque terrorista atribuído aos Ciborgues contra uma megacidade, a Federação declarou guerra e esmagou a rebelião.
+                    </p>
+                    <p>
+                        Os sobreviventes não foram exterminados, mas escravizados nas minas próximas ao núcleo do planeta. Para suportar o calor extremo daquele ambiente, os próprios Ciborgues passaram a se modificar cada vez mais com implantes cibernéticos — um processo de automodificação que, gerações depois, culminaria na criação de seus <span class="lore-highlight">"filhos" mecânicos</span>.
+                    </p>
+                </div>
+                <figure class="lore-inline-photo">
+                    <img src="../imagens/inimigos/robos/cyborg.png" alt="Cyberstan, mundo natal dos Ciborgues" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <figcaption>Clique para ampliar</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <!-- SURGIMENTO E ASCENSÃO -->
+        <div class="lore-section">
+            <h2>A Legião Que Ninguém Viu Nascer</h2>
+            <div class="lore-section-grid">
+                <div class="lore-text">
+                    <p>
+                        Por cerca de um século, Super Terra acreditou que a ameaça Ciborgue estava contida. Foi um erro de cálculo: enquanto isso, nas profundezas de Cyberstan, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> eram fabricados em segredo, projetados para retomar a luta que seus criadores não conseguiram vencer.
+                    </p>
+                    <p>
+                        Quando finalmente emergiram, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançaram um <span class="lore-highlight">ataque surpresa</span> nos setores sudoeste do mapa galáctico, avançando com uma força de vanguarda blindada. Diferente do avanço puramente instintivo dos insetos, essa foi uma ofensiva planejada — o início da reconquista que os Ciborgues sonhavam desde sua derrota.
+                    </p>
+                </div>
+                <figure class="lore-inline-photo">
+                    <img src="../imagens/inimigos/robos/march.png" alt="Avanço da Legião Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <figcaption>Clique para ampliar</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <!-- IDEOLOGIA / COMPORTAMENTO -->
+        <div class="lore-section">
+            <h2>Máquinas Com Vontade Própria</h2>
+            <div class="lore-section-grid">
+                <div class="lore-text">
+                    <p>
+                        A propaganda de Super Terra descreve os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> como máquinas sem mente, programadas apenas para matar em nome de uma ideologia socialista. A realidade parece mais complexa: relatos de campo sugerem que essas unidades são <span class="lore-highlight">capazes de sentir emoções</span>, como tristeza e raiva, e de agir por conta própria — o que torna sua obediência à causa dos Ciborgues ainda mais perturbadora.
+                    </p>
+                    <p>
+                        Em combate, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> privilegiam armamento à distância, foguetes e unidades pesadamente blindadas para sufocar os Helldivers com poder de fogo, em vez de depender da aproximação corpo a corpo típica dos enxames biológicos. Essa diferença exige uma mentalidade tática distinta: contra os Autômatos, precisão, supressão e cobertura pesam mais do que velocidade de reação.
+                    </p>
+                </div>
+                <figure class="lore-inline-photo">
+                    <img src="../imagens/inimigos/robos/altar.png" alt="Unidade blindada Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <figcaption>Clique para ampliar</figcaption>
+                </figure>
+            </div>
+
+            <div class="lore-facts">
+                <div class="lore-fact">
+                    <span class="fact-label">Nome de Origem</span>
+                    <span class="fact-value">Nação Ciborgue (Primeira Guerra Galáctica)</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Planeta de Origem</span>
+                    <span class="fact-value">Cyberstan</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Autodenominação</span>
+                    <span class="fact-value">Coletivo de Cyberstan / Coletivo Automaton</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Estilo de Combate</span>
+                    <span class="fact-value">Armas à distância, blindagem pesada, foguetes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBFACÇÕES -->
+        <div class="lore-section">
+            <h2>Subfacções da Legião</h2>
+            <div class="lore-section-grid">
+                <div class="lore-text">
+                    <p>
+                        Assim como os demais inimigos da galáxia, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não são um bloco único. <span class="lore-highlight">Três subfacções</span> foram identificadas em campo, cada uma com um papel tático próprio dentro da guerra contra a Super Terra.
+                    </p>
+                </div>
+                <figure class="lore-inline-photo">
+                    <img src="../imagens/inimigos/automatons/jet-brigade.png" alt="Jet Brigade" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <figcaption>Clique para ampliar</figcaption>
+                </figure>
+            </div>
+
+            <div class="lore-strain-grid">
+                <div class="lore-strain">
+                    <h3>Jet Brigade</h3>
+                    <p>Unidades equipadas com <span class="lore-highlight">mochilas de propulsão</span> roubadas e adaptadas de Helldivers caídos, usadas para saltos agressivos e flanqueamentos rápidos. Atuam como força de blitz, avançando de planeta em planeta antes de perderem efetivo.</p>
+                </div>
+                <div class="lore-strain">
+                    <h3>Incineration Corps</h3>
+                    <p>Especialistas em <span class="lore-highlight">armamento incendiário</span>, capazes de arrasar ecossistemas inteiros. Diferente da Jet Brigade, podem manter até três divisões ativas simultaneamente em planetas distintos, sustentando ofensivas em múltiplas frentes.</p>
+                </div>
+                <div class="lore-strain">
+                    <h3>Cyborg Legion</h3>
+                    <p>Formada pelos próprios <span class="lore-highlight">descendentes diretos dos Ciborgues</span> originais, combatentes humanos aprimorados com cibernética pesada. Primeiro reencontrada em Cyberstan, representa o núcleo tático e ideológico da legião.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GALERIA -->
+        <div class="lore-section">
+            <h2>Galeria</h2>
+            <div class="lore-gallery">
+                <figure>
+                    <img src="../imagens/inimigos/automatons/automatons-hulk.png" alt="Hulk Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <figcaption>Hulk</figcaption>
+                </figure>
+                <figure>
+                    <img src="../imagens/inimigos/automatons/automatons-devastador.png" alt="Devastador Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <figcaption>Devastador</figcaption>
+                </figure>
+                <figure>
+                    <img src="../imagens/inimigos/automatons/automatons-tanque.png" alt="Tanque Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <figcaption>Tanque Anihilador</figcaption>
+                </figure>
+                <figure>
+                    <img src="../imagens/inimigos/automatons/cyberstan.png" alt="Cyberstan" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <figcaption>Cyberstan</figcaption>
+                </figure>
+                <!-- Para adicionar mais fotos, duplique o bloco <figure> acima
+                     e troque o "src" e a "figcaption" -->
+            </div>
+        </div>
+
+        <!-- LINHA DO TEMPO -->
+        <div class="lore-section">
+            <h2>Linha do Tempo</h2>
+            <ul class="lore-timeline">
+                <li>
+                    <span class="timeline-date">Antes de 2084</span>
+                    <span class="timeline-text">A Nação Ciborgue declara independência de Super Terra a partir de Cyberstan, abraçando o socialismo como ideologia de estado.</span>
+                </li>
+                <li>
+                    <span class="timeline-date">2084</span>
+                    <span class="timeline-text">A Federação esmaga a rebelião Ciborgue na Primeira Guerra Galáctica. Os sobreviventes são escravizados nas minas de Cyberstan.</span>
+                </li>
+                <li>
+                    <span class="timeline-date">2180</span>
+                    <span class="timeline-text">A misteriosa "Embarcação 00" parte de Cyberstan rumo a um destino desconhecido — o primeiro indício documentado da criação dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>.</span>
+                </li>
+                <li>
+                    <span class="timeline-date">~2184</span>
+                    <span class="timeline-text">Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançam sua primeira ofensiva em larga escala nos setores sudoeste da galáxia, reacendendo o conflito contra Super Terra.</span>
+                </li>
+                <li>
+                    <span class="timeline-date">2184-2185</span>
+                    <span class="timeline-text">A Jet Brigade e a Incineration Corps são identificadas pela primeira vez, marcando o surgimento das subfacções especializadas dentro da legião.</span>
+                </li>
+                <li>
+                    <span class="timeline-date">2185</span>
+                    <span class="timeline-text">A Cyborg Legion é reencontrada em Cyberstan durante a Operação Valid Pretext, confirmando o elo direto entre os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> e seus criadores humanos.</span>
+                </li>
+            </ul>
+        </div>
+
+    </main>
+
+    <!-- Modal de zoom compartilhado por todas as fotos clicáveis -->
+    <div id="imageModal" class="lore-modal">
+        <span class="close-btn">&times;</span>
+        <img id="imgAmpliada" src="" alt="Imagem ampliada">
+    </div>
+
+    <!-- Vinculação do arquivo de dados externa -->
+    <script src="../dados.js"></script>
+    <script src="../warbonds.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            // Modal de zoom: qualquer imagem com a classe "zoomable-img" abre em tamanho completo
+            const imageModal = document.getElementById("imageModal");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const closeBtn = imageModal ? imageModal.querySelector(".close-btn") : null;
+
+            document.querySelectorAll(".zoomable-img").forEach(function(img) {
+                img.addEventListener("click", function() {
+                    imgAmpliada.src = this.src;
+                    imgAmpliada.alt = this.alt;
+                    imageModal.classList.add("active");
+                });
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener("click", function() {
+                    imageModal.classList.remove("active");
+                });
+            }
+
+            if (imageModal) {
+                imageModal.addEventListener("click", function(e) {
+                    if (e.target === imageModal) {
+                        imageModal.classList.remove("active");
+                    }
+                });
+            }
+
+            const searchInput = document.getElementById("wiki-search");
+            const dropdown = document.getElementById("search-results");
+
+            if (searchInput && dropdown) {
+                searchInput.addEventListener("input", function() {
+                    const query = this.value.toLowerCase().trim();
+                    dropdown.innerHTML = "";
+
+                    if (!query) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
+                    const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
+                    const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
+
+                    if (bancoDeDadosCompleto.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    const results = bancoDeDadosCompleto.filter(item =>
+                        item.title.toLowerCase().includes(query)
+                    );
+
+                    if (results.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Nenhum resultado encontrado
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    results.forEach(item => {
+                        const result = document.createElement("a");
+                        result.className = "search-item";
+                        result.href = item.url;
+
+                        result.innerHTML = `
+                            <div class="search-item-icon">
+                                <img src="${item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='../imagens/0-banners/logo.jpg'">
+                            </div>
+                            <div>
+                                <strong style="color: var(--hd-yellow);">${item.title}</strong><br>
+                                <small style="color: #aaa;">${item.category}</small>
+                            </div>
+                        `;
+                        dropdown.appendChild(result);
+                    });
+
+                    dropdown.style.display = "block";
+                });
+
+                document.addEventListener("click", function(e) {
+                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

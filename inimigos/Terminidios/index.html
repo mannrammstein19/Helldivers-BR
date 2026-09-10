@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helldivers BR - Termínios: Lore</title>
+
+    <!-- Open Graph (WhatsApp, Telegram, Discord) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Helldivers BR | Termínios - Lore">
+    <meta property="og:description" content="A história por trás do enxame: de fazendas de Elemento-710 à Horda Terminídea que ameaça a galáxia.">
+    <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+    <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/terminideos.html">
+    <meta property="og:site_name" content="Helldivers BR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Helldivers BR | Termínios - Lore">
+    <meta name="twitter:description" content="A história por trás do enxame que ameaça a Super Terra.">
+    <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+
+    <meta name="theme-color" content="#FFE800">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos específicos da página de lore -->
+    <style>
+        :root {
+            --lore-color: #ff9900;
+        }
+
+        .lore-hero {
+            position: relative;
+            padding: 32px 28px;
+            margin-bottom: 26px;
+            background: linear-gradient(180deg, rgba(20,20,20,0.94), rgba(8,8,8,0.96));
+            border: 1px solid #333;
+            border-top: 3px solid var(--lore-color);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+            overflow: hidden;
+        }
+
+        .lore-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        .lore-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            width: fit-content;
+            background-color: var(--lore-color);
+            color: #000;
+            clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .lore-badge::before {
+            content: "◆";
+            font-size: 0.65rem;
+        }
+
+        .lore-hero h1 {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 2.1rem;
+            letter-spacing: 0.5px;
+            color: #fff;
+            margin: 0 0 6px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lore-hero .lore-subtitle {
+            color: var(--lore-color);
+            font-size: 1rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lore-section {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(8,8,8,0.94));
+            border: 1px solid #2c2c2c;
+            border-left: 3px solid var(--lore-color);
+            padding: 22px 24px;
+            margin-bottom: 20px;
+        }
+
+        .lore-section h2 {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            color: var(--lore-color);
+            text-transform: uppercase;
+            margin: 0 0 14px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lore-section h2::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--lore-color);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            flex-shrink: 0;
+        }
+
+        .lore-section p {
+            color: #c9c9c9;
+            font-size: 0.96rem;
+            line-height: 1.7;
+            margin: 0 0 12px 0;
+        }
+
+        .lore-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .lore-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .lore-fact {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #2c2c2c;
+            border-top: 2px solid var(--lore-color);
+            padding: 14px 16px;
+        }
+
+        .lore-fact .fact-label {
+            display: block;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--lore-color);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .lore-fact .fact-value {
+            color: #eaeaea;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .lore-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 24px;
+            color: var(--lore-color);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .lore-back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="fundo-principal">
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">
+            ☰ MENU DE NAVEGAÇÃO
+        </button>
+    </div>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="../discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Aquisições</div>
+            <ul class="menu-list">
+                <li><a href="../warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+                <li><a href="#">Superloja</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="../estratagemas.html">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Boosters</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Inimigos & Facções</div>
+            <ul class="menu-list">
+                <li><a href="../faccoes.html">Visão Geral das Facções</a></li>
+                <li><a href="automatos.html">Autômatos</a></li>
+                <li><a href="terminideos.html" class="active">Termínios</a></li>
+                <li><a href="iluminados.html">Iluminados</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title-block">
+            <h1>Termínios</h1>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box-wrapper">
+                <input type="text" id="wiki-search" placeholder="🔍 Pesquisar itens nesta página..." autocomplete="off">
+                <button class="search-btn">⚙️</button>
+            </div>
+            <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <a href="../faccoes.html" class="lore-back-link">← Voltar para Visão Geral das Facções</a>
+
+        <!-- HERO -->
+        <div class="lore-hero">
+            <span class="lore-badge">Ameaça Insetóide</span>
+            <h1>Termínios</h1>
+            <div class="lore-subtitle">"O enxame não pensa. O enxame apenas consome."</div>
+        </div>
+
+        <!-- ORIGEM -->
+        <div class="lore-section">
+            <h2>Origem</h2>
+            <p>
+                Os Termínios não são uma espécie nova: eles descendem diretamente dos antigos "Bugs" enfrentados por Super Terra na Primeira Guerra Galáctica. Após a derrota da espécie em Kepler Prime, no ano de 2084, os sobreviventes não foram exterminados — foram capturados.
+            </p>
+            <p>
+                Pelo século seguinte, a Federação manteve essas criaturas confinadas em fazendas espalhadas pelos confins orientais da galáxia. O motivo não era ciência nem contenção: ao morrer, o corpo de um Termínio libera o Elemento-710, um óleo essencial para alimentar os motores de dobra Alcubierre que permitem viagens interestelares. Os "Bugs" deixaram de ser inimigo de guerra para virar recurso estratégico — uma fonte de combustível vivo, criada em cativeiro geração após geração.
+            </p>
+            <p>
+                Foi exatamente esse século de reprodução seletiva e experimentação genética dentro das fazendas de E-710 que deu origem ao que hoje chamamos de Horda Terminídea: uma versão mais adaptável, mais agressiva e muito mais numerosa do que a espécie original.
+            </p>
+        </div>
+
+        <!-- FUGA E ASCENSÃO -->
+        <div class="lore-section">
+            <h2>A Fuga das Fazendas</h2>
+            <p>
+                A contenção que sustentou o fornecimento de combustível da Federação por cem anos não durou para sempre. Em algum momento, as barreiras que prendiam os Termínios em suas fazendas foram rompidas, e o que era um recurso controlado se tornou uma praga descontrolada, varrendo os setores orientais da galáxia.
+            </p>
+            <p>
+                Diferente de um exército convencional, os Termínios não operam por comando central ou estratégia — eles avançam por puro instinto biológico de expansão, reprodução e destruição. Ainda assim, sua capacidade de adaptação é assustadora: a espécie demonstrou conseguir reformular a superfície inteira de um planeta em questão de dias, como ocorreu em Meridia, e construir estruturas completamente novas conhecidas como "Mundos-Colmeia", a exemplo do que se formou em Oshaune.
+            </p>
+        </div>
+
+        <!-- IDEOLOGIA / COMPORTAMENTO -->
+        <div class="lore-section">
+            <h2>Um Inimigo Sem Ideologia</h2>
+            <p>
+                A propaganda de Super Terra classifica oficialmente os Termínios como uma ameaça "fascista" — uma escolha de retórica interessante, já que nenhum indivíduo da espécie é capaz de compreender qualquer ideologia. O rótulo serve para justificar a guerra perante os cidadãos, não para descrever a real natureza do inimigo.
+            </p>
+            <p>
+                Na prática, o comportamento Terminídeo é movido inteiramente por instinto: enxamear, atacar em curta distância e devorar qualquer coisa que ameace o ninho. É esse comportamento de horda — números avassaladores somados a variantes especializadas em ataques ácidos e de impacto — que torna cada confronto contra a espécie uma guerra de atrito.
+            </p>
+
+            <div class="lore-facts">
+                <div class="lore-fact">
+                    <span class="fact-label">Nome de Origem</span>
+                    <span class="fact-value">"Bugs" (Primeira Guerra Galáctica)</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Planeta de Origem</span>
+                    <span class="fact-value">Kepler Prime</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Recurso Associado</span>
+                    <span class="fact-value">Elemento-710 (combustível FTL)</span>
+                </div>
+                <div class="lore-fact">
+                    <span class="fact-label">Estilo de Combate</span>
+                    <span class="fact-value">Enxame, ataques corpo a corpo, ácido</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LINHAGENS ESPECIAIS -->
+        <div class="lore-section">
+            <h2>Cepas e Variações</h2>
+            <p>
+                Nem todo Termínio é igual. Ao longo da Segunda Guerra Galáctica, Super Terra catalogou linhagens que se desviam do padrão da horda comum — como a Cepa Predadora, especializada em ataques furtivos e velozes, e a Cepa Explosão de Esporos, identificada pela primeira vez nos mundos isolados de "A Bruma". Esta última desenvolveu uma simbiose com um fungo local, que altera sua aparência e a leva a explodir em uma nuvem de esporos como último ato ao ser derrotada.
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Vinculação do arquivo de dados externa -->
+    <script src="../dados.js"></script>
+    <script src="../warbonds.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            const searchInput = document.getElementById("wiki-search");
+            const dropdown = document.getElementById("search-results");
+
+            if (searchInput && dropdown) {
+                searchInput.addEventListener("input", function() {
+                    const query = this.value.toLowerCase().trim();
+                    dropdown.innerHTML = "";
+
+                    if (!query) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
+                    const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
+                    const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
+
+                    if (bancoDeDadosCompleto.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    const results = bancoDeDadosCompleto.filter(item =>
+                        item.title.toLowerCase().includes(query)
+                    );
+
+                    if (results.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Nenhum resultado encontrado
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    results.forEach(item => {
+                        const result = document.createElement("a");
+                        result.className = "search-item";
+                        result.href = item.url;
+
+                        result.innerHTML = `
+                            <div class="search-item-icon">
+                                <img src="${item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='../imagens/0-banners/logo.jpg'">
+                            </div>
+                            <div>
+                                <strong style="color: var(--hd-yellow);">${item.title}</strong><br>
+                                <small style="color: #aaa;">${item.category}</small>
+                            </div>
+                        `;
+                        dropdown.appendChild(result);
+                    });
+
+                    dropdown.style.display = "block";
+                });
+
+                document.addEventListener("click", function(e) {
+                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

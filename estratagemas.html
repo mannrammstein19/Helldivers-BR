@@ -27,6 +27,244 @@
     <meta name="theme-color" content="#FFE800">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================================================================== */
+        /* 🔽 ACCORDION DE CATEGORIAS (Armas de Apoio / Orbitais / futuras)     */
+        /* ==================================================================== */
+        .accordion-category {
+            max-width: 1200px;
+            margin: 0 0 22px 0;
+            border: 1px solid #3a3a3a;
+            background: linear-gradient(180deg, rgba(30, 30, 30, 0.65), rgba(14, 14, 14, 0.65));
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .accordion-category:has(.accordion-header.active) {
+            border-color: #d7d52c;
+            box-shadow: 0 4px 18px rgba(215, 213, 44, 0.15);
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, rgba(215, 213, 44, 0.10), rgba(0, 0, 0, 0) 65%);
+            border: none;
+            border-left: 4px solid #6b6a1c;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: background 0.25s ease, border-left-color 0.25s ease, padding-left 0.25s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(90deg, rgba(215, 213, 44, 0.20), rgba(0, 0, 0, 0) 75%);
+            border-left-color: #d7d52c;
+            padding-left: 28px;
+        }
+
+        .accordion-header.active {
+            border-left-color: #d7d52c;
+            background: linear-gradient(90deg, rgba(215, 213, 44, 0.16), rgba(0, 0, 0, 0) 75%);
+        }
+
+        .accordion-header .category-title {
+            margin: 0;
+            padding: 0;
+            border: none;
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            text-transform: none;
+            color: #d7d52c;
+            text-shadow: 0 0 12px rgba(215, 213, 44, 0.35), 0 2px 2px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .accordion-header .category-title .category-title-en {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.75em;
+            letter-spacing: 0.5px;
+            text-shadow: none;
+        }
+
+        .accordion-header .category-title::before {
+            content: "";
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            background: #d7d52c;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 8px rgba(215, 213, 44, 0.7);
+            flex-shrink: 0;
+        }
+
+        .accordion-icon {
+            position: relative;
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 3px;
+            background: #d7d52c;
+            border-radius: 1px;
+            top: 50%;
+            transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1), background 0.25s ease;
+        }
+
+        .accordion-icon::before {
+            left: -1px;
+            transform: rotate(45deg);
+            transform-origin: right center;
+        }
+
+        .accordion-icon::after {
+            right: -1px;
+            transform: rotate(-45deg);
+            transform-origin: left center;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+
+        .accordion-content-inner {
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-14px);
+            transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .accordion-content.open .accordion-content-inner {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        .accordion-content .table-responsive {
+            padding: 4px 16px 18px 16px;
+        }
+
+        /* ==================================================================== */
+        /* 🗂️ GRUPOS DE PERMISSÃO (Ofensiva / Suprimento / Defensiva)           */
+        /* ==================================================================== */
+        .stratagem-group {
+            max-width: 1200px;
+            margin: 0 0 8px 0;
+        }
+
+        .group-title {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            color: #d7d52c;
+            text-shadow: 0 0 12px rgba(215, 213, 44, 0.35), 0 2px 2px rgba(0, 0, 0, 0.6);
+            margin: 34px 0 14px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid rgba(215, 213, 44, 0.5);
+        }
+
+        .stratagem-group:first-of-type .group-title {
+            margin-top: 0;
+        }
+
+        .accordion-intro {
+            padding: 4px 16px 14px 16px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #d8d8d8;
+        }
+
+        /* ==================================================================== */
+        /* 🎨 TONALIDADES POR TIPO DE PERMISSÃO (Ofensiva / Suprimento / Defensiva) */
+        /*    Cada grupo define sua --group-color, usada no título, na setinha,  */
+        /*    no losango e no glow neon do card quando aberto/hover.             */
+        /* ==================================================================== */
+
+        .grupo-ofensiva    { --group-color: #ff4d4d; --group-rgb: 255, 77, 77; }
+        .grupo-suprimento  { --group-color: #4da3ff; --group-rgb: 77, 163, 255; }
+        .grupo-defensiva   { --group-color: #4dffa3; --group-rgb: 77, 255, 163; }
+
+        /* Fundo do cabeçalho continua sutil, só que agora na cor do grupo */
+        .stratagem-group .accordion-header {
+            background: linear-gradient(90deg, rgba(var(--group-rgb), 0.12), rgba(0, 0, 0, 0) 65%);
+            border-left-color: rgba(var(--group-rgb), 0.55);
+        }
+        .stratagem-group .accordion-header:hover {
+            background: linear-gradient(90deg, rgba(var(--group-rgb), 0.20), rgba(0, 0, 0, 0) 75%);
+            border-left-color: var(--group-color);
+        }
+        .stratagem-group .accordion-header.active {
+            background: linear-gradient(90deg, rgba(var(--group-rgb), 0.16), rgba(0, 0, 0, 0) 75%);
+            border-left-color: var(--group-color);
+        }
+        .stratagem-group .accordion-content-inner {
+            background: rgba(var(--group-rgb), 0.05);
+        }
+
+        /* Título, losango (◆) e setinha do acordeão na cor do grupo */
+        .stratagem-group .category-title {
+            color: var(--group-color);
+            text-shadow: 0 0 12px rgba(var(--group-rgb), 0.4), 0 2px 2px rgba(0, 0, 0, 0.6);
+        }
+        .stratagem-group .category-title::before {
+            background: var(--group-color);
+            box-shadow: 0 0 8px rgba(var(--group-rgb), 0.7);
+        }
+        .stratagem-group .accordion-icon::before,
+        .stratagem-group .accordion-icon::after {
+            background: var(--group-color);
+        }
+
+        /* ✨ EFEITO NEON: acende a borda do card inteiro no hover e quando aberto */
+        .stratagem-group .accordion-category:hover,
+        .stratagem-group .accordion-category:has(.accordion-header.active) {
+            border-color: var(--group-color);
+            box-shadow:
+                0 0 10px rgba(var(--group-rgb), 0.55),
+                0 0 24px rgba(var(--group-rgb), 0.35);
+        }
+
+        .warbond-link {
+            color: #d7d52c;
+            text-decoration: none;
+        }
+
+        .warbond-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="fundo-estrategema">
 
@@ -42,7 +280,7 @@
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="home.html">Página Principal</a></li>
+                <li><a href="index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
@@ -65,648 +303,31 @@
             <h1>Estratagemas Cadastradas</h1>
         </div>
 
-        <h2 class="category-title">Armas de Apoio (Support Weapons)</h2>
+        <div class="stratagem-group grupo-ofensiva">
+            <h2 class="group-title">Permissão Ofensiva</h2>
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Estratagemas Orbitais <span class="category-title-en">(Orbital Strikes)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">Os ataques orbitais são convocados direto do Destróier Super. Demoram um pouco mais pra chegar do que os da Águia, mas cobrem uma área maior e batem mais forte. Funcionam melhor contra alvos parados ou previsíveis, como uma patrulha desavisada ou um Ninho de Bugs, já que o tempo de espera dá chance de os inimigos reagirem. Assim que o ataque atinge o solo, o estratagema já entra em recarga.</p>
         <div class="table-responsive">
             <table class="hd-table">
                 <thead>
-                    <tr>
-                        <th style="width: 8%;">Ícone</th>
-                        <th style="width: 27%;">Nome</th>
-                        <th style="width: 25%;">Código de Ativação</th>
-                        <th style="width: 12%;">Nível</th> 
-                        <th style="width: 13%;">Recarga</th>
-                        <th style="width: 15%;">Custo</th>
-                    </tr>
-                </thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
                 <tbody>
-                    <tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Metralhadora</a></td>
-                        <td>
-                            <div class="code-container">
-	                            <img src="imagens/icones/seta-baixo.png" class="arrow">
-		                        <img src="imagens/icones/seta-esquerda.png" class="arrow">
-			                    <img src="imagens/icones/seta-baixo.png" class="arrow">
-				                <img src="imagens/icones/seta-cima.png" class="arrow">
-				                <img src="imagens/icones/seta-direita.png" class="arrow">
-		                </div>
-                        </td>
-                        <td>1</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> Gratis
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Antitanque Descartável.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Antitanque Descartável</a></td>
-                        <td>
-                            <div class="code-container">
-                                <img src="imagens/icones/seta-baixo.png" class="arrow">
-                                <img src="imagens/icones/seta-baixo.png" class="arrow">
-                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
-                                <img src="imagens/icones/seta-cima.png" class="arrow">
-                                <img src="imagens/icones/seta-direita.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>3</td> <td>70s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 3.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Vigorosa.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Vigorosa</a></td>
-                        <td>
-                            <div class="code-container">
-								<img src="imagens/icones/seta-baixo.png" class="arrow">
-								<img src="imagens/icones/seta-esquerda.png" class="arrow">
-								<img src="imagens/icones/seta-baixo.png" class="arrow">
-								<img src="imagens/icones/seta-cima.png" class="arrow">
-								<img src="imagens/icones/seta-cima.png" class="arrow">
-								<img src="imagens/icones/seta-esquerda.png" class="arrow">
-							</div>
-                        </td>
-                        <td>1</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 3.500
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Canhão a Laser</a></td>
-                        <td>
-                            <div class="code-container">
-							    <img src="imagens/icones/seta-baixo.png" class="arrow">
-								<img src="imagens/icones/seta-esquerda.png" class="arrow">
-								<img src="imagens/icones/seta-baixo.png" class="arrow">
-								<img src="imagens/icones/seta-cima.png" class="arrow">
-								<img src="imagens/icones/seta-esquerda.png" class="arrow">	
-                            </div>
-                        </td>
-                        <td>5</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Rifle Antimaterial</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-direita.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>1</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 5.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">lancador de granadas</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>5</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Rifle sem Recuo</a></td>
-                        <td>
-                            <div class="code-container">
-                                <img src="imagens/icones/seta-baixo.png" class="arrow">
-                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
-                                <img src="imagens/icones/seta-direita.png" class="arrow">
-                                <img src="imagens/icones/seta-direita.png" class="arrow">
-                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>5</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lança-chamas</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>10</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Metralhadora Pesada</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>12</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão Automático.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Canhão Automático</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>10</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lançador de Arco.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lançador de Arco</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>15</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão Quasar.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Canhão Quasar</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>18</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Foguetes de Explosão Atmosférica.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lança Foguetes de Explosão Atmosférica</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>15</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Comando.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Comando</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>15</td> <td>120s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lança</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>20</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 9.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Railgun.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Railgun</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>20</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Mísseis V.E.S.P.A.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lança Mísseis V.E.S.P.A</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>20</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 12.000
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Martelo Rompedor.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Martelo Rompedor</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Época.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Época</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Tempestade de Balas.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Tempestade de Balas</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>70s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Arbalete.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Arbalete</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Ferramenta de Desfolhamento.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Ferramenta de Desfolhamento</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Esterilizador.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Esterilizador</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Napalm Descartável.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Napalm Descartável</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>140s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Desobstrutora.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Desobstrutoraa</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>140s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Desescalador.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Desescalador</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Granadas com Fitas.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Lança Granadas com Fitas</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Pacote de C4.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Pacote de C4</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Silo Solo.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Silo Solo</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>180s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Cremador.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Cremador</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Maxiarma.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">Maxiarma</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-					<tr>
-                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/A Bandeira Una.svg" class="strat-icon"></td>
-                        <td><a href="#" class="strat-link">A Bandeira Una</a></td>
-                        <td>
-                            <div class="code-container">
-							<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-esquerda.png" class="arrow">
-										<img src="imagens/icones/seta-cima.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-										<img src="imagens/icones/seta-baixo.png" class="arrow">
-                            </div>
-                        </td>
-                        <td>Não se aplica</td> <td>480s</td>
-                        <td>
-                            <div class="req-badge">
-                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h2 class="category-title">Estratagemas Orbitais (Orbital Strikes)</h2>
-        <div class="table-responsive">
-            <table class="hd-table">
-                <thead>
-                    <tr>
-                        <th style="width: 8%;">Ícone</th>
-                        <th style="width: 27%;">Nome</th>
-                        <th style="width: 25%;">Código de Ativação</th>
-                        <th style="width: 12%;">Nível</th> 
-                        <th style="width: 13%;">Recarga</th>
-                        <th style="width: 15%;">Custo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
+                                        <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque de Precisão Orbital.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/1-Ataque de Precisão Orbital/index.html" class="strat-link">Ataque de Precisão Orbital</a></td>
                         <td>
@@ -716,14 +337,15 @@
                                 <img src="imagens/icones/seta-cima.png" class="arrow">
                             </div>
                         </td>
-                        <td>1</td> <td>1m 50s</td>
-                        <td>
+                        <td>1m 50s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 1.500
                             </div>
                         </td>
+                        <td>1</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Barregem Orbital Gatling.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/2-Barragem Orbital Gatling/index.html" class="strat-link">Barragem Orbital Gatling</a></td>
                         <td>
@@ -735,14 +357,15 @@
                                 <img src="imagens/icones/seta-cima.png" class="arrow">
                             </div>
                         </td>
-                        <td>1</td> <td>1m 10s</td>
-                        <td>
+                        <td>1m 10s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
                             </div>
                         </td>
+                        <td>1</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque de Gás Orbital.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/3-Ataque de Gás Orbital/Ataque de Gás Orbital.html" class="strat-link">Impacto de Gás Orbital</a></td>
                         <td>
@@ -753,14 +376,15 @@
                                 <img src="imagens/icones/seta-direita.png" class="arrow">
                             </div>
                         </td>
-                        <td>1</td> <td>1m 25s</td>
-                        <td>
+                        <td>1m 25s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
                             </div>
                         </td>
+                        <td>1</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Barragem Orbital 120mm.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/4-Barragem-Orbital-120mm/Barragem-Orbital-120mm.html" class="strat-link">Barragem Orbital 120mm</a></td>
                         <td>
@@ -773,14 +397,15 @@
 								<img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>5</td> <td>3 Min</td>
-                        <td>
+                        <td>3 Min</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
                             </div>
                         </td>
+                        <td>5</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque Orbital Aéreo.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/5-Ataque Orbital Aéreo/Ataque Orbital Aéreo.html" class="strat-link">Ataque Orbital Aéreo</a></td>
                         <td>
@@ -790,14 +415,15 @@
                                 <img src="imagens/icones/seta-direita.png" class="arrow">
                             </div>
                         </td>
-                        <td>5</td> <td>1m 40s</td>
-                        <td>
+                        <td>1m 40s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
                             </div>
                         </td>
+                        <td>5</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque de Fumaça Orbital.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/6-Ataque de Fumaça Orbital/Ataque de Fumaça Orbital.html" class="strat-link">Ataque de Fumaça Orbital</a></td>
                         <td>
@@ -808,14 +434,15 @@
                                 <img src="imagens/icones/seta-cima.png" class="arrow">
                             </div>
                         </td>
-                        <td>8</td> <td>1m 25s</td>
-                        <td>
+                        <td>1m 25s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
                             </div>
                         </td>
+                        <td>8</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque EMS Orbital.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/7-Ataque EMS Orbital/Ataque EMS Orbital.html" class="strat-link">Ataque EMS Orbital</a></td>
                         <td>
@@ -826,14 +453,15 @@
                                 <img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>5</td> <td>1m 25s</td>
-                        <td>
+                        <td>1m 25s</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
                             </div>
                         </td>
+                        <td>5</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Barragem Orbital 380mm.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/8-Barragem-Orbital-380mm/index.html" class="strat-link">Barragem Orbital 380mm</a></td>
                         <td>
@@ -847,14 +475,15 @@
 								<img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>8</td> <td>4 Min</td>
-                        <td>
+                        <td>4 Min</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
                             </div>
                         </td>
+                        <td>8</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Barragem Orbital Movel.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/9-Barragem Orbital Movel/Barragem Orbital Movel.html" class="strat-link">Barragem Orbital Movel</a></td>
                         <td>
@@ -867,14 +496,15 @@
 								<img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>10</td> <td>4 Min</td>
-                        <td>
+                        <td>4 Min</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
                             </div>
                         </td>
+                        <td>10</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/10-laser-orbital/index.html" class="strat-link">Laser Orbital</a></td>
                         <td>
@@ -886,14 +516,15 @@
                                 <img src="imagens/icones/seta-baixo.png" class="arrow">
                             </div>
                         </td>
-                        <td>15</td> <td>5 Min</td>
-                        <td>
+                        <td>5 Min</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
                             </div>
                         </td>
+                        <td>15</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Barragem Orbital de Napalm.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/11-Barragem de Napalm Orbital/index.html" class="strat-link">Barragem Orbital de Napalm</a></td>
                         <td>
@@ -906,14 +537,15 @@
 								<img src="imagens/icones/seta-cima.png" class="arrow">
                             </div>
                         </td>
-                        <td>18</td> <td>4 Min</td>
-                        <td>
+                        <td>4 Min</td> <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
                             </div>
                         </td>
+                        <td>18</td>
+                        <td>A definir</td>
                     </tr>
-					<tr>
+					                    <tr>
                         <td class="cell-icon"><img src="imagens/2-estratagemas/2-orbitais/Ataque Orbital com Canhão Eletrico.svg" class="strat-icon"></td>
                         <td><a href="estratagemas/1-orbitais/12-Ataque de Canhão Elétrico Orbital/Orbital Railcannon.html" class="strat-link">Ataque Orbital com Canhão Eletrico</a></td>
                         <td>
@@ -925,15 +557,2042 @@
                                 <img src="imagens/icones/seta-direita.png" class="arrow">
                             </div>
                         </td>
-                        <td>20</td> <td>3 Min</td>
+                        <td>3 Min</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
+                            </div>
+                        </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Ataques Águia <span class="category-title-en">(Eagle Strikes)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">Os ataques da Águia chegam bem mais rápido que os orbitais e podem ser usados várias vezes seguidas antes de precisar recarregar, mas cobrem uma área menor. São ótimos como resposta rápida contra ameaças que acabaram de aparecer. Depois de gastar toda a munição disponível, a Águia entra automaticamente em modo de rearmamento — que também pode ser acionado na mão a qualquer momento.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_Strafing_Run_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/1-Metralhadora da Águia/index.html" class="strat-link">Metralhadora da Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 1.500
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_Airstrike_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/2-Ataque Aéreo via Águia/index.html" class="strat-link">Ataque Aéreo via Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_Cluster_Bomb_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/3-Bomba de Fragmentação via Águia/index.html" class="strat-link">Bomba de Fragmentação via Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>3</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_Smoke_Strike_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/4-Barreira de Fumaça da Águia/index.html" class="strat-link">Barreira de Fumaça da Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>8</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_Napalm_Airstrike_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/5-Ataque Aéreo de Napalm via Águia/index.html" class="strat-link">Ataque Aéreo de Napalm via Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 5.000
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_110mm_Rocket_Pods_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/6-Pods de Foguetes de 110mm via Águia/index.html" class="strat-link">Pods de Foguetes de 110mm via Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td>Hangar</td>
+                    </tr>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-eagle/Eagle_500kg_Bomb_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="estratagemas/2-eagle/7-Bomba de 500kg/index.html" class="strat-link">Bomba de 500kg</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>15s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>Hangar</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="stratagem-group grupo-suprimento">
+            <h2 class="group-title">Permissão de Suprimento</h2>
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Armas de Apoio <span class="category-title-en">(Support Weapons)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">As armas de apoio são equipamentos mais pesados que chegam via estratagema, dando poder de fogo extra além do arsenal padrão do Helldiver. Boa parte delas exige uma mochila específica pra recarregar ou operar direito, então vale conferir a compatibilidade antes de fechar o loadout.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                                        <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Metralhadora</a></td>
+                        <td>
+                            <div class="code-container">
+	                            <img src="imagens/icones/seta-baixo.png" class="arrow">
+		                        <img src="imagens/icones/seta-esquerda.png" class="arrow">
+			                    <img src="imagens/icones/seta-baixo.png" class="arrow">
+				                <img src="imagens/icones/seta-cima.png" class="arrow">
+				                <img src="imagens/icones/seta-direita.png" class="arrow">
+		                </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> Gratis
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Antitanque Descartável.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Antitanque Descartável</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>70s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 3.000
+                            </div>
+                        </td>
+                        <td>3</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Vigorosa.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Vigorosa</a></td>
+                        <td>
+                            <div class="code-container">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+							</div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 3.500
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão a Laser.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Canhão a Laser</a></td>
+                        <td>
+                            <div class="code-container">
+							    <img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">	
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle Antimaterial.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rifle Antimaterial</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-direita.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 5.000
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/lancador de granadas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">lancador de granadas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Rifle sem Recuo.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rifle sem Recuo</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança-chamas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança-chamas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Metralhadora Pesada.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Metralhadora Pesada</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>12</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão Automático.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Canhão Automático</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.000
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lançador de Arco.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lançador de Arco</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.000
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Canhão Quasar.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Canhão Quasar</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
+                            </div>
+                        </td>
+                        <td>18</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Foguetes de Explosão Atmosférica.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança Foguetes de Explosão Atmosférica</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Comando.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Comando</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>120s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 9.000
+                            </div>
+                        </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Railgun.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Railgun</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
+                            </div>
+                        </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Mísseis V.E.S.P.A.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança Mísseis V.E.S.P.A</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 12.000
+                            </div>
+                        </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Martelo Rompedor.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Martelo Rompedor</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Época.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Época</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Tempestade de Balas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Tempestade de Balas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>70s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Exo Experts</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Arbalete.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Arbalete</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Ferramenta de Desfolhamento.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Ferramenta de Desfolhamento</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Python Commandos</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Esterilizador.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Esterilizador</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Chemical Agents</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Napalm Descartável.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Napalm Descartável</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>140s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Desobstrutora.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Desobstrutoraa</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>140s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Desescalador.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Desescalador</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Force of Law</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Lança Granadas com Fitas.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Lança Granadas com Fitas</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Siege Breakers</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Pacote de C4.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Pacote de C4</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Redacted Regiment</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Silo Solo.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Silo Solo</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>180s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Cremador.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Cremador</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Entrenched Division</a></td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/Maxiarma.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Maxiarma</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+					                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/1-armas-de-apoio/A Bandeira Una.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">A Bandeira Una</a></td>
+                        <td>
+                            <div class="code-container">
+							<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-esquerda.png" class="arrow">
+										<img src="imagens/icones/seta-cima.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+										<img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>480s</td> <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Mochilas <span class="category-title-en">(Backpacks)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">As mochilas costumam ter um papel mais de suporte para os Helldivers. Vão desde poder de fogo extra, na forma dos drones Guard Dog, até ferramentas de mobilidade e outras opções de utilidade. Só é recomendado levar uma mochila quando o Helldiver não estiver já usando uma arma de apoio que precise de mochila para recarregar.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Supply_Pack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Pacote de Suprimentos</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Jump_Pack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Mochila Propulsora</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>8</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Ballistic_Shield_Backpack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Escudo Balístico Portátil</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>4 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>12</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Guard_Dog_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Cão de Guarda</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Rover_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rover</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Shield_Generator_Pack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Gerador de Escudo Portátil</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
                         <td>
                             <div class="req-badge">
                                 <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
                             </div>
                         </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Directional_Shield_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Escudo Direcional</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Hot_Dog_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Cão-Quente</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 75 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Python Commandos</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Portable_Hellbomb_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Bomba do Inferno Portátil</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>5 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Servants of Freedom</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/K-9_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">K-9</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Force of Law</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Hover_Pack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Mochila Plainadora</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/3-mochilas/Warp_Pack_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Mochila de Distorção</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 110 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Control Group</a></td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+            </div>
+            </div>
+        </div>
+
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Veículos <span class="category-title-en">(Vehicles)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">Os veículos incluem os FRVs (Veículos Rápidos de Reconhecimento), os Exoesqueletos e o Bastião. Os FRVs são veículos de reconhecimento equipados com armas montadas, capazes de carregar vários Helldivers ao mesmo tempo, usados para se deslocar rapidamente pela área de missão. Os Exoesqueletos são mechs pilotados por um único Helldiver, com blindagem reforçada e uma variedade de armas montadas, feitos para destruir grandes quantidades de inimigos enquanto abrem caminho para os aliados. Já o Bastião é um caça-tanques blindado para até quatro Helldivers.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Supply_FRV_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">FRV de Suprimentos</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Incinerator_FRV_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">FRV Incinerador</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Emancipator_Exosuit_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Exoesqueleto Emancipador</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>7 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 20.000
+                            </div>
+                        </td>
+                        <td>25</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Patriot_Exosuit_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Exoesqueleto Patriota</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>7 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 20.000
+                            </div>
+                        </td>
+                        <td>25</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Fast_Recon_Vehicle_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">FRV Artilheiro</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>8 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 25.000
+                            </div>
+                        </td>
+                        <td>25</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Bastion_MK_XVI_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Bastião MK XVI</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>13 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 35.000
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Breakthrough_Exosuit_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Exoesqueleto Ruptor</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>7 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 50 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Exo Experts</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/4-veiculos/Lumberer_Exosuit_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Exoesqueleto Lenhador</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>7 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 50 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Exo Experts</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="stratagem-group grupo-defensiva">
+            <h2 class="group-title">Permissão Defensiva</h2>
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Sentinelas <span class="category-title-en">(Sentries)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">As sentinelas são torretas automáticas que vêm com uma quantidade limitada de munição e engajam os inimigos automaticamente assim que estão ao alcance. Elas são equipadas com diferentes tipos de armamento para propósitos distintos, incluindo metralhadoras, canhões automáticos, morteiros e até foguetes. A escolha da sentinela deve mudar de acordo com o estilo de jogo do Helldiver, o restante do equipamento levado e a força inimiga esperada. Torretas sentinela são melhor usadas para cobrir uma ou mais áreas que seria impossível para um Helldiver cobrir sozinho.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Machine_Gun_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Metralhadora</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>90s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 1.500
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Gatling_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Gatling</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2m 30s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 4.000
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Autocannon_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Canhão Automático</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2m 30s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 6.000
+                            </div>
+                        </td>
+                        <td>13</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Mortar_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Morteiro</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+								<img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>3 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.000
+                            </div>
+                        </td>
+                        <td>8</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Rocket_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela de Foguetes</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2m 30s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 7.500
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Tesla_Tower_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Torre Tesla</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-esquerda.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
+                            </div>
+                        </td>
+                        <td>15</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/EMS_Mortar_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Morteiro EMS</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>3 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 8.000
+                            </div>
+                        </td>
+                        <td>20</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Flame_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Lança-Chamas</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+								<img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Laser_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Laser</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-cima.png" class="arrow">
+								<img src="imagens/icones/seta-direita.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>2m 30s</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Control Group</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/5-sentinelas/Gas_Mortar_Sentry_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sentinela Morteiro de Gás</a></td>
+                        <td>
+                            <div class="code-container">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+                                <img src="imagens/icones/seta-cima.png" class="arrow">
+                                <img src="imagens/icones/seta-direita.png" class="arrow">
+                                <img src="imagens/icones/seta-baixo.png" class="arrow">
+								<img src="imagens/icones/seta-esquerda.png" class="arrow">
+                            </div>
+                        </td>
+                        <td>3 Min</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/medals.png" class="req-icon"> 85 Medalhas
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td><a href="#" class="warbond-link">Entrenched Division</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Plataformas <span class="category-title-en">(Emplacements)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">Diferente das sentinelas, as plataformas são armas fixas operadas manualmente por um Helldiver, oferecendo um enorme aumento de poder de fogo em troca de sacrificar toda a mobilidade. Elas também incluem minas e geradores de escudo, ideais para proteger uma posição ou um ponto de defesa por um bom tempo. Um Helldiver bem posicionado com uma boa plataforma pode segurar uma linha de frente inteira sozinho.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/HMG_Emplacement_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Plataforma HMG</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> 10.000
+                            </div>
+                        </td>
+                        <td>10</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Anti-Tank_Emplacement_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Plataforma Anti-Tank</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Grenadier_Battlement_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Fortim Granadeiro</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Shield_Generator_Relay_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Relé Gerador de Escudo</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Anti-Tank_Mines_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Minas Anti-Tank</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Anti-Personnel_Minefield_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Campo de Minas Antipessoal</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Gas_Mines_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Minas de Gás</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/6-plataformas/Incendiary_Mines_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Minas Incendiárias</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td>
+                            <div class="req-badge">
+                                <img src="imagens/icones/Requisition_Slip.svg" class="req-icon"> A definir
+                            </div>
+                        </td>
+                        <td>A definir</td>
+                        <td><a href="#" class="warbond-link">Urban Legends</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="stratagem-group">
+            <h2 class="group-title">Outros</h2>
+<div class="accordion-category">
+            <button class="accordion-header" type="button">
+                <h2 class="category-title">Estratagemas de Missão <span class="category-title-en">(Mission Stratagems)</span></h2>
+                <span class="accordion-icon"></span>
+            </button>
+            <div class="accordion-content">
+            <div class="accordion-content-inner">
+        <p class="accordion-intro">Os estratagemas de missão são diferentes por não servirem para reforçar o Helldiver ou destruir inimigos, mas sim para cumprir objetivos de missão. Alguns ficam sempre disponíveis, como Reforçar e Reabastecer, enquanto outros são específicos de determinadas missões, muitas vezes exigindo que o Helldiver esteja em uma área específica para poder ser chamado.</p>
+        <div class="table-responsive">
+            <table class="hd-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Ícone</th>
+                    <th style="width: 23%;">Nome</th>
+                    <th style="width: 20%;">Código de Ativação</th>
+                    <th style="width: 11%;">Recarga</th>
+                    <th style="width: 13%;">Custo</th>
+                    <th style="width: 10%;">Nível</th>
+                    <th style="width: 16%;">Fonte</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Reinforce_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Reforçar</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Gratuito</td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Resupply_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Reabastecimento</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Gratuito</td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Eagle_Rearm_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Rearmar Águia</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Gratuito</td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/SOS_Beacon_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Farol SOS</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Gratuito</td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Super_Earth_Flag_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Bandeira de Super Terra</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Gratuito</td>
+                        <td>1</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Enviar Dados.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Enviar Dados</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Hellbomb_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Bomba do Inferno</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/SEAF_Artillery_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Artilharia SEAF</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Reinforcement Pods.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Cápsulas de Reforço</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Cargo_Container_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Container de Carga</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Aquifer Drill.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Broca do Aquífero</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Hive Breaker Drill.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Broca Rompe-Colônias</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Broca Tectônica.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Broca Tectônica</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Seismic_Probe_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Sonda Sísmica</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Prospecting Drill.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Broca de Prospecção</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Relé de Comunicações Portátil.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Relé de Comunicações Portátil</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Câmera Tática.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Câmera Tática</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Call_In_Super_Destroyer_Stratagem_Icon_Background.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Chamar Super Destróier</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-icon"><img src="imagens/2-estratagemas/7-missao/Entrega SSSD.svg" class="strat-icon"></td>
+                        <td><a href="#" class="strat-link">Entrega SSSD</a></td>
+                        <td>
+                            <div class="code-container">
+                                <span style="color:#d8d8d8;">Código a definir</span>
+                            </div>
+                        </td>
+                        <td>Não se aplica</td>
+                        <td>Não se aplica</td>
+                        <td>A definir</td>
+                        <td>A definir</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
         </div>
 
     </main>
@@ -953,6 +2612,16 @@
 							}
 						});
 					}
+
+					// 🔽 Accordion de categorias (várias podem ficar abertas ao mesmo tempo)
+					const accordionHeaders = document.querySelectorAll(".accordion-header");
+					accordionHeaders.forEach(function(header) {
+						header.addEventListener("click", function() {
+							const content = header.nextElementSibling;
+							header.classList.toggle("active");
+							content.classList.toggle("open");
+						});
+					});
 				});
 			</script>
 

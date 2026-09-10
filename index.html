@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helldivers BR - Banco de Dados</title>
+<!-- ==================================================================== -->
+    <!-- 📱 TAGS DE COMPARTILHAMENTO (O QUE FAZ FICAR GRANDÃO NO ZAP/DISCORD) -->
+    <!-- ==================================================================== -->
+    
+    <!-- Open Graph (WhatsApp, Telegram, Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Helldivers BR | A Maior Comunidade do Brasil">
+    <meta property="og:description" content="Junte-se à linha de frente! Encontre guias, Warbonds, detalhes de Estratagemas e monte seu esquadrão. Pela Super Terra!">
+    <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+    <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/">
+    <meta property="og:site_name" content="Helldivers BR">
+
+    <!-- Twitter (É isso que o Discord usa pra esticar o banner) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Helldivers BR | A Maior Comunidade do Brasil">
+    <meta name="twitter:description" content="Junte-se à linha de frente! Encontre guias, Warbonds, detalhes de Estratagemas e monte seu esquadrão. Pela Super Terra!">
+    <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+
+    <!-- Cor da barrinha lateral no Discord (Pode manter o amarelo) -->
+    <meta name="theme-color" content="#FFE800">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="fundo-principal">
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">
+    ☰ MENU DE NAVEGAÇÃO
+</button>
+    </div>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="index.html" class="active">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Aquisições</div>
+            <ul class="menu-list">
+                <li><a href="warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+                <li><a href="#">Superloja</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="estratagemas.html">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Boosters</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Inimigos & Facções</div>
+            <ul class="menu-list">
+                <li><a href="faccoes.html">Facções</a></li>
+                <li><a href="inimigos/automatos.html">Autômatos</a></li>
+                <li><a href="inimigos/terminideos.html">Termínios</a></li>
+                <li><a href="inimigos/iluminados.html">Iluminados</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title-block">
+            <h1>Boas-vindas à Helldivers Wiki BR</h1>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box-wrapper">
+                <input type="text" id="wiki-search" placeholder="🔍 Pesquisar itens nesta página..." autocomplete="off">
+                <button class="search-btn">⚙️</button>
+            </div>
+            <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Banco de Dados Tático da Super Terra</h2>
+            <p>Este é o centro de inteligência definitivo para os soldados do front. Aqui você encontrará tabelas detalhadas com informações brutas direto dos arquivos do jogo: dano durável, níveis exatos de penetração de blindagem (Anti-Tank II, Heavy) e efeitos de status especiais.</p>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Ordens Maiores</h2>
+            <p>Utilize o menu lateral para navegar entre as seções de armamentos e estratagemas para planejar seu próximo drop de forma cirúrgica.</p>
+        </div>
+    </main>
+
+    <!-- Vinculação do arquivo de dados externa -->
+    <script src="dados.js"></script>
+	<script src="warbonds.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // ---- CONTROLE DO MENU MOBILE ----
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            // ---- BUSCA ESTILO WIKI (PUXANDO DO DADOS.JS COM IMAGEM) ----
+            const searchInput = document.getElementById("wiki-search");
+            const dropdown = document.getElementById("search-results");
+
+            if (searchInput && dropdown) {
+                searchInput.addEventListener("input", function() {
+                    const query = this.value.toLowerCase().trim();
+                    dropdown.innerHTML = "";
+
+                    if (!query) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    // 1. Puxamos as duas bases de dados. Se uma delas der erro ou não carregar, usamos um array vazio [] pra não quebrar a página.
+					const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
+					const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
+
+					// 2. Juntamos as duas usando o spread operator (...)
+					const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
+
+					// 3. Verificamos se pelo menos um banco carregou
+					if (bancoDeDadosCompleto.length === 0) {
+						dropdown.innerHTML = `
+							<div style="padding:12px;color:#ff7b00;">
+								⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
+							</div>`;
+						dropdown.style.display = "block";
+						return;
+					}
+
+					// 4. Filtramos no banco completo!
+					const results = bancoDeDadosCompleto.filter(item =>
+						item.title.toLowerCase().includes(query)
+					);
+
+                    if (results.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Nenhum resultado encontrado
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    results.forEach(item => {
+                        const result = document.createElement("a");
+                        result.className = "search-item";
+                        result.href = item.url;
+
+                        // Agora carrega a tag <img> com a imagem do projeto no GitHub!
+                        // Caso a imagem dê erro ou não exista no caminho, carrega a logo de backup.
+                        result.innerHTML = `
+                            <div class="search-item-icon">
+                                <img src="${item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='imagens/0-banners/logo.jpg'">
+                            </div>
+                            <div>
+                                <strong style="color: var(--hd-yellow);">${item.title}</strong><br>
+                                <small style="color: #aaa;">${item.category}</small>
+                            </div>
+                        `;
+                        dropdown.appendChild(result);
+                    });
+
+                    dropdown.style.display = "block";
+                });
+
+                document.addEventListener("click", function(e) {
+                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

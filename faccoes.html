@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helldivers BR - Facções & Inimigos</title>
+
+    <!-- Open Graph (WhatsApp, Telegram, Discord) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Helldivers BR | Facções da Galáxia">
+    <meta property="og:description" content="Conheça as forças em combate na Guerra Galáctica: Super Terra, Termínios, Autômatos e os misteriosos Iluminados.">
+    <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+    <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/faccoes.html">
+    <meta property="og:site_name" content="Helldivers BR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Helldivers BR | Facções da Galáxia">
+    <meta name="twitter:description" content="Conheça as forças em combate na Guerra Galáctica. Pela Super Terra!">
+    <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+
+    <meta name="theme-color" content="#FFE800">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos específicos para a vitrine das facções -->
+    <style>
+        .faccoes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            margin-top: 20px;
+        }
+
+        /* ==================================================================== */
+        /* 🛰️ CARD ESTILO DOSSIÊ MILITAR / HUD                                  */
+        /* ==================================================================== */
+        .faction-card {
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(20,20,20,0.92), rgba(8,8,8,0.95));
+            border: 2px solid #333; /* <-- BORDA ENGROSSADA AQUI */
+            padding: 22px 22px 18px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            overflow: hidden;
+        }
+
+        /* Linha fina no topo, tipo "scanline" de HUD */
+        .faction-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--faction-color, #d7d52c), transparent 70%);
+            opacity: 0.9;
+        }
+
+        /* Textura sutil de grade no fundo do card */
+        .faction-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 22px 22px;
+            pointer-events: none;
+        }
+
+        .faction-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--faction-color, #d7d52c);
+            /* <-- EFEITO NEON AQUI --> */
+            /* Sombra interna para dar a impressão de luz vazando pro fundo */
+            box-shadow: inset 0 0 18px var(--faction-color, transparent);
+            /* Drop shadow contorna o formato real, acendendo inclusive o canto cortado! */
+            filter: drop-shadow(0 0 6px var(--faction-color)) drop-shadow(0 0 16px var(--faction-color));
+            z-index: 10;
+        }
+
+        /* Cores por facção via variável CSS (usada na borda, glow e scanline) */
+        .faction-card.super-terra  { --faction-color: #ffe800; }
+        .faction-card.terminids    { --faction-color: #ff9900; }
+        .faction-card.automatons   { --faction-color: #ff3333; }
+        .faction-card.illuminates  { --faction-color: #00ccff; }
+
+        .faction-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            width: fit-content;
+            clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .faction-badge::before {
+            content: "◆";
+            font-size: 0.65rem;
+        }
+
+        .badge-super-terra { background-color: #ffe800; color: #000; }
+        .badge-terminids   { background-color: #ff9900; color: #000; }
+        .badge-automatons  { background-color: #ff3333; color: #fff; }
+        .badge-illuminates { background-color: #00ccff; color: #000; }
+
+        .faction-img-box {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            background-color: #0d0d0d;
+            border: 1px solid #333;
+            border-top: 2px solid var(--faction-color, #555);
+            margin: 4px 0 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .faction-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(1.05) contrast(1.05);
+        }
+
+        /* Vinheta escura por cima da foto, pra integrar com o resto do card */
+        .faction-img-box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55) 100%);
+            pointer-events: none;
+        }
+
+        /* Cantos tipo mira/HUD nos quatro vértices da imagem */
+        .faction-img-box::before {
+            content: "";
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(255,255,255,0.25);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .faction-title {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            margin: 0 0 10px 0;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faction-desc {
+            color: #c9c9c9;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faction-meta {
+            font-size: 0.72rem;
+            letter-spacing: 0.4px;
+            color: #888;
+            border-top: 1px solid #2c2c2c;
+            padding-top: 10px;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+        }
+
+        .faction-meta strong {
+            color: var(--faction-color, #d7d52c);
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .faction-meta br + strong {
+            display: inline-block;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="fundo-principal">
+
+    <div class="mobile-header">
+        <button id="menu-toggle" class="mobile-menu-btn">
+            ☰ MENU DE NAVEGAÇÃO
+        </button>
+    </div>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Aquisições</div>
+            <ul class="menu-list">
+                <li><a href="warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+                <li><a href="#">Superloja</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="estratagemas.html">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Boosters</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Inimigos & Facções</div>
+            <ul class="menu-list">
+                <li><a href="faccoes.html" class="active">Visão Geral das Facções</a></li>
+                <li><a href="inimigos/automatos.html">Autômatos</a></li>
+                <li><a href="inimigos/terminideos.html">Termínios</a></li>
+                <li><a href="inimigos/iluminados.html">Iluminados</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title-block">
+            <h1>Facções da Guerra Galáctica</h1>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box-wrapper">
+                <input type="text" id="wiki-search" placeholder="🔍 Pesquisar itens nesta página..." autocomplete="off">
+                <button class="search-btn">⚙️</button>
+            </div>
+            <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <div class="wiki-card">
+            <h2>Panorama de Inteligência Tática</h2>
+            <p>A galáxia é um campo de batalha implacável. Enquanto a Super Terra luta para manter a paz e a Democracia Gerenciada, ameaças alienígenas e sintéticas cercam nossas fronteiras. Conheça as quatro grandes forças que moldam o conflito galáctico.</p>
+        </div>
+
+        <!-- GRID COM AS 4 FACÇÕES -->
+        <div class="faccoes-grid">
+
+            <!-- 1. FEDERAÇÃO DA SUPER TERRA -->
+            <div class="faction-card super-terra">
+                <div>
+                    <span class="faction-badge badge-super-terra">Aliados / Pátria</span>
+                    <h2 class="faction-title">Federação da Super Terra</h2>
+                    
+                    <!-- ESPAÇO PARA A FOTO 1 -->
+                    <div class="faction-img-box">
+                        <img src="inimigos/super-terra.png" alt="Super Terra" onerror="this.parentElement.innerHTML='<span style='color:#888; font-size:0.85rem;'>🖼️ Adicione a imagem em:<br><b>imagens/faccoes/super-terra.jpg</b></span>'">
+                    </div>
+
+                    <p class="faction-desc">
+                        O bastião da Liberdade, Prósperidade e Democracia Gerenciada. A Super Terra envia seus elite combatentes — os <strong>Helldivers</strong> — para espalhar a paz e defender o estilo de vida humano contra todas as ameaças espaciais.
+                    </p>
+                </div>
+                <div class="faction-meta">
+                    <strong>Força Militar:</strong> Helldivers & Frota de Super Destroyer<br>
+                    <strong>Objetivo:</strong> Defesa da Galáxia e Espalhar a Democracia
+                </div>
+            </div>
+
+            <!-- 2. TERMÍNIOS -->
+            <div class="faction-card terminids">
+                <div>
+                    <span class="faction-badge badge-terminids">Ameaça Insetóide</span>
+                    <h2 class="faction-title">Termínios (Terminids)</h2>
+                    
+                    <!-- ESPAÇO PARA A FOTO 2 -->
+                    <div class="faction-img-box">
+                        <img src="inimigos/Terminids.png" alt="Termínios" onerror="this.parentElement.innerHTML='<span style='color:#888; font-size:0.85rem;'>🖼️ Adicione a imagem em:<br><b>imagens/faccoes/terminids.jpg</b></span>'">
+                    </div>
+
+                    <p class="faction-desc">
+                        Uma praga alienígena em constante evolução biológica. Movidos por puro instinto de expansão e destruição, atacam em grandes hordas violentas. São também a principal fonte do valioso recurso <strong>Elemento 710 (E-710)</strong>.
+                    </p>
+                </div>
+                <div class="faction-meta">
+                    <strong>Estilo de Combate:</strong> Enxame, Ataques de Perto, Veneno<br>
+                    <strong>Recurso Chave:</strong> Elemento 710 (Combustível FTL)
+                </div>
+            </div>
+
+            <!-- 3. AUTÔMATOS -->
+            <div class="faction-card automatons">
+                <div>
+                    <span class="faction-badge badge-automatons">Ameaça Sintética</span>
+                    <h2 class="faction-title">Autômatos (Automatons)</h2>
+                    
+                    <!-- ESPAÇO PARA A FOTO 3 -->
+                    <div class="faction-img-box">
+                        <img src="inimigos/Automatons.jpg" alt="Autômatos" onerror="this.parentElement.innerHTML='<span style='color:#888; font-size:0.85rem;'>🖼️ Adicione a imagem em:<br><b>imagens/faccoes/automatons.jpg</b></span>'">
+                    </div>
+
+                    <p class="faction-desc">
+                        Uma facção robótica impiedosa e altamente militarizada que odeia a liberdade. Equipados com pesadas blindagens, tanques, serras elétricas e artilharia pesada, eles marcham sem parar exterminando tudo em seu caminho.
+                    </p>
+                </div>
+                <div class="faction-meta">
+                    <strong>Estilo de Combate:</strong> Armas de Fogo, Tanques, Fortaleza Blindada<br>
+                    <strong>Origem:</strong> Criados pelos antigos Ciborgues
+                </div>
+            </div>
+
+            <!-- 4. ILUMINADOS -->
+            <div class="faction-card illuminates">
+                <div>
+                    <span class="faction-badge badge-illuminates">Ameaça Alienígena</span>
+                    <h2 class="faction-title">Iluminados (Illuminates)</h2>
+                    
+                    <!-- ESPAÇO PARA A FOTO 4 -->
+                    <div class="faction-img-box">
+                        <img src="inimigos/Iluminados.png" alt="Iluminados" onerror="this.parentElement.innerHTML='<span style='color:#888; font-size:0.85rem;'>🖼️ Adicione a imagem em:<br><b>imagens/faccoes/illuminates.jpg</b></span>'">
+                    </div>
+
+                    <p class="faction-desc">
+                        Uma civilização ancestral extremamente avançada tecnologicamente. Utilizam escudos de energia, armas de plasma, ilusões e tecnologia de dobra espacial para tentar desestabilizar o domínio da Super Terra.
+                    </p>
+                </div>
+                <div class="faction-meta">
+                    <strong>Estilo de Combate:</strong> Escudos, Teletransporte, Dano de Energia<br>
+                    <strong>Nível de Tecnologia:</strong> Extremamente Alto
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts do seu projeto -->
+    <script src="dados.js"></script>
+    <script src="warbonds.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // ---- CONTROLE DO MENU MOBILE ----
+            const menuBtn = document.getElementById("menu-toggle");
+            const sidebar = document.querySelector(".sidebar");
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener("click", function() {
+                    sidebar.classList.toggle("active");
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ Fechar Menu";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            // ---- BUSCA ESTILO WIKI ----
+            const searchInput = document.getElementById("wiki-search");
+            const dropdown = document.getElementById("search-results");
+
+            if (searchInput && dropdown) {
+                searchInput.addEventListener("input", function() {
+                    const query = this.value.toLowerCase().trim();
+                    dropdown.innerHTML = "";
+
+                    if (!query) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
+                    const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
+                    const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
+
+                    if (bancoDeDadosCompleto.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    const results = bancoDeDadosCompleto.filter(item =>
+                        item.title.toLowerCase().includes(query)
+                    );
+
+                    if (results.length === 0) {
+                        dropdown.innerHTML = `
+                            <div style="padding:12px;color:#ff7b00;">
+                                ⚠️ Nenhum resultado encontrado
+                            </div>`;
+                        dropdown.style.display = "block";
+                        return;
+                    }
+
+                    results.forEach(item => {
+                        const result = document.createElement("a");
+                        result.className = "search-item";
+                        result.href = item.url;
+
+                        result.innerHTML = `
+                            <div class="search-item-icon">
+                                <img src="${item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='imagens/0-banners/logo.jpg'">
+                            </div>
+                            <div>
+                                <strong style="color: var(--hd-yellow);">${item.title}</strong><br>
+                                <small style="color: #aaa;">${item.category}</small>
+                            </div>
+                        `;
+                        dropdown.appendChild(result);
+                    });
+
+                    dropdown.style.display = "block";
+                });
+
+                document.addEventListener("click", function(e) {
+                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -44,6 +44,21 @@ body.fundo-warbonds {
     background: #0a0a0a url('imagens/0-banners/warbonds.png') center/cover fixed;
 }
 
+/* Quando o body tiver a classe 'fundo-automatos', ele usa outro */
+body.fundo-automatos {
+    background: #0a0a0a url('imagens/0-banners/faccoes/robos/automatons-horizontal.png') center/cover fixed;
+}
+
+/* Quando o body tiver a classe 'fundo-terminideos', ele usa outro */
+body.fundo-terminideos {
+    background: #0a0a0a url('imagens/0-banners/faccoes/insetos/terminideos-horizontal.jpg') center/cover fixed;
+}
+
+/* Quando o body tiver a classe 'fundo-iluminados', ele usa outro */
+body.fundo-iluminados {
+    background: #0a0a0a url('imagens/0-banners/faccoes/molusco/iluminados-horizontal.jpg') center/cover fixed;
+}
+
 /* ==========================================================================
    BARRA LATERAL (DESKTOP)
    ========================================================================== */
@@ -117,7 +132,7 @@ body.fundo-warbonds {
 .flex-td img { width: 16px !important; height: 16px !important; }
 
 /* ÁREA DE VÍDEO DEMONSTRATIVO */
-.video-section { margin-top: 40px; background: var(--hd-card); border: 1px solid var(--hd-yellow); padding: 20px; width: fit-content; margin: 40px auto 0 auto; text-align: center; max-width: 100%; }
+.video-section { margin-top: 40px; background: var(--hd-card); border: 1px solid var(--hd-yellow); padding: 20px; width: fit-content; text-align: center; max-width: 100%; }
 .video-wrapper { display: flex; justify-content: center; margin-top: 15px; }
 .video-wrapper video { max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000; }
 
@@ -128,16 +143,35 @@ body.fundo-warbonds {
 .table-responsive { width: 100%; overflow-x: auto; background: var(--hd-card); border: 1px solid rgba(215, 213, 44, 0.3); margin-bottom: 20px; }
 .hd-table { width: 100%; min-width: 550px; border-collapse: collapse; text-align: left; font-size: 14px; table-layout: fixed; }
 .hd-table th { background: rgba(215, 213, 44, 0.15); color: var(--hd-yellow); font-weight: bold; text-transform: uppercase; padding: 12px 10px; border-bottom: 2px solid var(--hd-yellow); font-size: 12px; }
-.hd-table td { padding: 10px; border-bottom: 1px solid rgba(215, 213, 44, 0.15); vertical-align: middle; }
+.hd-table td { padding: 10px; border-bottom: 1px solid rgba(215, 213, 44, 0.45); vertical-align: middle; overflow-wrap: break-word; word-break: break-word; }
 .hd-table tr:hover td { background: rgba(215, 213, 44, 0.03); }
 .strat-link { color: #fff; font-weight: bold; transition: color 0.2s; }
 .strat-link:hover { color: var(--hd-yellow); }
 .cell-icon { text-align: center; }
-.strat-icon { width: 32px; height: 32px; display: block; margin: 0 auto; }
-.code-container { display: flex; gap: 4px; align-items: center; }
+.strat-icon { width: 44px; height: 44px; display: block; margin: 0 auto; }
+.code-container { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .arrow { width: 16px; height: 16px; }
 .req-badge { display: inline-flex; align-items: center; gap: 4px; color: #fff; font-weight: bold; }
 .req-icon { width: 16px; height: 16px; }
+
+/* ==========================================================================
+   BARRA DE BUSCA DO SITE (usada na home.html, pode ser reaproveitada em outras páginas)
+   ========================================================================== */
+.search-container { position: relative; margin-bottom: 25px; width: 100%; }
+.search-box-wrapper { display: flex; border: 1px solid rgba(215, 213, 44, 0.4); border-left: 4px solid var(--hd-yellow); background: #1a1a1a; border-radius: 4px; }
+#wiki-search { width: 100%; padding: 12px 15px; background: transparent; border: none; color: #ffffff; font-size: 16px; outline: none; }
+.search-btn { background: transparent; border: none; color: var(--hd-yellow); padding: 0 15px; cursor: pointer; font-size: 16px; }
+.search-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: #1a1a1a; border: 1px solid var(--hd-yellow); border-top: none; z-index: 2000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+.search-item { display: flex; align-items: center; padding: 12px 15px; color: #eee; border-bottom: 1px solid rgba(215, 213, 44, 0.1); transition: background 0.2s; text-decoration: none; cursor: pointer; }
+.search-item:hover { background: rgba(215, 213, 44, 0.1); color: #fff; }
+.search-item-icon { width: 32px; height: 32px; margin-right: 15px; display: flex; align-items: center; justify-content: center; }
+.search-highlight { color: var(--hd-yellow); font-weight: bold; }
+
+/* ==========================================================================
+   CARTÕES DE TEXTO (usados na home.html para blocos de boas-vindas/avisos)
+   ========================================================================== */
+.wiki-card { background: var(--hd-card); border: 1px solid rgba(215, 213, 44, 0.3); padding: 25px; margin-bottom: 20px; line-height: 1.6; }
+.wiki-card h2 { color: var(--hd-yellow); font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.2); padding-bottom: 5px; }
 
 /* ==========================================================================
    RESPONSIVIDADE E MENU MOBILE (O toque final que arrumamos juntos)
@@ -152,12 +186,120 @@ body.fundo-warbonds {
 @media (max-width: 768px) {
     body { flex-direction: column; padding-top: 45px !important; }
     
-    .mobile-header { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 45px; background: var(--hd-yellow); border-bottom: 2px solid #000; z-index: 2000; align-items: center; justify-content: center; }
-    .mobile-menu-btn { width: 100%; height: 100%; background: transparent; border: none; color: #000; font-size: 16px; font-weight: 700; text-transform: uppercase; cursor: pointer; padding: 0; }
+    .mobile-header {
+        display: flex;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 45px;
+        background: linear-gradient(180deg, #1c1c1c 0%, #0a0a0a 100%);
+        border-bottom: 2px solid var(--hd-yellow);
+        box-shadow: 0 0 8px rgba(215, 213, 44, 0.35), inset 0 -1px 0 rgba(215, 213, 44, 0.2);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .mobile-menu-btn {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        color: var(--hd-yellow);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-shadow: 0 0 6px rgba(215, 213, 44, 0.6);
+        cursor: pointer;
+        padding: 0;
+        position: relative;
+    }
+    .mobile-menu-btn::after {
+        content: "";
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 2px;
+        background: var(--hd-yellow);
+        box-shadow: 0 0 4px rgba(215, 213, 44, 0.8);
+    }
     
     .sidebar { display: flex !important; flex-direction: column; width: 260px !important; position: fixed; top: 45px !important; left: -260px !important; height: calc(100vh - 45px); background: rgba(15, 15, 15, 0.98); z-index: 1500; border-right: 2px solid var(--hd-yellow); padding: 20px; overflow-y: auto; transition: left 0.3s ease; }
     .sidebar.active { left: 0 !important; }
     
     .main-content { margin-left: 0; padding: 20px; min-width: 0; width: 100%; overflow-x: hidden; }
     .logo-container img { width: 200px; }
+	
+	body.fundo-automatos {
+		background-image: url('imagens/0-banners/faccoes/robos/automatons-vertical.jpg');
+	}
+	
+	body.fundo-terminideos {
+		background-image: url('imagens/0-banners/faccoes/insetos/terminideos-vertical.jpg');
+	}
+	
+	body.fundo-iluminados {
+		background-image: url('imagens/0-banners/faccoes/molusco/iluminados-vertical.png');
+	}
+}
+
+/* ==========================================================================
+   MENU RETRÁTIL EM CELULAR DEITADO (PAISAGEM)
+   Só ativa em telas de toque (celular/tablet) em orientação horizontal.
+   Não afeta desktop nem o modo retrato, que continuam como estão.
+   ========================================================================== */
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    body { padding-top: 0 !important; }
+
+    /* Barra grande "MENU DE NAVEGAÇÃO" vira um botão compacto no canto */
+    .mobile-header {
+        display: flex;
+        position: fixed;
+        top: 0; left: 0;
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(180deg, #1c1c1c 0%, #0a0a0a 100%);
+        border-bottom: none;
+        border-right: 2px solid var(--hd-yellow);
+        box-shadow: 0 0 8px rgba(215, 213, 44, 0.35);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+    .mobile-menu-btn {
+        width: 100%;
+        height: 100%;
+        font-size: 0; /* esconde o texto "MENU DE NAVEGAÇÃO" sem remover do HTML */
+        position: relative;
+    }
+    .mobile-menu-btn::before {
+        content: "\2630"; /* ícone ☰ */
+        font-size: 20px;
+        color: var(--hd-yellow);
+        text-shadow: 0 0 6px rgba(215, 213, 44, 0.6);
+    }
+
+    /* Sidebar volta a ficar recolhida por padrão, igual ao modo retrato */
+    .sidebar {
+        display: flex !important;
+        flex-direction: column;
+        width: 260px !important;
+        position: fixed;
+        top: 0 !important;
+        left: -260px !important;
+        height: 100vh;
+        background: rgba(15, 15, 15, 0.98);
+        z-index: 1500;
+        border-right: 2px solid var(--hd-yellow);
+        padding: 20px;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+    }
+    .sidebar.active { left: 0 !important; }
+
+    .main-content { margin-left: 0; padding: 20px; min-width: 0; width: 100%; overflow-x: hidden; }
 }

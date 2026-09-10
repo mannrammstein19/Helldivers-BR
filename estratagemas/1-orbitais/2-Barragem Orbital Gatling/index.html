@@ -182,33 +182,51 @@
                 </p>
                 
                 <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
-                <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
-                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>2 segundos</td></tr>
-                    <tr><td>Tempo de Recarga (Cooldown)</td><td>70 segundos</td></tr>
-                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
-                </table>
+			<table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+				<tr>
+					<!-- O !important força a cor branca (#ffffff) a substituir o amarelo do CSS -->
+					<td style="color: #ffffff !important;">Tempo de Chamada (Call-in Time)</td>
+					<td>2 segundos</td>
+				</tr>
+				<tr>
+					<td style="color: #ffffff !important;">Tempo de Recarga (Cooldown)</td>
+					<td>90 segundos</td>
+				</tr>
+				<tr>
+					<td style="color: #ffffff !important;">Usos por Missão</td>
+					<td>Ilimitado (∞)</td>
+				</tr>
+			</table>
             </div>
 
             <!-- INFOBOX DA ESTRATAGEMA -->
             <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
                 <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
                 <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
-                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Orbital_Gatling_Barrage.svg" alt="Barragem Gatling Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
+                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Barregem Orbital Gatling.svg" alt="Barragem Gatling Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
                 </div>
                 <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <tr>
                         <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
                     </tr>
+					<tr>
+						<td style="background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold;">
+							Tipo de Permissão:
+						</td>
+						<td style="padding: 3px 15px; text-align: right; color: #ff7b00; font-weight: bold;">
+							Ofensivo
+						</td>
+					</tr>
                     <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff7b00; font-weight: bold;">Ofensivo</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+					<td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+							Características:
+					</td>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Área de Efeito</td>
                     </tr>
                     <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+							<td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+								Código de Ativação:
+							</td>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="code-inline">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
@@ -219,10 +237,14 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">70s</td>
-                    </tr>
+				<tr>
+					<td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+						Recarga Base:
+					</td>
+					<td style="padding: 3px 15px; text-align: right; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+						70s
+					</td>
+				</tr>
                 </table>
             </div>
 
@@ -266,10 +288,10 @@
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 200 Dano</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I [5]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I [5]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-pesada.png" alt="Penetração"> Heavy [4]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-leve.png" alt="Penetração"> Unarmored I [0]</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração"> Heavy</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração"> Unarmored I</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
@@ -289,13 +311,13 @@
                     
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
                     <tr><td>Raio Externo</td><td>349 - 0</td></tr>
                     <tr><td>Externo Durável</td><td>349 - 0</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media.png" alt="Penetração"> Medium [3]</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Medium</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
@@ -320,10 +342,10 @@
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 200 Dano</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I [5]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I [5]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-pesada.png" alt="Penetração"> Heavy [4]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-leve.png" alt="Penetração"> Unarmored I [0]</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração"> Heavy</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração"> Unarmored I</td></tr>
                     
                     <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>

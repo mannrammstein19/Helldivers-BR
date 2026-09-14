@@ -59,6 +59,11 @@ body.fundo-iluminados {
     background: #0a0a0a url('imagens/0-banners/faccoes/molusco/iluminados-horizontal.jpg') center/cover fixed;
 }
 
+/* Quando o body tiver a classe 'fundo-iluminados', ele usa outro */
+body.fundo-guerra {
+    background: #0a0a0a url('imagens/0-banners/faccoes/central/central-horizontal.jpg') center/cover fixed;
+}
+
 /* ==========================================================================
    BARRA LATERAL (DESKTOP)
    ========================================================================== */
@@ -243,6 +248,10 @@ body.fundo-iluminados {
 	
 	body.fundo-iluminados {
 		background-image: url('imagens/0-banners/faccoes/molusco/iluminados-vertical.png');
+	}
+	
+	body.fundo-central {
+		background-image: url('imagens/0-banners/faccoes/central/central-vertical.jpg');
 	}
 }
 

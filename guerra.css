@@ -1,0 +1,775 @@
+/* ================================================================
+   HELLDIVERS-BR — CENTRAL DE GUERRA
+   Arquivo separado para não alterar o visual das páginas da Wiki.
+   ================================================================ */
+
+.guerra-main { padding: 28px 34px 50px; }
+.guerra-shell { max-width: 1500px; margin: 0 auto; }
+
+.guerra-topbar {
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:12px 16px; margin-bottom:18px; background:rgba(10,10,10,.82);
+    border:1px solid rgba(215,213,44,.35); border-left:4px solid var(--hd-yellow);
+    text-transform:uppercase; letter-spacing:1px;
+}
+.guerra-topbar strong { color:var(--hd-yellow); font-size:13px; }
+.guerra-topbar span { color:#777; font-size:10px; }
+.guerra-live { display:flex; align-items:center; gap:7px; color:#69e28a!important; font-weight:700; }
+.guerra-live i { width:7px; height:7px; border-radius:50%; background:#69e28a; box-shadow:0 0 9px #69e28a; animation:gw-pulse 1.6s infinite; }
+@keyframes gw-pulse { 50% { opacity:.35; transform:scale(.75); } }
+
+.guerra-hero {
+    position:relative; overflow:hidden; padding:28px 30px 25px; margin-bottom:18px;
+    background:linear-gradient(120deg,rgba(12,12,12,.96),rgba(26,26,22,.90));
+    border:1px solid #343434; border-top:2px solid var(--hd-yellow);
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%);
+}
+.guerra-hero::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.35;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px); background-size:24px 24px; }
+.guerra-hero::after { content:""; position:absolute; width:420px; height:420px; right:-160px; top:-220px; border:1px solid rgba(215,213,44,.15); border-radius:50%; box-shadow:0 0 0 35px rgba(215,213,44,.025),0 0 0 70px rgba(215,213,44,.018); }
+.guerra-kicker { position:relative; color:var(--hd-orange); font:700 11px 'Oswald',Impact,sans-serif; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:7px; }
+.guerra-title { position:relative; color:#fff; font:700 clamp(30px,4vw,48px) 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; line-height:1; }
+.guerra-subtitle { position:relative; max-width:760px; color:#9b9b9b; margin-top:10px; line-height:1.5; font-size:13px; }
+
+.guerra-stats { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:18px; }
+.guerra-stat { min-height:92px; padding:13px 14px; background:rgba(16,16,16,.92); border:1px solid #2e2e2e; border-left:2px solid var(--accent,#555); position:relative; overflow:hidden; }
+.guerra-stat::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:linear-gradient(90deg,var(--accent,#555),transparent); }
+.guerra-stat .label { display:block; color:#777; font-size:9px; letter-spacing:1px; text-transform:uppercase; }
+.guerra-stat .value { display:block; color:#fff; font:700 27px 'Oswald',Impact,sans-serif; margin-top:3px; }
+.guerra-stat .detail { color:#999; font-size:10px; margin-top:3px; }
+
+.guerra-grid-main { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(300px,.75fr); gap:18px; align-items:start; }
+.guerra-panel { background:rgba(11,11,11,.91); border:1px solid #2e2e2e; margin-bottom:18px; overflow:hidden; }
+.guerra-panel-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; border-bottom:1px solid #2c2c2c; background:linear-gradient(90deg,rgba(215,213,44,.07),transparent); }
+.guerra-panel-head h2 { color:#fff; font:700 15px 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; }
+.guerra-panel-head small { color:#666; font-size:9px; text-transform:uppercase; letter-spacing:.7px; }
+.guerra-panel-body { padding:14px; }
+
+.guerra-order { position:relative; background:linear-gradient(135deg,rgba(215,213,44,.09),rgba(10,10,10,.95) 55%); border:1px solid rgba(215,213,44,.35); padding:17px; }
+.guerra-order .order-tag { display:inline-block; background:var(--hd-yellow); color:#000; padding:4px 9px; font:700 10px 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%); }
+.guerra-order h3 { margin-top:10px; color:#fff; font:700 22px 'Oswald',Impact,sans-serif; text-transform:uppercase; }
+.guerra-order p { color:#c5c5c5; font-size:12px; line-height:1.55; margin-top:9px; }
+.order-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.order-meta span { color:#aaa; border:1px solid #343434; background:#151515; padding:5px 8px; font-size:10px; text-transform:uppercase; }
+.order-meta b { color:var(--hd-yellow); }
+
+.guerra-controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.guerra-filter, .guerra-search { height:34px; background:#141414; border:1px solid #333; color:#bbb; padding:0 10px; font-size:11px; outline:none; }
+.guerra-filter { cursor:pointer; }
+.guerra-filter.active { border-color:var(--hd-yellow); color:var(--hd-yellow); background:rgba(215,213,44,.07); }
+.guerra-search { flex:1; min-width:170px; }
+.guerra-search:focus { border-color:var(--hd-yellow); }
+
+.frentes-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.frente-card { --accent:#ffe800; position:relative; background:#0a0a0a; border:1px solid #343434; padding:0; cursor:pointer; transition:.18s ease; overflow:hidden; }
+.frente-head { padding:8px 10px 6px; }
+.frente-head-row { display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+.frente-photo { width:100%; height:90px; background-color:#000; background-repeat:no-repeat; background-size:contain; background-position:center; }
+.frente-content { position:relative; padding:8px 10px 10px; }
+.frente-card:hover { transform:translateY(-2px); border-color:var(--accent); box-shadow:0 0 16px rgba(0,0,0,.55), inset 0 0 18px color-mix(in srgb,var(--accent) 10%,transparent); }
+.frente-card.defesa { --accent:#3d9dff; }
+.faction-icon-img { width:16px; height:16px; object-fit:contain; vertical-align:middle; }
+.frente-strip { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0; padding:5px 9px; background:rgba(0,0,0,.55); border-bottom:1px solid var(--accent); color:var(--accent); font:700 9px 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; }
+.frente-title { color:#fff; font:700 17px 'Oswald',Impact,sans-serif; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.frente-sector { color:#666; font-size:9px; text-transform:uppercase; letter-spacing:.7px; margin-top:2px; }
+.frente-enemy { display:inline-flex; align-items:center; gap:5px; flex:0 0 auto; color:var(--accent); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; }
+.frente-row { display:flex; justify-content:space-between; gap:8px; color:#999; font-size:10px; margin-top:7px; }
+.frente-row strong { color:#ddd; }
+.progress { height:7px; margin-top:7px; background:#202020; border:1px solid #2e2e2e; overflow:hidden; }
+.progress > i { display:block; height:100%; width:0; background:var(--accent); box-shadow:0 0 8px var(--accent); transition:width .4s ease; }
+.frente-foot { display:flex; justify-content:space-between; align-items:center; gap:6px; margin-top:8px; color:#666; font-size:9px; text-transform:uppercase; }
+.status-up { color:#55db7d; } .status-down { color:#ff5555; }
+.hazard-list { display:flex; gap:4px; margin-top:8px; }
+.hazard { width:21px; height:21px; display:grid; place-items:center; background:#161616; border:1px solid #2d2d2d; font-size:11px; }
+
+.feed-item { border-left:2px solid #303030; padding:8px 0 8px 11px; margin-bottom:8px; }
+.feed-item:hover { border-left-color:var(--hd-yellow); }
+.feed-time { color:#666; font-size:9px; text-transform:uppercase; }
+.feed-text { color:#c5c5c5; font-size:11px; line-height:1.45; margin-top:3px; }
+
+.dss-card { background:#111; border:1px solid #303030; padding:12px; }
+.dss-planet { color:var(--hd-yellow); font:700 17px 'Oswald',Impact,sans-serif; text-transform:uppercase; }
+.dss-action { border-top:1px solid #282828; padding:9px 0 0; margin-top:9px; }
+.dss-action strong { color:#ddd; font-size:11px; text-transform:uppercase; }
+.dss-action small { display:block; color:#777; font-size:9px; margin-top:3px; }
+
+.patch-link { display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid #282828; color:#ccc; font-size:11px; }
+.patch-link:last-child { border-bottom:0; }
+.patch-link:hover { color:var(--hd-yellow); }
+.patch-link time { flex:0 0 auto; color:#666; font-size:9px; }
+
+.empty-state, .error-state { padding:18px; text-align:center; border:1px dashed #333; color:#777; font-size:11px; }
+.error-state { color:#ff7b00; }
+.loading { color:#666; font-size:11px; padding:12px 0; }
+
+.guerra-footer { color:#555; font-size:9px; text-align:center; text-transform:uppercase; letter-spacing:1px; padding:6px 0 18px; }
+.guerra-footer a { color:#777; } .guerra-footer a:hover { color:var(--hd-yellow); }
+
+@media (max-width:1100px) {
+    .guerra-stats { grid-template-columns:repeat(3,1fr); }
+    .guerra-grid-main { grid-template-columns:1fr; }
+    .frentes-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:768px) {
+    .guerra-main { padding:16px 12px 35px; }
+    .guerra-topbar { margin-bottom:12px; }
+    .guerra-hero { padding:22px 18px; }
+    .guerra-stats { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .guerra-stat:last-child { grid-column:1/-1; }
+    .frentes-grid { grid-template-columns:1fr; }
+    .guerra-panel-body { padding:10px; }
+}
+@media (max-width:420px) {
+    .guerra-stats { grid-template-columns:1fr 1fr; }
+    .guerra-stat .value { font-size:23px; }
+    .guerra-controls { display:grid; grid-template-columns:1fr 1fr; }
+    .guerra-search { grid-column:1/-1; width:100%; }
+}
+/* ================================================================
+   DOSSIÊ TÁTICO — métricas de ritmo e estimativa de vitória
+   ================================================================ */
+.tatico-metricas {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    margin-top:9px;
+}
+.tatico-metrica {
+    min-width:0;
+    padding:8px 9px;
+    background:rgba(255,255,255,.025);
+    border:1px solid #292929;
+    border-left:2px solid var(--metric-color,#555);
+}
+.tatico-metrica.metric-helldivers { --metric-color:#ffe800; }
+.tatico-metrica.metric-impacto { --metric-color:#3d9dff; }
+.tatico-metrica.metric-faccao { --metric-color:var(--accent); }
+.tatico-metrica.metric-eta { --metric-color:#ffe800; }
+.metric-label { display:block; color:#777; font-size:8px; letter-spacing:.55px; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tatico-metrica strong { display:block; margin-top:2px; color:#eee; font:700 15px 'Oswald',Impact,sans-serif; }
+.tatico-metrica small { display:block; margin-top:1px; color:#5f5f5f; font-size:8px; line-height:1.2; }
+.rate-positive { color:#3d9dff !important; }
+.rate-negative { color:#ff5555 !important; }
+.metric-muted { display:block; margin-top:3px; color:#666; font-size:10px; }
+.status-neutral { color:#888; }
+
+@media (max-width:520px) {
+    .tatico-metricas { grid-template-columns:1fr; }
+}
+
+.metric-note { color:#666; font-size:8px; margin-top:2px; }
+
+/* ================================================================
+   CONDIÇÕES PLANETÁRIAS — mini-dossiê expansível
+   ================================================================ */
+.frente-card:focus-visible { outline:1px solid var(--accent); outline-offset:2px; }
+.hazard-list { align-items:center; }
+.hazard { position:relative; width:26px; height:26px; cursor:pointer; transition:.15s ease; }
+.hazard:hover { border-color:var(--accent); transform:translateY(-1px); }
+.hazard-img { width:18px; height:18px; object-fit:contain; display:block; }
+.hazard-fallback { display:none; font-size:12px; line-height:1; }
+.hazard-img[style*="display: none"] + .hazard-fallback { display:inline; }
+.frente-expand-hint { margin-top:6px; color:#555; font:700 7px 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; transition:color .15s ease; }
+.frente-card:hover .frente-expand-hint { color:#888; }
+.frente-detalhes { display:none; margin-top:9px; padding-top:9px; border-top:1px solid #292929; }
+.frente-card.expanded .frente-detalhes { display:block; animation:frente-detail-in .16s ease-out; }
+.frente-card.expanded .frente-expand-hint { color:var(--accent); }
+@keyframes frente-detail-in { from { opacity:0; transform:translateY(-3px); } to { opacity:1; transform:translateY(0); } }
+.detalhes-title { color:#777; font:700 8px 'Oswald',Impact,sans-serif; letter-spacing:1px; text-transform:uppercase; margin-bottom:7px; }
+.hazard-detail { padding:8px 0; border-bottom:1px solid #222; }
+.hazard-detail:last-child { border-bottom:0; padding-bottom:2px; }
+.hazard-detail-head { display:flex; align-items:center; gap:7px; color:#ddd; }
+.hazard-detail-head strong { font:700 10px 'Oswald',Impact,sans-serif; text-transform:uppercase; letter-spacing:.5px; }
+.hazard-detail-icon { width:25px; height:25px; display:grid; place-items:center; flex:0 0 25px; background:#141414; border:1px solid #2d2d2d; }
+.hazard-detail-icon img { width:18px; height:18px; object-fit:contain; }
+.hazard-detail p { margin:5px 0 0 32px; color:#8a8a8a; font-size:9px; line-height:1.4; }
+.hazard-detail small { display:block; margin:4px 0 0 32px; color:#666; font-size:8px; line-height:1.4; }
+.hazard-detail small b { color:var(--hd-yellow); letter-spacing:.3px; }
+@media (max-width:520px) {
+    .hazard-detail p, .hazard-detail small { margin-left:0; }
+}
+
+/* Condições planetárias: ícones reais + mini-dossiê expansível */
+.hazard-list{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:9px}
+.hazard{width:32px;height:32px;border:1px solid #343434;background:#101010;display:inline-flex;align-items:center;justify-content:center;cursor:help}
+.hazard-img{width:24px;height:24px;object-fit:contain}.hazard-fallback{display:none;font-size:18px}
+.frente-expand-hint{font-size:9px;letter-spacing:1px;color:#777;margin-top:8px;cursor:pointer}
+.frente-card.expanded .frente-expand-hint{color:#ffe800}
+.frente-detalhes{display:none;border-top:1px solid #292929;margin-top:10px;padding-top:10px}
+.frente-card.expanded .frente-detalhes{display:block}
+.detalhes-title{font-size:10px;letter-spacing:1.5px;color:#ffe800;margin-bottom:8px}
+.hazard-detail{border:1px solid #292929;background:#0e0e0e;padding:9px;margin-bottom:7px}
+.hazard-detail-head{display:flex;gap:9px;align-items:center}.hazard-detail-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #333;background:#111}.hazard-detail-img{width:26px;height:26px;object-fit:contain}.hazard-detail p{font-size:11px;line-height:1.45;color:#aaa;margin:7px 0}.hazard-detail small{font-size:10px;color:#ddd}.hazard-detail small b{color:#ffe800}
+.dss-heading{display:flex;align-items:center;gap:12px;border-bottom:1px solid #292929;padding-bottom:12px;margin-bottom:12px}.dss-main-icon{width:42px;height:42px;object-fit:contain}.dss-heading small{color:#777;letter-spacing:1px}.dss-action{padding:10px 0;border-bottom:1px solid #242424}.dss-action:last-child{border-bottom:0}.dss-action-head{display:flex;align-items:center;gap:10px}.dss-action-img{width:36px;height:36px;object-fit:contain;flex:0 0 auto}.dss-action-head strong{display:block}.dss-action-head small{display:block;color:#777;margin-top:2px}.dss-action p{font-size:10px;color:#999;line-height:1.4;margin:7px 0}
+
+/* ================================================================
+   DOSSIÊ TÁTICO — modal sem expandir o grid de planetas
+   ================================================================ */
+body.tactical-modal-open { overflow:hidden; }
+.frente-card { cursor:pointer; }
+.frente-expand-hint { color:#777; }
+.tactical-modal { position:fixed; inset:0; z-index:9999; display:none; align-items:center; justify-content:center; padding:24px; }
+.tactical-modal.open { display:flex; }
+.tactical-modal-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.78); backdrop-filter:blur(3px); }
+.tactical-modal-card { --accent:#ffe800; position:relative; z-index:1; width:min(760px,94vw); max-height:90vh; overflow:auto; background:#090909; border:1px solid var(--accent); box-shadow:0 0 0 1px rgba(255,255,255,.04),0 20px 70px rgba(0,0,0,.75),inset 0 0 30px rgba(255,255,255,.025); padding:20px; animation:tactical-modal-in .16s ease-out; }
+@keyframes tactical-modal-in { from { opacity:0; transform:translateY(8px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+.tactical-modal-close { position:absolute; top:10px; right:10px; width:34px; height:34px; border:1px solid #3a3a3a; background:#111; color:#aaa; cursor:pointer; font-weight:700; }
+.tactical-modal-close:hover { color:#fff; border-color:var(--accent); }
+.tactical-modal-kicker { color:var(--accent); font:700 9px 'Oswald',Impact,sans-serif; letter-spacing:1.8px; text-transform:uppercase; padding-right:45px; }
+.tactical-modal-title { color:#fff; font:700 clamp(27px,5vw,40px) 'Oswald',Impact,sans-serif; text-transform:uppercase; line-height:1; margin-top:6px; padding-right:45px; }
+.tactical-modal-sector { color:#777; font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-top:6px; }
+.tactical-modal-photo { height:180px; margin:14px 0 10px; background-color:#000; background-repeat:no-repeat; background-size:contain; background-position:center; border:1px solid #292929; }
+.tactical-modal-meta { display:flex; flex-wrap:wrap; gap:7px; }
+.tactical-modal-meta span { border:1px solid #303030; background:#111; color:#aaa; padding:5px 8px; font-size:9px; text-transform:uppercase; }
+.tactical-modal-progress-label { display:flex; justify-content:space-between; gap:10px; margin-top:14px; color:#888; font-size:10px; }
+.tactical-modal-progress { margin-top:6px; }
+.tactical-modal-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:12px; }
+.tactical-modal-metrics > div { padding:10px; border:1px solid #292929; border-left:2px solid var(--accent); background:#0f0f0f; min-width:0; }
+.tactical-modal-metrics small { display:block; color:#666; font-size:8px; letter-spacing:.6px; text-transform:uppercase; }
+.tactical-modal-metrics strong { display:block; color:#eee; font:700 17px 'Oswald',Impact,sans-serif; margin-top:3px; }
+.tactical-modal-metrics span { display:block; color:#777; font-size:8px; margin-top:2px; }
+.tactical-modal-card section { margin-top:14px; }
+.tactical-section-title { color:var(--accent); font:700 10px 'Oswald',Impact,sans-serif; letter-spacing:1.4px; text-transform:uppercase; border-bottom:1px solid #292929; padding-bottom:7px; margin-bottom:7px; }
+.tactical-hazard { padding:10px 0; border-bottom:1px solid #222; }
+.tactical-hazard:last-child { border-bottom:0; }
+.tactical-hazard-head { display:flex; align-items:center; gap:9px; }
+.tactical-hazard-head .hazard-detail-img { width:30px; height:30px; object-fit:contain; flex:0 0 30px; }
+.tactical-hazard-head strong { color:#eee; font:700 11px 'Oswald',Impact,sans-serif; text-transform:uppercase; letter-spacing:.5px; }
+.tactical-hazard p { margin:7px 0 4px; color:#aaa; font-size:10px; line-height:1.5; }
+.tactical-hazard small { color:#777; font-size:9px; line-height:1.45; }
+.tactical-hazard small b { color:var(--hd-yellow); }
+.steam-heading { display:flex; align-items:center; gap:7px; }
+.steam-panel-icon { width:18px; height:18px; object-fit:contain; }
+@media (max-width:600px) {
+    .tactical-modal { padding:10px; }
+    .tactical-modal-card { width:96vw; max-height:94vh; padding:16px; }
+    .tactical-modal-photo { height:130px; }
+    .tactical-modal-metrics { grid-template-columns:1fr; }
+}
+
+
+/* Novos elementos da Central de Guerra */
+.guerra-order { position:relative; overflow:hidden; z-index:0; }
+/* Imagem cheia (100% de altura) colada na direita, com luz total na borda
+   direita e um degradê que vai apagando a imagem em direção à esquerda,
+   revelando o fundo escuro do painel por baixo dela. */
+.guerra-order::before {
+    content:'';
+    position:absolute;
+    top:0; right:0; bottom:0;
+    width:62%;
+    background:url('imagens/icones/efeito-dss/major_order.png') no-repeat center right / cover;
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 92%);
+            mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 92%);
+    pointer-events:none;
+    z-index:-1;
+}
+/* Reforça o escurecimento da esquerda para a direita para o texto continuar legível. */
+.guerra-order::after {
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to right, rgba(6,6,6,.92) 0%, rgba(6,6,6,.55) 45%, rgba(6,6,6,0) 78%);
+    pointer-events:none;
+    z-index:-1;
+}
+.guerra-order .order-tag,
+.guerra-order h3,
+.guerra-order p,
+.guerra-order .order-meta { position:relative; z-index:1; }
+.frente-enemy { display:inline-flex; align-items:center; gap:5px; }
+.defense-faction-icon { width:18px; height:18px; object-fit:contain; }
+.tactical-hazard-head { min-width:0; }
+.tactical-hazard-head strong { line-height:1.15; }
+@media (max-width:600px) {
+    .guerra-order::before { width:100%; opacity:.35; }
+    .guerra-order::after { background:linear-gradient(to right, rgba(6,6,6,.92) 0%, rgba(6,6,6,.75) 60%, rgba(6,6,6,.4) 100%); }
+}
+
+/* ================================================================
+   CARDS DE RESUMO — ARTE NO LADO DIREITO + DEGRADÊ PARA O ESCURO
+   Mesmo tratamento visual da Ordem Maior.
+   Os caminhos das artes são relativos ao guerra.css.
+   ================================================================ */
+.guerra-stat::before {
+    content:"";
+    position:absolute;
+    top:0; right:0; bottom:0;
+    width:70%;
+    z-index:0;
+    pointer-events:none;
+    background-repeat:no-repeat;
+    background-position:center right;
+    background-size:cover;
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+}
+
+.guerra-stat::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:linear-gradient(to right,
+        rgba(6,6,6,.92) 0%,
+        rgba(6,6,6,.55) 45%,
+        rgba(6,6,6,0) 78%);
+}
+
+.guerra-stat > * { position:relative; z-index:2; }
+
+/* Cada card recebe sua própria arte. */
+.guerra-stat:nth-child(1)::before {
+    background-image:url('imagens/icones/efeito-dss/campo.jpg');
+}
+.guerra-stat:nth-child(2)::before {
+    background-image:url('imagens/icones/efeito-dss/libertacao.jpg');
+}
+.guerra-stat:nth-child(3)::before {
+    background-image:url('imagens/icones/efeito-dss/defesa.jpg');
+}
+.guerra-stat:nth-child(4)::before {
+    background-image:url('imagens/icones/efeito-dss/frente.jpg');
+}
+.guerra-stat:nth-child(5)::before {
+    background-image:url('imagens/icones/efeito-dss/dados.jpg');
+}
+
+/* Mantém o detalhe colorido inferior dos cards, agora por cima do degradê. */
+.guerra-stat:nth-child(1)::after,
+.guerra-stat:nth-child(2)::after,
+.guerra-stat:nth-child(3)::after,
+.guerra-stat:nth-child(4)::after,
+.guerra-stat:nth-child(5)::after {
+    background:
+        linear-gradient(to right,
+            rgba(6,6,6,.96) 0%,
+            rgba(6,6,6,.82) 34%,
+            rgba(6,6,6,.52) 57%,
+            rgba(6,6,6,.08) 86%,
+            rgba(6,6,6,0) 100%);
+    box-shadow:inset 0 -2px 0 var(--accent,#555);
+}
+
+@media (max-width:768px) {
+    .guerra-stat::before {
+        width:85%;
+    }
+    .guerra-stat::after {
+        background:linear-gradient(to right,
+            rgba(6,6,6,.97) 0%,
+            rgba(6,6,6,.87) 40%,
+            rgba(6,6,6,.55) 68%,
+            rgba(6,6,6,.18) 100%);
+    }
+}
+/* V7 — identidade visual dos tipos de campanha */
+.guerra-stat .label { display:flex; align-items:center; gap:7px; }
+.guerra-stat-icon { width:20px; height:20px; object-fit:contain; flex:0 0 20px; }
+
+/* V7 — Defesa: destaque quando o relógio inimigo está à frente */
+.frente-card.defesa-perdendo { border-color:#d7b500; box-shadow:0 0 0 1px rgba(255,232,0,.35), 0 0 18px rgba(255,0,0,.16), inset 0 0 22px rgba(255,232,0,.06); }
+.frente-card.defesa-perdendo .frente-strip { border-bottom-color:#ffe800; }
+.defesa-eta-vitoria { color:#55db7d !important; }
+.defesa-eta-inimigo { color:#ff4242 !important; }
+.metric-eta-alert { border-color:#ffe800 !important; box-shadow:inset 0 0 14px rgba(255,232,0,.08); }
+.metric-eta-alert .defesa-eta-inimigo { animation: hdbr-red-pulse 1s steps(2,end) infinite; }
+.frente-card.defesa-perdendo .frente-strip > span:last-child { color:#ffe800; }
+@keyframes hdbr-red-pulse {
+  0%, 45% { opacity:1; text-shadow:0 0 8px rgba(255,66,66,.7); }
+  46%, 100% { opacity:.25; text-shadow:none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .metric-eta-alert .defesa-eta-inimigo { animation:none; }
+}
+
+/* V7.1 — ícones de Libertação/Defesa no cabeçalho de cada planeta */
+.frente-evento{display:inline-flex;align-items:center;gap:5px;}
+.frente-evento-icone{width:18px;height:18px;object-fit:contain;display:inline-block;vertical-align:middle;}
+
+
+/* ================================================================
+   V8 — DOSSIÊ TÁTICO / GRID 2.0
+   Reorganização visual sem alterar os dados ou a lógica da API.
+   ================================================================ */
+.frentes-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.frente-card{
+  background:
+    linear-gradient(180deg,rgba(20,24,27,.98),rgba(7,8,9,.99));
+  border:1px solid #343a3f;
+  box-shadow:0 5px 18px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.018);
+}
+.frente-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 18px color-mix(in srgb,var(--accent) 12%,transparent);
+}
+.frente-strip{
+  min-height:34px;
+  padding:6px 9px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:8px;
+  background:linear-gradient(90deg,#090b0d,#111519);
+  border-bottom:1px solid #30373c;
+}
+.frente-evento{font-size:10px;letter-spacing:1.2px;white-space:nowrap;}
+.frente-evento-icone{width:21px;height:21px;filter:drop-shadow(0 0 4px rgba(255,255,255,.12));}
+.frente-status-mini{justify-self:center;font-size:8px;letter-spacing:.8px;white-space:nowrap;}
+.frente-tempo{justify-self:end;color:#d8d8d8;font:700 10px 'Oswald',Impact,sans-serif;white-space:nowrap;}
+.frente-card.defesa-perdendo .frente-tempo{
+  padding:3px 6px;
+  border:1px solid #ffe800;
+  background:rgba(255,232,0,.06);
+  color:#ff4242;
+  animation:hdbr-time-border-pulse 1s steps(2,end) infinite;
+}
+.frente-card.defesa-perdendo .frente-status-mini .status-down{color:#ff4242;text-shadow:0 0 7px rgba(255,66,66,.65);}
+.frente-head{
+  padding:9px 11px 7px;
+  background:linear-gradient(180deg,rgba(0,0,0,.22),transparent);
+}
+.frente-title{font-size:20px;line-height:1.05;letter-spacing:.5px;}
+.frente-sector{font-size:8px;color:#737b80;letter-spacing:1px;}
+.frente-photo{
+  height:128px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  border-top:1px solid #242a2e;
+  border-bottom:1px solid #242a2e;
+}
+.frente-photo:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.04) 35%,rgba(0,0,0,.55) 100%);
+  pointer-events:none;
+}
+.frente-content{padding:10px 11px 11px;}
+.defesa-bar-label{margin-top:0;font-size:10px;color:#aeb4b7;align-items:center;}
+.defesa-bar-label strong{font:700 16px 'Oswald',Impact,sans-serif;color:#f1f1f1;}
+.progress{height:10px;margin-top:5px;border-color:#3b4247;background:#15191c;box-shadow:inset 0 0 5px rgba(0,0,0,.65);}
+.defesa-progress-blue > i{background:linear-gradient(90deg,#287fcf,#66b8ff);}
+.defesa-progress-red > i{background:linear-gradient(90deg,#b52c2c,#ff6969);}
+.tatico-metricas{gap:7px;margin-top:10px;}
+.tatico-metrica{
+  min-height:57px;
+  padding:8px 9px;
+  background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  border-color:#30363a;
+}
+.tatico-metrica strong{font-size:17px;line-height:1.05;}
+.metric-label{font-size:8px;letter-spacing:.7px;}
+.tatico-metrica small{font-size:8px;color:#686f73;}
+.metric-eta-alert{
+  background:linear-gradient(135deg,rgba(255,232,0,.045),rgba(255,0,0,.025));
+}
+.frente-foot{
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px solid #252b2f;
+  font-size:8px;
+}
+.hazard-list{margin-top:9px;}
+.frente-expand-hint{
+  padding-top:2px;
+  font-size:8px;
+  letter-spacing:1.2px;
+}
+@keyframes hdbr-time-border-pulse{
+  0%,45%{border-color:#ffe800;box-shadow:0 0 7px rgba(255,232,0,.22);}
+  46%,100%{border-color:rgba(255,232,0,.28);box-shadow:none;}
+}
+@media (max-width:1100px){
+  .frentes-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:680px){
+  .frentes-grid{grid-template-columns:1fr;}
+  .frente-photo{height:145px;}
+}
+@media (max-width:420px){
+  .frente-strip{grid-template-columns:auto 1fr auto; gap:6px; padding:6px 7px;}
+  .frente-status-mini{display:block; justify-self:center; font-size:10px;}
+  .frente-status-mini .status-up,.frente-status-mini .status-down,.frente-status-mini .status-neutral{font-size:10px;}
+  .frente-tempo{grid-column:auto;grid-row:auto;font-size:10px;}
+  .frente-evento{font-size:10px;}
+  .frente-evento-icone{width:20px;height:20px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .frente-card.defesa-perdendo .frente-tempo{animation:none;}
+}
+
+
+/* V8.1 — refinamento visual do GRID: status maior + informações sobre a imagem */
+.frente-strip{
+  min-height:42px;
+  padding:7px 10px;
+  gap:10px;
+}
+.frente-evento{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1.1px;
+}
+.frente-evento-icone{width:25px;height:25px;}
+.frente-status-mini{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.7px;
+}
+.frente-tempo{
+  font-size:13px;
+  letter-spacing:.25px;
+}
+.frente-status-mini .status-up,
+.frente-status-mini .status-down,
+.frente-status-mini .status-neutral{
+  font-size:13px;
+  font-weight:700;
+}
+.frente-title{font-size:23px;}
+.frente-sector{font-size:9px;}
+.frente-row{font-size:12px;}
+.defesa-bar-label strong{font-size:18px;}
+.tatico-metrica{min-height:64px;padding:9px 10px;}
+.tatico-metrica strong{font-size:19px;}
+.metric-label{font-size:9px;}
+.tatico-metrica small{font-size:9px;}
+.frente-foot{font-size:9px;}
+.frente-expand-hint{font-size:9px;}
+
+.frente-photo{overflow:hidden;}
+.frente-hazards-overlay{
+  position:absolute;
+  left:9px;
+  bottom:9px;
+  z-index:3;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  max-width:85%;
+}
+.frente-hazard-chip{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(5,7,8,.84);
+  box-shadow:0 2px 7px rgba(0,0,0,.6);
+  backdrop-filter:blur(2px);
+  cursor:help;
+}
+.frente-hazard-chip img{
+  width:23px;
+  height:23px;
+  object-fit:contain;
+}
+.frente-hazard-chip .hazard-fallback{
+  font-size:16px;
+  line-height:1;
+}
+.frente-hazard-chip:hover{
+  border-color:var(--accent);
+  transform:translateY(-1px);
+}
+.frente-card.defesa-perdendo .frente-status-mini .status-down{
+  font-size:14px;
+}
+@media (max-width:680px){
+  .frente-evento,.frente-status-mini .status-up,.frente-status-mini .status-down,.frente-status-mini .status-neutral,.frente-tempo{font-size:12px;}
+  .frente-evento-icone{width:23px;height:23px;}
+  .frente-title{font-size:22px;}
+}
+
+
+/* V8.1 — bloco de inteligência adicional no dossiê */
+.tactical-intel-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+}
+.tactical-intel-grid > div{
+  padding:9px 10px;
+  border:1px solid #292929;
+  border-left:2px solid var(--accent);
+  background:#0f0f0f;
+}
+.tactical-intel-grid small{
+  display:block;
+  color:#666;
+  font-size:8px;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+}
+.tactical-intel-grid strong{
+  display:block;
+  color:#eee;
+  font:700 14px 'Oswald',Impact,sans-serif;
+  margin-top:3px;
+  line-height:1.15;
+  text-transform:uppercase;
+}
+@media (max-width:600px){
+  .tactical-intel-grid{grid-template-columns:1fr;}
+}
+
+
+/* V8.2 — refinamentos de leitura, DSS contextual e identificação da facção */
+.frente-title-block{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.frente-enemy{font-size:16px !important;line-height:1.05;font-weight:700;letter-spacing:.4px;color:var(--accent);text-transform:uppercase;}
+.frente-enemy .faction-icon-img{width:25px;height:25px;}
+.frente-head-row{align-items:center;}
+.frente-dss-badge{
+  position:absolute;right:9px;top:9px;z-index:4;
+  display:inline-flex;align-items:center;gap:5px;
+  min-height:30px;padding:4px 7px;
+  border:1px solid rgba(255,232,0,.85);
+  background:rgba(4,7,8,.88);
+  box-shadow:0 0 9px rgba(255,232,0,.18);
+  color:#ffe800;font:700 11px 'Oswald',Impact,sans-serif;letter-spacing:1px;
+  text-transform:uppercase;
+  backdrop-filter:blur(2px);
+}
+.frente-dss-badge img{width:22px;height:22px;object-fit:contain;}
+
+/* DSS: a imagem do planeta fica SOMENTE no cabeçalho, dentro da demarcação.
+   Direita = imagem visível; esquerda = escurecida para preservar a leitura. */
+.dss-planet-header-bg{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:#111;
+}
+.dss-planet-header-bg:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background-image:
+    linear-gradient(90deg,rgba(10,10,10,.98) 0%,rgba(10,10,10,.94) 25%,rgba(10,10,10,.65) 52%,rgba(10,10,10,.10) 78%,rgba(10,10,10,0) 100%),
+    var(--dss-bg);
+  background-size:cover;
+  background-position:right center;
+  background-repeat:no-repeat;
+  opacity:.92;
+}
+.dss-planet-header-bg > *{position:relative;z-index:1;}
+.enemy-rate{font-weight:700 !important;}
+.enemy-rate{font-weight:700 !important;}
+@media (max-width:680px){
+  .frente-enemy{font-size:18px !important;}
+  .frente-enemy .faction-icon-img{width:22px;height:22px;}
+}
+
+/* ================================================================
+   V8.4 — COMUNICADO DO MAPA GALÁCTICO
+   Banner tático integrado ao visual da Central de Guerra.
+   ================================================================ */
+.mapa-cta-panel{background:rgba(8,9,9,.94);}
+.mapa-cta{
+  position:relative;
+  overflow:hidden;
+  min-height:148px;
+  padding:18px 18px 17px;
+  border:1px solid #343434;
+  border-left:3px solid var(--hd-yellow);
+  background:
+    radial-gradient(circle at 92% 18%,rgba(255,232,0,.09),transparent 34%),
+    linear-gradient(135deg,rgba(255,232,0,.045),rgba(9,11,11,.97) 55%);
+}
+.mapa-cta::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.24;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 48%,#000 100%);
+}
+.mapa-cta::after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-68px;
+  top:-74px;
+  border:1px solid rgba(255,232,0,.17);
+  border-radius:50%;
+  box-shadow:0 0 0 22px rgba(255,232,0,.025),0 0 0 44px rgba(255,232,0,.018);
+  pointer-events:none;
+}
+.mapa-cta > *{position:relative;z-index:1;}
+.mapa-cta-tag{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  width:max-content;
+  max-width:100%;
+  color:var(--hd-yellow);
+  font:700 10px 'Oswald',Impact,sans-serif;
+  letter-spacing:1.7px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+.mapa-cta-tag::before{
+  content:"";
+  width:7px;
+  height:7px;
+  display:inline-block;
+  background:var(--hd-yellow);
+  box-shadow:0 0 8px rgba(255,232,0,.55);
+  transform:rotate(45deg);
+  flex:0 0 auto;
+}
+.mapa-cta h3{
+  margin:0;
+  color:#fff;
+  font:700 22px 'Oswald',Impact,sans-serif;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  line-height:1.05;
+}
+.mapa-cta p{
+  max-width:430px;
+  margin:7px 0 13px;
+  color:#a9a9a9;
+  font-size:11px;
+  line-height:1.45;
+}
+.mapa-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border:1px solid rgba(255,232,0,.58);
+  border-left:3px solid var(--hd-yellow);
+  background:rgba(255,232,0,.055);
+  color:var(--hd-yellow);
+  font:700 10px 'Oswald',Impact,sans-serif;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:.18s ease;
+}
+.mapa-cta-btn::after{content:"↗";font-size:14px;line-height:1;}
+.mapa-cta-btn:hover{
+  color:#111;
+  background:var(--hd-yellow);
+  border-color:var(--hd-yellow);
+  transform:translateX(2px);
+}
+@media (max-width:600px){
+  .mapa-cta{min-height:0;padding:15px;}
+  .mapa-cta h3{font-size:20px;}
+}

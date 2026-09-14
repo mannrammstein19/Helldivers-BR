@@ -26,6 +26,305 @@
     <meta name="theme-color" content="#FFE800">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        .painel-bloco { padding-top: 4px; }
+
+        .painel-aviso { color: #777; margin-top: 10px; display: block; }
+        .painel-erro, .painel-vazio { color: #ff7b00; }
+
+        /* ==================================================================== */
+        /* 🛰️ DOSSIÊ MILITAR / HUD — mesmo padrão visual usado em faccoes.html   */
+        /* ==================================================================== */
+        .dossie-card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(8,8,8,0.95));
+            border: 2px solid #333;
+            padding: 16px 18px 14px 18px;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            overflow: hidden;
+        }
+        .dossie-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color, #d7d52c), transparent 70%);
+            opacity: 0.9;
+        }
+        .dossie-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+        .dossie-card:hover {
+            border-color: var(--accent-color, #d7d52c);
+            box-shadow: inset 0 0 16px var(--accent-color, transparent);
+            filter: drop-shadow(0 0 5px var(--accent-color)) drop-shadow(0 0 12px var(--accent-color));
+        }
+
+        .dossie-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 11px;
+            font-size: 0.68rem;
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            background-color: var(--accent-color, #ffe800);
+            color: #000;
+            clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+            position: relative;
+            z-index: 1;
+        }
+        .dossie-badge::before { content: "◆"; font-size: 0.6rem; }
+
+        .dossie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .dossie-titulo {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.4px;
+            color: #fff;
+        }
+        .dossie-timer {
+            background: #1a1a1a;
+            border: 1px solid var(--accent-color, #ff7b00);
+            color: var(--accent-color, #ff7b00);
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            position: relative;
+            z-index: 1;
+        }
+        .painel-texto {
+            color: #d5d5d5;
+            line-height: 1.5;
+            margin: 8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Barra de progresso com brilho na cor de acento */
+        .barra-progresso {
+            background: #1c1e21;
+            border: 1px solid #2c2e31;
+            height: 9px;
+            overflow: visible;
+            position: relative;
+            z-index: 1;
+        }
+        .barra-progresso-fill {
+            height: 100%;
+            background: var(--accent-color, #ffe800);
+            box-shadow: 0 0 8px var(--accent-color, #ffe800);
+            position: relative;
+        }
+        /* Efeito de "energia correndo" — listras diagonais deslizando */
+        .barra-progresso-fill::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.35) 0px,
+                rgba(255,255,255,0.35) 6px,
+                transparent 6px,
+                transparent 14px
+            );
+            animation: energia-correndo 4.0s linear infinite;
+        }
+        @keyframes energia-correndo {
+            from { background-position: 0 0; }
+            to { background-position: 28px 0; }
+        }
+        .barra-marcador {
+            position: absolute;
+            right: -8px;
+            top: -9px;
+            font-size: 12px;
+            filter: drop-shadow(0 0 3px #000);
+        }
+
+        /* Resumo galáctico */
+        .resumo-galatico {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 10px 4px 16px;
+            margin-bottom: 4px;
+            border-bottom: 1px dashed #333;
+        }
+        .resumo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 110px;
+        }
+        .resumo-numero {
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        .resumo-legenda {
+            font-size: 10.5px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .barra-legenda {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Grid de planetas / cards da guerra */
+        .painel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+        }
+
+        .dossie-clicavel { cursor: pointer; }
+        .dossie-clicavel:hover .dossie-titulo { color: var(--accent-color, #ffe800); }
+
+        /* Faixa de topo LIBERAÇÃO / DEFESA, sangrando até a borda do card */
+        .modo-faixa {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -16px -18px 10px -18px;
+            padding: 5px 14px;
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid var(--accent-color, #333);
+            font-family: 'Oswald', 'Bebas Neue', Impact, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent-color, #ccc);
+            position: relative;
+            z-index: 1;
+        }
+        .modo-defesa { color: #ff3333; border-bottom-color: #ff3333; }
+        .modo-eta { color: #ccc; font-weight: 400; letter-spacing: 0.3px; }
+
+        .dossie-setor {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: -6px 0 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .icones-linha {
+            display: flex;
+            gap: 8px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag-resultado {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .tag-ganhando { color: #3ddc71; }
+        .tag-perdendo { color: #ff4d4d; }
+
+        .dossie-rodape {
+            margin-top: 8px;
+            font-size: 10.5px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dossie-detalhe {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        .dossie-detalhe strong { color: #ccc; }
+        .dossie-detalhe.aberto {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #333;
+        }
+        .dossie-detalhe-dica {
+            margin-top: 6px;
+            color: #666;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* Despachos e Patch Notes — lista com acento lateral colorido */
+        .despacho-item, .patch-item {
+            border-left: 2px solid #2c2e31;
+            padding: 8px 0 8px 12px;
+            margin-bottom: 8px;
+            transition: border-color 0.2s ease;
+        }
+        .despacho-item:hover, .patch-item:hover { border-left-color: var(--hd-yellow); }
+        .despacho-item:last-child, .patch-item:last-child { margin-bottom: 0; }
+        .despacho-data { color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+        .despacho-texto { color: #d5d5d5; margin: 4px 0 0 0; line-height: 1.4; }
+        .patch-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .patch-titulo { color: var(--hd-yellow); text-decoration: none; font-weight: 600; }
+        .patch-titulo:hover { text-decoration: underline; }
+
+        /* DSS — lista de ações táticas */
+        .dss-lista { list-style: none; padding: 0; margin: 10px 0 0 0; position: relative; z-index: 1; }
+        .dss-lista li { padding: 7px 0; border-top: 1px solid #262a2f; }
+        .dss-lista li:first-child { border-top: none; }
+        .dss-lista strong { color: #eee; font-size: 0.9rem; }
+        .dss-lista small { color: var(--accent-color, #999); text-transform: uppercase; letter-spacing: 0.4px; font-size: 10.5px; }
+    </style>
 </head>
 <body class="fundo-principal">
 
@@ -44,7 +343,7 @@
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
                 <li><a href="index.html" class="active">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="guerra.html">⚔ Central de Guerra</a></li>
                 <li><a href="discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
@@ -99,14 +398,16 @@
         </div>
 
         <div class="wiki-card">
-            <h2>Ordens Maiores</h2>
-            <p>Utilize o menu lateral para navegar entre as seções de armamentos e estratagemas para planejar seu próximo drop de forma cirúrgica.</p>
+            <h2>⚔ Central de Guerra</h2>
+            <p>Acompanhe em tempo real a Ordem Maior, as frentes de batalha, despachos da Super Terra e a Estação Democracia (DSS) na nossa central dedicada.</p>
+            <p><a href="guerra.html" style="display:inline-block;text-decoration:none;color:#000;background:var(--hd-yellow);font-weight:bold;padding:10px 18px;text-transform:uppercase;letter-spacing:0.5px;">Acessar Central de Guerra →</a></p>
         </div>
     </main>
 
     <!-- Vinculação do arquivo de dados externa -->
     <script src="dados.js"></script>
 	<script src="warbonds.js"></script>
+    <script src="busca.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -125,79 +426,7 @@
                 });
             }
 
-            // ---- BUSCA ESTILO WIKI (PUXANDO DO DADOS.JS COM IMAGEM) ----
-            const searchInput = document.getElementById("wiki-search");
-            const dropdown = document.getElementById("search-results");
-
-            if (searchInput && dropdown) {
-                searchInput.addEventListener("input", function() {
-                    const query = this.value.toLowerCase().trim();
-                    dropdown.innerHTML = "";
-
-                    if (!query) {
-                        dropdown.style.display = "none";
-                        return;
-                    }
-
-                    // 1. Puxamos as duas bases de dados. Se uma delas der erro ou não carregar, usamos um array vazio [] pra não quebrar a página.
-					const dadosGerais = typeof searchData !== 'undefined' ? searchData : [];
-					const dadosWarbonds = typeof warbondsData !== 'undefined' ? warbondsData : [];
-
-					// 2. Juntamos as duas usando o spread operator (...)
-					const bancoDeDadosCompleto = [...dadosGerais, ...dadosWarbonds];
-
-					// 3. Verificamos se pelo menos um banco carregou
-					if (bancoDeDadosCompleto.length === 0) {
-						dropdown.innerHTML = `
-							<div style="padding:12px;color:#ff7b00;">
-								⚠️ Erro de Conexão com a Super Terra: Nenhum banco de dados foi carregado.
-							</div>`;
-						dropdown.style.display = "block";
-						return;
-					}
-
-					// 4. Filtramos no banco completo!
-					const results = bancoDeDadosCompleto.filter(item =>
-						item.title.toLowerCase().includes(query)
-					);
-
-                    if (results.length === 0) {
-                        dropdown.innerHTML = `
-                            <div style="padding:12px;color:#ff7b00;">
-                                ⚠️ Nenhum resultado encontrado
-                            </div>`;
-                        dropdown.style.display = "block";
-                        return;
-                    }
-
-                    results.forEach(item => {
-                        const result = document.createElement("a");
-                        result.className = "search-item";
-                        result.href = item.url;
-
-                        // Agora carrega a tag <img> com a imagem do projeto no GitHub!
-                        // Caso a imagem dê erro ou não exista no caminho, carrega a logo de backup.
-                        result.innerHTML = `
-                            <div class="search-item-icon">
-                                <img src="${item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='imagens/0-banners/logo.jpg'">
-                            </div>
-                            <div>
-                                <strong style="color: var(--hd-yellow);">${item.title}</strong><br>
-                                <small style="color: #aaa;">${item.category}</small>
-                            </div>
-                        `;
-                        dropdown.appendChild(result);
-                    });
-
-                    dropdown.style.display = "block";
-                });
-
-                document.addEventListener("click", function(e) {
-                    if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
-                        dropdown.style.display = "none";
-                    }
-                });
-            }
+            // A lógica de busca agora mora em busca.js (arquivo compartilhado)
         });
     </script>
 

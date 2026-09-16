@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Helldivers BR | Mapa Galáctico Simplificado</title>
+<title>Helldivers BR | Mapa Galáctico Tático</title>
 <meta name="description" content="Versão simplificada e própria do mapa galáctico de Helldivers 2, feita em SVG com dados ao vivo da API comunitária.">
 <meta name="theme-color" content="#FFE800">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Helldivers BR | Mapa Galáctico Simplificado">
+<meta property="og:title" content="Helldivers BR | Mapa Galáctico Tático">
 <meta property="og:description" content="Versão simplificada e própria do mapa galáctico: planetas, setores, linhas de suprimento e o avanço das facções em tempo real.">
 <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
@@ -69,7 +69,7 @@
 
     <section class="mapa-hero">
         <div class="mapa-kicker">RECONHECIMENTO ORBITAL // SUPER TERRA — VERSÃO PRÓPRIA</div>
-        <h1 class="mapa-title">Mapa Galáctico Simplificado</h1>
+        <h1 class="mapa-title">Mapa Galáctico Tático</h1>
         <p class="mapa-subtitle">Nossa própria versão do mapa, feita do zero em SVG com dados ao vivo da API comunitária. Prefere o mapa 3D completo, com visual bem parecido com o do jogo? <a href="mapa-galatico.html" style="color:var(--hd-yellow)">Veja aqui ↗</a></p>
     </section>
 
@@ -82,12 +82,26 @@
             <button class="mapa-filter" data-faction="automaton">Autômatos</button>
             <button class="mapa-filter" data-faction="illuminate">Iluminados</button>
         </div>
+        <div class="mapa-layer-controls" id="mapa-layer-controls" aria-label="Camadas táticas">
+            <button class="mapa-layer active" type="button" data-layer="routes">ROTAS</button>
+            <button class="mapa-layer active" type="button" data-layer="territories">TERRITÓRIOS</button>
+            <button class="mapa-layer active" type="button" data-layer="sectors">SETORES</button>
+        </div>
     </div>
 
     <section class="mapa-panel">
         <div class="mapa-viewport-wrap">
             <div class="mapa-loading" id="mapa-loading">
                 <div class="loading">Carregando cartografia galáctica...</div>
+            </div>
+            <div class="mapa-tactical-hud" id="mapa-tactical-hud" aria-live="polite">
+                <div class="mapa-hud-status"><i></i><span>TELEMETRIA ONLINE</span></div>
+                <div class="mapa-hud-grid">
+                    <div><small>HELLDIVERS</small><strong id="mapa-hud-players">—</strong></div>
+                    <div><small>FRENTES</small><strong id="mapa-hud-fronts">—</strong></div>
+                    <div><small>SETORES</small><strong id="mapa-hud-sectors">—</strong></div>
+                    <div><small>ROTAS</small><strong id="mapa-hud-routes">—</strong></div>
+                </div>
             </div>
             <div class="mapa-zoom-controls" aria-hidden="false">
                 <button type="button" id="mapa-zoom-in" title="Aproximar">+</button>
@@ -100,10 +114,11 @@
                 <span><i style="background:#ff4242"></i> Autômatos</span>
                 <span><i style="background:#8b3fd6"></i> Iluminados</span>
                 <span><i class="mapa-legend-event"></i> Sob ataque</span>
+                <span><i class="mapa-legend-frontline"></i> Linha de frente</span>
             </div>
             <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
-        <div class="mapa-hint">↕ Role/pince para zoom · ⇕ Arraste para navegar · Clique em um ponto para abrir o dossiê</div>
+        <div class="mapa-hint">↕ Role/pince para zoom · ⇕ Arraste para navegar · Clique em um planeta para focar as rotas e abrir o dossiê</div>
     </section>
 
     <div class="mapa-footer">HELLDIVERS-BR // Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>

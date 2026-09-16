@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helldivers BR | Mapa Galáctico Simplificado</title>
+<meta name="description" content="Versão simplificada e própria do mapa galáctico de Helldivers 2, feita em SVG com dados ao vivo da API comunitária.">
+<meta name="theme-color" content="#FFE800">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Helldivers BR | Mapa Galáctico Simplificado">
+<meta property="og:description" content="Versão simplificada e própria do mapa galáctico: planetas, setores, linhas de suprimento e o avanço das facções em tempo real.">
+<meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+<meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mapa.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="fundo-guerra">
+
+<div class="mobile-header">
+    <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
+</div>
+
+<nav class="sidebar">
+    <div class="logo-container">
+        <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Comunidade</div>
+        <ul class="menu-list">
+            <li><a href="index.html">Página Principal</a></li>
+            <li><a href="guerra.html">⚔ Central de Guerra</a></li>
+            <li><a href="discord/index.html" target="_blank" rel="noopener">Nosso Servidor Discord</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Aquisições</div>
+        <ul class="menu-list">
+            <li><a href="warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+            <li><a href="#">Superloja</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Equipamento</div>
+        <ul class="menu-list">
+            <li><a href="estratagemas.html">Estratagemas</a></li>
+            <li><a href="#">Armas Primárias</a></li>
+            <li><a href="#">Armas Secundárias</a></li>
+            <li><a href="#">Granadas</a></li>
+            <li><a href="#">Armaduras &amp; Passivas</a></li>
+            <li><a href="#">Boosters</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Inimigos &amp; Facções</div>
+        <ul class="menu-list">
+            <li><a href="faccoes.html">Facções</a></li>
+            <li><a href="inimigos/automatos.html">Autômatos</a></li>
+            <li><a href="inimigos/terminideos.html">Termínios</a></li>
+            <li><a href="inimigos/iluminados.html">Iluminados</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content mapa-main">
+<div class="mapa-shell">
+
+    <section class="mapa-hero">
+        <div class="mapa-kicker">RECONHECIMENTO ORBITAL // SUPER TERRA — VERSÃO PRÓPRIA</div>
+        <h1 class="mapa-title">Mapa Galáctico Simplificado</h1>
+        <p class="mapa-subtitle">Nossa própria versão do mapa, feita do zero em SVG com dados ao vivo da API comunitária. Prefere o mapa 3D completo, com visual bem parecido com o do jogo? <a href="mapa-galatico.html" style="color:var(--hd-yellow)">Veja aqui ↗</a></p>
+    </section>
+
+    <div class="mapa-toolbar">
+        <input class="mapa-search" id="mapa-busca" type="search" placeholder="🔍 Buscar planeta ou setor..." autocomplete="off">
+        <div class="mapa-filters" id="mapa-filtros">
+            <button class="mapa-filter active" data-faction="all">Todas as Facções</button>
+            <button class="mapa-filter" data-faction="human">Super Terra</button>
+            <button class="mapa-filter" data-faction="terminid">Termínideos</button>
+            <button class="mapa-filter" data-faction="automaton">Autômatos</button>
+            <button class="mapa-filter" data-faction="illuminate">Iluminados</button>
+        </div>
+    </div>
+
+    <section class="mapa-panel">
+        <div class="mapa-viewport-wrap">
+            <div class="mapa-loading" id="mapa-loading">
+                <div class="loading">Carregando cartografia galáctica...</div>
+            </div>
+            <div class="mapa-zoom-controls" aria-hidden="false">
+                <button type="button" id="mapa-zoom-in" title="Aproximar">+</button>
+                <button type="button" id="mapa-zoom-out" title="Afastar">−</button>
+                <button type="button" id="mapa-zoom-reset" title="Resetar visão">⟲</button>
+            </div>
+            <div class="mapa-legend">
+                <span><i style="background:var(--hd-yellow)"></i> Super Terra</span>
+                <span><i style="background:#ff9900"></i> Termínideos</span>
+                <span><i style="background:#ff4242"></i> Autômatos</span>
+                <span><i style="background:#8b3fd6"></i> Iluminados</span>
+                <span><i class="mapa-legend-event"></i> Sob ataque</span>
+            </div>
+            <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="mapa-hint">↕ Role/pince para zoom · ⇕ Arraste para navegar · Clique em um ponto para abrir o dossiê</div>
+    </section>
+
+    <div class="mapa-footer">HELLDIVERS-BR // Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>
+</div>
+</main>
+
+<div class="tactical-modal" id="planet-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="planet-modal-title">
+    <div class="tactical-modal-backdrop" data-close-planet></div>
+    <div class="tactical-modal-card">
+        <button class="tactical-modal-close" type="button" aria-label="Fechar dossiê" data-close-planet>✕</button>
+        <div class="tactical-modal-kicker">DOSSIÊ TÁTICO · INTELIGÊNCIA PLANETÁRIA</div>
+        <h2 class="tactical-modal-title" id="planet-modal-title">Planeta</h2>
+        <div class="tactical-modal-sector"></div>
+        <div class="tactical-modal-meta"></div>
+        <div class="tactical-modal-progress-label"></div>
+        <div class="progress tactical-modal-progress"><i></i></div>
+        <div class="tactical-modal-metrics"></div>
+        <section>
+            <div class="tactical-section-title">CONDIÇÕES AMBIENTAIS</div>
+            <div class="tactical-modal-hazards"></div>
+        </section>
+    </div>
+</div>
+
+<script src="mapa.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');
+    if(btn && side) btn.addEventListener('click',()=>{ side.classList.toggle('active'); btn.textContent=side.classList.contains('active')?'✕ Fechar Menu':'☰ MENU DE NAVEGAÇÃO'; });
+});
+</script>
+</body>
+</html>

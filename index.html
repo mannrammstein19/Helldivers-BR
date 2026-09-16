@@ -174,9 +174,14 @@
 .hd-overview-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(330px,.9fr);gap:14px;align-items:start}
 .hd-overview-card{position:relative;overflow:hidden;background:#090909;border:1px solid #353535}
 .hd-overview-card > *{position:relative;z-index:3}
- .hd-overview-card.order{padding:20px 22px 17px;min-height:235px}
-.hd-overview-card.order::after{content:'';position:absolute;inset:0;z-index:0;background:url('imagens/icones/efeito-dss/major_order.png') center right/cover no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
-.hd-overview-card.order::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,7,7,.98) 0%,rgba(7,7,7,.90) 35%,rgba(7,7,7,.50) 64%,rgba(7,7,7,.12) 100%);pointer-events:none}
+/* V16 — ORDEM MAIOR DIVIDIDA EM DOIS PAINÉIS REAIS
+   A bandeira pertence SOMENTE ao painel superior. O painel inferior é independente. */
+.hd-overview-card.order{padding:0;min-height:235px;background:#090909}
+.hd-overview-card.order::after,.hd-overview-card.order::before{display:none}
+.hd-ov-order-main{position:relative;overflow:hidden;padding:20px 22px 17px;background:#090909}
+.hd-ov-order-main::after{content:'';position:absolute;inset:0;z-index:0;background:url('imagens/icones/efeito-dss/major_order.png') center right/cover no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
+.hd-ov-order-main::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,7,7,.98) 0%,rgba(7,7,7,.90) 35%,rgba(7,7,7,.50) 64%,rgba(7,7,7,.12) 100%);pointer-events:none}
+.hd-ov-order-main > *{position:relative;z-index:3}
 .hd-overview-card.order .hd-ov-title{position:relative;z-index:3}
 .hd-overview-card.order .hd-ov-title::after{content:'ORD';position:absolute;right:0;top:-14px;color:rgba(255,255,255,.035);font:700 78px/.9 'Oswald',sans-serif;z-index:-1}
 .hd-overview-card.order .hd-ov-left-line{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--hd-yellow);z-index:4}
@@ -194,11 +199,22 @@
 .hd-ov-statbox strong{display:block;color:#fff;font:700 15px/1.05 'Oswald',sans-serif}
 .hd-ov-statbox strong.yellow{color:var(--hd-yellow)}
 .hd-ov-order-foot{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:#777;font-size:8px;text-transform:uppercase;letter-spacing:.7px}
+/* ===================== TEXTO INSTITUCIONAL DA ORDEM MAIOR =====================
+   Texto fixo que explica a importancia da Ordem Maior.
+   ALTERE SOMENTE O TEXTO NO overview.js se quiser personaliza-lo.
+   ========================================================================== */
+.hd-ov-order-about{position:relative;z-index:3;margin:0;padding:28px 22px 24px;border-top:1px solid rgba(215,213,44,.38);max-width:none;background:#050505;overflow:hidden}
+/* FUTURA IMAGEM DA PARTE DE BAIXO: troque 'none' por url('caminho-da-imagem.jpg') */
+.hd-ov-order-about::before{content:'';position:absolute;inset:0;z-index:-2;background-image:url('imagens/0-banners/meridian.png');background-position:center;background-size:cover;background-repeat:no-repeat}
+.hd-ov-order-about::after{content:'';position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.72);pointer-events:none}
+.hd-ov-order-about small{display:block;margin-bottom:4px;color:var(--hd-yellow);font:700 9px/1 'Oswald',sans-serif;letter-spacing:1.2px;text-transform:uppercase}
+.hd-ov-order-about p{margin:0;color:#858585;font-size:9px;line-height:1.45;max-width:820px}
+
 .hd-ov-side{display:grid;grid-template-rows:auto auto;gap:14px}
 .hd-ov-mini{padding:0}
 .hd-ov-mini::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,9,9,.98) 0%,rgba(9,9,9,.88) 40%,rgba(9,9,9,.50) 70%,rgba(9,9,9,.12) 100%);pointer-events:none}
 .hd-ov-mini::after{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.9;-webkit-mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%);mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%)}
-.hd-ov-mini.situation-card::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')}
+.hd-ov-mini.situation-card::after{background-image:url('imagens/0-banners/john.png')}
 .hd-ov-mini.campaign-card::after{background-image:none}
 .hd-ov-mini .hd-ov-mini-inner{position:relative;z-index:3;padding:18px 18px 16px;box-sizing:border-box}
 .hd-ov-mini h3{margin:0 0 13px;color:#fff;font:700 18px/1 'Oswald',sans-serif;text-transform:uppercase}
@@ -243,8 +259,8 @@
    TROQUE SOMENTE O NOME DO ARQUIVO para mudar o fundo de cada bloco.
    Exemplo: url('imagens/icones/efeito-dss/NOVA-FOTO.jpg')
    ================================================================== */
-.hd-lower-card.factions-card::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')} /* FORÇAS NO FRONT */
-.hd-lower-card.fronts-card::after{background-image:url('imagens/icones/efeito-dss/frente.jpg')} /* FRENTES EM DESTAQUE */
+.hd-lower-card.factions-card::after{background-image:url('imagens/0-banners/super-earth.png')} /* FORÇAS NO FRONT */
+.hd-lower-card.fronts-card::after{background-image:url('imagens/0-banners/destroyer.png')} /* FRENTES EM DESTAQUE */
 .hd-lower-card.dispatch-card::after{background-image:url('imagens/icones/efeito-dss/dados.jpg')} /* ÚLTIMOS DESPACHOS */
 .hd-lower-card > *{position:relative;z-index:2}
 .hd-lower-card h3{margin:0 0 10px;color:#fff;font:700 17px/1 'Oswald',sans-serif;text-transform:uppercase}
@@ -252,7 +268,7 @@
 .hd-faction-lines{display:grid;gap:7px;margin-top:9px}
 .hd-faction-line{display:grid;grid-template-columns:132px 1fr 62px;gap:8px;align-items:center;min-height:38px;padding:2px 0}
 .hd-faction-line .faction-name{display:flex;align-items:center;gap:7px;color:#ddd;font:700 10px 'Oswald',sans-serif;text-transform:uppercase}
-.hd-faction-line .faction-name i{width:34px;height:34px;flex:0 0 34px;border:1px solid rgba(255,255,255,.12);background-position:center;background-size:contain;background-repeat:no-repeat;background-color:rgba(0,0,0,.22);display:block;opacity:1}
+.hd-faction-line .faction-name i{width:30px;height:30px;flex:0 0 30px;border:1px solid rgba(255,255,255,.12);background-position:center;background-size:contain;background-repeat:no-repeat;background-color:rgba(0,0,0,.22);display:block;opacity:1}
 /* ===================== ÍCONES DAS FACÇÕES =====================
    TROQUE OS ARQUIVOS ABAIXO se quiser substituir os logos.
    O 'contain' mantém a logo inteira dentro do quadrado, sem cortar.
@@ -262,22 +278,22 @@
 .hd-faction-line.illuminate .faction-name i{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
 .hd-faction-line .bar{height:8px;background:#252525;border:1px solid #363636;overflow:hidden}
 .hd-faction-line .bar i{display:block;height:100%;width:0}
-.hd-faction-line .num{color:#ddd;text-align:right;font:700 12px 'Oswald',sans-serif}
-.hd-faction-line.terminid i{background:#ff9900}.hd-faction-line.automaton i{background:#ff4242}.hd-faction-line.illuminate i{background:#8b3fd6}
+.hd-faction-line .num{color:#ddd;text-align:right;font:700 12px 'Oswald',sans-serif;display:flex;align-items:center;justify-content:flex-end;gap:5px}.hd-count-icon{width:18px;height:18px;object-fit:contain;display:block;opacity:.95}
+.hd-faction-line.terminid .bar i{background:#ff9900}.hd-faction-line.automaton .bar i{background:#ff4242}.hd-faction-line.illuminate .bar i{background:#8b3fd6}
 .hd-front-list,.hd-feed{display:grid;gap:7px}
-.hd-front-row{position:relative;min-height:40px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 10px;overflow:hidden;background:#111;border:1px solid #292929}
+.hd-front-row{position:relative;min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 10px;overflow:hidden;background:#111;border:1px solid #292929}
 .hd-front-row::before{content:'';position:absolute;inset:0;background-image:var(--planet-bg);background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.62;-webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.48) 55%,transparent 100%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.48) 55%,transparent 100%)}
 .hd-front-row::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.94),rgba(10,10,10,.72) 48%,rgba(10,10,10,.18));pointer-events:none}
 .hd-front-row > *{position:relative;z-index:2}
-.hd-front-row span{color:#ddd;font:700 11px 'Oswald',sans-serif;text-transform:uppercase}
+.hd-front-row span{color:#ddd;font:700 12px 'Oswald',sans-serif;text-transform:uppercase}
 /* LOGOS NAS FRENTES EM DESTAQUE — use os mesmos arquivos das Forças no Front */
 .hd-front-row .front-name{display:flex;align-items:center;gap:8px;min-width:0}
-.hd-front-row .front-faction-logo{width:27px;height:27px;flex:0 0 27px;display:block;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:.95}
+.hd-front-row .front-faction-logo{width:25px;height:25px;flex:0 0 25px;display:block;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:.95}
 .hd-front-row .front-faction-logo.term{background-image:url('imagens/icones/logo terminids.png')} /* LOGO TERMINÍDEOS */
 .hd-front-row .front-faction-logo.auto{background-image:url('imagens/icones/logo automatons.png')} /* LOGO AUTÔMATOS */
 .hd-front-row .front-faction-logo.illum{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
-.hd-front-row strong{color:#fff;font:700 14px 'Oswald',sans-serif}.hd-front-row .term{color:#ff9900}.hd-front-row .auto{color:#ff4242}.hd-front-row .illum{color:#8b3fd6}
-.hd-feed{max-height:175px;overflow-y:auto;padding-right:3px;scrollbar-width:thin}
+.hd-front-row strong{color:#fff;font:700 16px 'Oswald',sans-serif}.hd-front-count{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:90px}.hd-front-count .hd-count-icon{width:18px;height:18px}.hd-front-row .term{color:#ff9900}.hd-front-row .auto{color:#ff4242}.hd-front-row .illum{color:#8b3fd6}
+.hd-feed{max-height:240px;overflow-y:auto;padding-right:3px;scrollbar-width:thin}
 .hd-feed-item{padding:8px 9px;border-left:2px solid #3b3b3b;background:rgba(17,17,17,.82)}
 .hd-feed-time{color:#666;font:700 9px 'Oswald',sans-serif;text-transform:uppercase;margin-bottom:3px}.hd-feed-text{color:#aaa;font-size:11px;line-height:1.4}
 .hd-ov-loading,.hd-ov-error{padding:20px;color:#777;font:700 11px 'Oswald',sans-serif;letter-spacing:.7px;text-transform:uppercase}.hd-ov-error{color:#c05a5a}
@@ -294,6 +310,139 @@
 @media(max-width:1050px){.hd-overview-grid{grid-template-columns:1fr}.hd-ov-side{grid-template-columns:1fr 1fr;grid-template-rows:none}.hd-overview-lower{grid-template-columns:1fr 1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:1/-1}}
 @media(max-width:700px){.hd-overview-head{align-items:flex-start;flex-direction:column}.hd-ov-side,.hd-overview-lower{grid-template-columns:1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:auto}.hd-overview-card.order{padding:18px}.hd-ov-order-meta{grid-template-columns:1fr}.hd-ov-campaign{grid-template-columns:1fr}.hd-campaign-art{min-height:95px}.hd-war-number{min-height:52px}}
 
+
+/* ==========================================================
+   AJUSTE V10 — ORDEM MAIOR ALINHADA
+   O card da Ordem Maior acompanha a altura da coluna lateral.
+   Para alterar o texto institucional, procure .hd-ov-order-about.
+   ========================================================== */
+.hd-overview-grid{align-items:stretch}
+/* ==========================================================
+   AJUSTE V13 — COLUNA DIREITA SEM ESPAÇO PRETO
+   Situação da Guerra e Campanha em Destaque usam somente
+   a altura real do conteúdo, sem esticar junto da Ordem Maior.
+   ========================================================== */
+.hd-ov-side{
+    align-self:start;
+    align-content:start;
+    grid-template-rows:max-content max-content;
+}
+.hd-ov-side > .hd-overview-card{
+    height:auto;
+    min-height:0;
+    align-self:start;
+}
+.hd-overview-card.order{min-height:0;display:flex;flex-direction:column}
+.hd-overview-card.order .hd-ov-order-about{margin-top:auto;max-width:none;padding:14px 0 0;border-top:1px solid rgba(215,213,44,.28)}
+.hd-overview-card.order .hd-ov-order-about small{font-size:13px;letter-spacing:1.5px;margin-bottom:7px}
+.hd-overview-card.order .hd-ov-order-about p{max-width:100%;font-size:13px;line-height:1.55;color:#bdbdbd}
+@media (max-width:900px){.hd-overview-card.order .hd-ov-order-about p{font-size:14px}}
+
+/* ==========================================================
+   AJUSTE V12 — CONTROLES INDIVIDUAIS DOS GRIDS
+   FORÇAS NO FRONT: este card agora pode ter altura própria.
+   Para subir/descer a parte inferior, ajuste o padding-bottom.
+   ========================================================== */
+.hd-lower-card.factions-card{
+    align-self:start;          /* impede que estique até a altura do card vizinho */
+    padding-bottom:11px;       /* DIMINUA para puxar a parte de baixo mais para cima */
+}
+.hd-lower-card.fronts-card{
+    align-self:start;
+}
+/* Altura INDIVIDUAL de cada linha de planeta em Frentes em Destaque. */
+.hd-lower-card.fronts-card .hd-front-row{
+    min-height:56px;           /* aumente para 60/65px se quiser mais gordinho */
+}
+/* Quantidade de Helldivers em Frentes em Destaque: sempre BRANCA. */
+.hd-lower-card.fronts-card .hd-front-row .hd-front-count strong,
+.hd-lower-card.fronts-card .hd-front-row .hd-front-count strong.term,
+.hd-lower-card.fronts-card .hd-front-row .hd-front-count strong.auto,
+.hd-lower-card.fronts-card .hd-front-row .hd-front-count strong.illum{
+    color:#fff !important;
+}
+/* Número + cabecinha nas Forças no Front. */
+.hd-faction-line .num strong{color:#fff;font:700 12px 'Oswald',sans-serif}
+
+/* ==========================================================
+   ORDEM MAIOR — MENSAGEM DA SUPER TERRA
+   Ocupa o espaço livre e fica CENTRALIZADA dentro do card.
+   ========================================================== */
+.hd-overview-card.order .hd-ov-order-about{
+    margin-top:18px;
+    flex:1;
+    min-height:170px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    max-width:none;
+    padding:24px 34px;
+    border-top:1px solid rgba(215,213,44,.38);
+    border-bottom:1px solid rgba(215,213,44,.18);
+    background:linear-gradient(90deg,transparent,rgba(0,0,0,.22) 25%,rgba(0,0,0,.22) 75%,transparent);
+}
+.hd-overview-card.order .hd-ov-order-about small{
+    color:var(--hd-yellow);
+    font:700 15px/1 'Oswald',sans-serif;
+    letter-spacing:2px;
+    margin-bottom:4px;
+}
+.hd-overview-card.order .hd-ov-order-about p{
+    width:100%;
+    max-width:1080px;
+    margin:0 auto;
+    color:#e1e1e1;
+    font-size:16px;
+    line-height:1.7;
+}
+.hd-overview-card.order .hd-ov-order-about p strong{color:#fff}
+.hd-overview-card.order .hd-ov-order-about .mo-salute{
+    display:block;
+    margin-top:12px;
+    color:var(--hd-yellow);
+    font:700 14px 'Oswald',sans-serif;
+    letter-spacing:1.3px;
+    text-transform:uppercase;
+}
+@media(max-width:700px){
+    .hd-overview-card.order .hd-ov-order-about{min-height:0;padding:20px 10px}
+    .hd-overview-card.order .hd-ov-order-about small{font-size:16px}
+    .hd-overview-card.order .hd-ov-order-about p{font-size:14px;line-height:1.6}
+}
+
+/* ==========================================================
+   AJUSTE V15 — FUNDO DA ORDEM MAIOR DIVIDIDO NA LINHA AMARELA
+   A bandeira pertence SOMENTE à área superior da Ordem Maior.
+   A mensagem abaixo ganha um fundo próprio e cobre totalmente
+   a bandeira. Para colocar outra imagem depois, troque apenas
+   o background desta regra .hd-ov-order-about.
+   ========================================================== */
+.hd-overview-card.order .hd-ov-order-about{
+    position:relative;
+    z-index:5;
+    border-top:0; /* V19 — remove a linha amarela entre a bandeira e Meridian */
+    /* V18 — imagem EXCLUSIVA da parte inferior com degradê no topo
+       para suavizar a transição entre a bandeira e Meridian. */
+    background:
+        linear-gradient(to bottom,rgba(0,0,0,.96) 0%,rgba(0,0,0,.78) 10%,rgba(0,0,0,.58) 22%,rgba(0,0,0,.48) 36%,rgba(0,0,0,.48) 100%),
+        url('imagens/0-banners/meridian.png') center/cover no-repeat;
+}
+/* Camada extra de degradê no topo para evitar a linha dura entre os dois painéis. */
+.hd-overview-card.order .hd-ov-order-about::before{
+    content:'';
+    position:absolute;
+    left:0;
+    right:0;
+    top:-1px;
+    height:78px;
+    z-index:0;
+    pointer-events:none;
+    background:linear-gradient(to bottom,rgba(0,0,0,.94) 0%,rgba(0,0,0,.60) 55%,rgba(0,0,0,0) 100%);
+}
+.hd-overview-card.order .hd-ov-order-about::after{display:none}
+.hd-overview-card.order .hd-ov-order-about > *{position:relative;z-index:1}
 </style>
 </head>
 
@@ -403,9 +552,9 @@
             <article class="hd-lower-card factions-card">
                 <h3>Forças no Front</h3>
                 <div class="hd-faction-lines">
-                    <div class="hd-faction-line terminid"><span class="faction-name"><i aria-hidden="true"></i>Terminídeos</span><div class="bar"><i id="hd-bar-term"></i></div><span class="num" id="hd-num-term">—</span></div>
-                    <div class="hd-faction-line automaton"><span class="faction-name"><i aria-hidden="true"></i>Autômatos</span><div class="bar"><i id="hd-bar-auto"></i></div><span class="num" id="hd-num-auto">—</span></div>
-                    <div class="hd-faction-line illuminate"><span class="faction-name"><i aria-hidden="true"></i>Iluminados</span><div class="bar"><i id="hd-bar-illum"></i></div><span class="num" id="hd-num-illum">—</span></div>
+                    <div class="hd-faction-line terminid"><span class="faction-name"><i aria-hidden="true"></i>Terminídeos</span><div class="bar"><i id="hd-bar-term"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-term">—</strong></span></div>
+                    <div class="hd-faction-line automaton"><span class="faction-name"><i aria-hidden="true"></i>Autômatos</span><div class="bar"><i id="hd-bar-auto"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-auto">—</strong></span></div>
+                    <div class="hd-faction-line illuminate"><span class="faction-name"><i aria-hidden="true"></i>Iluminados</span><div class="bar"><i id="hd-bar-illum"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-illum">—</strong></span></div>
                 </div>
                 <a class="hd-home-link" href="guerra.html">VER FRENTES DE BATALHA →</a>
             </article>

@@ -93,6 +93,28 @@
 .dss-action strong { color:#ddd; font-size:11px; text-transform:uppercase; }
 .dss-action small { display:block; color:#777; font-size:9px; margin-top:3px; }
 
+
+/* V19 — estados visuais da DSS */
+.dss-action-head{display:flex;align-items:flex-start;gap:8px}
+.dss-action-copy{min-width:0;flex:1}
+.dss-status-line{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font:700 10px 'Oswald',Impact,sans-serif;letter-spacing:.8px;text-transform:uppercase}
+.dss-status-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor}
+.dss-status-text{color:inherit}
+.dss-status-detail{display:block!important;margin-top:2px!important;color:#8d8d8d!important;font-size:9px!important}
+.dss-status-line.active{color:#6fda57}
+.dss-status-line.preparing{color:#ffe800}
+.dss-status-line.recharging,.dss-status-line.offline{color:#ff5959}
+.dss-status-line.active .dss-status-dot{animation:dss-online-pulse 1.45s ease-out infinite}
+.dss-state-active{border-top-color:rgba(111,218,87,.34)}
+.dss-state-preparing{border-top-color:rgba(255,232,0,.28)}
+.dss-state-recharging,.dss-state-offline{border-top-color:rgba(255,89,89,.25)}
+.dss-progress{margin-top:8px}
+@keyframes dss-online-pulse{
+  0%{box-shadow:0 0 0 0 rgba(111,218,87,.55);opacity:1}
+  70%{box-shadow:0 0 0 6px rgba(111,218,87,0);opacity:.95}
+  100%{box-shadow:0 0 0 0 rgba(111,218,87,0);opacity:1}
+}
+
 .patch-link { display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid #282828; color:#ccc; font-size:11px; }
 .patch-link:last-child { border-bottom:0; }
 .patch-link:hover { color:var(--hd-yellow); }

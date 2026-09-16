@@ -797,6 +797,94 @@
         return `<img src=\"${escapeHTML(local)}\" alt=\"\" class=\"${cls}\" ${fallback ? `data-fallback=\"${escapeHTML(fallback)}\"` : ''} onerror=\"if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}\">`;
     }
 
+
+    /* V19 — status visual das Ações Táticas da DSS.
+       Verde = ativa, amarelo = preparando/ativando, vermelho = recarregando/desativada. */
+    function dssDateValue(value) {
+        if (value == null || value === '') return null;
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            const ms = value < 1e12 ? value * 1000 : value;
+            const d = new Date(ms);
+            return Number.isFinite(d.getTime()) ? d : null;
+        }
+        const d = new Date(value);
+        return Number.isFinite(d.getTime()) ? d : null;
+    }
+
+    function dssFutureDate(action) {
+        const keys = [
+            'statusExpiresAt','statusExpiration','statusExpireTime','statusEndTime',
+            'cooldownEndsAt','cooldownEnd','cooldownExpiration','availableAt','availableTime',
+            'expiresAt','expiration','expireTime','endTime'
+        ];
+        for (const key of keys) {
+            const d = dssDateValue(action?.[key]);
+            if (d && d.getTime() > Date.now()) return d;
+        }
+        return null;
+    }
+
+    function dssTimeLabel(date) {
+        if (!date) return '';
+        let sec = Math.floor((date.getTime() - Date.now()) / 1000);
+        if (!Number.isFinite(sec) || sec <= 0) return '';
+        const d = Math.floor(sec / 86400);
+        const h = Math.floor((sec % 86400) / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        if (d) return `${d}d ${h}h`;
+        if (h) return `${h}h ${m}min`;
+        return `${Math.max(1,m)}min`;
+    }
+
+    function dssActionState(action, pct) {
+        const raw = clean(action?.statusName || action?.state || action?.statusText || action?.status).toLowerCase();
+        const numeric = Number(action?.status);
+        const active = numeric === 2 || /(^|\b)(active|ativa|activated|ativada)(\b|$)/i.test(raw);
+        const future = dssFutureDate(action);
+
+        if (active) {
+            return {
+                cls:'active',
+                label:'ATIVA',
+                detail: future ? `Termina em ${dssTimeLabel(future)}` : ''
+            };
+        }
+
+        if (/cooldown|recharg|recarreg|unavailable|indispon/i.test(raw)) {
+            return {
+                cls:'recharging',
+                label:'RECARREGANDO',
+                detail: future ? `Disponível novamente em ${dssTimeLabel(future)}` : ''
+            };
+        }
+
+        if (pct != null && pct < 100) {
+            return {
+                cls:'preparing',
+                label:'PREPARANDO',
+                detail:`${pct.toFixed(2).replace(/\.00$/,'').replace(/(\.\d)0$/,'$1')}% FINANCIADO`
+            };
+        }
+
+        if (pct != null && pct >= 100) {
+            return {
+                cls:'preparing',
+                label:'ATIVANDO',
+                detail:'FINANCIAMENTO CONCLUÍDO'
+            };
+        }
+
+        if (future) {
+            return {
+                cls:'recharging',
+                label:'RECARREGANDO',
+                detail:`Disponível novamente em ${dssTimeLabel(future)}`
+            };
+        }
+
+        return { cls:'offline', label:'DESATIVADA', detail:'' };
+    }
+
     function renderDSS(data, err) {
         const box = $('dss');
         if (!box) return;
@@ -817,12 +905,14 @@
             <div class="dss-heading dss-planet-header-bg"${dssStyle}><img src="${DSS_ICON}" alt="DSS" class="dss-main-icon" data-fallback="${DSS_ICON_FALLBACK}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}"><div><div class="dss-planet">${escapeHTML(planet)}</div><small>ESTAÇÃO DEMOCRACIA</small></div></div>
             ${actions.length ? actions.map(a=>{
                 const info=dssInfo(a.name);
-                const cost=(a.costs||[])[0]; const pct=cost?.targetValue ? Math.max(0,Math.min(100,Math.round((cost.currentValue/cost.targetValue)*100))) : null;
-                const active=a.status===2;
-                return `<div class="dss-action">
-                    <div class="dss-action-head">${dssIcon(info)}<div><strong>${escapeHTML(info.name)}</strong><small>${active?'ATIVA':pct!=null?`${pct}% FINANCIADO`:'EM PREPARAÇÃO'}</small></div></div>
+                const cost=(a.costs||[])[0];
+                const pct=cost?.targetValue ? Math.max(0,Math.min(100,(Number(cost.currentValue||0)/Number(cost.targetValue))*100)) : null;
+                const state=dssActionState(a,pct);
+                const showProgress=state.cls==='preparing' && pct!=null && pct<100;
+                return `<div class="dss-action dss-state-${state.cls}">
+                    <div class="dss-action-head">${dssIcon(info)}<div class="dss-action-copy"><strong>${escapeHTML(info.name)}</strong><div class="dss-status-line ${state.cls}"><span class="dss-status-dot" aria-hidden="true"></span><span class="dss-status-text">${escapeHTML(state.label)}</span></div>${state.detail?`<small class="dss-status-detail">${escapeHTML(state.detail)}</small>`:''}</div></div>
                     <p>${escapeHTML(info.desc)}</p>
-                    ${!active&&pct!=null?`<div class="progress"><i style="width:${pct}%;--accent:#ffe800"></i></div>`:''}
+                    ${showProgress?`<div class="progress dss-progress"><i style="width:${pct.toFixed(2)}%;--accent:#ffe800"></i></div>`:''}
                 </div>`;
             }).join('') : '<small class="feed-time">Nenhuma ação tática ativa no momento.</small>'}
         </div>`;

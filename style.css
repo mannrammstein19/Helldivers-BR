@@ -31,7 +31,7 @@ body {
 
 /* Quando o body tiver a classe 'fundo-principal', ele ignora o wallpaper principal */
 body.fundo-principal {
-    background: #0a0a0a url('imagens/0-banners/wallpaper-principal.jpg') center/cover fixed;
+    background: #0a0a0a url('imagens/0-banners/helldiver.png') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-estrategema', ele usa outro */

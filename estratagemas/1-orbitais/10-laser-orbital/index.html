@@ -6,28 +6,152 @@
     <meta name="description" content="Guia completo e status detalhados do Laser Orbital em Helldivers 2.">
     <title>Laser Orbital - Helldivers BR</title>
 
-    <link rel="stylesheet" href="../../../style.css">
+    <!-- O CSS geral -->
+    <link class="styles" rel="stylesheet" href="../../../style.css">
+
+    <style>
+        /* Estilo da caixa de texto (ATUALIZADO COM CORES E FUNDO TRANSPARENTE) */
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px; 
+            padding: 15px 20px; 
+            border-left: 3px solid #d7d52c; /* Borda amarela */
+            font-style: italic;
+            color: #d7d52c; /* Texto amarelo */
+            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
+            border-radius: 0 8px 8px 0; 
+        }
+
+        /* Criando as aspas gigantes do lado esquerdo (ATUALIZADO PARA AMARELO) */
+        .lore-quote::before {
+            content: "“"; 
+            position: absolute;
+            left: -45px; 
+            top: -10px; 
+            font-size: 60px; 
+            color: #d7d52c; /* Aspas amarelas */
+            font-family: Georgia, serif; 
+            line-height: 1;
+        }
+
+        /* ==========================================================
+           TRAVA DE LAYOUT - TEXTO E INFOBOX DA ARMA / ESTRATAGEMA
+           ========================================================== */
+        .wiki-overview-section {
+            display: flex;
+            justify-content: flex-start !important; 
+            gap: 40px; 
+            max-width: 1200px; 
+        }
+
+        .wiki-left-text {
+            flex: 1; 
+            max-width: 750px; 
+        }
+
+        /* ==========================================================
+           ESTRUTURA DAS CAIXAS DE STATUS (LARGURA TRAVADA)
+           ========================================================== */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            align-items: flex-start;
+            gap: 20px; 
+            margin-top: 20px;
+        }
+
+        .stats-box {
+            overflow: hidden;
+            width: 380px; /* TAMANHO FIXO QUE IMPEDE AS JANELAS DE FICAREM ENORMES */
+            max-width: 100%; 
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid #d7d52c;
+            padding: 15px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Espaçamento interno apenas (Sem bordas de cor) */
+        .stats-table td, .stats-table th {
+            padding: 8px 12px; 
+            border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+        }
+
+        /* Estrutura da primeira coluna */
+        .stats-table td:first-child {
+            font-weight: bold;
+            font-size: 14px;
+            width: 55%; 
+            color: #d7d52c !important; 
+        }
+
+        /* Estrutura da segunda coluna */
+        .stats-table td:last-child {
+            font-size: 14px;
+            text-align: right; 
+        }
+
+        /* Cabeçalhos secundários dentro da tabela (Alinhamento) */
+        .stats-table tr.table-sub-header th {
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 10px 6px;
+            text-align: center;
+            background: rgba(215, 213, 44, 0.1);
+            color: #d7d52c;
+        }
+
+        /* Correção para alinhamento de ícones na tabela */
+        .flex-td {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            gap: 6px;
+        }
+
+        /* Estilos adicionais mantidos para o layout da Estratagema */
+        .code-inline {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end;
+        }
+        .code-inline img { width: 14px; height: 14px; }
+        
+        .section-title {
+            color: #d7d52c;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body class="fundo-estrategema">
 
     <div class="mobile-header">
-        <button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+        <button id="menu-btn" class="mobile-menu-btn">☰ Menu de Navegação</button>
     </div>
 
-    <nav class="sidebar" id="sidebar">
+    <nav id="sidebar" class="sidebar">
         <div class="logo-container">
-            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
         </div>
 
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="../../../home.html">Página Principal</a></li>
+                <li><a href="../../../index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
-
         <div class="menu-section">
             <div class="section-header">Equipamento</div>
             <ul class="menu-list">
@@ -40,7 +164,8 @@
     </nav>
 
     <main class="main-content">
-        <div class="page-title-block">
+
+        <div class="wiki-title-block">
             <h1>Laser Orbital</h1>
         </div>
 
@@ -48,42 +173,43 @@
             
             <div class="wiki-left-text">
                 <div class="lore-quote">
-                    "Um feixe de energia de alta intensidade disparado pelo cruzador, projetado para rastrear e incinerar automaticamente alvos de alta prioridade, deixando um rastro de destruição ardente." <br>
-                    — Terminal de Gerenciamento de Navios
+                    "Um feixe de energia de alta intensidade disparado pelo cruzador, projetado para rastrear e incinerar automaticamente alvos de alta prioridade, deixando um rastro de destruição ardente."
+                    <br>— Terminal de Gerenciamento de Navios
                 </div>
                 
-                <p class="description-text">
+                <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
                     O <strong>Laser Orbital</strong> é uma das ferramentas de controle de elites mais cobiçadas pelos Helldivers. Diferente de bombardeios estáticos, o laser é autônomo, perseguindo ativamente os inimigos pela área. É perfeito para derreter armaduras pesadas e limpar bases sem precisar mirar perfeitamente, mas exige uso cauteloso devido à sua limitação de cargas.
                 </p>
                 
-                <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
-                <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+                <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
+                <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
                     <tr><td>Tempo de Recarga (Cooldown)</td><td>300 segundos</td></tr>
                     <tr><td>Duração</td><td>25 segundos</td></tr>
                     <tr><td style="color: #ff4a4a; font-weight: bold;">Usos por Missão</td><td style="color: #ff4a4a; font-weight: bold;">3</td></tr>
                 </table>
             </div>
 
-            <aside class="stratagem-infobox">
-                <div class="infobox-title">Detalhes da Estratagema</div>
-                <div class="infobox-media">
-                    <img src="../../../imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" alt="Laser Orbital" class="main-art">
+            <!-- INFOBOX DA ESTRATAGEMA -->
+            <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Laser Orbital.svg" alt="Laser Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
                 </div>
-                <table class="infobox-table">
+                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <tr>
-                        <th colspan="2">Informações de Combate</th>
+                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
                     </tr>
                     <tr>
-                        <td>Tipo de Permissão:</td>
-                        <td style="color: #ff4a4a; font-weight: bold;">Ofensivo / Raio Contínuo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff4a4a; font-weight: bold;">Ofensivo / Raio Contínuo</td>
                     </tr>
                     <tr>
-                        <td>Características:</td>
-                        <td>Orbital • Laser • Incendiário • Autônomo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Laser • Incendiário • Autônomo</td>
                     </tr>
                     <tr>
-                        <td>Código de Ativação:</td>
-                        <td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="code-inline">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
                                 <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
@@ -94,13 +220,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Recarga Base:</td>
-                        <td>300s</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">300s</td>
                     </tr>
                 </table>
-            </aside>
-        </div>
+            </div>
 
+        </div> 
+        
         <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
         
         <div class="stats-grid">
@@ -114,9 +241,10 @@
                     <tr><td>Duração</td><td>25 s</td></tr>
                     <tr><td>Alcance de Busca</td><td>50 m</td></tr>
                     <tr><td>Velocidade de Movimento</td><td>10 m/s</td></tr>
-                    <tr><th colspan="2">Ataques</th></tr>
-                    <tr><td>*ORBITAL LASE... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Spray (Feixe)</td></tr>
-                    <tr><td>**Fire <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Status</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+                    <tr><td>LASER ORBITAL DPS</td><td>Spray (Feixe)</td></tr>
+                    <tr><td>Fogo (Fire)</td><td>Status</td></tr>
                 </table>
             </div>
 
@@ -124,20 +252,22 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">LASER ORBITAL DPS</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Dano</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Dano"> 599.999994 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Dano"> 599.999994 Dano</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II [6]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II [6]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II [6]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-light.png" alt="Penetração"> Sem Armadura I [0]</td></tr>
-                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-light.png" alt="Penetração"> Sem Armadura I</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Status</td><td style="color: #ff6a00;">Fogo (Fire)</td></tr>
                     <tr><td>Força do Status</td><td>2</td></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>30</td></tr>
-                    <tr><td>Força de Empurrão</td><td>30</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>30</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>30</td></tr>
                 </table>
             </div>
 
@@ -145,53 +275,87 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">FOGO (FIRE)</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Status</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Status</th></tr>
                     <tr><td>Força do Status</td><td>5</td></tr>
                     <tr><td>Duração do Status</td><td>3 seg</td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento</td><td style="color: #ff6a00;">Fogo</td></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 100 Fogo</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 100 Fogo</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada [4]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada [4]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada [4]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-light.png" alt="Penetração"> Sem Armadura I [0]</td></tr>
-                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Pesada</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-light.png" alt="Penetração"> Sem Armadura I</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>0</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>0</td></tr>
-                    <tr><td>Força de Empurrão</td><td>0</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>0</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>0</td></tr>
                 </table>
             </div>
 
-        </div>
-
-        <div class="video-section">
-            <h2 class="section-title">Demonstração em Vídeo</h2>
-            <div class="video-wrapper">
-                <video autoplay loop muted playsinline controls preload="metadata">
+        </div> 
+        
+        <div class="video-section" style="margin-top: 40px; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; max-width: 100%;">
+            <h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
+            <div class="video-wrapper" style="display: flex; justify-content: center; margin-top: 15px;">
+                <video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
                     <source src="Orbital_Laser_Preview_Video.mp4" type="video/mp4">
-                    Seu navegador não suporta a visualização de vídeos.
+                    Seu navegador atual não suporta a visualização de vídeos.
                 </video>
             </div>
         </div>
 
     </main>
 
+    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+    </div>
+
+    <!-- SCRIPTS INTERNOS (MENU + MODAL) -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Lógica do Menu Retrátil Lateral
             const menuBtn = document.getElementById('menu-btn');
             const sidebar = document.getElementById('sidebar');
 
             if (menuBtn && sidebar) {
                 menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('active'); 
+                    sidebar.classList.toggle('active');
                     if (sidebar.classList.contains("active")) {
                         menuBtn.innerHTML = "✕ FECHAR MENU";
                     } else {
                         menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
                     }
                 });
+            }
+
+            // Lógica do Zoom da Imagem (Modal)
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                }
+                
+                btnFechar.onclick = function() {
+                    modal.style.display = "none";
+                }
+                
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
             }
         });
     </script>

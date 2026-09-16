@@ -1,381 +1,166 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barragem HE de 380mm Orbital - Helldivers BR</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guia completo e status detalhados da Barragem HE de 380mm Orbital em Helldivers 2.">
+    <title>Barragem HE de 380mm Orbital - Helldivers BR</title>
 
-<style>
-:root {
-    --hd-yellow: #d7d52c;
-    --hd-orange: #ff7b00;
-    --hd-bg: #141414;
-    --hd-card: rgba(20, 20, 20, 0.85);
-    --hd-text: #ffffff;
-    --sidebar-width: 250px;
-}
+    <!-- O CSS geral -->
+    <link class="styles" rel="stylesheet" href="../../../style.css">
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        /* Estilo da caixa de texto (ATUALIZADO COM CORES E FUNDO TRANSPARENTE) */
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px; 
+            padding: 15px 20px; 
+            border-left: 3px solid #d7d52c; /* Borda amarela */
+            font-style: italic;
+            color: #d7d52c; /* Texto amarelo */
+            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
+            border-radius: 0 8px 8px 0; 
+        }
 
-body {
-    background: #0a0a0a;
-    background-image: url('../../../imagens/0-banners/wallpaper-principal.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: var(--hd-text);
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    min-height: 100vh;
-}
+        /* Criando as aspas gigantes do lado esquerdo (ATUALIZADO PARA AMARELO) */
+        .lore-quote::before {
+            content: "“"; 
+            position: absolute;
+            left: -45px; 
+            top: -10px; 
+            font-size: 60px; 
+            color: #d7d52c; /* Aspas amarelas */
+            font-family: Georgia, serif; 
+            line-height: 1;
+        }
 
-a { text-decoration: none; }
+        /* ==========================================================
+           TRAVA DE LAYOUT - TEXTO E INFOBOX DA ARMA / ESTRATAGEMA
+           ========================================================== */
+        .wiki-overview-section {
+            display: flex;
+            justify-content: flex-start !important; 
+            gap: 40px; 
+            max-width: 1200px; 
+        }
 
-/* ==========================================================================
-   BOTÃO DO MENU MOBILE
-   ========================================================================== */
-.mobile-menu-toggle {
-    display: none;
-    background: var(--hd-yellow);
-    color: #141414;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    z-index: 200;
-}
+        .wiki-left-text {
+            flex: 1; 
+            max-width: 750px; 
+        }
 
-/* ==========================================================================
-   BARRA LATERAL FIXA
-   ========================================================================== */
-.sidebar {
-    width: var(--sidebar-width);
-    background: rgba(15, 15, 15, 0.95);
-    border-right: 2px solid var(--hd-yellow);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    overflow-y: auto;
-    padding: 15px;
-    transition: left 0.3s ease;
-}
+        /* ==========================================================
+           ESTRUTURA DAS CAIXAS DE STATUS (LARGURA TRAVADA)
+           ========================================================== */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            align-items: flex-start;
+            gap: 20px; 
+            margin-top: 20px;
+        }
 
-.logo-container {
-    text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.3);
-    margin-bottom: 15px;
-}
+        .stats-box {
+            overflow: hidden;
+            width: 380px; /* TAMANHO FIXO QUE IMPEDE AS JANELAS DE FICAREM ENORMES */
+            max-width: 100%; 
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid #d7d52c;
+            padding: 15px;
+        }
 
-.logo-container img {
-    max-width: 100%;
-    height: auto;
-}
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.menu-section { margin-bottom: 20px; }
+        /* Espaçamento interno apenas (Sem bordas de cor) */
+        .stats-table td, .stats-table th {
+            padding: 8px 12px; 
+            border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+        }
 
-.section-header {
-    color: var(--hd-yellow);
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    padding-bottom: 3px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
-}
+        /* Estrutura da primeira coluna */
+        .stats-table td:first-child {
+            font-weight: bold;
+            font-size: 14px;
+            width: 55%; 
+            color: #d7d52c !important; 
+        }
 
-.menu-list { list-style: none; }
+        /* Estrutura da segunda coluna */
+        .stats-table td:last-child {
+            font-size: 14px;
+            text-align: right; 
+        }
 
-.menu-list li a {
-    display: block;
-    color: #ccc;
-    font-size: 13px;
-    padding: 6px 10px;
-    margin-bottom: 4px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(215, 213, 44, 0.15);
-    border-left: 3px solid rgba(215, 213, 44, 0.4);
-    transition: all 0.15s ease;
-}
+        /* Cabeçalhos secundários dentro da tabela (Alinhamento) */
+        .stats-table tr.table-sub-header th {
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 10px 6px;
+            text-align: center;
+            background: rgba(215, 213, 44, 0.1);
+            color: #d7d52c;
+        }
 
-.menu-list li a:hover, .menu-list li a.active {
-    color: var(--hd-yellow);
-    background: rgba(215, 213, 44, 0.08);
-    border-color: var(--hd-yellow);
-    border-left: 3px solid var(--hd-yellow);
-    padding-left: 14px;
-}
+        /* Correção para alinhamento de ícones na tabela */
+        .flex-td {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            gap: 6px;
+        }
 
-/* ==========================================================================
-   CONTEÚDO PRINCIPAL
-   ========================================================================== */
-.main-content {
-    margin-left: var(--sidebar-width);
-    flex: 1;
-    padding: 40px;
-    background: rgba(10, 10, 10, 0.65);
-}
+        /* Estilos adicionais mantidos para o layout da Estratagema */
+        .code-inline {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end;
+        }
+        .code-inline img { width: 14px; height: 14px; }
 
-.page-title-block {
-    border-bottom: 2px solid var(--hd-yellow);
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-}
-
-.page-title-block h1 {
-    color: var(--hd-yellow);
-    font-size: 32px;
-    text-transform: uppercase;
-}
-
-.wiki-overview-section {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-    align-items: flex-start;
-}
-
-.wiki-left-text {
-    flex: 1;
-}
-
-.lore-quote {
-    background: rgba(215, 213, 44, 0.05);
-    border-left: 4px solid var(--hd-yellow);
-    padding: 15px;
-    font-style: italic;
-    margin-bottom: 20px;
-    color: #e0e0e0;
-}
-
-.description-text {
-    line-height: 1.6;
-    font-size: 15px;
-    margin-bottom: 25px;
-}
-
-/* CARD DETALHADO DA DIREITA */
-.stratagem-infobox {
-    width: 320px;
-    background: var(--hd-card);
-    border: 2px solid var(--hd-yellow);
-    padding: 15px;
-}
-
-.infobox-title {
-    background: rgba(215, 213, 44, 0.2);
-    color: var(--hd-yellow);
-    text-align: center;
-    font-weight: bold;
-    padding: 8px;
-    text-transform: uppercase;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-.infobox-media {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.infobox-media img.main-art {
-    width: 150px;
-    height: 150px;
-    border: 1px solid rgba(215, 213, 44, 0.3);
-    background: #000;
-}
-
-.infobox-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-}
-
-.infobox-table th {
-    background: rgba(215, 213, 44, 0.1);
-    color: var(--hd-yellow);
-    padding: 6px 8px;
-    text-align: left;
-    font-size: 11px;
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
-}
-
-.infobox-table td {
-    padding: 8px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
-}
-
-.code-inline {
-    display: flex;
-    gap: 3px;
-}
-.code-inline img { width: 14px; height: 14px; }
-
-.req-inline { display: flex; align-items: center; gap: 4px; font-weight: bold; }
-.req-inline img { width: 14px; height: 14px; }
-
-/* ==========================================================================
-   ESTATÍSTICAS DETALHADAS
-   ========================================================================== */
-.section-title {
-    color: var(--hd-yellow);
-    font-size: 20px;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.4);
-    padding-bottom: 5px;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-	align-items: start;
-}
-
-.stats-box {
-    background: var(--hd-card);
-    border: 1px solid var(--hd-yellow);
-    padding: 15px;
-}
-
-.stats-box h3 {
-    color: var(--hd-yellow);
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 14px;
-    border-bottom: 2px solid var(--hd-yellow);
-    padding-bottom: 6px;
-    margin-bottom: 12px;
-}
-
-.stats-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-}
-
-.stats-table th {
-    background: rgba(215, 213, 44, 0.1);
-    color: var(--hd-yellow);
-    padding: 6px;
-    text-align: center;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-.stats-table td {
-    padding: 6px 8px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.1);
-}
-
-.stats-table td:last-child {
-    text-align: right;
-    font-weight: bold;
-}
-
-.flex-td {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 6px;
-}
-.flex-td img { width: 16px; height: 16px; }
-
-/* ==========================================================================
-   SEÇÃO DE VÍDEO
-   ========================================================================== */
-.video-section {
-    margin-top: 40px;
-    background: var(--hd-card);
-    border: 1px solid var(--hd-yellow);
-    padding: 20px;
-    
-    /* === AS DICAS ENTRAM AQUI === */
-    width: fit-content; /* Faz a borda da caixa "encolher" para o tamanho exato do vídeo */
-    margin-left: auto;  /* Empurra a caixa para o centro da tela */
-    margin-right: auto; /* Empurra a caixa para o centro da tela */
-    text-align: center; /* Centraliza o título "Demonstração em Vídeo" lá dentro */
-    max-width: 100%;    /* Medida de segurança para a caixa não vazar da tela no celular */
-}
-}
-
-.video-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.video-wrapper video {
-    max-width: 100%;
-    width: 700px;
-    border: 2px solid rgba(215, 213, 44, 0.3);
-    background: #000;
-}
-
-/* ==========================================================================
-   RESPONSIVIDADE (CELULAR)
-   ========================================================================== */
-@media (max-width: 900px) {
-    .wiki-overview-section { flex-direction: column; }
-    .stratagem-infobox { width: 100%; }
-}
-@media (max-width: 768px) {
-    body { flex-direction: column; }
-    .mobile-menu-toggle { display: block; }
-    
-    .sidebar { 
-        position: fixed; 
-        top: 43px; /* Fica logo abaixo do botão mobile */
-        left: -100%; /* Escondido por padrão */
-        width: 250px; 
-        height: calc(100vh - 43px);
-        border-right: 2px solid var(--hd-yellow); 
-        box-shadow: 2px 0 15px rgba(0,0,0,0.8);
-    }
-    
-    /* Classe que o Javascript ativa para o menu entrar na tela */
-    .sidebar.active {
-        left: 0;
-    }
-    
-    .main-content { margin-left: 0; padding: 20px; }
-}
-</style>
+        .req-inline {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            font-weight: bold;
+        }
+        .req-inline img { width: 14px; height: 14px; }
+        
+        .section-title {
+            color: #d7d52c;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body class="fundo-estrategema">
 
-    <!-- BOTÃO MENU MOBILE -->
-    <button class="mobile-menu-toggle" id="menu-btn">☰ Menu de Navegação</button>
+    <div class="mobile-header">
+        <button id="menu-btn" class="mobile-menu-btn">☰ Menu de Navegação</button>
+    </div>
 
-    <nav class="sidebar" id="sidebar">
+    <nav id="sidebar" class="sidebar">
         <div class="logo-container">
-            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
         </div>
 
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="../../../home.html">Página Principal</a></li>
+                <li><a href="../../../index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
-
         <div class="menu-section">
             <div class="section-header">Equipamento</div>
             <ul class="menu-list">
@@ -388,7 +173,8 @@ a { text-decoration: none; }
     </nav>
 
     <main class="main-content">
-        <div class="page-title-block">
+
+        <div class="wiki-title-block">
             <h1>Barragem HE de 380mm Orbital</h1>
         </div>
 
@@ -396,165 +182,213 @@ a { text-decoration: none; }
             
             <div class="wiki-left-text">
                 <div class="lore-quote">
-                    "Uma barragem de artilharia prolongada e devastadora que cobre uma vasta área. É altamente recomendável manter distância até que a barragem termine." <br>
-                    — Terminal de Gerenciamento da Nave
+                    "Uma barragem de artilharia prolongada e devastadora que cobre uma vasta área. É altamente recomendável manter distância até que a barragem termine."
+                    <br>— Terminal de Gerenciamento da Nave
                 </div>
                 
-                <p class="description-text">
+                <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
                     A <strong>Barragem HE de 380mm Orbital</strong> dispara projéteis de artilharia de alto calibre sobre uma área ampla durante um período prolongado. É extremamente eficaz para obliterar grandes concentrações inimigas, bases de Autômatos ou ninhos pesados de Terminídeos. Devido à sua grande dispersão, o risco de baixas por fogo amigo é altíssimo — atire e corra.
                 </p>
                 
-                <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
-                <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+                <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
+                <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
                     <tr><td>Tempo de Chamada (Call-in Time)</td><td>3 segundos</td></tr>
-                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
                     <tr><td>Tempo de Recarga (Cooldown)</td><td>240 segundos</td></tr>
+                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
                 </table>
             </div>
 
-            <aside class="stratagem-infobox">
-                <div class="infobox-title">Detalhes da Estratagemas</div>
-                <div class="infobox-media">
-                    <img src="../../../imagens/2-estratagemas/2-orbitais/Barragem Orbital 380mm.svg" alt="Barragem de 380mm" class="main-art">
+            <!-- INFOBOX DA ESTRATAGEMA -->
+            <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Barragem Orbital 380mm.svg" alt="Barragem HE de 380mm Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
                 </div>
-                <table class="infobox-table">
+                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <tr>
-                        <th colspan="2">Informações de Combate</th>
+                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
                     </tr>
                     <tr>
-                        <td>Tipo de Permissão:</td>
-                        <td style="color: var(--hd-orange); font-weight: bold;">Ofensivo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff7b00; font-weight: bold;">Ofensivo</td>
                     </tr>
                     <tr>
-                        <td>Características:</td>
-                        <td>Orbital • Explosivo • Área</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Área</td>
                     </tr>
                     <tr>
-                        <td>Código de Ativação:</td>
-                        <td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="code-inline">
-                                <img src="../../../imagens/icones/seta-direita.png">
-                                <img src="../../../imagens/icones/seta-baixo.png">
-                                <img src="../../../imagens/icones/seta-cima.png">
-                                <img src="../../../imagens/icones/seta-cima.png">
-                                <img src="../../../imagens/icones/seta-esquerda.png">
-                                <img src="../../../imagens/icones/seta-baixo.png">
-                                <img src="../../../imagens/icones/seta-baixo.png">
+                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
+                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
+                                <img src="../../../imagens/icones/seta-cima.png" alt="Cima">
+                                <img src="../../../imagens/icones/seta-cima.png" alt="Cima">
+                                <img src="../../../imagens/icones/seta-esquerda.png" alt="Esquerda">
+                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
+                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Recarga Base:</td>
-                        <td>240s</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">240s</td>
                     </tr>
                     <tr>
-                        <th colspan="2">Aquisição de Guerra</th>
+                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Aquisição de Guerra</th>
                     </tr>
                     <tr>
-                        <td>Nível de Liberação:</td>
-                        <td>8</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Nível de Liberação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">8</td>
                     </tr>
                     <tr>
-                        <td>Custo de Liberação:</td>
-                        <td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Custo de Liberação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="req-inline">
-                                <img src="../../../imagens/icones/Requisition_Slip.svg"> 7.500 Slips
+                                <img src="../../../imagens/icones/Requisition_Slip.svg" alt="Requisition Slip"> 7.500 Slips
                             </div>
                         </td>
                     </tr>
                 </table>
-            </aside>
+            </div>
 
-        </div>
-
+        </div> 
+        
         <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
         
         <div class="stats-grid">
-            <!-- BLOCO 1: STATUS BASE (Ref. Imagem 1000071436) -->
+            
+            <!-- CAIXA 1: BARRAGEM HE DE 380MM ORBITAL -->
             <div class="stats-box">
-                <h3>BARRAGEM HE DE 380MM ORBITAL</h3>
+                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">BARRAGEM HE DE 380MM ORBITAL</h3>
                 <table class="stats-table">
                     <tr><td>Esfriar (Cooldown)</td><td>240 s</td></tr>
                     <tr><td>Usos</td><td>∞</td></tr>
                     <tr><td>Bombas</td><td>3</td></tr>
                     <tr><td>Salvas</td><td>5</td></tr>
                     <tr><td>Tamanho da Área de Bombardeio</td><td>36 m</td></tr>
-                    <tr><th colspan="2">Ataques</th></tr>
-                    <tr><td>*CANHÃO HE DE 380mm...</td><td>Projétil</td></tr>
-                    <tr><td>**CANHÃO HE DE 380mm...</td><td>Explosão</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+                    <tr><td>380mm HE CANNON P1</td><td>Projétil</td></tr>
+                    <tr><td>380mm HE CANNON P1 IE</td><td>Explosão</td></tr>
                 </table>
             </div>
 
-            <!-- BLOCO 2: PROJÉTIL E PENETRAÇÃO (Ref. Imagem 1000071437) -->
+            <!-- CAIXA 2: CANHÃO HE DE 380mm ROUND P1 -->
             <div class="stats-box">
-                <h3>CANHÃO HE DE 380mm ROUND P1</h3>
+                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">380mm HE CANNON P1</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Projétil</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>30 kg</td></tr>
                     <tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
                     <tr><td>Fator de Arrasto</td><td>0%</td></tr>
                     <tr><td>Fator de Gravidade</td><td>100%</td></tr>
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explosão no Impacto</td><td>Sim</td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 4000 Dano</td></tr>
-                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png"> 4000 Dano</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-4.png"> Anti-Tank IV (8)</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png"> Anti-Tank III (7)</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
-                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr><td>Explosão no Impacto</td><td>Sim (380mm HE CANNON P1 IE)</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-4.png" alt="Penetração"> Anti-Tank IV</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>50</td></tr>
                     <tr><td>Força de Empurrão (Push)</td><td>20</td></tr>
                 </table>
             </div>
 
-            <!-- BLOCO 3: DANO DE ÁREA E EXPLOSÃO (Ref. Imagem 1000071438) -->
+            <!-- CAIXA 3: EXPLOSÃO DO CANHÃO HE DE 380mm (IE) -->
             <div class="stats-box">
-                <h3>CANHÃO HE DE 380mm ROUND P1 IE</h3>
+                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">380mm HE CANNON P1 IE</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Área de Efeito (AoE)</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
                     <tr><td>Raio Interno</td><td>4 m</td></tr>
                     <tr><td>Raio Externo</td><td>12 m</td></tr>
                     <tr><td>Raio da Onda de Choque</td><td>18 m</td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1500 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png"> 1500 Explosão</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
                     <tr><td>Raio Externo</td><td>1499 - 0</td></tr>
                     <tr><td>Externo Durável</td><td>1499 - 0</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png"> Anti-Tank II (6)</td></tr>
-                    <tr><th colspan="2">Efeito AoE</th></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
                     <tr><td>Força de Atordoamento (Stagger)</td><td>70</td></tr>
                     <tr><td>Força de Empurrão (Push)</td><td>60</td></tr>
                 </table>
             </div>
-        </div>
 
-        <div class="video-section">
-            <h2 class="section-title">Demonstração em Vídeo</h2>
-            <div class="video-wrapper">
-                <video autoplay loop muted playsinline controls>
+        </div> 
+        
+        <div class="video-section" style="margin-top: 40px; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; max-width: 100%;">
+            <h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
+            <div class="video-wrapper" style="display: flex; justify-content: center; margin-top: 15px;">
+                <video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
                     <source src="Barragem-Orbital-380mm.mp4" type="video/mp4">
-                    Seu navegador não suporta a visualização de vídeos.
+                    Seu navegador atual não suporta a visualização de vídeos.
                 </video>
             </div>
         </div>
 
     </main>
 
-    <!-- SCRIPT SIMPLES PARA O MENU DE CELULAR FUNCIONAR -->
-    <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
+    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+    </div>
 
-        menuBtn.addEventListener('click', () => {
-            // A classe "active" é quem puxa a barra pro lado zero da tela (left: 0)
-            sidebar.classList.toggle('active'); 
+    <!-- SCRIPTS INTERNOS (MENU + MODAL) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lógica do Menu Retrátil Lateral
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ FECHAR MENU";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            // Lógica do Zoom da Imagem (Modal)
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                }
+                
+                btnFechar.onclick = function() {
+                    modal.style.display = "none";
+                }
+                
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
         });
     </script>
 

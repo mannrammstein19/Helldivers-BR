@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guia completo e status detalhados do Ataque Aéreo de Napalm via Águia em Helldivers 2. Confira dano, poder de penetração, física de projétil e efeitos de fogo.">
+    <title>Ataque Aéreo de Napalm via Águia - Helldivers BR</title>
+
+    <!-- O CSS geral -->
+    <link class="styles" rel="stylesheet" href="../../../style.css">
+
+    <style>
+        /* Estilo da caixa de texto */
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px; 
+            padding: 15px 20px; 
+            border-left: 3px solid #d7d52c; 
+            font-style: italic;
+            color: #d7d52c; 
+            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.6); 
+            border-radius: 0 8px 8px 0; 
+        }
+
+        .lore-quote::before {
+            content: "“"; 
+            position: absolute;
+            left: -45px; 
+            top: -10px; 
+            font-size: 60px; 
+            color: #d7d52c; 
+            font-family: Georgia, serif; 
+            line-height: 1;
+        }
+
+        .wiki-overview-section {
+            display: flex;
+            justify-content: flex-start !important; 
+            gap: 40px; 
+            max-width: 1200px; 
+        }
+
+        .wiki-left-text {
+            flex: 1; 
+            max-width: 750px; 
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            align-items: flex-start;
+            gap: 14px; 
+            margin-top: 20px;
+        }
+
+        .stats-box {
+            overflow: hidden;
+            width: 340px; 
+            max-width: 100%; 
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid #d7d52c;
+            padding: 10px;
+        }
+
+        .stats-box .stats-box-header {
+            background-color: #d7d52c;
+            color: #000;
+            padding: 6px 10px;
+            margin: -10px -10px 10px -10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            position: relative;
+            border-bottom: none;
+            text-transform: none;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .stats-table td, .stats-table th {
+            padding: 4px 8px; 
+            border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+        }
+
+        .stats-table td:first-child {
+            font-weight: bold;
+            font-size: 12px;
+            width: 62%; 
+            color: #d7d52c !important; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stats-table td:last-child {
+            font-size: 13px;
+            text-align: right; 
+        }
+
+        .stats-table tr.table-sub-header th {
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 6px 6px;
+            text-align: center;
+            background: rgba(215, 213, 44, 0.1);
+            color: #d7d52c;
+        }
+
+        .flex-td {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .code-inline {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end;
+        }
+        .code-inline img { width: 14px; height: 14px; }
+
+        .infobox-media-frame {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            padding: 10px;
+            border: 2px solid #ff7b00;
+            background: rgba(255, 123, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 12px rgba(255, 123, 0, 0.15);
+        }
+
+        .infobox-media-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .section-title {
+            color: #d7d52c;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+
+        /* ==========================================================
+           ESTILO E ANIMAÇÃO DO BOTÃO PISCANDO
+           ========================================================== */
+        .blink-toggle {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #d7d52c;
+            background: rgba(215, 213, 44, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #d7d52c;
+            margin-left: 8px;
+            animation: piscar 4.0s ease-in-out infinite;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .blink-toggle:hover {
+            background: #d7d52c;
+            color: #000;
+            animation: none; /* Para de piscar quando passa o mouse */
+        }
+
+        /* Estado: MOSTRAR (Verde) */
+        .blink-toggle.btn-mostrar {
+            color: #4CAF50;
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.15);
+        }
+        .blink-toggle.btn-mostrar:hover {
+            background: #4CAF50;
+            color: #000;
+        }
+
+        /* Estado: OCULTAR (Vermelho) */
+        .blink-toggle.btn-ocultar {
+            color: #F44336;
+            border-color: #F44336;
+            background: rgba(244, 67, 54, 0.15);
+        }
+        .blink-toggle.btn-ocultar:hover {
+            background: #F44336;
+            color: #000;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body class="fundo-estrategema">
+
+    <div class="mobile-header">
+        <button id="menu-btn" class="mobile-menu-btn">☰ Menu de Navegação</button>
+    </div>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="logo-container">
+            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../../../index.html">Página Principal</a></li>
+                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a href="../../../estratagemas.html" class="active">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <div class="wiki-title-block">
+            <h1>Ataque Aéreo de Napalm via Águia</h1>
+        </div>
+
+        <div class="wiki-overview-section">
+            <div class="wiki-left-text">
+                <div class="lore-quote">
+                    "Uma barragem de bombas de napalm, criando uma parede de fogo que impede o avanço dos inimigos." — Terminal de Gestão da Nave.
+                </div>
+                
+                <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 15px;">
+                    O <strong>Ataque Aéreo de Napalm via Águia</strong> <em>(Eagle Napalm Airstrike)</em> é um estratagema ofensivo que chama o caça Águia para lançar uma carga incendiária, provocando um incêndio temporário na área alvo.
+                </p>
+                <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
+                    O estratagema possui duas partes: a detonação inicial das bombas, que causa dano direto, e o napalm residual, que aplica dano contínuo em área, sendo excelente para eliminar inimigos danificados ou fracos que tentem atravessar a zona incendiada. As bombas não são capazes de destruir estruturas de objetivo, com exceção de Fabricadores de Automatons e Buracos de Terminide.
+                </p>
+
+                <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
+                <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+                    <tr><td>Recarga (Cooldown)</td><td>15 segundos</td></tr>
+                    <tr><td>Tempo de Chamada</td><td>4,1 segundos</td></tr>
+                    <tr><td>Usos por Reabastecimento</td><td>2 (Padrão) / 3 (Upgrado)</td></tr>
+                    <tr><td>Tempo de Reabastecimento (Rearm)</td><td>150 segundos</td></tr>
+                </table>
+            </div>
+
+            <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+                    <img id="armaImg" src="../../../imagens/2-estratagemas/3-eagle/Eagle_Napalm_Airstrike_Stratagem_Icon_Background.svg" alt="Ataque Aéreo de Napalm via Águia" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar" onerror="this.src='https://via.placeholder.com/150x150/111/d7d52c?text=ÍCONE'">
+                </div>
+                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr>
+                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff7b00; font-weight: bold;">Ofensivo</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Águia • Explosivo • Incendiário</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+                            <div class="code-inline">
+                                <img src="../../../imagens/icones/seta-cima.png" alt="Cima" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬆'">
+                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=➔'">
+                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬇'">
+                                <img src="../../../imagens/icones/seta-cima.png" alt="Cima" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬆'">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">15s</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Nível de Desbloqueio:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">5</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Custo:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">
+                            <div class="flex-td" style="justify-content: flex-end;">
+                                <img src="../../../imagens/icones/Requisition_Slip.svg" alt="Requisition Slips" style="width: 14px; height: 14px;">
+                                5.000 Req.
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div> 
+        
+        <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+        
+        <div class="stats-grid">
+            
+            <!-- BLOCO 1: ATAQUE AÉREO DE NAPALM VIA ÁGUIA (GERAL) - AQUI FICA O CONTROLE DAS OUTRAS JANELAS -->
+            <div class="stats-box">
+                <h3 class="stats-box-header">ATAQUE AÉREO DE NAPALM VIA ÁGUIA</h3>
+                <table class="stats-table">
+                    <tr><td>Recarga (Cooldown)</td><td>15 s</td></tr>
+                    <tr><td>Usos</td><td>2</td></tr>
+                    <tr><td>Vida Principal</td><td>100</td></tr>
+                    <tr><td>Armadura Principal</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração" onerror="this.style.display='none'"> Unarmored I</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+                    <tr>
+                        <td>BOMBA DE NAPALM 100KG</td>
+                        <td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-bomba-napalm', this)">[Ocultar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>BOMBA DE NAPALM 100KG (EXPLOSÃO)</td>
+                        <td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-bomba-napalm-explosao', this)">[Mostrar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>QUEIMADURA PESADA</td>
+                        <td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-queimadura-pesada', this)">[Mostrar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>FOGO</td>
+                        <td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-fogo', this)">[Mostrar]</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- BLOCO 2: BOMBA DE NAPALM 100KG (Inicia ABERTO) -->
+            <div class="stats-box" id="janela-bomba-napalm" style="display: block;">
+                <h3 class="stats-box-header">BOMBA DE NAPALM 100KG</h3>
+                <table class="stats-table">
+                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
+                    <tr><td>Massa</td><td>100 g</td></tr>
+                    <tr><td>Velocidade Inicial</td><td>500 m/s</td></tr>
+                    <tr><td>Fator de Arrasto</td><td>50%</td></tr>
+                    <tr><td>Fator de Gravidade</td><td>100%</td></tr>
+                    <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
+                    <tr><td>Explodir Depois</td><td>Sim (Bomba de Napalm 100KG Explosão)</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 1500 Dano</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 1500 Dano</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr><td>Força de Demolição</td><td>40</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>20</td></tr>
+                    <tr><td>Força de Empurrão</td><td>15</td></tr>
+                </table>
+            </div>
+
+            <!-- BLOCO 3: BOMBA DE NAPALM 100KG (EXPLOSÃO) (Inicia Oculto) -->
+            <div class="stats-box" id="janela-bomba-napalm-explosao" style="display: none;">
+                <h3 class="stats-box-header">BOMBA DE NAPALM 100KG (EXPLOSÃO)</h3>
+                <table class="stats-table">
+                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
+                    <tr><td>Raio Interno</td><td>1,6 m</td></tr>
+                    <tr><td>Raio Externo</td><td>8 m</td></tr>
+                    <tr><td>Raio da Onda de Choque</td><td>10 m</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+                    <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 250 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 250 Explosão</td></tr>
+                    <tr><td>Raio Externo</td><td>249 - 0</td></tr>
+                    <tr><td>Externo Durável</td><td>249 - 0</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração" onerror="this.style.display='none'"> Médio</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
+                    <tr><td>Status</td><td>Fogo</td></tr>
+                    <tr><td>Força do Status</td><td>100</td></tr>
+                    <tr><td>Segundo Status</td><td>Queimadura Pesada</td></tr>
+                    <tr><td>Força do Status (2º)</td><td>50</td></tr>
+                    <tr><td>Força de Demolição</td><td>30</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>50</td></tr>
+                    <tr><td>Força de Empurrão</td><td>40</td></tr>
+                </table>
+            </div>
+
+            <!-- BLOCO 4: QUEIMADURA PESADA (Inicia Oculto) -->
+            <div class="stats-box" id="janela-queimadura-pesada" style="display: none;">
+                <h3 class="stats-box-header">QUEIMADURA PESADA</h3>
+                <table class="stats-table">
+                    <tr class="table-sub-header"><th colspan="2">Status</th></tr>
+                    <tr><td>Duração do Status</td><td>1 s</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+                    <tr><td>Elemento</td><td>Fogo</td></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 200 Fogo</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 200 Fogo</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração" onerror="this.style.display='none'"> Unarmored I</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr><td>Força de Demolição</td><td>0</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>0</td></tr>
+                    <tr><td>Força de Empurrão</td><td>0</td></tr>
+                </table>
+            </div>
+
+            <!-- BLOCO 5: FOGO (Inicia Oculto) -->
+            <div class="stats-box" id="janela-fogo" style="display: none;">
+                <h3 class="stats-box-header">FOGO</h3>
+                <table class="stats-table">
+                    <tr class="table-sub-header"><th colspan="2">Status</th></tr>
+                    <tr><td>Duração do Status</td><td>3 s</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+                    <tr><td>Elemento</td><td>Fogo</td></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 100 Fogo</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-fogo.png" alt="Fogo"> 100 Fogo</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-heavy.png" alt="Penetração" onerror="this.style.display='none'"> Pesado</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração" onerror="this.style.display='none'"> Unarmored I</td></tr>
+
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr><td>Força de Demolição</td><td>0</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>0</td></tr>
+                    <tr><td>Força de Empurrão</td><td>0</td></tr>
+                </table>
+            </div>
+
+        </div> 
+
+        <h2 class="section-title">Módulos de Nave Aplicáveis</h2>
+
+        <table class="stats-table" style="max-width: 900px; background: rgba(20, 20, 20, 0.85); border: 1px solid rgba(215, 213, 44, 0.2); table-layout: auto;">
+            <tr class="table-sub-header"><th colspan="3">Módulos que afetam o Ataque Aéreo de Napalm via Águia</th></tr>
+            <tr>
+                <td style="white-space: normal;">Cockpit Ventilado a Líquido</td>
+                <td style="text-align: left; white-space: normal;">Reduz o cooldown de estratagemas Águia em 50%.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Pagamento por Risco da Equipe de Terra</td>
+                <td style="text-align: left; white-space: normal;">Reduz o tempo de Reabastecimento (Rearm) de estratagemas Águia em 20%.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Compartimento de Armas Expandido</td>
+                <td style="text-align: left; white-space: normal;">Aumenta o número de usos de estratagemas Águia por Reabastecimento em 1.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Compartimento de Armas XXL</td>
+                <td style="text-align: left; white-space: normal;">Estratagemas Águia que lançam múltiplas bombas lançam 1 bomba adicional.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Treinamento Avançado de Equipe</td>
+                <td style="text-align: left; white-space: normal;">Reduz ainda mais o cooldown de Reabastecimento da Águia em 10% se chamada enquanto ainda houver usos restantes.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Combustão Aprimorada</td>
+                <td style="text-align: left; white-space: normal;">Aumenta o dano de fogo de Estratagemas em 25%.</td>
+            </tr>
+            <tr>
+                <td style="white-space: normal;">Aumento de Moral</td>
+                <td style="text-align: left; white-space: normal;">Reduz o tempo de recarga de todas as Estratagemas em 5%.</td>
+            </tr>
+        </table>
+
+        <div class="video-section" style="margin: 40px 0 0 0; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; max-width: 100%;">
+            <h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
+            <div class="video-wrapper" style="display: flex; justify-content: flex-start; margin-top: 15px;">
+                <video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
+                    <source src="Eagle_Napalm_Airstrike_Preview_Video.mp4" type="video/mp4">
+                    Seu navegador atual não suporta a visualização de vídeos.
+                </video>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+    </div>
+
+    <!-- SCRIPTS INTERNOS -->
+    <script>
+        // Função para abrir/fechar as janelas específicas a partir da 1ª Coluna
+        function toggleJanelaLateral(idJanela, botao) {
+            const janela = document.getElementById(idJanela);
+            
+            if (janela.style.display === 'none') {
+                janela.style.display = 'block'; // Mostra a caixa ao lado
+                botao.textContent = '[Ocultar]';
+                
+                // Remove a cor verde e adiciona a vermelha
+                botao.classList.remove('btn-mostrar');
+                botao.classList.add('btn-ocultar');
+            } else {
+                janela.style.display = 'none'; // Esconde a caixa
+                botao.textContent = '[Mostrar]';
+                
+                // Remove a cor vermelha e volta para a verde
+                botao.classList.remove('btn-ocultar');
+                botao.classList.add('btn-mostrar');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lógica do Menu Retrátil Lateral
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    if (sidebar.classList.contains("active")) {
+                        menuBtn.innerHTML = "✕ FECHAR MENU";
+                    } else {
+                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
+                    }
+                });
+            }
+
+            // Lógica do Zoom da Imagem (Modal)
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                }
+                
+                btnFechar.onclick = function() {
+                    modal.style.display = "none";
+                }
+                
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

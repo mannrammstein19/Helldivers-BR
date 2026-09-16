@@ -15,26 +15,29 @@
             position: relative;
             margin: 20px 0 20px 50px; 
             padding: 15px 20px; 
-            border-left: 3px solid #d7d52c; 
+            border-left: 3px solid #d7d52c; /* Borda amarela */
             font-style: italic;
-            color: #d7d52c; 
+            color: #d7d52c; /* Texto amarelo */
             line-height: 1.6;
-            background-color: rgba(0, 0, 0, 0.6); 
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
             border-radius: 0 8px 8px 0; 
         }
 
+        /* Criando as aspas gigantes do lado esquerdo (ATUALIZADO PARA AMARELO) */
         .lore-quote::before {
             content: "“"; 
             position: absolute;
             left: -45px; 
             top: -10px; 
             font-size: 60px; 
-            color: #d7d52c; 
+            color: #d7d52c; /* Aspas amarelas */
             font-family: Georgia, serif; 
             line-height: 1;
         }
 
-        /* TRAVA DE LAYOUT - TEXTO E INFOBOX */
+        /* ==========================================================
+           TRAVA DE LAYOUT - TEXTO E INFOBOX DA ARMA / ESTRATAGEMA
+           ========================================================== */
         .wiki-overview-section {
             display: flex;
             justify-content: flex-start !important; 
@@ -47,69 +50,67 @@
             max-width: 750px; 
         }
 
-        /* ESTRUTURA DAS CAIXAS DE STATUS (LARGURA TRAVADA) */
+        /* ==========================================================
+           ESTRUTURA DAS CAIXAS DE STATUS (LARGURA TRAVADA)
+           ========================================================== */
         .stats-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start; 
             align-items: flex-start;
-            gap: 20px; 
+            gap: 14px; 
             margin-top: 20px;
         }
 
         .stats-box {
             overflow: hidden;
-            width: 380px; 
+            width: 340px; /* TAMANHO FIXO QUE IMPEDE AS JANELAS DE FICAREM ENORMES */
             max-width: 100%; 
             background: rgba(20, 20, 20, 0.85);
             border: 1px solid #d7d52c;
-            padding: 15px;
-        }
-        
-        /* Títulos das Caixas (Retornado ao padrão escuro/amarelo) */
-        .stats-box h3 {
-            color: #d7d52c;
-            text-align: center;
-            font-size: 16px;
-            text-transform: uppercase;
-            margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(215, 213, 44, 0.2);
-            padding-bottom: 10px;
+            padding: 10px;
         }
 
         .stats-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
+        /* Espaçamento interno apenas (Sem bordas de cor) */
         .stats-table td, .stats-table th {
-            padding: 8px 12px; 
+            padding: 4px 8px; 
             border-bottom: 1px solid rgba(215, 213, 44, 0.1);
         }
 
+        /* Estrutura da primeira coluna */
         .stats-table td:first-child {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             width: 55%; 
             color: #d7d52c !important; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
+        /* Estrutura da segunda coluna */
         .stats-table td:last-child {
-            font-size: 14px;
+            font-size: 13px;
             text-align: right; 
         }
 
-        /* Subtítulos (Retornado ao padrão escuro/amarelo original) */
+        /* Cabeçalhos secundários dentro da tabela (Alinhamento) */
         .stats-table tr.table-sub-header th {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
-            padding: 10px 6px;
+            padding: 6px 6px;
             text-align: center;
             background: rgba(215, 213, 44, 0.1);
             color: #d7d52c;
         }
 
+        /* Correção para alinhamento de ícones na tabela */
         .flex-td {
             display: flex;
             align-items: center;
@@ -117,6 +118,7 @@
             gap: 6px;
         }
 
+        /* Estilos adicionais mantidos para o layout da Estratagema */
         .code-inline {
             display: flex;
             gap: 3px;
@@ -132,6 +134,68 @@
             border-bottom: 1px solid rgba(215, 213, 44, 0.4);
             padding-bottom: 5px;
             margin-top: 40px;
+        }
+
+        .stats-box .stats-box-header {
+            background-color: #d7d52c;
+            color: #000;
+            padding: 6px;
+            margin: -10px -10px 10px -10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            position: relative;
+            border-bottom: none;
+            text-transform: none;
+        }
+
+        /* ==========================================================
+           BOTÃO PISCANDO (MOSTRAR/OCULTAR)
+           ========================================================== */
+        .blink-toggle {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #d7d52c;
+            background: rgba(215, 213, 44, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #d7d52c;
+            margin-left: 8px;
+            animation: piscar 4.0s ease-in-out infinite;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .blink-toggle:hover {
+            background: #d7d52c;
+            color: #000;
+            animation: none;
+        }
+
+        .blink-toggle.btn-mostrar {
+            color: #4CAF50;
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.15);
+        }
+        .blink-toggle.btn-mostrar:hover {
+            background: #4CAF50;
+            color: #000;
+        }
+
+        .blink-toggle.btn-ocultar {
+            color: #F44336;
+            border-color: #F44336;
+            background: rgba(244, 67, 54, 0.15);
+        }
+        .blink-toggle.btn-ocultar:hover {
+            background: #F44336;
+            color: #000;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
     </style>
 </head>
@@ -149,7 +213,7 @@
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="../../../home.html">Página Principal</a></li>
+                <li><a href="../../../index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
@@ -185,22 +249,13 @@
                 
                 <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
                 <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
-                    <tr>
-                        <td style="color: #ffffff !important;">Tempo de Chamada (Call-in Time)</td>
-                        <td>4.45 segundos</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #ffffff !important;">Tempo de Recarga (Cooldown)</td>
-                        <td>75 segundos</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #ffffff !important;">Usos por Missão</td>
-                        <td>Ilimitado (∞)</td>
-                    </tr>
+                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>4.45 segundos</td></tr>
+                    <tr><td>Tempo de Recarga (Cooldown)</td><td>75 segundos</td></tr>
+                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
                 </table>
             </div>
 
-            <!-- INFOBOX DA ESTRATAGEMA PADRONIZADA -->
+            <!-- INFOBOX DA ESTRATAGEMA -->
             <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
                 <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
                 <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
@@ -211,26 +266,16 @@
                         <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
                     </tr>
                     <tr>
-                        <td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1); white-space: nowrap;">
-                            Tipo de Permissão:
-                        </td>
-                        <td style="padding: 3px 15px; text-align: right; color: #ff7b00; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
-                            Ofensivo
-                        </td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff7b00; font-weight: bold;">Ofensivo</td>
                     </tr>
                     <tr>
-                        <td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1); white-space: nowrap;">
-                            Características:
-                        </td>
-                        <td style="padding: 3px 15px; text-align: right; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
-                            Orbital • Explosivo • Cáustico
-                        </td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Cáustico</td>
                     </tr>
                     <tr>
-                        <td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1); white-space: nowrap;">
-                            Código de Ativação:
-                        </td>
-                        <td style="padding: 3px 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="code-inline">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
@@ -240,12 +285,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="height: 45px; background: rgba(255, 255, 255, 0.08); padding: 3px 15px; color: #d7d52c; font-weight: bold; border-bottom: 1px solid rgba(215, 213, 44, 0.1); white-space: nowrap;">
-                            Recarga Base:
-                        </td>
-                        <td style="padding: 3px 15px; text-align: right; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
-                            75s
-                        </td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">75s</td>
                     </tr>
                 </table>
             </div>
@@ -256,27 +297,40 @@
         
         <div class="stats-grid">
             
-            <!-- CAIXA 1: ATAQUE DE GÁS ORBITAL -->
+            <!-- BLOCO 1: ATAQUE DE GÁS ORBITAL (GERAL) - AQUI FICA O CONTROLE DAS OUTRAS JANELAS -->
             <div class="stats-box">
-                <h3>ATAQUE DE GÁS ORBITAL</h3>
+                <h3 class="stats-box-header">ATAQUE DE GÁS ORBITAL</h3>
                 <table class="stats-table">
                     <tr><td>Esfriar (Cooldown)</td><td>75 s</td></tr>
                     <tr><td>Usos</td><td>∞</td></tr>
                     <tr><td>Bombas</td><td>1</td></tr>
                     <tr><td>Salvas</td><td>1</td></tr>
                     <tr><td>Tamanho da Área de Bombardeio</td><td>1 m</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
-                    <tr><td>*110mm GAS C... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Projétil</td></tr>
-                    <tr><td>**110mm GAS C... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Explosão</td></tr>
-                    <tr><td>***Gás <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>status</td></tr>
-                    <tr><td>***Confusão de Gás <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>status</td></tr>
+                    <!-- Botões de Mostrar/Ocultar com a nova classe btn-mostrar inserida -->
+                    <tr>
+                        <td>110mm GAS CANNON P</td>
+                        <td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-projetil', this)">[Ocultar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>110mm GAS CANNON P IE</td>
+                        <td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-explosao', this)">[Mostrar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>Gás</td>
+                        <td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-gas', this)">[Mostrar]</span></td>
+                    </tr>
+                    <tr>
+                        <td>Confusão de Gás</td>
+                        <td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-confusao-gas', this)">[Mostrar]</span></td>
+                    </tr>
                 </table>
             </div>
 
-            <!-- CAIXA 2: CANHÃO DE GÁS 110mm ROUND P -->
-            <div class="stats-box">
-                <h3>CANHÃO DE GÁS 110mm ROUND P</h3>
+            <!-- BLOCO 2: PROJÉTIL (Inicia ABERTO, pra mostrar que existe mais conteúdo) -->
+            <div class="stats-box" id="janela-projetil" style="display: block;">
+                <h3 class="stats-box-header">110mm GAS CANNON P</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>5 kg</td></tr>
@@ -284,83 +338,83 @@
                     <tr><td>Fator de Arrasto</td><td>0%</td></tr>
                     <tr><td>Fator de Gravidade</td><td>100%</td></tr>
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explosão no Impacto</td><td>110mm GAS CA... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
-                    
+                    <tr><td>Explosão no Impacto</td><td>Sim (110mm GAS CANNON P IE)</td></tr>
+
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Anti-Tank III</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+
                     <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>60</td></tr>
-                    <tr><td>Força de Empurrão</td><td>15</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>60</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>15</td></tr>
                 </table>
             </div>
 
-            <!-- CAIXA 3: EXPLOSÃO DO GÁS (IE) -->
-            <div class="stats-box">
-                <h3>CANHÃO DE GÁS 110mm ROUND P IE</h3>
+            <!-- BLOCO 3: EXPLOSÃO DO GÁS IE (Inicia Oculto) -->
+            <div class="stats-box" id="janela-explosao" style="display: none;">
+                <h3 class="stats-box-header">110mm GAS CANNON P IE</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
                     <tr><td>Raio Interno</td><td>1 m</td></tr>
                     <tr><td>Raio Externo</td><td>15 m</td></tr>
                     <tr><td>Raio da Onda de Choque</td><td>20 m</td></tr>
                     <tr><td>Duração AoE</td><td>15 s</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Gás</td></tr>
                     <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-gas.png" alt="Gás"> 0 Gás</td></tr>
                     <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-gas.png" alt="Gás"> 0 Gás</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+
                     <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Status</td><td>Gás</td></tr>
                     <tr><td>Força do Status</td><td>100</td></tr>
-                    <tr><td>Segundo Status</td><td>Confusão_Gás</td></tr>
+                    <tr><td>Segundo Status</td><td>Confusão de Gás</td></tr>
                     <tr><td>Força do Status</td><td>100</td></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>10</td></tr>
-                    <tr><td>Força de Empurrão</td><td>40</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>10</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>40</td></tr>
                 </table>
             </div>
 
-            <!-- CAIXA 4: STATUS DE GÁS -->
-            <div class="stats-box">
-                <h3>GÁS</h3>
+            <!-- BLOCO 4: STATUS DE GÁS (Inicia Oculto) -->
+            <div class="stats-box" id="janela-gas" style="display: none;">
+                <h3 class="stats-box-header">GÁS</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Status</th></tr>
                     <tr><td>Força do Status</td><td>0.25</td></tr>
                     <tr><td>Duração do Status</td><td>6 seg</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento</td><td>Gás</td></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-gas.png" alt="Gás"> 25 Gás</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-gas.png" alt="Gás"> 25 Gás</td></tr>
-                    
+
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td">Sem Armadura I</td></tr>
-                    
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Anti-Tank II</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração"> Unarmored I</td></tr>
+
                     <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>0</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>0</td></tr>
-                    <tr><td>Força de Empurrão</td><td>0</td></tr>
+                    <tr><td>Força de Atordoamento (Stagger)</td><td>0</td></tr>
+                    <tr><td>Força de Empurrão (Push)</td><td>0</td></tr>
                 </table>
             </div>
 
-            <!-- CAIXA 5: CONFUSÃO DE GÁS -->
-            <div class="stats-box">
-                <h3>CONFUSÃO DE GÁS</h3>
+            <!-- BLOCO 5: CONFUSÃO DE GÁS (Inicia Oculto) -->
+            <div class="stats-box" id="janela-confusao-gas" style="display: none;">
+                <h3 class="stats-box-header">CONFUSÃO DE GÁS</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Status</th></tr>
                     <tr><td>Força do Status</td><td>0.25</td></tr>
@@ -370,9 +424,9 @@
 
         </div> 
         
-        <div class="video-section" style="margin-top: 40px; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; max-width: 100%;">
+        <div class="video-section" style="margin: 40px 0 0 0; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; max-width: 100%;">
             <h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
-            <div class="video-wrapper" style="display: flex; justify-content: center; margin-top: 15px;">
+            <div class="video-wrapper" style="display: flex; justify-content: flex-start; margin-top: 15px;">
                 <video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
                     <source src="Orbital_Gas_Strike_Preview_Video.mp4" type="video/mp4">
                     Seu navegador atual não suporta a visualização de vídeos.
@@ -388,9 +442,27 @@
         <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
     </div>
 
-    <!-- SCRIPTS INTERNOS -->
+    <!-- SCRIPTS INTERNOS (MENU + MODAL + TOGGLE) -->
     <script>
+        // Função para abrir/fechar as janelas de detalhe a partir da Caixa 1
+        function toggleJanelaLateral(idJanela, botao) {
+            const janela = document.getElementById(idJanela);
+
+            if (janela.style.display === 'none') {
+                janela.style.display = 'block';
+                botao.textContent = '[Ocultar]';
+                botao.classList.remove('btn-mostrar');
+                botao.classList.add('btn-ocultar');
+            } else {
+                janela.style.display = 'none';
+                botao.textContent = '[Mostrar]';
+                botao.classList.remove('btn-ocultar');
+                botao.classList.add('btn-mostrar');
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
+            // Lógica do Menu Retrátil Lateral
             const menuBtn = document.getElementById('menu-btn');
             const sidebar = document.getElementById('sidebar');
 
@@ -405,6 +477,7 @@
                 });
             }
 
+            // Lógica do Zoom da Imagem (Modal)
             const modal = document.getElementById("imageModal");
             const imgArma = document.getElementById("armaImg");
             const imgAmpliada = document.getElementById("imgAmpliada");

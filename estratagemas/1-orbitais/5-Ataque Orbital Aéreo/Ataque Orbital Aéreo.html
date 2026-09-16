@@ -3,10 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guia completo e status detalhados do Ataque de Explosão Aérea Orbital em Helldivers 2. Confira raio de explosão, penetração de armadura e dano de estilhaços.">
+    <meta name="description" content="Guia completo e status detalhados da Barragem HE de 120mm Orbital em Helldivers 2.">
     <title>Ataque de Explosão Aérea Orbital - Helldivers BR</title>
 
-    <link rel="stylesheet" href="../../../style.css">
+    <!-- O CSS geral -->
+    <link class="styles" rel="stylesheet" href="../../../style.css">
+
+    <style>
+        /* Estilo da caixa de texto (ATUALIZADO COM CORES E FUNDO TRANSPARENTE) */
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px; 
+            padding: 15px 20px; 
+            border-left: 3px solid #d7d52c; /* Borda amarela */
+            font-style: italic;
+            color: #d7d52c; /* Texto amarelo */
+            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
+            border-radius: 0 8px 8px 0; 
+        }
+
+        /* Criando as aspas gigantes do lado esquerdo (ATUALIZADO PARA AMARELO) */
+        .lore-quote::before {
+            content: "“"; 
+            position: absolute;
+            left: -45px; 
+            top: -10px; 
+            font-size: 60px; 
+            color: #d7d52c; /* Aspas amarelas */
+            font-family: Georgia, serif; 
+            line-height: 1;
+        }
+
+        /* ==========================================================
+           TRAVA DE LAYOUT - TEXTO E INFOBOX DA ARMA / ESTRATAGEMA
+           ========================================================== */
+        .wiki-overview-section {
+            display: flex;
+            justify-content: flex-start !important; 
+            gap: 40px; 
+            max-width: 1200px; 
+        }
+
+        .wiki-left-text {
+            flex: 1; 
+            max-width: 750px; 
+        }
+
+        /* ==========================================================
+           ESTRUTURA DAS CAIXAS DE STATUS (LARGURA TRAVADA)
+           ========================================================== */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            align-items: flex-start;
+            gap: 20px; 
+            margin-top: 20px;
+        }
+
+        .stats-box {
+            overflow: hidden;
+            width: 380px; /* TAMANHO FIXO QUE IMPEDE AS JANELAS DE FICAREM ENORMES */
+            max-width: 100%; 
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid #d7d52c;
+            padding: 15px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Espaçamento interno apenas (Sem bordas de cor) */
+        .stats-table td, .stats-table th {
+            padding: 8px 12px; 
+            border-bottom: 1px solid rgba(215, 213, 44, 0.1);
+        }
+
+        /* Estrutura da primeira coluna */
+        .stats-table td:first-child {
+            font-weight: bold;
+            font-size: 14px;
+            width: 55%; 
+            color: #d7d52c !important; 
+        }
+
+        /* Estrutura da segunda coluna */
+        .stats-table td:last-child {
+            font-size: 14px;
+            text-align: right; 
+        }
+
+        /* Cabeçalhos secundários dentro da tabela (Alinhamento) */
+        .stats-table tr.table-sub-header th {
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 10px 6px;
+            text-align: center;
+            background: rgba(215, 213, 44, 0.1);
+            color: #d7d52c;
+        }
+
+        /* Correção para alinhamento de ícones na tabela */
+        .flex-td {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            gap: 6px;
+        }
+
+        /* Estilos adicionais mantidos para o layout da Estratagema */
+        .code-inline {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end;
+        }
+        .code-inline img { width: 14px; height: 14px; }
+        
+        .section-title {
+            color: #d7d52c;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(215, 213, 44, 0.4);
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body class="fundo-estrategema">
 
@@ -22,7 +147,7 @@
         <div class="menu-section">
             <div class="section-header">Comunidade</div>
             <ul class="menu-list">
-                <li><a href="../../../home.html">Página Principal</a></li>
+                <li><a href="../../../index.html">Página Principal</a></li>
                 <li><a href="#">Portal da Comunidade</a></li>
                 <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
@@ -40,7 +165,7 @@
     </nav>
 
     <main class="main-content">
-        <div class="page-title-block">
+        <div class="wiki-title-block">
             <h1>Ataque de Explosão Aérea Orbital</h1>
         </div>
 
@@ -64,26 +189,26 @@
                 </table>
             </div>
 
-            <aside class="stratagem-infobox">
-                <div class="infobox-title">Detalhes da Estratagema</div>
-                <div class="infobox-media">
-                    <img src="../../../imagens/2-estratagemas/2-orbitais/Ataque Orbital Aéreo.svg" alt="Ataque de Explosão Aérea Orbital" class="main-art">
+            <aside class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Ataque Orbital Aéreo.svg" alt="Ataque de Explosão Aérea Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
                 </div>
-                <table class="infobox-table">
+                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <tr>
-                        <th colspan="2">Informações de Combate</th>
+                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
                     </tr>
                     <tr>
-                        <td>Tipo de Permissão:</td>
-                        <td style="color: var(--hd-orange); font-weight: bold;">Ofensivo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff7b00; font-weight: bold;">Ofensivo</td>
                     </tr>
                     <tr>
-                        <td>Características:</td>
-                        <td>Orbital • Explosivo • Estilhaço</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Estilhaço</td>
                     </tr>
                     <tr>
-                        <td>Código de Ativação:</td>
-                        <td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
                             <div class="code-inline">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
                                 <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
@@ -92,8 +217,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Recarga Base:</td>
-                        <td>100s</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">100s</td>
                     </tr>
                 </table>
             </aside>
@@ -113,7 +238,7 @@
                     <tr><td>Bombas</td><td>1</td></tr>
                     <tr><td>Salvas</td><td>4</td></tr>
                     <tr><td>Tamanho da Área de Bombardeio</td><td>2 m</td></tr>
-                    <tr><th colspan="2">Ataques</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
                     <tr><td>*110mm AIRBU... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Projétil</td></tr>
                     <tr><td>**110mm AIRBU... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Explosão</td></tr>
                     <tr><td>***SHRAPNEL P1 <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Projétil</td></tr>
@@ -125,7 +250,7 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">CANHÃO DE EXPLOSÃO AÉREA 110mm ROUND P</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Projétil</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>5 kg</td></tr>
                     <tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
                     <tr><td>Fator de Arrasto</td><td>0%</td></tr>
@@ -134,15 +259,15 @@
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
                     <tr><td>Explosão no Impacto</td><td>110mm AIRBU... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
                     <tr><td>Explodir Após</td><td>110mm AIRBU... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III [7]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III [7]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II [6]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II [6]</td></tr>
-                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>50</td></tr>
                     <tr><td>Força de Escalonamento</td><td>60</td></tr>
                     <tr><td>Força de Empurrão</td><td>15</td></tr>
@@ -153,21 +278,21 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">CANHÃO DE EXPLOSÃO AÉREA 110mm ROUND P IE</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Área de Efeito (AoE)</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
                     <tr><td>Raio Interno</td><td>0.200000003 m</td></tr>
                     <tr><td>Raio Externo</td><td>0.5 m</td></tr>
                     <tr><td>Raio da Onda de Choque</td><td>4 m</td></tr>
                     <tr><td>Contagem de Estilhaços</td><td>12</td></tr>
                     <tr><td>Estilhaço</td><td>SHRAPNEL_P1 <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
                     <tr><td>Raio Externo</td><td>349 - 0</td></tr>
                     <tr><td>Externo Durável</td><td>349 - 0</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media-3.png" alt="Penetração"> Média [3]</td></tr>
-                    <tr><th colspan="2">Efeito AoE</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
+                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
                     <tr><td>Força de Escalonamento</td><td>50</td></tr>
                     <tr><td>Força de Empurrão</td><td>40</td></tr>
@@ -178,22 +303,22 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">SHRAPNEL P1</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Projétil</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
                     <tr><td>Massa</td><td>2 g</td></tr>
                     <tr><td>Velocidade Inicial</td><td>300 m/s</td></tr>
                     <tr><td>Fator de Arrasto</td><td>50%</td></tr>
                     <tr><td>Fator de Gravidade</td><td>100%</td></tr>
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
                     <tr><td>Explosão no Impacto</td><td>SHRAPNEL_P1_... <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
                     <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 150 Dano</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media-3.png" alt="Penetração"> Média [3]</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media-3.png" alt="Penetração"> Média [3]</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media-3.png" alt="Penetração"> Média [3]</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td">Sem Armadura I [0]</td></tr>
-                    <tr><th colspan="2">Efeitos Especiais</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-unarmored-1.png" alt="Penetração"> Sem Armadura I</td></tr>
+                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
                     <tr><td>Força de Demolição</td><td>10</td></tr>
                     <tr><td>Força de Escalonamento</td><td>10</td></tr>
                     <tr><td>Força de Empurrão</td><td>20</td></tr>
@@ -204,19 +329,19 @@
             <div class="stats-box">
                 <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">SHRAPNEL P1 IE</h3>
                 <table class="stats-table">
-                    <tr><th colspan="2">Área de Efeito (AoE)</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
                     <tr><td>Raio Interno</td><td>3 m</td></tr>
                     <tr><td>Raio Externo</td><td>6 m</td></tr>
                     <tr><td>Raio da Onda de Choque</td><td>8 m</td></tr>
-                    <tr><th colspan="2">Dano</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosivo.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
                     <tr><td>Raio Externo</td><td>349 - 0</td></tr>
                     <tr><td>Externo Durável</td><td>349 - 0</td></tr>
-                    <tr><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-media-3.png" alt="Penetração"> Média [3]</td></tr>
-                    <tr><th colspan="2">Efeito AoE</th></tr>
+                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
+                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
                     <tr><td>Força de Demolição</td><td>30</td></tr>
                     <tr><td>Força de Escalonamento</td><td>50</td></tr>
                     <tr><td>Força de Empurrão</td><td>40</td></tr>
@@ -237,6 +362,12 @@
 
     </main>
 
+    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const menuBtn = document.getElementById('menu-btn');
@@ -251,6 +382,29 @@
                         menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
                     }
                 });
+            }
+
+            // Lógica do Zoom da Imagem (Modal)
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                }
+
+                btnFechar.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                }
             }
         });
     </script>

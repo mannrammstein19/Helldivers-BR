@@ -1,24 +1,116 @@
 {
   "schema": 1,
-  "state": "completed",
-  "key": "3354462162",
-  "first_seen_at": "2026-09-14T00:00:00Z",
-  "ended_at": "2026-09-15T06:10:00Z",
-  "final_percent": 100.0,
-  "outcome_source": "initial_seed",
+  "state": "active",
+  "key": "806233317",
+  "first_seen_at": "2026-09-17T18:56:44.975391Z",
+  "last_seen_at": "2026-09-17T18:56:44.975391Z",
+  "last_progress_update_at": "2026-09-17T18:56:44.975391Z",
+  "final_percent": 2.22,
+  "outcome_source": null,
   "order": {
-    "id": 3354462162,
+    "id": 806233317,
+    "progress": [
+      32929138,
+      18534215,
+      4060887
+    ],
     "title": "MAJOR ORDER",
-    "briefing": "Decommission the targeted quantity of Automaton Troopers, by any means necessary, to prevent their use in posing as voters.",
-    "description": "Objetivo: 200.000.000 unidades.",
-    "goal": 200000000,
-    "progress": 200000000,
-    "targetFaction": "Autômatos",
+    "briefing": "Uphold election security by destroying all those who would threaten it.",
+    "description": null,
+    "tasks": [
+      {
+        "type": 3,
+        "values": [
+          2,
+          0,
+          1500000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "valueTypes": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          5,
+          8,
+          9,
+          11,
+          12
+        ]
+      },
+      {
+        "type": 3,
+        "values": [
+          3,
+          0,
+          500000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "valueTypes": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          5,
+          8,
+          9,
+          11,
+          12
+        ]
+      },
+      {
+        "type": 3,
+        "values": [
+          4,
+          0,
+          500000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "valueTypes": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          5,
+          8,
+          9,
+          11,
+          12
+        ]
+      }
+    ],
     "reward": {
-      "amount": 35,
-      "name": "Medalhas",
-      "id": 897894480
+      "type": 1,
+      "amount": 40
     },
-    "rewardId": 897894480
+    "rewards": [
+      {
+        "type": 1,
+        "amount": 40
+      }
+    ],
+    "expiration": "2026-09-21T15:59:54.5155075Z",
+    "flags": 0
   }
 }

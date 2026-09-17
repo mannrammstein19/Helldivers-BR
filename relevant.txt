@@ -30,7 +30,7 @@
     30	.hd-overview-card.order{padding:0;min-height:235px;background:#090909}
     31	.hd-overview-card.order::after,.hd-overview-card.order::before{display:none}
     32	.hd-ov-order-main{position:relative;overflow:hidden;padding:20px 22px 17px;background:#090909}
-    33	.hd-ov-order-main::after{content:'';position:absolute;inset:0;z-index:0;background:url('imagens/icones/efeito-dss/major_order.png') center right/cover no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
+    33	.hd-ov-order-main::after{content:'';position:absolute;inset:0;z-index:0;background:url('imagens/fundos/major-order/major-order-ativa.png') center right/cover no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
     34	.hd-ov-order-main::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,7,7,.98) 0%,rgba(7,7,7,.90) 35%,rgba(7,7,7,.50) 64%,rgba(7,7,7,.12) 100%);pointer-events:none}
     35	.hd-ov-order-main > *{position:relative;z-index:3}
     36	.hd-overview-card.order .hd-ov-title{position:relative;z-index:3}
@@ -56,7 +56,7 @@
     56	   ========================================================================== */
     57	.hd-ov-order-about{position:relative;z-index:3;margin:0;padding:28px 22px 24px;border-top:1px solid rgba(215,213,44,.38);max-width:none;background:#050505;overflow:hidden}
     58	/* FUTURA IMAGEM DA PARTE DE BAIXO: troque 'none' por url('caminho-da-imagem.jpg') */
-    59	.hd-ov-order-about::before{content:'';position:absolute;inset:0;z-index:-2;background-image:imagens/0-banners/meridian.png;background-position:center;background-size:cover;background-repeat:no-repeat}
+    59	.hd-ov-order-about::before{content:'';position:absolute;inset:0;z-index:-2;background-image:imagens/fundos/especiais/meridian.png;background-position:center;background-size:cover;background-repeat:no-repeat}
     60	.hd-ov-order-about::after{content:'';position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.72);pointer-events:none}
     61	.hd-ov-order-about small{display:block;margin-bottom:4px;color:var(--hd-yellow);font:700 9px/1 'Oswald',sans-serif;letter-spacing:1.2px;text-transform:uppercase}
     62	.hd-ov-order-about p{margin:0;color:#858585;font-size:9px;line-height:1.45;max-width:820px}
@@ -65,7 +65,7 @@
     65	.hd-ov-mini{padding:0}
     66	.hd-ov-mini::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,9,9,.98) 0%,rgba(9,9,9,.88) 40%,rgba(9,9,9,.50) 70%,rgba(9,9,9,.12) 100%);pointer-events:none}
     67	.hd-ov-mini::after{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.9;-webkit-mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%);mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%)}
-    68	.hd-ov-mini.situation-card::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')}
+    68	.hd-ov-mini.situation-card::after{background-image:url('imagens/fundos/fundos-grids/campo.jpg')}
     69	.hd-ov-mini.campaign-card::after{background-image:none}
     70	.hd-ov-mini .hd-ov-mini-inner{position:relative;z-index:3;padding:18px 18px 16px;box-sizing:border-box}
     71	.hd-ov-mini h3{margin:0 0 13px;color:#fff;font:700 18px/1 'Oswald',sans-serif;text-transform:uppercase}
@@ -73,10 +73,10 @@
     73	.hd-war-numbers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     74	.hd-war-number{position:relative;overflow:hidden;padding:10px;background:rgba(12,12,12,.76);border:1px solid #333;min-height:57px}
     75	.hd-war-number::after{content:'';position:absolute;inset:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.75;z-index:0;-webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.45) 60%,transparent 100%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.45) 60%,transparent 100%)}
-    76	.hd-war-number.players::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')}
-    77	.hd-war-number.liberations::after{background-image:url('imagens/icones/efeito-dss/libertacao.jpg')}
-    78	.hd-war-number.defenses::after{background-image:url('imagens/icones/efeito-dss/defesa.jpg')}
-    79	.hd-war-number.fronts::after{background-image:url('imagens/icones/efeito-dss/frente.jpg')}
+    76	.hd-war-number.players::after{background-image:url('imagens/fundos/fundos-grids/campo.jpg')}
+    77	.hd-war-number.liberations::after{background-image:url('imagens/fundos/fundos-grids/libertacao.jpg')}
+    78	.hd-war-number.defenses::after{background-image:url('imagens/fundos/fundos-grids/defesa.jpg')}
+    79	.hd-war-number.fronts::after{background-image:url('imagens/fundos/fundos-grids/frente.jpg')}
     80	.hd-war-number > *{position:relative;z-index:2}
     81	.hd-war-number small{display:block;color:#aaa;font:700 9px 'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px}
     82	.hd-war-number strong{display:block;color:#fff;margin-top:5px;font:700 23px/1 'Oswald',sans-serif}
@@ -108,11 +108,11 @@
    108	.hd-lower-card::after{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(to left,#000 12%,rgba(0,0,0,.45) 58%,transparent 100%);mask-image:linear-gradient(to left,#000 12%,rgba(0,0,0,.45) 58%,transparent 100%)}
    109	/* ========================= FOTOS DOS 3 GRIDS =========================
    110	   TROQUE SOMENTE O NOME DO ARQUIVO para mudar o fundo de cada bloco.
-   111	   Exemplo: url('imagens/icones/efeito-dss/NOVA-FOTO.jpg')
+   111	   Exemplo: url('imagens/fundos/fundos-grids/NOVA-FOTO.jpg')
    112	   ================================================================== */
-   113	.hd-lower-card.factions-card::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')} /* FORÇAS NO FRONT */
-   114	.hd-lower-card.fronts-card::after{background-image:url('imagens/icones/efeito-dss/frente.jpg')} /* FRENTES EM DESTAQUE */
-   115	.hd-lower-card.dispatch-card::after{background-image:url('imagens/icones/efeito-dss/dados.jpg')} /* ÚLTIMOS DESPACHOS */
+   113	.hd-lower-card.factions-card::after{background-image:url('imagens/fundos/fundos-grids/campo.jpg')} /* FORÇAS NO FRONT */
+   114	.hd-lower-card.fronts-card::after{background-image:url('imagens/fundos/fundos-grids/frente.jpg')} /* FRENTES EM DESTAQUE */
+   115	.hd-lower-card.dispatch-card::after{background-image:url('imagens/fundos/fundos-grids/dados.jpg')} /* ÚLTIMOS DESPACHOS */
    116	.hd-lower-card > *{position:relative;z-index:2}
    117	.hd-lower-card h3{margin:0 0 10px;color:#fff;font:700 17px/1 'Oswald',sans-serif;text-transform:uppercase}
    118	.hd-lower-card h3:before{content:'◆ ';color:var(--hd-yellow)}
@@ -124,9 +124,9 @@
    124	   TROQUE OS ARQUIVOS ABAIXO se quiser substituir os logos.
    125	   O 'contain' mantém a logo inteira dentro do quadrado, sem cortar.
    126	   ================================================================= */
-   127	.hd-faction-line.terminid .faction-name i{background-image:url('imagens/icones/logo terminids.png')} /* LOGO TERMINÍDEOS */
-   128	.hd-faction-line.automaton .faction-name i{background-image:url('imagens/icones/logo automatons.png')} /* LOGO AUTÔMATOS */
-   129	.hd-faction-line.illuminate .faction-name i{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
+   127	.hd-faction-line.terminid .faction-name i{background-image:url('imagens/guerra/faccoes/logo terminids.png')} /* LOGO TERMINÍDEOS */
+   128	.hd-faction-line.automaton .faction-name i{background-image:url('imagens/guerra/faccoes/logo automatons.png')} /* LOGO AUTÔMATOS */
+   129	.hd-faction-line.illuminate .faction-name i{background-image:url('imagens/guerra/faccoes/logo illuminats.png')} /* LOGO ILUMINADOS */
    130	.hd-faction-line .bar{height:8px;background:#252525;border:1px solid #363636;overflow:hidden}
    131	.hd-faction-line .bar i{display:block;height:100%;width:0}
    132	.hd-faction-line .num{color:#ddd;text-align:right;font:700 12px 'Oswald',sans-serif;display:flex;align-items:center;justify-content:flex-end;gap:5px}.hd-count-icon{width:18px;height:18px;object-fit:contain;display:block;opacity:.95}
@@ -140,9 +140,9 @@
    140	/* LOGOS NAS FRENTES EM DESTAQUE — use os mesmos arquivos das Forças no Front */
    141	.hd-front-row .front-name{display:flex;align-items:center;gap:8px;min-width:0}
    142	.hd-front-row .front-faction-logo{width:25px;height:25px;flex:0 0 25px;display:block;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:.95}
-   143	.hd-front-row .front-faction-logo.term{background-image:url('imagens/icones/logo terminids.png')} /* LOGO TERMINÍDEOS */
-   144	.hd-front-row .front-faction-logo.auto{background-image:url('imagens/icones/logo automatons.png')} /* LOGO AUTÔMATOS */
-   145	.hd-front-row .front-faction-logo.illum{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
+   143	.hd-front-row .front-faction-logo.term{background-image:url('imagens/guerra/faccoes/logo terminids.png')} /* LOGO TERMINÍDEOS */
+   144	.hd-front-row .front-faction-logo.auto{background-image:url('imagens/guerra/faccoes/logo automatons.png')} /* LOGO AUTÔMATOS */
+   145	.hd-front-row .front-faction-logo.illum{background-image:url('imagens/guerra/faccoes/logo illuminats.png')} /* LOGO ILUMINADOS */
    146	.hd-front-row strong{color:#fff;font:700 16px 'Oswald',sans-serif}.hd-front-count{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:90px}.hd-front-count .hd-count-icon{width:18px;height:18px}.hd-front-row .term{color:#ff9900}.hd-front-row .auto{color:#ff4242}.hd-front-row .illum{color:#8b3fd6}
    147	.hd-feed{max-height:240px;overflow-y:auto;padding-right:3px;scrollbar-width:thin}
    148	.hd-feed-item{padding:8px 9px;border-left:2px solid #3b3b3b;background:rgba(17,17,17,.82)}
@@ -153,10 +153,10 @@
    153	.command-card::before{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.82;-webkit-mask-image:linear-gradient(to left,#000 8%,rgba(0,0,0,.55) 55%,transparent 100%);mask-image:linear-gradient(to left,#000 8%,rgba(0,0,0,.55) 55%,transparent 100%)}
    154	.command-card::after{z-index:2}
    155	.command-card > *{position:relative;z-index:3}
-   156	.command-card.quick-war::before{background-image:url('imagens/0-banners/wallpaper_principal_page.png')}
-   157	.command-card.quick-strat::before{background-image:url('imagens/0-banners/wallpaper_principal_estratagema.png')}
-   158	.command-card.quick-faction::before{background-image:url('imagens/inimigos/robos/cyborg.png')}
-   159	.command-card.quick-map::before{background-image:url('imagens/icones/efeito-dss/frente.jpg')}
+   156	.command-card.quick-war::before{background-image:url('imagens/fundos/site/wallpaper_principal_page.png')}
+   157	.command-card.quick-strat::before{background-image:url('imagens/fundos/site/wallpaper_principal_estratagema.png')}
+   158	.command-card.quick-faction::before{background-image:url('imagens/inimigos/automatons/cyborg.png')}
+   159	.command-card.quick-map::before{background-image:url('imagens/fundos/fundos-grids/frente.jpg')}
    160	/* RESPONSIVIDADE: no celular os 3 grids voltam para 1 coluna. */
    161	@media(max-width:1050px){.hd-overview-grid{grid-template-columns:1fr}.hd-ov-side{grid-template-columns:1fr 1fr;grid-template-rows:none}.hd-overview-lower{grid-template-columns:1fr 1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:1/-1}}
    162	@media(max-width:700px){.hd-overview-head{align-items:flex-start;flex-direction:column}.hd-ov-side,.hd-overview-lower{grid-template-columns:1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:auto}.hd-overview-card.order{padding:18px}.hd-ov-order-meta{grid-template-columns:1fr}.hd-ov-campaign{grid-template-columns:1fr}.hd-campaign-art{min-height:95px}.hd-war-number{min-height:52px}}
@@ -285,7 +285,7 @@
    285	
    286	<nav class="sidebar">
    287	    <div class="logo-container">
-   288	        <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+   288	        <img src="imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
    289	    </div>
    290	
    291	    <div class="menu-section">

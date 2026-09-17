@@ -8,11 +8,12 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Helldivers BR | Comando da Comunidade">
 <meta property="og:description" content="Inteligência, guias, equipamentos e comunicação para Helldivers do Brasil.">
-<meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
+<meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/imagens/fundos/site/wallpaper_principal_4_helldivers.png">
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/">
 <meta property="og:site_name" content="Helldivers BR">
 <meta name="theme-color" content="#ffe800">
 
+<script src="theme.js"></script>
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +43,7 @@
     background:
       linear-gradient(90deg, rgba(5,5,5,.97) 0%, rgba(5,5,5,.78) 44%, rgba(5,5,5,.25) 100%),
       linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.72)),
-      url('imagens/0-banners/wallpaper_principal_4_helldivers.png') center/cover;
+      url('imagens/fundos/site/wallpaper_principal_4_helldivers.png') center/cover;
     clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
     box-shadow: inset 0 0 70px rgba(0,0,0,.55), 0 14px 45px rgba(0,0,0,.3);
 }
@@ -179,7 +180,7 @@
 .hd-overview-card.order{padding:0;min-height:235px;background:#090909}
 .hd-overview-card.order::after,.hd-overview-card.order::before{display:none}
 .hd-ov-order-main{position:relative;overflow:hidden;padding:20px 22px 17px;background:#090909}
-.hd-ov-order-main::after{content:'';position:absolute;inset:0;z-index:0;background-image:var(--major-order-image,url('imagens/icones/efeito-dss/major_order.png')),url('imagens/icones/efeito-dss/major_order.png');background-position:center right,center right;background-size:cover,cover;background-repeat:no-repeat,no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
+.hd-ov-order-main::after{content:'';position:absolute;inset:0;z-index:0;background-image:var(--major-order-image,url('imagens/fundos/major-order/major-order-ativa.png')),url('imagens/fundos/major-order/major-order-ativa.png');background-position:center right,center right;background-size:cover,cover;background-repeat:no-repeat,no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)}
 .hd-ov-order-main::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,7,7,.98) 0%,rgba(7,7,7,.90) 35%,rgba(7,7,7,.50) 64%,rgba(7,7,7,.12) 100%);pointer-events:none}
 .hd-ov-order-main > *{position:relative;z-index:3}
 .hd-overview-card.order .hd-ov-title{position:relative;z-index:3}
@@ -219,7 +220,7 @@
    ========================================================================== */
 .hd-ov-order-about{position:relative;z-index:3;margin:0;padding:28px 22px 24px;border-top:1px solid rgba(215,213,44,.38);max-width:none;background:#050505;overflow:hidden}
 /* FUTURA IMAGEM DA PARTE DE BAIXO: troque 'none' por url('caminho-da-imagem.jpg') */
-.hd-ov-order-about::before{content:'';position:absolute;inset:0;z-index:-2;background-image:url('imagens/0-banners/meridian.png');background-position:center;background-size:cover;background-repeat:no-repeat}
+.hd-ov-order-about::before{content:'';position:absolute;inset:0;z-index:-2;background-image:url('imagens/fundos/especiais/meridian.png');background-position:center;background-size:cover;background-repeat:no-repeat}
 .hd-ov-order-about::after{content:'';position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.72);pointer-events:none}
 .hd-ov-order-about small{display:block;margin-bottom:4px;color:var(--hd-yellow);font:700 9px/1 'Oswald',sans-serif;letter-spacing:1.2px;text-transform:uppercase}
 .hd-ov-order-about p{margin:0;color:#858585;font-size:9px;line-height:1.45;max-width:820px}
@@ -228,7 +229,7 @@
 .hd-ov-mini{padding:0}
 .hd-ov-mini::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,9,9,.98) 0%,rgba(9,9,9,.88) 40%,rgba(9,9,9,.50) 70%,rgba(9,9,9,.12) 100%);pointer-events:none}
 .hd-ov-mini::after{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.9;-webkit-mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%);mask-image:linear-gradient(to left,#000 18%,rgba(0,0,0,.72) 58%,transparent 100%)}
-.hd-ov-mini.situation-card::after{background-image:url('imagens/0-banners/john.png')}
+.hd-ov-mini.situation-card::after{background-image:url('imagens/fundos/site/john.png')}
 .hd-ov-mini.campaign-card::after{background-image:none}
 .hd-ov-mini .hd-ov-mini-inner{position:relative;z-index:3;padding:18px 18px 16px;box-sizing:border-box}
 .hd-ov-mini h3{margin:0 0 13px;color:#fff;font:700 18px/1 'Oswald',sans-serif;text-transform:uppercase}
@@ -236,10 +237,10 @@
 .hd-war-numbers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .hd-war-number{position:relative;overflow:hidden;padding:10px;background:rgba(12,12,12,.76);border:1px solid #333;min-height:57px}
 .hd-war-number::after{content:'';position:absolute;inset:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.75;z-index:0;-webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.45) 60%,transparent 100%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.45) 60%,transparent 100%)}
-.hd-war-number.players::after{background-image:url('imagens/icones/efeito-dss/campo.jpg')}
-.hd-war-number.liberations::after{background-image:url('imagens/icones/efeito-dss/libertacao.jpg')}
-.hd-war-number.defenses::after{background-image:url('imagens/icones/efeito-dss/defesa.jpg')}
-.hd-war-number.fronts::after{background-image:url('imagens/icones/efeito-dss/frente.jpg')}
+.hd-war-number.players::after{background-image:url('imagens/fundos/fundos-grids/campo.jpg')}
+.hd-war-number.liberations::after{background-image:url('imagens/fundos/fundos-grids/libertacao.jpg')}
+.hd-war-number.defenses::after{background-image:url('imagens/fundos/fundos-grids/defesa.jpg')}
+.hd-war-number.fronts::after{background-image:url('imagens/fundos/fundos-grids/frente.jpg')}
 .hd-war-number > *{position:relative;z-index:2}
 .hd-war-number small{display:block;color:#aaa;font:700 9px 'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px}
 .hd-war-number strong{display:block;color:#fff;margin-top:5px;font:700 23px/1 'Oswald',sans-serif}
@@ -271,11 +272,11 @@
 .hd-lower-card::after{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(to left,#000 12%,rgba(0,0,0,.45) 58%,transparent 100%);mask-image:linear-gradient(to left,#000 12%,rgba(0,0,0,.45) 58%,transparent 100%)}
 /* ========================= FOTOS DOS 3 GRIDS =========================
    TROQUE SOMENTE O NOME DO ARQUIVO para mudar o fundo de cada bloco.
-   Exemplo: url('imagens/icones/efeito-dss/NOVA-FOTO.jpg')
+   Exemplo: url('imagens/fundos/fundos-grids/NOVA-FOTO.jpg')
    ================================================================== */
-.hd-lower-card.factions-card::after{background-image:url('imagens/0-banners/super-earth.png')} /* FORÇAS NO FRONT */
-.hd-lower-card.fronts-card::after{background-image:url('imagens/0-banners/destroyer.png')} /* FRENTES EM DESTAQUE */
-.hd-lower-card.dispatch-card::after{background-image:url('imagens/icones/efeito-dss/dados.jpg')} /* ÚLTIMOS DESPACHOS */
+.hd-lower-card.factions-card::after{background-image:url('imagens/fundos/fundos-grids/super-earth.png')} /* FORÇAS NO FRONT */
+.hd-lower-card.fronts-card::after{background-image:url('imagens/fundos/fundos-grids/destroyer.png')} /* FRENTES EM DESTAQUE */
+.hd-lower-card.dispatch-card::after{background-image:url('imagens/fundos/fundos-grids/dados.jpg')} /* ÚLTIMOS DESPACHOS */
 .hd-lower-card > *{position:relative;z-index:2}
 .hd-lower-card h3{margin:0 0 10px;color:#fff;font:700 17px/1 'Oswald',sans-serif;text-transform:uppercase}
 .hd-lower-card h3:before{content:'◆ ';color:var(--hd-yellow)}
@@ -287,9 +288,9 @@
    TROQUE OS ARQUIVOS ABAIXO se quiser substituir os logos.
    O 'contain' mantém a logo inteira dentro do quadrado, sem cortar.
    ================================================================= */
-.hd-faction-line.terminid .faction-name i{background-image:url('imagens/icones/logo terminids.png')} /* LOGO TERMINÍDEOS */
-.hd-faction-line.automaton .faction-name i{background-image:url('imagens/icones/logo automatons.png')} /* LOGO AUTÔMATOS */
-.hd-faction-line.illuminate .faction-name i{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
+.hd-faction-line.terminid .faction-name i{background-image:url('imagens/guerra/faccoes/logo terminids.png')} /* LOGO TERMINÍDEOS */
+.hd-faction-line.automaton .faction-name i{background-image:url('imagens/guerra/faccoes/logo automatons.png')} /* LOGO AUTÔMATOS */
+.hd-faction-line.illuminate .faction-name i{background-image:url('imagens/guerra/faccoes/logo illuminats.png')} /* LOGO ILUMINADOS */
 .hd-faction-line .bar{height:8px;background:#252525;border:1px solid #363636;overflow:hidden}
 .hd-faction-line .bar i{display:block;height:100%;width:0}
 .hd-faction-line .num{color:#ddd;text-align:right;font:700 12px 'Oswald',sans-serif;display:flex;align-items:center;justify-content:flex-end;gap:5px}.hd-count-icon{width:18px;height:18px;object-fit:contain;display:block;opacity:.95}
@@ -303,9 +304,9 @@
 /* LOGOS NAS FRENTES EM DESTAQUE — use os mesmos arquivos das Forças no Front */
 .hd-front-row .front-name{display:flex;align-items:center;gap:8px;min-width:0}
 .hd-front-row .front-faction-logo{width:25px;height:25px;flex:0 0 25px;display:block;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:.95}
-.hd-front-row .front-faction-logo.term{background-image:url('imagens/icones/logo terminids.png')} /* LOGO TERMINÍDEOS */
-.hd-front-row .front-faction-logo.auto{background-image:url('imagens/icones/logo automatons.png')} /* LOGO AUTÔMATOS */
-.hd-front-row .front-faction-logo.illum{background-image:url('imagens/icones/logo illuminats.png')} /* LOGO ILUMINADOS */
+.hd-front-row .front-faction-logo.term{background-image:url('imagens/guerra/faccoes/logo terminids.png')} /* LOGO TERMINÍDEOS */
+.hd-front-row .front-faction-logo.auto{background-image:url('imagens/guerra/faccoes/logo automatons.png')} /* LOGO AUTÔMATOS */
+.hd-front-row .front-faction-logo.illum{background-image:url('imagens/guerra/faccoes/logo illuminats.png')} /* LOGO ILUMINADOS */
 .hd-front-row strong{color:#fff;font:700 16px 'Oswald',sans-serif}.hd-front-count{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:90px}.hd-front-count .hd-count-icon{width:18px;height:18px}.hd-front-row .term{color:#ff9900}.hd-front-row .auto{color:#ff4242}.hd-front-row .illum{color:#8b3fd6}
 .hd-feed{max-height:240px;overflow-y:auto;padding-right:3px;scrollbar-width:thin}
 .hd-feed-item{padding:8px 9px;border-left:2px solid #3b3b3b;background:rgba(17,17,17,.82)}
@@ -316,10 +317,10 @@
 .command-card::before{content:'';position:absolute;inset:0;z-index:0;background-position:center right;background-size:cover;background-repeat:no-repeat;opacity:.82;-webkit-mask-image:linear-gradient(to left,#000 8%,rgba(0,0,0,.55) 55%,transparent 100%);mask-image:linear-gradient(to left,#000 8%,rgba(0,0,0,.55) 55%,transparent 100%)}
 .command-card::after{z-index:2}
 .command-card > *{position:relative;z-index:3}
-.command-card.quick-war::before{background-image:url('imagens/0-banners/wallpaper_principal_page.png')}
-.command-card.quick-strat::before{background-image:url('imagens/0-banners/wallpaper_principal_estratagema.png')}
-.command-card.quick-faction::before{background-image:url('imagens/inimigos/robos/cyborg.png')}
-.command-card.quick-map::before{background-image:url('imagens/icones/efeito-dss/frente.jpg')}
+.command-card.quick-war::before{background-image:url('imagens/fundos/site/wallpaper_principal_page.png')}
+.command-card.quick-strat::before{background-image:url('imagens/fundos/site/wallpaper_principal_estratagema.png')}
+.command-card.quick-faction::before{background-image:url('imagens/inimigos/automatons/cyborg.png')}
+.command-card.quick-map::before{background-image:url('imagens/fundos/fundos-grids/frente.jpg')}
 /* RESPONSIVIDADE: no celular os 3 grids voltam para 1 coluna. */
 @media(max-width:1050px){.hd-overview-grid{grid-template-columns:1fr}.hd-ov-side{grid-template-columns:1fr 1fr;grid-template-rows:none}.hd-overview-lower{grid-template-columns:1fr 1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:1/-1}}
 @media(max-width:700px){.hd-overview-head{align-items:flex-start;flex-direction:column}.hd-ov-side,.hd-overview-lower{grid-template-columns:1fr}.hd-overview-lower .hd-lower-card:last-child{grid-column:auto}.hd-overview-card.order{padding:18px}.hd-ov-order-meta{grid-template-columns:1fr}.hd-ov-campaign{grid-template-columns:1fr}.hd-campaign-art{min-height:95px}.hd-war-number{min-height:52px}}
@@ -441,7 +442,7 @@
        para suavizar a transição entre a bandeira e Meridian. */
     background:
         linear-gradient(to bottom,rgba(0,0,0,.96) 0%,rgba(0,0,0,.78) 10%,rgba(0,0,0,.58) 22%,rgba(0,0,0,.48) 36%,rgba(0,0,0,.48) 100%),
-        url('imagens/0-banners/meridian.png') center/cover no-repeat;
+        url('imagens/fundos/especiais/meridian.png') center/cover no-repeat;
 }
 /* Camada extra de degradê no topo para evitar a linha dura entre os dois painéis. */
 .hd-overview-card.order .hd-ov-order-about::before{
@@ -457,6 +458,400 @@
 }
 .hd-overview-card.order .hd-ov-order-about::after{display:none}
 .hd-overview-card.order .hd-ov-order-about > *{position:relative;z-index:1}
+
+/* =========================================================
+   INVASÃO ATIVA — ALERTA VERMELHO REFORÇADO NO GRID DE DEFESAS
+   A classe é ligada automaticamente pelo overview.js quando
+   a API informa pelo menos um planeta em evento de defesa.
+   ========================================================= */
+.hd-war-number.defenses.invasion-alert{
+    border-color:rgba(255,40,40,.98);
+    border-left:4px solid #ff2020;
+    background:
+        linear-gradient(90deg,rgba(145,0,0,.28),rgba(55,0,0,.12) 48%,rgba(0,0,0,.08)),
+        rgba(10,10,10,.74);
+    animation:hd-invasion-strong-pulse 1.65s ease-in-out infinite;
+}
+.hd-war-number.defenses.invasion-alert::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 76% 50%,rgba(255,35,35,.24),transparent 54%),
+        linear-gradient(90deg,rgba(255,25,25,.13),rgba(255,25,25,.025));
+    animation:hd-invasion-strong-overlay 1.65s ease-in-out infinite;
+}
+.hd-war-number.defenses.invasion-alert small{
+    color:#ffb0b0;
+    text-shadow:0 0 8px rgba(255,35,35,.32);
+}
+.hd-war-number.defenses.invasion-alert strong{
+    color:#ff3434;
+    text-shadow:
+        0 0 8px rgba(255,35,35,.74),
+        0 0 18px rgba(255,20,20,.42);
+}
+@keyframes hd-invasion-strong-pulse{
+    0%,100%{
+        box-shadow:
+            inset 0 0 14px rgba(255,30,30,.08),
+            0 0 6px rgba(255,30,30,.18);
+        filter:saturate(1);
+    }
+    50%{
+        box-shadow:
+            inset 0 0 34px rgba(255,25,25,.30),
+            0 0 24px rgba(255,20,20,.46),
+            0 0 44px rgba(255,20,20,.16);
+        filter:saturate(1.28);
+    }
+}
+@keyframes hd-invasion-strong-overlay{
+    0%,100%{opacity:.40}
+    50%{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+    .hd-war-number.defenses.invasion-alert,
+    .hd-war-number.defenses.invasion-alert::before{animation:none}
+    .hd-war-number.defenses.invasion-alert{
+        box-shadow:inset 0 0 28px rgba(255,25,25,.22),0 0 18px rgba(255,20,20,.30);
+    }
+}
+
+
+
+/* ==========================================================================
+   ORDEM MAIOR DINÂMICA — N OBJETIVOS / FRENTES
+   O overview.js cria quantos cards forem necessários a partir de tasks[].
+   1 objetivo ocupa a largura disponível; vários se reorganizam automaticamente.
+   ========================================================================== */
+
+.hd-mo-summary{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+    margin-top:13px;
+}
+
+.hd-mo-objectives-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin:18px 0 9px;
+    padding:8px 10px;
+    background:rgba(0,0,0,.54);
+    border-left:3px solid var(--hd-yellow);
+    border-top:1px solid rgba(215,213,44,.24);
+    border-bottom:1px solid rgba(215,213,44,.18);
+    color:#fff;
+    font:800 11px/1 'Oswald',sans-serif;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+.hd-mo-objectives-head small{
+    color:#858585;
+    font:700 8px/1 Arial,sans-serif;
+    letter-spacing:1px;
+}
+
+.hd-mo-objectives-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(285px,100%),1fr));
+    gap:9px;
+    align-items:start;
+    width:100%;
+}
+
+.hd-mo-task{
+    --mo-task:#d7d52c;
+    --mo-task-soft:rgba(215,213,44,.12);
+    position:relative;
+    min-width:0;
+    overflow:hidden;
+    padding:11px 11px 9px;
+    background:
+        linear-gradient(180deg,var(--mo-task-soft),rgba(8,8,8,.88) 34%),
+        rgba(7,7,7,.92);
+    border:1px solid rgba(255,255,255,.13);
+    border-top:2px solid var(--mo-task);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.2);
+}
+.hd-mo-task.term{--mo-task:#ff9d00;--mo-task-soft:rgba(255,157,0,.12)}
+.hd-mo-task.auto{--mo-task:#ff6268;--mo-task-soft:rgba(255,98,104,.12)}
+.hd-mo-task.illum{--mo-task:#dc5bff;--mo-task-soft:rgba(220,91,255,.12)}
+.hd-mo-task.human{--mo-task:#62b9ff;--mo-task-soft:rgba(98,185,255,.11)}
+.hd-mo-task.neutral{--mo-task:var(--hd-yellow);--mo-task-soft:rgba(215,213,44,.10)}
+
+.hd-mo-task.is-complete{
+    --mo-task:#72df78;
+    --mo-task-soft:rgba(114,223,120,.10);
+}
+
+.hd-mo-task-kicker{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:6px;
+    color:#828282;
+    font:800 7px/1.15 Arial,sans-serif;
+    letter-spacing:.75px;
+    text-transform:uppercase;
+}
+.hd-mo-task-kicker strong{
+    color:var(--mo-task);
+    max-width:46%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-weight:900;
+}
+
+.hd-mo-task h4{
+    min-height:30px;
+    margin:0 0 9px;
+    color:#f3f3f3;
+    font:800 14px/1.12 'Oswald',sans-serif;
+    letter-spacing:.15px;
+    text-transform:uppercase;
+}
+
+.hd-mo-task-progress{
+    height:11px;
+    overflow:hidden;
+    background:#242424;
+    border:1px solid #484848;
+}
+.hd-mo-task-progress i{
+    display:block;
+    height:100%;
+    min-width:0;
+    background:linear-gradient(90deg,color-mix(in srgb,var(--mo-task) 72%,#000),var(--mo-task));
+    box-shadow:0 0 12px color-mix(in srgb,var(--mo-task) 42%,transparent);
+}
+
+.hd-mo-task-progress-label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:4px;
+    color:#a8a8a8;
+    font:700 8px Arial,sans-serif;
+}
+.hd-mo-task-progress-label span{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.hd-mo-task-progress-label strong{
+    flex:0 0 auto;
+    color:var(--mo-task);
+    font-size:9px;
+}
+
+.hd-mo-task-meta{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:5px;
+    margin-top:8px;
+}
+.hd-mo-task-meta>div{
+    min-width:0;
+    padding:6px 7px;
+    background:rgba(0,0,0,.46);
+    border:1px solid rgba(255,255,255,.09);
+}
+.hd-mo-task-meta small{
+    display:block;
+    margin-bottom:3px;
+    color:#6f6f6f;
+    font:700 6px Arial,sans-serif;
+    letter-spacing:.65px;
+    text-transform:uppercase;
+}
+.hd-mo-task-meta strong{
+    display:block;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#d9d9d9;
+    font:800 9px 'Oswald',sans-serif;
+}
+
+.hd-mo-task-status{
+    margin-top:7px;
+    color:var(--mo-task);
+    font:800 7px Arial,sans-serif;
+    letter-spacing:.8px;
+    text-align:right;
+    text-transform:uppercase;
+}
+
+@media(max-width:900px){
+    .hd-mo-summary{grid-template-columns:1fr}
+    .hd-mo-objectives-head{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:5px;
+    }
+    .hd-mo-objectives-grid{
+        grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
+    }
+}
+@media(max-width:560px){
+    .hd-mo-objectives-grid{grid-template-columns:1fr}
+    .hd-mo-task-meta{grid-template-columns:1fr}
+}
+
+
+
+/* ==========================================================================
+   HOME — SOBRE A ORDEM MAIOR RECOLHIDO / SOBREPOSTO
+   Não altera a altura do card quando aberto.
+   ========================================================================== */
+.hd-overview-card.order{
+    overflow:visible !important;
+}
+.hd-mo-about-popover{
+    position:relative;
+    z-index:40;
+    background:#070707;
+}
+.hd-mo-about-trigger{
+    position:relative;
+    z-index:42;
+    width:100%;
+    min-height:48px;
+    padding:9px 15px;
+    border:0;
+    border-top:1px solid rgba(215,213,44,.34);
+    background:
+        linear-gradient(90deg,rgba(215,213,44,.08),rgba(0,0,0,.10),rgba(215,213,44,.04)),
+        #090909;
+    color:var(--hd-yellow);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    cursor:pointer;
+    text-align:left;
+}
+.hd-mo-about-trigger:hover{
+    background:
+        linear-gradient(90deg,rgba(215,213,44,.15),rgba(0,0,0,.12),rgba(215,213,44,.07)),
+        #090909;
+}
+.hd-mo-about-trigger span{min-width:0}
+.hd-mo-about-trigger b{
+    display:block;
+    font:800 12px/1 'Oswald',sans-serif;
+    letter-spacing:1px;
+}
+.hd-mo-about-trigger small{
+    display:block;
+    margin-top:4px;
+    color:#777;
+    font:700 7px/1 Arial,sans-serif;
+    letter-spacing:1px;
+}
+.hd-mo-about-trigger i{
+    color:var(--hd-yellow);
+    font-style:normal;
+    transition:transform .18s ease;
+}
+.hd-mo-about-popover.is-open .hd-mo-about-trigger i{transform:rotate(180deg)}
+
+.hd-overview-card.order .hd-ov-order-about{
+    display:block !important;
+    position:absolute !important;
+    left:0;
+    right:0;
+    bottom:calc(100% + 7px);
+    z-index:41;
+    max-width:none !important;
+    max-height:min(430px,72vh);
+    overflow:auto !important;
+    margin:0 !important;
+    padding:20px 22px 21px !important;
+    border:1px solid rgba(215,213,44,.65) !important;
+    background:#060606 !important;
+    box-shadow:0 -18px 48px rgba(0,0,0,.74),0 0 28px rgba(215,213,44,.10);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(8px) scale(.992);
+    transform-origin:bottom center;
+    transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+}
+.hd-mo-about-popover.is-open .hd-ov-order-about{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0) scale(1);
+}
+.hd-overview-card.order .hd-ov-order-about::before{
+    background-image:url('imagens/fundos/especiais/meridian.png') !important;
+    opacity:.62;
+}
+.hd-overview-card.order .hd-ov-order-about::after{
+    display:block !important;
+    background:rgba(0,0,0,.73) !important;
+}
+.hd-mo-about-panel-head{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+    color:var(--hd-yellow);
+}
+.hd-mo-about-panel-head strong{
+    font:800 15px/1 'Oswald',sans-serif;
+    letter-spacing:1px;
+}
+.hd-mo-about-close{
+    flex:0 0 auto;
+    width:28px;height:28px;
+    border:1px solid rgba(215,213,44,.48);
+    background:rgba(0,0,0,.55);
+    color:var(--hd-yellow);
+    cursor:pointer;
+}
+.hd-mo-about-close:hover{background:var(--hd-yellow);color:#000}
+.hd-overview-card.order .hd-ov-order-about p{
+    position:relative;
+    z-index:2;
+    max-width:980px !important;
+    color:#c7c7c7 !important;
+    font-size:13px !important;
+    line-height:1.62 !important;
+}
+.hd-overview-card.order .hd-ov-order-about .mo-salute{
+    display:block;
+    margin-top:15px;
+    color:var(--hd-yellow);
+    font:800 12px/1.2 'Oswald',sans-serif;
+    letter-spacing:1.25px;
+    text-align:center;
+}
+@media(max-width:700px){
+    .hd-overview-card.order .hd-ov-order-about{
+        left:8px;
+        right:8px;
+        bottom:calc(100% + 5px);
+        padding:17px 16px 18px !important;
+    }
+    .hd-overview-card.order .hd-ov-order-about p{font-size:13px !important}
+}
+
 </style>
 </head>
 
@@ -467,7 +862,7 @@
 
 <nav class="sidebar">
     <div class="logo-container">
-        <img src="imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+        <img src="imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
     </div>
 
     <div class="menu-section">
@@ -525,7 +920,7 @@
             </p>
             <div class="hero-actions">
                 <a class="hd-button primary" href="guerra.html">⚔ CENTRAL DE GUERRA</a>
-                <a class="hd-button secondary" href="discord/index.html" target="_blank">ENTRAR NO DISCORD</a>
+                <a class="hd-button discord" href="discord/index.html" target="_blank">ENTRAR NO DISCORD</a>
             </div>
         </div>
     </section>
@@ -566,9 +961,9 @@
             <article class="hd-lower-card factions-card">
                 <h3>Forças no Front</h3>
                 <div class="hd-faction-lines">
-                    <div class="hd-faction-line terminid"><span class="faction-name"><i aria-hidden="true"></i>Terminídeos</span><div class="bar"><i id="hd-bar-term"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-term">—</strong></span></div>
-                    <div class="hd-faction-line automaton"><span class="faction-name"><i aria-hidden="true"></i>Autômatos</span><div class="bar"><i id="hd-bar-auto"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-auto">—</strong></span></div>
-                    <div class="hd-faction-line illuminate"><span class="faction-name"><i aria-hidden="true"></i>Iluminados</span><div class="bar"><i id="hd-bar-illum"></i></div><span class="num"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-illum">—</strong></span></div>
+                    <div class="hd-faction-line terminid"><span class="faction-name"><i aria-hidden="true"></i>Terminídeos</span><div class="bar"><i id="hd-bar-term"></i></div><span class="num"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-term">—</strong></span></div>
+                    <div class="hd-faction-line automaton"><span class="faction-name"><i aria-hidden="true"></i>Autômatos</span><div class="bar"><i id="hd-bar-auto"></i></div><span class="num"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-auto">—</strong></span></div>
+                    <div class="hd-faction-line illuminate"><span class="faction-name"><i aria-hidden="true"></i>Iluminados</span><div class="bar"><i id="hd-bar-illum"></i></div><span class="num"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong id="hd-num-illum">—</strong></span></div>
                 </div>
                 <a class="hd-home-link" href="guerra.html">VER FRENTES DE BATALHA →</a>
             </article>

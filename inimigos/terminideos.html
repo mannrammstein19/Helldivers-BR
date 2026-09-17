@@ -20,6 +20,7 @@
     <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
 
     <meta name="theme-color" content="#FFE800">
+    <script src="../theme.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +62,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background-image: url("../imagens/0-banners/faccoes/insetos/terminideos-hero.png");
+            background-image: url("../imagens/fundos/site/insetos/terminideos-hero.png");
             background-repeat: no-repeat;
             background-position: center 40%;
             background-size: cover;
@@ -450,7 +451,22 @@
                 max-width: 100%;
             }
         }
-    </style>
+    
+
+        /* Integração com a responsividade global atual.
+           O limite de 1400px continua no desktop, mas não força largura/altura
+           artificial em celular retrato ou paisagem. */
+        @media (max-width: 768px), (orientation: landscape) and (hover: none) and (pointer: coarse) {
+            main.main-content {
+                flex: 1 1 auto;
+                flex-basis: auto;
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+            }
+        }
+
+</style>
 </head>
 <body class="fundo-terminideos">
 
@@ -462,14 +478,14 @@
 
     <nav class="sidebar">
         <div class="logo-container">
-            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Comunidade</div>
+            <div class="section-header">Comando</div>
             <ul class="menu-list">
                 <li><a href="../index.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="../guerra.html">⚔ Central de Guerra</a></li>
                 <li><a href="../discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
@@ -489,13 +505,13 @@
                 <li><a href="#">Armas Primárias</a></li>
                 <li><a href="#">Armas Secundárias</a></li>
                 <li><a href="#">Granadas</a></li>
-                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Armaduras &amp; Passivas</a></li>
                 <li><a href="#">Boosters</a></li>
             </ul>
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Inimigos & Facções</div>
+            <div class="section-header">Inimigos &amp; Facções</div>
             <ul class="menu-list">
                 <li><a href="../faccoes.html">Visão Geral das Facções</a></li>
                 <li><a href="automatos.html">Autômatos</a></li>
@@ -509,7 +525,7 @@
         <div class="page-title-block">
             <h1>
                 <a href="../inimigos/Terminidios/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo terminids.png" alt="" class="lore-title-icon">Terminídeos
+                    <img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-title-icon">Terminídeos
                 </a>
             </h1>
         </div>
@@ -529,7 +545,7 @@
             <span class="lore-badge">Ameaça Insetóide</span>
             <h1>
                 <a href="../inimigos/Terminidios/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo terminids.png" alt="" class="lore-title-icon">Terminídeos
+                    <img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-title-icon">Terminídeos
                 </a>
             </h1>
             <div class="lore-subtitle">"O enxame não pensa. O enxame apenas consome."</div>
@@ -541,17 +557,17 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> não são uma espécie nova: eles descendem diretamente dos antigos "Insetos" enfrentados pela Super Terra na Primeira Guerra Galáctica, nos anos 2040. Sua forma lembra grandes insetos, aracnídeos e crustáceos terrestres, e seu mundo natal é Kepler Prime, um planeta desértico nas franjas orientais da galáxia.
+                        Os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> não são uma espécie nova: eles descendem diretamente dos antigos "Insetos" enfrentados pela Super Terra na Primeira Guerra Galáctica, nos anos 2040. Sua forma lembra grandes insetos, aracnídeos e crustáceos terrestres, e seu mundo natal é Kepler Prime, um planeta desértico nas franjas orientais da galáxia.
                     </p>
                     <p>
-                        A Federação descobriu que, ao morrer, o corpo de um <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a> libera grandes quantidades de um óleo raro: o Elemento-710, essencial para alimentar os motores de dobra Alcubierre usados nas viagens interestelares. Após a derrota da espécie em Kepler Prime, em 2084, os sobreviventes não foram exterminados — foram capturados.
+                        A Federação descobriu que, ao morrer, o corpo de um <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a> libera grandes quantidades de um óleo raro: o Elemento-710, essencial para alimentar os motores de dobra Alcubierre usados nas viagens interestelares. Após a derrota da espécie em Kepler Prime, em 2084, os sobreviventes não foram exterminados — foram capturados.
                     </p>
                     <p>
                         O discurso oficial mudou da noite para o dia: da propaganda que pintava os insetos como uma ameaça capaz de infestar a galáxia inteira, a Super Terra passou a tratá-los como um recurso raro e valioso demais para ser eliminado.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/insetos-tank.png" alt="Terminídeos em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/insetos-tank.png" alt="Terminídeos em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -566,11 +582,11 @@
                         Pelo século seguinte, a Federação manteve essas criaturas confinadas em fazendas espalhadas por mundos colonizados nos confins orientais da galáxia. O motivo não era ciência nem contenção: era produção de combustível vivo, criado em cativeiro geração após geração.
                     </p>
                     <p>
-                        Foi exatamente esse século de reprodução seletiva e experimentação genética dentro das fazendas de E-710 que deu origem ao que hoje chamamos de Horda <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a>: uma versão mais adaptável, mais agressiva e muito mais numerosa do que a espécie original — e que, ao longo do processo, perdeu qualquer resquício da inteligência que os "Insetos" originais possuíam.
+                        Foi exatamente esse século de reprodução seletiva e experimentação genética dentro das fazendas de E-710 que deu origem ao que hoje chamamos de Horda <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a>: uma versão mais adaptável, mais agressiva e muito mais numerosa do que a espécie original — e que, ao longo do processo, perdeu qualquer resquício da inteligência que os "Insetos" originais possuíam.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/Elemento-710.png" alt="Fazenda de Elemento-710" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/Elemento-710.png" alt="Fazenda de Elemento-710" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -582,14 +598,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        A contenção que sustentou o fornecimento de combustível da Federação por cem anos não durou para sempre. Em algum momento, as barreiras que prendiam os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> em suas fazendas foram rompidas, e o que era um recurso controlado se tornou uma praga descontrolada, varrendo os setores orientais da galáxia e dando início à Segunda Guerra Galáctica.
+                        A contenção que sustentou o fornecimento de combustível da Federação por cem anos não durou para sempre. Em algum momento, as barreiras que prendiam os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> em suas fazendas foram rompidas, e o que era um recurso controlado se tornou uma praga descontrolada, varrendo os setores orientais da galáxia e dando início à Segunda Guerra Galáctica.
                     </p>
                     <p>
-                        Diferente de um exército convencional, os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> não operam por comando central ou estratégia — eles avançam por puro instinto biológico de expansão, reprodução e destruição. Ainda assim, sua capacidade de adaptação é assustadora: a espécie demonstrou conseguir reformular a superfície inteira de um planeta em questão de horas, como ocorreu em Meridia, e construir estruturas completamente novas conhecidas como "Mundos-Colmeia", a exemplo do que se formou em Oshaune.
+                        Diferente de um exército convencional, os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> não operam por comando central ou estratégia — eles avançam por puro instinto biológico de expansão, reprodução e destruição. Ainda assim, sua capacidade de adaptação é assustadora: a espécie demonstrou conseguir reformular a superfície inteira de um planeta em questão de horas, como ocorreu em Meridia, e construir estruturas completamente novas conhecidas como "Mundos-Colmeia", a exemplo do que se formou em Oshaune.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/Cepa Rompedora.png" alt="Fuga dos Terminídeos" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/Cepa Rompedora.png" alt="Fuga dos Terminídeos" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -601,14 +617,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        A propaganda de Super Terra classifica oficialmente os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> como uma ameaça "fascista" — uma escolha de retórica interessante, já que nenhum indivíduo da espécie é capaz de compreender qualquer ideologia. O rótulo serve para justificar a guerra perante os cidadãos, não para descrever a real natureza do inimigo.
+                        A propaganda de Super Terra classifica oficialmente os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> como uma ameaça "fascista" — uma escolha de retórica interessante, já que nenhum indivíduo da espécie é capaz de compreender qualquer ideologia. O rótulo serve para justificar a guerra perante os cidadãos, não para descrever a real natureza do inimigo.
                     </p>
                     <p>
-                        Na prática, o comportamento <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a> é movido inteiramente por instinto: enxamear, fechar distância rapidamente e devorar qualquer coisa que ameace o ninho. Castas como as Comandantes de Ninhada e Alfa conseguem emitir comandos rudimentares via feromônios, mas esse controle é frágil — na presença de Helldivers, a horda costuma perder toda formação e atacar sem qualquer coordenação. É esse comportamento de horda, somado a variantes especializadas em ataques ácidos e de impacto, que torna cada confronto contra a espécie uma guerra de atrito.
+                        Na prática, o comportamento <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a> é movido inteiramente por instinto: enxamear, fechar distância rapidamente e devorar qualquer coisa que ameace o ninho. Castas como as Comandantes de Ninhada e Alfa conseguem emitir comandos rudimentares via feromônios, mas esse controle é frágil — na presença de Helldivers, a horda costuma perder toda formação e atacar sem qualquer coordenação. É esse comportamento de horda, somado a variantes especializadas em ataques ácidos e de impacto, que torna cada confronto contra a espécie uma guerra de atrito.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/insetos.png" alt="Enxame de Terminídeos" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/insetos.png" alt="Enxame de Terminídeos" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -639,17 +655,17 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Com o avanço da horda ameaçando fugir de controle, a Super Terra construiu o Sistema de Contenção <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a>: uma rede de "Planetas-Barreira" — entre eles Meridia, Erata Prime, Fenrir III e Turing — projetada para bombardear os insetos com uma substância letal chamada Termicida e conter o avanço no Setor Umlaut.
+                        Com o avanço da horda ameaçando fugir de controle, a Super Terra construiu o Sistema de Contenção <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a>: uma rede de "Planetas-Barreira" — entre eles Meridia, Erata Prime, Fenrir III e Turing — projetada para bombardear os insetos com uma substância letal chamada Termicida e conter o avanço no Setor Umlaut.
                     </p>
                     <p>
-                        O sistema funcionou por cerca de dois meses, eliminando quase toda a população local de <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a>. Mas uma pequena parcela dos insetos em Meridia desenvolveu resistência à Termicida, e a exposição contínua acelerou de forma monstruosa sua reprodução. Em questão de horas, o planeta inteiro foi coberto por estruturas de ninho, dando origem à primeira "Supercolônia" <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a> da galáxia — comparável em escala apenas ao próprio mundo natal, Kepler Prime.
+                        O sistema funcionou por cerca de dois meses, eliminando quase toda a população local de <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a>. Mas uma pequena parcela dos insetos em Meridia desenvolveu resistência à Termicida, e a exposição contínua acelerou de forma monstruosa sua reprodução. Em questão de horas, o planeta inteiro foi coberto por estruturas de ninho, dando origem à primeira "Supercolônia" <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a> da galáxia — comparável em escala apenas ao próprio mundo natal, Kepler Prime.
                     </p>
                     <p>
                         Considerando Meridia uma causa perdida, a Super Terra recorreu a uma solução extrema: o Fluido Negro, uma substância obtida dos Iluminados. Em 2 de junho de 2184, os Helldivers concluíram a Operação Paz Duradoura, injetando o Fluido Negro no núcleo do planeta. Meridia não apenas foi destruída — ela colapsou em uma singularidade, um buraco negro que engoliu todo o sistema estelar ao redor. O que restou, batizado de Singularidade Meridiana, viria a se revelar não apenas uma cicatriz de guerra, mas também um portal usado mais tarde pelos Iluminados para lançar uma invasão diretamente contra a Super Terra.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/meridia.png" alt="Singularidade Meridiana" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/meridia.png" alt="Singularidade Meridiana" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -661,14 +677,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Nos confins mais distantes do território <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a>, uma densa nuvem de esporos conhecida como "O Breu" começou a se espalhar, cobrindo planetas inteiros em uma névoa alaranjada que reduz drasticamente a visibilidade. Mais do que um fenômeno atmosférico, o Breu acelera a mutação genética de tudo que entra em contato com ele, dando origem a cepas de <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> ainda mais perigosas do que as conhecidas até então.
+                        Nos confins mais distantes do território <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeo</a>, uma densa nuvem de esporos conhecida como "O Breu" começou a se espalhar, cobrindo planetas inteiros em uma névoa alaranjada que reduz drasticamente a visibilidade. Mais do que um fenômeno atmosférico, o Breu acelera a mutação genética de tudo que entra em contato com ele, dando origem a cepas de <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> ainda mais perigosas do que as conhecidas até então.
                     </p>
                     <p>
-                        O Breu também trouxe de volta linhagens que a Super Terra acreditava extintas, como os colossais Impaladores e os "Senhores da Colmeia", e permitiu a descoberta dos primeiros Mundos-Colmeia — cidades subterrâneas <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeas</a>, como a encontrada em Oshaune, que sugerem uma organização social muito mais elaborada do que o simples instinto de enxame.
+                        O Breu também trouxe de volta linhagens que a Super Terra acreditava extintas, como os colossais Impaladores e os "Senhores da Colmeia", e permitiu a descoberta dos primeiros Mundos-Colmeia — cidades subterrâneas <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeas</a>, como a encontrada em Oshaune, que sugerem uma organização social muito mais elaborada do que o simples instinto de enxame.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/insetos/omicron.png" alt="O Breu" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/omicron.png" alt="O Breu" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -694,19 +710,19 @@
             <h2>Galeria</h2>
             <div class="lore-gallery">
                 <figure>
-                    <img src="../imagens/inimigos/insetos/titan bile.png" alt="Ninho Terminídeo" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/titan bile.png" alt="Ninho Terminídeo" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Titan Bile</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/insetos/charge.png" alt="Charger" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/charge.png" alt="Charger" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Charger</figcaption>
                 </figure>
 				                <figure>
-                    <img src="../imagens/inimigos/insetos/insetos-tank.png" alt="Senhor dos Ninhos Morto" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/insetos-tank.png" alt="Senhor dos Ninhos Morto" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Senhor dos Ninhos Morto</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/insetos/Elemento-710.png" alt="Combustivel" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/terminids/Elemento-710.png" alt="Combustivel" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Combustivel</figcaption>
                 </figure>
                 <!-- Para adicionar mais fotos, duplique o bloco <figure> acima
@@ -724,11 +740,11 @@
                 </li>
                 <li>
                     <span class="timeline-date">~ Um século depois</span>
-                    <span class="timeline-text">As barreiras de contenção das fazendas se rompem. Os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> escapam e se espalham pelos setores orientais, dando início à Segunda Guerra Galáctica.</span>
+                    <span class="timeline-text">As barreiras de contenção das fazendas se rompem. Os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a> escapam e se espalham pelos setores orientais, dando início à Segunda Guerra Galáctica.</span>
                 </li>
                 <li>
                     <span class="timeline-date">2184</span>
-                    <span class="timeline-text">O Sistema de Contenção <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a> falha em Meridia: os insetos desenvolvem resistência à Termicida e o planeta se transforma na primeira Supercolônia.</span>
+                    <span class="timeline-text">O Sistema de Contenção <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídea</a> falha em Meridia: os insetos desenvolvem resistência à Termicida e o planeta se transforma na primeira Supercolônia.</span>
                 </li>
                 <li>
                     <span class="timeline-date">2 de junho de 2184</span>
@@ -736,7 +752,7 @@
                 </li>
                 <li>
                     <span class="timeline-date">2185</span>
-                    <span class="timeline-text">Surge o Breu: uma nuvem de esporos que mutaciona os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/icones/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a>, dando origem à Cepa Predadora, à Cepa Explosão de Esporos e à descoberta dos primeiros Mundos-Colmeia, como Oshaune.</span>
+                    <span class="timeline-text">Surge o Breu: uma nuvem de esporos que mutaciona os <a href="../inimigos/Terminidios/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo terminids.png" alt="" class="lore-term-icon">Terminídeos</a>, dando origem à Cepa Predadora, à Cepa Explosão de Esporos e à descoberta dos primeiros Mundos-Colmeia, como Oshaune.</span>
                 </li>
             </ul>
         </div>
@@ -796,7 +812,7 @@
                     }
                 });
             }
-
+        });
     </script>
 
 </body>

@@ -1,0 +1,311 @@
+Z:\torrents\Helldivers-BR-main\imagens\lista_arquivos.txt
+Z:\torrents\Helldivers-BR-main\imagens\guerra
+Z:\torrents\Helldivers-BR-main\imagens\planetas
+Z:\torrents\Helldivers-BR-main\imagens\armas
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas
+Z:\torrents\Helldivers-BR-main\imagens\inimigos
+Z:\torrents\Helldivers-BR-main\imagens\warbonds
+Z:\torrents\Helldivers-BR-main\imagens\ui
+Z:\torrents\Helldivers-BR-main\imagens\fundos
+Z:\torrents\Helldivers-BR-main\imagens\guerra\dss
+Z:\torrents\Helldivers-BR-main\imagens\guerra\operacoes
+Z:\torrents\Helldivers-BR-main\imagens\guerra\faccoes
+Z:\torrents\Helldivers-BR-main\imagens\guerra\dss\DSS_Summary_Model.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\dss\EAGLE STORM.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\dss\HEAVY ORDNANCE DISTRIBUTION.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\dss\ORBITAL BLOCKADE.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\operacoes\defesa.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\operacoes\libertacao.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\faccoes\logo automatons.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\faccoes\logo illuminats.png
+Z:\torrents\Helldivers-BR-main\imagens\guerra\faccoes\logo terminids.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Arctic_glacier_base_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Arctic_glacier_coldrocky_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Brilliance_Planet_Landscape_Header.jpg
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Bug_hiveworld_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Cyberstan_landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Magma_Base_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Moor_arid_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Moor_baseplanet_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Moor_red_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Moor_tundra_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Primordial_base_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Primordial_blue_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Primordial_dead_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Primordial_purple_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Sandy_acid_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Sandy_base_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Sandy_mineral_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Sandy_moon_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Sandy_spiky_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Super_Earth_landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Supercolony_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Swamp_base_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Swamp_haunted_Landscape.png
+Z:\torrents\Helldivers-BR-main\imagens\planetas\Void_Source_Planet_Landscape_Void_Header.png
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\êpoca.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Vigorosa.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Tempestade de Balas.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Rifle sem Recuo.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Silo Solo.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Rifle Antimaterial.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Railgun.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Pacote de C4.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Napalm Descart†vel.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Maxiarma.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Metralhadora.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Metralhadora Pesada.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Martelo Rompedor.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáador de Arco.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáa.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáa-chamas.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáa M°sseis V.E.S.P.A.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáa Granadas com Fitas.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Desescalador.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Lanáa Foguetes de Explos∆o AtmosfÇrica.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Cremador.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\lancador de granadas.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Ferramenta de Desfolhamento.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Esterilizador.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Desobstrutora.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Comando.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Canh∆o Quasar.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Canh∆o Autom†tico.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Arbalete.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Canh∆o a Laser.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\Antitanque Descart†vel.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\1-armas-de-apoio\A Bandeira Una.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Barragem Orbital Movel.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Barragem Orbital de Napalm.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Barregem Orbital Gatling.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Laser Orbital.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Barragem Orbital 380mm.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Barragem Orbital 120mm.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque Orbital com Canh∆o Eletrico.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque de Fumaáa Orbital.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque Orbital AÇreo.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque EMS Orbital.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque de G†s Orbital.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\2-orbitais\Ataque de Precis∆o Orbital.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_Strafing_Run_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_110mm_Rocket_Pods_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_Smoke_Strike_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_Napalm_Airstrike_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_500kg_Bomb_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_Cluster_Bomb_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-eagle\Eagle_Airstrike_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Rover_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Warp_Pack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Supply_Pack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Portable_Hellbomb_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Shield_Generator_Pack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\K-9_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Jump_Pack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Hover_Pack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Hot_Dog_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Guard_Dog_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Ballistic_Shield_Backpack_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Dog_Breath_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\3-mochilas\Directional_Shield_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Supply_FRV_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Patriot_Exosuit_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Lumberer_Exosuit_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Bastion_MK_XVI_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Incinerator_FRV_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Fast_Recon_Vehicle_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Emancipator_Exosuit_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\4-veiculos\Breakthrough_Exosuit_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Tesla_Tower_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Rocket_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Mortar_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Machine_Gun_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Laser_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Gatling_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Gas_Mortar_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Flame_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\Autocannon_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\5-sentinelas\EMS_Mortar_Sentry_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Shield_Generator_Relay_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Incendiary_Mines_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\HMG_Emplacement_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Anti-Personnel_Minefield_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Anti-Tank_Mines_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Gas_Mines_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Grenadier_Battlement_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\6-plataformas\Anti-Tank_Emplacement_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Upload_Data_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Upload Data.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Super_Earth_Flag_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\SOS_Beacon_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Seismic_Probe_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\SEAF_Artillery_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Resupply_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Reinforce_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Reinforcement Pods.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Prospecting Drill.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Orbital_Illumination_Flare_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Hive Breaker Drill.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Hellbomb_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Eagle_Rearm_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Drill_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Activate E-711 Extraction Drill.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Dark_Fluid_Vessel_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Aquifer Drill.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Cargo_Container_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\estratagemas\7-missao\Call_In_Super_Destroyer_Stratagem_Icon_Background.svg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\wallpaper.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\march.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\helldivers.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\cyber.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\altar.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\headshot.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\logo.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\automatons\cyborg.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\variante.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\thumb.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\variante v1.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\tripod.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\tecnologia.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\super-terra.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\projetos.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\portais.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\orda.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\observador.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\nave.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\iluminados.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\download (2).png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\download (4).png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\illuminates\molusco-banner.jpg
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\tocas.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\titan bile.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\omicron.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\meridia.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\insetos.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\insetos-tank.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\charge.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\Cepa Rompedora.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\Cepa de Esporos.png
+Z:\torrents\Helldivers-BR-main\imagens\inimigos\terminids\Elemento-710.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons
+Z:\torrents\Helldivers-BR-main\imagens\ui\logos
+Z:\torrents\Helldivers-BR-main\imagens\ui\misc
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao
+Z:\torrents\Helldivers-BR-main\imagens\ui\federacao.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\logo super terra.svg
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\medals.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\Requisition_Slip.svg
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\seta-baixo.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\seta-cima.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\seta-direita.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\seta-esquerda.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\icons\helldiver.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\laser-continue.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-impacto.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-gas.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-fogo.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-explosao.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-eletrico.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-5.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-4.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-corpo-a-corpo.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-balistico.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\dano-acido.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-unarmored-2.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-unarmored-1.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-3.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-6.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-2.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-tank-1.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-no-hitbox.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-indestructible.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-medium.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-light.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\dano\armor-valor-heavy.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Volcanic Activity.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Tremors .png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Thick Fog .png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Heavy Gloom Shroud .png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Sandstorms.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Rainstorms.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Meteor Storms.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Ion Storms.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Intense Heat.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Fire Tornados.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Extreme Cold.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Acid Storms.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\efeito-planeta\Blizzards.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-unarmored-1.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-unarmored-2.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-6.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-5.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-4.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-3.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-2.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-tank-1.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-no-hitbox.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-medium.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-indestructible.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-heavy.png
+Z:\torrents\Helldivers-BR-main\imagens\ui\penetracao\penetracao-light.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids
+Z:\torrents\Helldivers-BR-main\imagens\fundos\major-order
+Z:\torrents\Helldivers-BR-main\imagens\fundos\mapa
+Z:\torrents\Helldivers-BR-main\imagens\fundos\especiais
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\estratagema.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\helldiver.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\john.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\logo.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\nave-caindo.jpeg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\soldier.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_4_helldivers.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_automatons.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_automatons_v2.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_estratagema.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_page.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper_principal_terminids.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\wallpaper-principal.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\warbonds.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\central
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\insetos
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\molusco
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\robos
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\central\central-horizontal.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\insetos\terminideos-vertical.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\insetos\terminideos-hero.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\insetos\terminideos-horizontal.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\molusco\iluminados-horizontal.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\molusco\iluminados-vertical.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\molusco\iluminados-hero.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\robos\automatons-vertical.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\robos\automatons-horizontal.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\site\robos\automatons-hero.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\Steam.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\libertacao.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\frente.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\defesa.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\dados.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\campo.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\super-earth.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\sistema.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\meridian.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\federacao.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\fundos-grids\destroyer.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\major-order\major-order-ativa.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\major-order\major-order-derrota.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\major-order\major-order-vitoria.png
+Z:\torrents\Helldivers-BR-main\imagens\fundos\mapa\universo-fundo.jpg
+Z:\torrents\Helldivers-BR-main\imagens\fundos\especiais\meridian.png

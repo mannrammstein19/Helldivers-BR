@@ -12,6 +12,17 @@
     const V2 = `${API}/v2`;
     const REFRESH = 30 * 1000;
     const CACHE_KEY = 'hdbr_guerra_cache_v2';
+    const ORDER_SNAPSHOT_LOCAL = 'dados/major-order.json';
+    const ORDER_SNAPSHOT_RAW = 'https://raw.githubusercontent.com/mannrammstein19/Helldivers-BR/main/dados/major-order.json';
+    const ORDER_SNAPSHOT_CACHE = 'hdbr_guerra_major_order_snapshot_v1';
+    const ORDER_HISTORY_KEY = 'hdbr_guerra_major_order_history_v1';
+    const ORDER_TASK_HISTORY_KEY = 'hdbr_guerra_major_order_task_history_v2';
+    const ORDER_IMAGES = {
+        active: 'imagens/fundos/major-order/major-order-ativa.png',
+        completed: 'imagens/fundos/major-order/major-order-vitoria.png',
+        failed: 'imagens/fundos/major-order/major-order-derrota.png',
+        pending: 'imagens/fundos/major-order/major-order-ativa.png'
+    };
     const CACHE_TTL = {
         campaigns: 30 * 1000,
         assignments: 60 * 1000,
@@ -77,12 +88,12 @@
     }
 
     const FACTION_LOGOS = {
-        terminid: 'imagens/icones/logo terminids.png',
-        automaton: 'imagens/icones/logo automatons.png',
-        illuminate: 'imagens/icones/logo illuminats.png',
-        human: 'imagens/icones/logo super terra.png'
+        terminid: 'imagens/guerra/faccoes/logo terminids.png',
+        automaton: 'imagens/guerra/faccoes/logo automatons.png',
+        illuminate: 'imagens/guerra/faccoes/logo illuminats.png',
+        human: 'imagens/ui/icons/logo super terra.svg'
     };
-    const DEFENSE_ICON = 'imagens/icones/efeito-dss/federacao.png';
+    const DEFENSE_ICON = 'imagens/ui/federacao.png';
 
     function factionIcon(name, defense) {
         const src = defense ? DEFENSE_ICON : (FACTION_LOGOS[factionClass(name)] || FACTION_LOGOS.human);
@@ -114,7 +125,7 @@
         'magma desert': 'Magma_Base_Landscape.png',
         'cyberstan megafactory': 'Cyberstan_landscape.png',
         'super earth metropolis': 'Super_Earth_landscape.png',
-        'void source forest': 'Rift_active_landscape.png'
+        'void source forest': 'Void_Source_Planet_Landscape_Void_Header.png'
     };
     const BIOME_IMG_PATH = 'imagens/planetas/';
     const BIOME_FALLBACK = 'Sandy_base_Landscape.png';
@@ -173,10 +184,10 @@
         'intense heat': { name:'Calor Intenso', icon:'🔥', file:'Intense Heat.png', wikiFile:'Intense Heat Environmental Condition Icon.svg', description:'Temperaturas elevadas aumentam a pressão sobre equipamentos sensíveis ao calor.', recommendation:'Gerencie o superaquecimento e evite depender excessivamente de armas que acumulam calor.' },
         'fire tornadoes': { name:'Tornados de Fogo', icon:'🌪', file:'Fire Tornados.png', wikiFile:'Fire Tornados Environmental Condition Icon.svg', description:'Tornados de fogo atravessam a superfície e criam zonas de alto risco.', recommendation:'Não atravesse as áreas em chamas; espere uma abertura segura ou contorne o perigo.' },
         'acid storms': { name:'Tempestades Ácidas', icon:'☣', file:'Acid Storms.png', wikiFile:'Acid Storms Environmental Condition Icon.svg', description:'Precipitações corrosivas tornam a operação ainda mais perigosa.', recommendation:'Redobre a atenção ao terreno e evite permanecer exposto desnecessariamente.' },
-        'heavy gloom shroud': { name:'Manto de Escuridão Intensa', icon:'◐', file:'Heavy Gloom Shroud.png', wikiFile:'Heavy Gloom Shroud Environmental Condition Icon.svg', description:'Uma escuridão intensa reduz a leitura do campo de batalha.', recommendation:'Mantenha a equipe coordenada e use ferramentas de reconhecimento sempre que possível.' },
+        'heavy gloom shroud': { name:'Manto de Escuridão Intensa', icon:'◐', file:'Heavy Gloom Shroud .png', wikiFile:'Heavy Gloom Shroud Environmental Condition Icon.svg', description:'Uma escuridão intensa reduz a leitura do campo de batalha.', recommendation:'Mantenha a equipe coordenada e use ferramentas de reconhecimento sempre que possível.' },
         'ion storms': { name:'Tempestades de Íons', icon:'⚡', file:'Ion Storms.png', wikiFile:'Ion Storms Environmental Condition Icon.svg', description:'Tempestades de íons interferem nas condições eletrônicas da operação.', recommendation:'Planeje o uso de equipamentos dependentes de suporte e esteja preparado para interrupções.' }
     };
-    const HAZARD_ICON_PATH = 'imagens/icones/efeito-dss/';
+    const HAZARD_ICON_PATH = 'imagens/ui/efeito-planeta/';
     const WIKI_FILE = name => `https://helldivers.wiki.gg/wiki/Special:Redirect/file/${encodeURIComponent(name)}`;
 
     function hazardIconSources(info) {
@@ -454,32 +465,393 @@
     function setText(id, value) { const el = $(id); if (el) el.textContent = value; }
     function errorHTML(message) { return `<div class="error-state">⚠ ${escapeHTML(message)}</div>`; }
 
+
+    function majorOrderArray(data) {
+        return Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : []);
+    }
+
+    function majorOrderPick(data) {
+        return majorOrderArray(data).find(item => item && (item.title || item.briefing || item.tasks || item.progress || item.setting)) || null;
+    }
+
+    function majorOrderTitle(order) {
+        return clean(order?.title || order?.setting?.overrideTitle) || 'ORDEM MAIOR';
+    }
+
+    function majorOrderBrief(order) {
+        return clean(order?.briefing || order?.setting?.overrideBrief || order?.description || order?.setting?.taskDescription)
+            || 'Detalhes da missão indisponíveis.';
+    }
+
+    function majorOrderTasks(order) {
+        const tasks = Array.isArray(order?.tasks)
+            ? order.tasks
+            : (Array.isArray(order?.setting?.tasks) ? order.setting.tasks : []);
+        if (tasks.length) return tasks.filter(Boolean);
+
+        const goal = Number(order?.goal);
+        const progress = Array.isArray(order?.progress) ? Number(order.progress[0]) : Number(order?.progress);
+        return [{
+            _direct:true,
+            type:Number(order?.type || order?.setting?.type || 0),
+            title:clean(order?.description || order?.setting?.taskDescription),
+            _goal:Number.isFinite(goal) ? goal : null,
+            _progress:Number.isFinite(progress) ? progress : 0,
+            _faction:order?.targetFaction || order?.target || ''
+        }];
+    }
+
+    function majorOrderTaskValue(task, valueType) {
+        const types = Array.isArray(task?.valueTypes) ? task.valueTypes : [];
+        const values = Array.isArray(task?.values) ? task.values : [];
+        const index = types.indexOf(valueType);
+        return index >= 0 ? values[index] : null;
+    }
+
+    function majorOrderTaskGoal(task) {
+        const goal = task?._direct ? Number(task._goal) : Number(majorOrderTaskValue(task, 3));
+        return Number.isFinite(goal) && goal > 0 ? goal : null;
+    }
+
+    function majorOrderTaskProgress(order, task, index) {
+        if (task?._direct) return Math.max(0, Number(task._progress) || 0);
+        const direct = Array.isArray(order?.progress) ? Number(order.progress[index]) : Number(task?.progress?.[0] ?? task?.progress);
+        return Number.isFinite(direct) ? Math.max(0, direct) : 0;
+    }
+
+    function majorOrderTaskFactionId(task) {
+        if (task?._direct) {
+            if (Number.isFinite(Number(task._faction))) return Number(task._faction);
+            const name = String(task._faction || '').toLowerCase();
+            if (name.includes('terminid')) return 2;
+            if (name.includes('automaton')) return 3;
+            if (name.includes('illuminate')) return 4;
+            if (name.includes('human') || name.includes('super')) return 1;
+            return 0;
+        }
+        const id = Number(majorOrderTaskValue(task, 1));
+        return Number.isFinite(id) ? id : 0;
+    }
+
+    function majorOrderTaskFactionName(task) {
+        return ({1:'Super Terra',2:'Terminídeos',3:'Autômatos',4:'Iluminados'})[majorOrderTaskFactionId(task)] || '';
+    }
+
+    function majorOrderTaskFactionClass(task) {
+        return ({1:'human',2:'terminid',3:'automaton',4:'illuminate'})[majorOrderTaskFactionId(task)] || 'neutral';
+    }
+
+    function majorOrderTaskPlanetIndex(task) {
+        const id = Number(majorOrderTaskValue(task, 12));
+        return Number.isFinite(id) && id > 0 ? id : 0;
+    }
+
+    function majorOrderPlanetName(id) {
+        if (!id) return '';
+        const item = planetCatalog[String(id)] || {};
+        return clean(item?.name || item?.names || item?.planetName) || `PLANETA #${id}`;
+    }
+
+    function majorOrderTaskTypeName(task) {
+        const map = {2:'OBJETIVO ESPECIAL',3:'ERRADICAÇÃO',9:'OBJETIVO ESPECIAL',11:'LIBERTAÇÃO',12:'DEFESA',13:'CONTROLE'};
+        const type = Number(task?.type || 0);
+        return map[type] || `OBJETIVO${type ? ' TIPO ' + type : ''}`;
+    }
+
+    function majorOrderTaskTitle(task, index) {
+        const direct = clean(task?.title || task?.description || task?.name);
+        if (direct) return direct;
+
+        const type = Number(task?.type || 0);
+        const goal = majorOrderTaskGoal(task);
+        const faction = majorOrderTaskFactionName(task);
+        const planet = majorOrderPlanetName(majorOrderTaskPlanetIndex(task));
+
+        if (type === 3) return `Eliminar ${goal ? goal.toLocaleString('pt-BR') + ' ' : ''}${faction || 'inimigos'}`;
+        if (type === 11) return planet ? `Liberar ${planet}` : 'Cumprir objetivo de libertação';
+        if (type === 12) {
+            if (planet) return `Defender ${planet}`;
+            if (goal && faction) return `Defender ${goal.toLocaleString('pt-BR')} ${goal === 1 ? 'planeta' : 'planetas'} contra ${faction}`;
+            if (goal) return `Concluir ${goal.toLocaleString('pt-BR')} ${goal === 1 ? 'defesa' : 'defesas'}`;
+            return faction ? `Defender território contra ${faction}` : 'Defender território da Super Terra';
+        }
+        if (type === 13) return planet ? `Manter controle de ${planet}` : 'Manter controle do objetivo designado';
+        if (planet && faction) return `${majorOrderTaskTypeName(task)} em ${planet} // ${faction}`;
+        if (planet) return `${majorOrderTaskTypeName(task)} em ${planet}`;
+        if (goal && faction) return `${majorOrderTaskTypeName(task)} // ${goal.toLocaleString('pt-BR')} // ${faction}`;
+        if (faction) return `${majorOrderTaskTypeName(task)} // ${faction}`;
+        if (goal) return `${majorOrderTaskTypeName(task)} // alvo ${goal.toLocaleString('pt-BR')}`;
+        return `Objetivo ${index + 1} do Alto Comando`;
+    }
+
+    function majorOrderTaskRate(order, index, progress, goal) {
+        if (!goal || goal <= 1) return null;
+        const now = Date.now();
+        const all = readMajorOrderStorage(ORDER_TASK_HISTORY_KEY, {});
+        const orderKey = String(order?.id ?? order?.index ?? order?.id32 ?? 'ordem');
+        const key = `${orderKey}:${index}:${goal}`;
+        const old = all[key];
+
+        let rate = null;
+        if (old && Number(old.goal) === Number(goal)) {
+            const elapsed = now - Number(old.time || 0);
+            const hours = elapsed / 3600000;
+            if (elapsed >= 30000 && hours > 0 && progress >= Number(old.progress || 0)) {
+                rate = (progress - Number(old.progress || 0)) / hours;
+            } else if (elapsed < 30000 && Number.isFinite(Number(old.rate))) {
+                rate = Number(old.rate);
+            }
+        }
+
+        if (!old || now - Number(old.time || 0) >= 30000) {
+            all[key] = {time:now, progress, goal, rate:Number.isFinite(rate) ? rate : null};
+            const keys = Object.keys(all);
+            if (keys.length > 80) {
+                keys.sort((a,b)=>Number(all[b]?.time||0)-Number(all[a]?.time||0))
+                    .slice(80).forEach(k=>delete all[k]);
+            }
+            writeMajorOrderStorage(ORDER_TASK_HISTORY_KEY, all);
+        }
+        return Number.isFinite(rate) ? rate : null;
+    }
+
+    function majorOrderTaskPercent(progress, goal, state) {
+        if (state === 'completed') return 100;
+        if (!goal) return 0;
+        return Math.max(0, Math.min(100, progress / goal * 100));
+    }
+
+    function majorOrderTaskDone(progress, goal, state) {
+        return state === 'completed' || Boolean(goal && progress >= goal);
+    }
+
+    function majorOrderExpiration(order) {
+        if (order?.expiration || order?.expiresAt || order?.expireTime) {
+            return order.expiration || order.expiresAt || order.expireTime;
+        }
+        const seconds = Number(order?.expiresIn);
+        return Number.isFinite(seconds) && seconds > 0
+            ? new Date(Date.now() + seconds * 1000).toISOString()
+            : null;
+    }
+
+    function majorOrderReward(order) {
+        const reward = order?.reward || order?.setting?.reward;
+        const medalId = 897894480;
+        const rid = Number(order?.rewardId ?? reward?.id ?? reward?.id32 ?? reward?.itemId ?? reward?.itemID);
+        if (reward && typeof reward === 'object') {
+            const amount = Number(reward.amount ?? reward.value ?? reward.quantity);
+            let label = clean(reward.name || reward.description || '');
+            if (!label && rid === medalId) label = 'Medalhas';
+            if (!label && typeof reward.type === 'string' && !/^\d+$/.test(reward.type.trim())) label = clean(reward.type);
+            if (Number.isFinite(amount) && amount > 0) return `${amount.toLocaleString('pt-BR')} ${label || 'recompensa'}`;
+            if (label) return label;
+        }
+        return rid === medalId ? 'Medalhas' : (order?.rewardId ? 'Recompensa registrada' : 'Recompensa não informada');
+    }
+
+    function majorOrderState(value) {
+        return ['active','completed','failed','pending'].includes(value) ? value : 'active';
+    }
+
+    function readMajorOrderStorage(key, fallback=null) {
+        try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+        catch { return fallback; }
+    }
+
+    function writeMajorOrderStorage(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    }
+
+    async function loadMajorOrderSnapshot() {
+        const now = Date.now();
+        const cached = readMajorOrderStorage(ORDER_SNAPSHOT_CACHE, null);
+        if (cached?.data && now - Number(cached.time || 0) < 300000) return cached.data;
+        const stamp = Math.floor(now / 300000);
+        for (const base of [ORDER_SNAPSHOT_RAW, ORDER_SNAPSHOT_LOCAL]) {
+            try {
+                const response = await fetch(`${base}?v=${stamp}`, {cache:'no-store'});
+                if (!response.ok) continue;
+                const data = await response.json();
+                if (data?.order) {
+                    writeMajorOrderStorage(ORDER_SNAPSHOT_CACHE, {time:now, data});
+                    return data;
+                }
+            } catch {}
+        }
+        return cached?.data || null;
+    }
+
+    function majorOrderRate(progress, goal) {
+        const now = Date.now();
+        const old = readMajorOrderStorage(ORDER_HISTORY_KEY, null);
+        writeMajorOrderStorage(ORDER_HISTORY_KEY, {time:now, progress, goal});
+        if (!old || old.goal !== goal) return null;
+        const hours = (now - old.time) / 3600000;
+        return hours > 0 ? (progress - old.progress) / hours : null;
+    }
+
+    function majorOrderEta(progress, goal, rate) {
+        if (rate == null || rate <= 0 || !goal || progress >= goal) return null;
+        const hours = (goal - progress) / rate;
+        if (!Number.isFinite(hours) || hours > 720) return null;
+        const minutes = Math.max(1, Math.round(hours * 60));
+        const days = Math.floor(minutes / 1440);
+        const hrs = Math.floor((minutes % 1440) / 60);
+        const mins = minutes % 60;
+        return days ? `${days}d ${hrs}h` : (hrs ? `${hrs}h ${mins}min` : `${mins}min`);
+    }
+
+    function majorOrderVisual(article, state) {
+        state = majorOrderState(state);
+        article.classList.remove('order-active','order-completed','order-failed','order-pending');
+        article.classList.add(`order-${state}`);
+        article.style.setProperty('--major-order-image', `url("${ORDER_IMAGES[state] || ORDER_IMAGES.active}")`);
+    }
+
     async function renderOrder(assignments) {
         const box = $('ordem-maior');
-        const order = Array.isArray(assignments) ? assignments[0] : null;
         if (!box) return;
-        if (!order) { box.innerHTML = '<div class="empty-state">Nenhuma Ordem Maior ativa no momento.</div>'; return; }
-        const rawTitle = clean(order.title) || 'Ordem Maior';
-        const rawBriefing = clean(order.briefing || order.description) || 'Detalhes da missão indisponíveis.';
 
-        // Mostra o texto original (em inglês) imediatamente, sem travar
-        // esperando a tradução, e troca pelo texto em português assim
-        // que ele chegar.
+        await loadPlanetCatalog();
+
+        let order = majorOrderPick(assignments);
+        let snapshot = null;
+        let state = 'active';
+
+        if (!order) {
+            snapshot = await loadMajorOrderSnapshot();
+            order = snapshot?.order || null;
+            state = majorOrderState(snapshot?.state || 'pending');
+        }
+
+        if (!order) {
+            box.innerHTML = '<div class="empty-state">Nenhuma Ordem Maior registrada no momento.</div>';
+            return;
+        }
+
+        const tasks = majorOrderTasks(order);
+        const taskData = tasks.map((task,index)=>({
+            task,
+            index,
+            goal:majorOrderTaskGoal(task),
+            progress:majorOrderTaskProgress(order, task, index)
+        }));
+
+        const completed = state === 'completed';
+        const failed = state === 'failed';
+        const pending = state === 'pending';
+        const doneCount = completed
+            ? taskData.length
+            : taskData.filter(item=>majorOrderTaskDone(item.progress,item.goal,state)).length;
+
+        const reward = majorOrderReward(order);
+        const expiration = majorOrderExpiration(order);
+        const rawTitle = majorOrderTitle(order);
+        const rawBriefing = majorOrderBrief(order);
+        const count = taskData.length;
+
+        const kicker = state === 'active'
+            ? `ORDEM MAIOR ATIVA // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'}`
+            : completed
+                ? `✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA`
+                : failed
+                    ? `✕ ORDEM MAIOR ENCERRADA // OBJETIVO NÃO CUMPRIDO`
+                    : `◉ ORDEM ENCERRADA // AGUARDANDO CONFIRMAÇÃO DO ALTO COMANDO`;
+
+        const statusMain = state === 'active'
+            ? 'EM ANDAMENTO'
+            : completed ? 'VITÓRIA' : failed ? 'FALHA' : 'AGUARDANDO';
+
+        const taskCards = taskData.map(({task,index,goal,progress})=>{
+            const done = majorOrderTaskDone(progress, goal, state);
+            const percent = majorOrderTaskPercent(progress, goal, state);
+            const factionName = majorOrderTaskFactionName(task);
+            const factionClassName = majorOrderTaskFactionClass(task);
+            const planet = majorOrderPlanetName(majorOrderTaskPlanetIndex(task));
+            const type = majorOrderTaskTypeName(task);
+            const title = majorOrderTaskTitle(task,index);
+
+            const rate = state === 'active' && goal && goal > 1 && !done
+                ? majorOrderTaskRate(order,index,progress,goal)
+                : null;
+            const eta = state === 'active' && !done
+                ? majorOrderEta(progress,goal,rate)
+                : null;
+
+            const progressText = goal
+                ? `${(completed ? goal : progress).toLocaleString('pt-BR')} / ${goal.toLocaleString('pt-BR')}`
+                : (done ? 'OBJETIVO CUMPRIDO' : 'TELEMETRIA EM ACOMPANHAMENTO');
+
+            const meta = factionName || planet || type;
+            const status = done
+                ? 'CUMPRIDO'
+                : failed ? 'ENCERRADO' : pending ? 'AGUARDANDO' : 'EM ANDAMENTO';
+            const rateText = done
+                ? 'FINALIZADO'
+                : rate != null
+                    ? `${rate >= 0 ? '+' : ''}${Math.round(rate).toLocaleString('pt-BR')}/h`
+                    : 'COLETANDO';
+            const etaText = done
+                ? 'CONCLUÍDO'
+                : (eta || ((goal && goal <= 1) ? 'ACOMPANHANDO' : 'CALCULANDO'));
+
+            return `
+                <article class="guerra-mo-task ${factionClassName}${done ? ' is-complete' : ''}">
+                    <div class="guerra-mo-task-kicker">
+                        <span>OBJETIVO ${String(index+1).padStart(2,'0')} // ${escapeHTML(type)}</span>
+                        <strong>${escapeHTML(meta)}</strong>
+                    </div>
+                    <h4>${escapeHTML(title)}</h4>
+                    <div class="guerra-mo-progress"><i style="width:${percent.toFixed(2)}%"></i></div>
+                    <div class="guerra-mo-progress-label">
+                        <span>${escapeHTML(progressText)}</span>
+                        <strong>${goal ? percent.toFixed(1)+'%' : '—'}</strong>
+                    </div>
+                    <div class="guerra-mo-meta">
+                        <div><small>Ritmo observado</small><strong>${escapeHTML(rateText)}</strong></div>
+                        <div><small>Conclusão estimada</small><strong>${escapeHTML(etaText)}</strong></div>
+                    </div>
+                    <div class="guerra-mo-status">${done ? '✓ ' : ''}${escapeHTML(status)}</div>
+                </article>`;
+        }).join('');
+
         box.innerHTML = `
             <article class="guerra-order">
-                <span class="order-tag">ORDEM MAIOR ATIVA</span>
+                <div class="guerra-order-kicker">${escapeHTML(kicker)}</div>
                 <h3>${escapeHTML(rawTitle)}</h3>
-                <p>${escapeHTML(rawBriefing)}</p>
-                <div class="order-meta">
-                    <span>⏱ <b>${escapeHTML(remaining(order.expiration))}</b></span>
-                    <span>ALTO COMANDO // SUPREMA AUTORIDADE</span>
+                <p class="guerra-order-brief">${escapeHTML(rawBriefing)}</p>
+
+                <div class="guerra-mo-summary">
+                    <div class="guerra-order-stat"><small>Tempo restante</small><strong>${escapeHTML(state === 'active' ? remaining(expiration).replace(' restantes','') : 'ENCERRADA')}</strong></div>
+                    <div class="guerra-order-stat"><small>Objetivos concluídos</small><strong class="order-accent">${doneCount} / ${count}</strong></div>
+                    <div class="guerra-order-stat"><small>Recompensa</small><strong class="order-accent">${escapeHTML(reward)}</strong></div>
+                </div>
+
+                <div class="guerra-mo-head">
+                    <span>◆ OBJETIVOS DA ORDEM</span>
+                    <small>${count} ${count === 1 ? 'FRENTE / OBJETIVO' : 'FRENTES / OBJETIVOS'} // ${escapeHTML(statusMain)}</small>
+                </div>
+
+                <div class="guerra-mo-grid">${taskCards}</div>
+
+                <div class="guerra-order-foot">
+                    <span>${escapeHTML(state === 'active' ? 'ORDEM EM EXECUÇÃO' : completed ? 'ORDEM CONCLUÍDA' : failed ? 'ORDEM ENCERRADA' : 'AGUARDANDO RESULTADO')} // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'} REGISTRADOS</span>
+                    <span>ALTO COMANDO</span>
                 </div>
             </article>`;
 
-        const [title, briefing] = await Promise.all([autoTranslate(rawTitle), autoTranslate(rawBriefing)]);
-        if ($('ordem-maior') !== box) return; // painel já foi trocado/recarregado nesse meio tempo
-        const h3 = box.querySelector('h3');
-        const p = box.querySelector('p');
+        const article = box.querySelector('.guerra-order');
+        if (article) majorOrderVisual(article, state);
+
+        const [title, briefing] = await Promise.all([
+            autoTranslate(rawTitle),
+            autoTranslate(rawBriefing)
+        ]);
+
+        if ($('ordem-maior') !== box || !box.contains(article)) return;
+        const h3 = article?.querySelector('h3');
+        const p = article?.querySelector('.guerra-order-brief');
         if (h3 && title) h3.textContent = title;
         if (p && briefing) p.textContent = briefing;
     }
@@ -693,7 +1065,7 @@
             const factionLabel = defense ? 'Impacto inimigo / hora' : `Pressão ${factionName(enemy)}`;
             const dssHere = isDssPlanet(p);
             return `<article class="frente-card ${defense ? 'defesa' : ''}${defenseAlertClass}" style="--accent:${color}" data-planet-key="${escapeHTML(String(p.index ?? name))}" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
-                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/icones/defesa.png' : 'imagens/icones/libertacao.png'}" alt="">${defense ? 'DEFESA' : 'LIBERTAÇÃO'}</span><span class="frente-status-mini">${trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
+                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/guerra/operacoes/defesa.png' : 'imagens/guerra/operacoes/libertacao.png'}" alt="">${defense ? 'DEFESA' : 'LIBERTAÇÃO'}</span><span class="frente-status-mini">${trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
                 <div class="frente-head">
                     <div class="frente-head-row">
                         <div class="frente-title-block"><div class="frente-title">${escapeHTML(name)}</div><div class="frente-sector">${escapeHTML(sector)}</div></div>
@@ -781,7 +1153,7 @@
         'orbital blockade': { name:'Bloqueio Orbital', icon:'ORBITAL BLOCKADE.png', desc:'Impede o início de novas campanhas de Defesa no planeta e fornece suporte adicional às operações.' },
         'heavy ordnance distribution': { name:'Distribuição de Artilharia Pesada', icon:'HEAVY ORDNANCE DISTRIBUTION.png', desc:'Fornece suporte de artilharia orbital e acelera os esforços de libertação.' }
     };
-    const DSS_ICON_PATH = 'imagens/icones/efeito-dss/';
+    const DSS_ICON_PATH = 'imagens/guerra/dss/';
     const DSS_ICON = `${DSS_ICON_PATH}DSS_Summary_Model.png`;
     const DSS_ICON_FALLBACK = 'https://helldivers.wiki.gg/wiki/Special:Redirect/file/DSS%20Icon.svg';
     function dssInfo(name) {

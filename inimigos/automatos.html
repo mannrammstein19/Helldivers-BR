@@ -20,6 +20,7 @@
     <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
 
     <meta name="theme-color" content="#e60000">
+    <script src="../theme.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +62,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background-image: url("../imagens/0-banners/faccoes/robos/automatons-hero.png");
+            background-image: url("../imagens/fundos/site/robos/automatons-hero.png");
             background-repeat: no-repeat;
             background-position: center 70%;
             background-size: cover;
@@ -456,7 +457,22 @@
                 max-width: 100%;
             }
         }
-    </style>
+    
+
+        /* Integração com a responsividade global atual.
+           O limite de 1400px continua no desktop, mas não força largura/altura
+           artificial em celular retrato ou paisagem. */
+        @media (max-width: 768px), (orientation: landscape) and (hover: none) and (pointer: coarse) {
+            main.main-content {
+                flex: 1 1 auto;
+                flex-basis: auto;
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+            }
+        }
+
+</style>
 </head>
 <body class="fundo-automatos">
 
@@ -468,14 +484,14 @@
 
     <nav class="sidebar">
         <div class="logo-container">
-            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Comunidade</div>
+            <div class="section-header">Comando</div>
             <ul class="menu-list">
                 <li><a href="../index.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="../guerra.html">⚔ Central de Guerra</a></li>
                 <li><a href="../discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
@@ -495,13 +511,13 @@
                 <li><a href="#">Armas Primárias</a></li>
                 <li><a href="#">Armas Secundárias</a></li>
                 <li><a href="#">Granadas</a></li>
-                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Armaduras &amp; Passivas</a></li>
                 <li><a href="#">Boosters</a></li>
             </ul>
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Inimigos & Facções</div>
+            <div class="section-header">Inimigos &amp; Facções</div>
             <ul class="menu-list">
                 <li><a href="../faccoes.html">Visão Geral das Facções</a></li>
                 <li><a href="automatos.html" class="active">Autômatos</a></li>
@@ -515,7 +531,7 @@
         <div class="page-title-block">
             <h1>
                 <a href="../inimigos/Automatons/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo automatons.png" alt="" class="lore-title-icon">Automatons
+                    <img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-title-icon">Automatons
                 </a>
             </h1>
         </div>
@@ -535,7 +551,7 @@
             <span class="lore-badge">Ameaça Mecanizada</span>
             <h1>
                 <a href="../inimigos/Automatons/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo automatons.png" alt="" class="lore-title-icon">Automatons
+                    <img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-title-icon">Automatons
                 </a>
             </h1>
             <div class="lore-subtitle">"Eles não sentem medo. Eles não sentem cansaço. Eles apenas marcham."</div>
@@ -547,17 +563,17 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não surgiram do nada: eles são a herança mecânica dos <span class="lore-highlight">Ciborgues</span>, os secessionistas meio-humanos que declararam independência da Super Terra em seu mundo natal, <span class="lore-highlight">Cyberstan</span>, ainda durante a <span class="lore-highlight">Primeira Guerra Galáctica</span>. Derrotados e aprisionados, os Ciborgues foram condenados a trabalhar nas minas profundas do planeta, extraindo minérios para a Federação.
+                        Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não surgiram do nada: eles são a herança mecânica dos <span class="lore-highlight">Ciborgues</span>, os secessionistas meio-humanos que declararam independência da Super Terra em seu mundo natal, <span class="lore-highlight">Cyberstan</span>, ainda durante a <span class="lore-highlight">Primeira Guerra Galáctica</span>. Derrotados e aprisionados, os Ciborgues foram condenados a trabalhar nas minas profundas do planeta, extraindo minérios para a Federação.
                     </p>
                     <p>
                         Foi em segredo, nas profundezas de Cyberstan, que os Ciborgues sobreviventes conceberam seus sucessores: uma legião de máquinas de guerra construída ao longo de décadas, escondida das forças de Super Terra em instalações subterrâneas protegidas de bombardeios orbitais.
                     </p>
                     <p>
-                        A pista mais concreta sobre essa origem veio da decodificação da <span class="lore-highlight">"Embarcação 00"</span>, uma nave não identificada que partiu de Cyberstan em <span class="lore-highlight">2180</span> — cerca de quatro anos antes do primeiro ataque em larga escala dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>. A carga e o destino da viagem permanecem desconhecidos, mas a nave é tratada por eles quase como um artefato sagrado, citada com reverência em suas transmissões.
+                        A pista mais concreta sobre essa origem veio da decodificação da <span class="lore-highlight">"Embarcação 00"</span>, uma nave não identificada que partiu de Cyberstan em <span class="lore-highlight">2180</span> — cerca de quatro anos antes do primeiro ataque em larga escala dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>. A carga e o destino da viagem permanecem desconhecidos, mas a nave é tratada por eles quase como um artefato sagrado, citada com reverência em suas transmissões.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/robos/logo.png" alt="Automatons em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/automatons/logo.png" alt="Automatons em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -569,14 +585,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Antes de dar origem aos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>, a <span class="lore-highlight">Nação Ciborgue</span> era formada por humanos que abraçaram o socialismo e romperam unilateralmente com a Federação, fundando seu próprio governo em Cyberstan. A retaliação de Super Terra foi rápida: após um ataque terrorista atribuído aos Ciborgues contra uma megacidade, a Federação declarou guerra e esmagou a rebelião.
+                        Antes de dar origem aos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>, a <span class="lore-highlight">Nação Ciborgue</span> era formada por humanos que abraçaram o socialismo e romperam unilateralmente com a Federação, fundando seu próprio governo em Cyberstan. A retaliação de Super Terra foi rápida: após um ataque terrorista atribuído aos Ciborgues contra uma megacidade, a Federação declarou guerra e esmagou a rebelião.
                     </p>
                     <p>
                         Os sobreviventes não foram exterminados, mas escravizados nas minas próximas ao núcleo do planeta. Para suportar o calor extremo daquele ambiente, os próprios Ciborgues passaram a se modificar cada vez mais com implantes cibernéticos — um processo de automodificação que, gerações depois, culminaria na criação de seus <span class="lore-highlight">"filhos" mecânicos</span>.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/robos/cyborg.png" alt="Cyberstan, mundo natal dos Ciborgues" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/automatons/cyborg.png" alt="Cyberstan, mundo natal dos Ciborgues" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -588,14 +604,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Por cerca de um século, Super Terra acreditou que a ameaça Ciborgue estava contida. Foi um erro de cálculo: enquanto isso, nas profundezas de Cyberstan, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> eram fabricados em segredo, projetados para retomar a luta que seus criadores não conseguiram vencer.
+                        Por cerca de um século, Super Terra acreditou que a ameaça Ciborgue estava contida. Foi um erro de cálculo: enquanto isso, nas profundezas de Cyberstan, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> eram fabricados em segredo, projetados para retomar a luta que seus criadores não conseguiram vencer.
                     </p>
                     <p>
-                        Quando finalmente emergiram, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançaram um <span class="lore-highlight">ataque surpresa</span> nos setores sudoeste do mapa galáctico, avançando com uma força de vanguarda blindada. Diferente do avanço puramente instintivo dos insetos, essa foi uma ofensiva planejada — o início da reconquista que os Ciborgues sonhavam desde sua derrota.
+                        Quando finalmente emergiram, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançaram um <span class="lore-highlight">ataque surpresa</span> nos setores sudoeste do mapa galáctico, avançando com uma força de vanguarda blindada. Diferente do avanço puramente instintivo dos insetos, essa foi uma ofensiva planejada — o início da reconquista que os Ciborgues sonhavam desde sua derrota.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/robos/march.png" alt="Avanço da Legião Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/automatons/march.png" alt="Avanço da Legião Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -607,14 +623,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        A propaganda de Super Terra descreve os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> como máquinas sem mente, programadas apenas para matar em nome de uma ideologia socialista. A realidade parece mais complexa: relatos de campo sugerem que essas unidades são <span class="lore-highlight">capazes de sentir emoções</span>, como tristeza e raiva, e de agir por conta própria — o que torna sua obediência à causa dos Ciborgues ainda mais perturbadora.
+                        A propaganda de Super Terra descreve os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> como máquinas sem mente, programadas apenas para matar em nome de uma ideologia socialista. A realidade parece mais complexa: relatos de campo sugerem que essas unidades são <span class="lore-highlight">capazes de sentir emoções</span>, como tristeza e raiva, e de agir por conta própria — o que torna sua obediência à causa dos Ciborgues ainda mais perturbadora.
                     </p>
                     <p>
-                        Em combate, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> privilegiam armamento à distância, foguetes e unidades pesadamente blindadas para sufocar os Helldivers com poder de fogo, em vez de depender da aproximação corpo a corpo típica dos enxames biológicos. Essa diferença exige uma mentalidade tática distinta: contra os Autômatos, precisão, supressão e cobertura pesam mais do que velocidade de reação.
+                        Em combate, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> privilegiam armamento à distância, foguetes e unidades pesadamente blindadas para sufocar os Helldivers com poder de fogo, em vez de depender da aproximação corpo a corpo típica dos enxames biológicos. Essa diferença exige uma mentalidade tática distinta: contra os Autômatos, precisão, supressão e cobertura pesam mais do que velocidade de reação.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/robos/altar.png" alt="Unidade blindada Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/automatons/altar.png" alt="Unidade blindada Automaton" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -645,7 +661,7 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Assim como os demais inimigos da galáxia, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não são um bloco único. <span class="lore-highlight">Três subfacções</span> foram identificadas em campo, cada uma com um papel tático próprio dentro da guerra contra a Super Terra.
+                        Assim como os demais inimigos da galáxia, os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> não são um bloco único. <span class="lore-highlight">Três subfacções</span> foram identificadas em campo, cada uma com um papel tático próprio dentro da guerra contra a Super Terra.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
@@ -709,11 +725,11 @@
                 </li>
                 <li>
                     <span class="timeline-date">2180</span>
-                    <span class="timeline-text">A misteriosa "Embarcação 00" parte de Cyberstan rumo a um destino desconhecido — o primeiro indício documentado da criação dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>.</span>
+                    <span class="timeline-text">A misteriosa "Embarcação 00" parte de Cyberstan rumo a um destino desconhecido — o primeiro indício documentado da criação dos <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a>.</span>
                 </li>
                 <li>
                     <span class="timeline-date">~2184</span>
-                    <span class="timeline-text">Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançam sua primeira ofensiva em larga escala nos setores sudoeste da galáxia, reacendendo o conflito contra Super Terra.</span>
+                    <span class="timeline-text">Os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> lançam sua primeira ofensiva em larga escala nos setores sudoeste da galáxia, reacendendo o conflito contra Super Terra.</span>
                 </li>
                 <li>
                     <span class="timeline-date">2184-2185</span>
@@ -721,7 +737,7 @@
                 </li>
                 <li>
                     <span class="timeline-date">2185</span>
-                    <span class="timeline-text">A Cyborg Legion é reencontrada em Cyberstan durante a Operação Valid Pretext, confirmando o elo direto entre os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/icones/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> e seus criadores humanos.</span>
+                    <span class="timeline-text">A Cyborg Legion é reencontrada em Cyberstan durante a Operação Valid Pretext, confirmando o elo direto entre os <a href="../inimigos/Automatons/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo automatons.png" alt="" class="lore-term-icon">Automatons</a> e seus criadores humanos.</span>
                 </li>
             </ul>
         </div>

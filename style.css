@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap");
+
 /* ==========================================================================
    VARIÁVEIS GERAIS (CORES E TAMANHOS)
    ========================================================================== */
@@ -20,7 +22,7 @@ a { text-decoration: none; }
 
 /* Isso aqui é o que já existe no seu site */
 body {
-    background: #0a0a0a url('imagens/0-banners/wallpaper-principal.jpg') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/wallpaper-principal.jpg') center/cover fixed;
     color: var(--hd-text);
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
@@ -31,37 +33,37 @@ body {
 
 /* Quando o body tiver a classe 'fundo-principal', ele ignora o wallpaper principal */
 body.fundo-principal {
-    background: #0a0a0a url('imagens/0-banners/helldiver.png') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/helldiver.png') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-estrategema', ele usa outro */
 body.fundo-estrategema {
-    background: #0a0a0a url('imagens/0-banners/wallpaper_principal_estratagema.png') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/wallpaper_principal_estratagema.png') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-warbond', ele usa outro */
 body.fundo-warbonds {
-    background: #0a0a0a url('imagens/0-banners/warbonds.png') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/warbonds.png') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-automatos', ele usa outro */
 body.fundo-automatos {
-    background: #0a0a0a url('imagens/0-banners/faccoes/robos/automatons-horizontal.png') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/robos/automatons-horizontal.png') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-terminideos', ele usa outro */
 body.fundo-terminideos {
-    background: #0a0a0a url('imagens/0-banners/faccoes/insetos/terminideos-horizontal.jpg') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/insetos/terminideos-horizontal.jpg') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-iluminados', ele usa outro */
 body.fundo-iluminados {
-    background: #0a0a0a url('imagens/0-banners/faccoes/molusco/iluminados-horizontal.jpg') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/molusco/iluminados-horizontal.jpg') center/cover fixed;
 }
 
 /* Quando o body tiver a classe 'fundo-iluminados', ele usa outro */
 body.fundo-guerra {
-    background: #0a0a0a url('imagens/0-banners/faccoes/central/central-horizontal.jpg') center/cover fixed;
+    background: #0a0a0a url('imagens/fundos/site/central/central-horizontal.jpg') center/cover fixed;
 }
 
 /* ==========================================================================
@@ -239,19 +241,19 @@ body.fundo-guerra {
     .logo-container img { width: 200px; }
 	
 	body.fundo-automatos {
-		background-image: url('imagens/0-banners/faccoes/robos/automatons-vertical.jpg');
+		background-image: url('imagens/fundos/site/robos/automatons-vertical.jpg');
 	}
 	
 	body.fundo-terminideos {
-		background-image: url('imagens/0-banners/faccoes/insetos/terminideos-vertical.jpg');
+		background-image: url('imagens/fundos/site/insetos/terminideos-vertical.png');
 	}
 	
 	body.fundo-iluminados {
-		background-image: url('imagens/0-banners/faccoes/molusco/iluminados-vertical.png');
+		background-image: url('imagens/fundos/site/molusco/iluminados-vertical.png');
 	}
 	
 	body.fundo-central {
-		background-image: url('imagens/0-banners/faccoes/central/central-vertical.jpg');
+		background-image: url('imagens/fundos/site/central/central-horizontal.jpg');
 	}
 }
 
@@ -312,3 +314,437 @@ body.fundo-guerra {
 
     .main-content { margin-left: 0; padding: 20px; min-width: 0; width: 100%; overflow-x: hidden; }
 }
+
+/* ========================================================================== 
+   TEMA MERIDIAN — ALTERNADOR GLOBAL
+   Padrão: identidade Helldivers amarela atual.
+   Meridian: preto profundo + roxo/azul, usando o fundo especial Meridian.
+   ========================================================================== */
+.site-theme-wrap{
+    margin:-4px 0 16px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(215,213,44,.18);
+}
+.site-theme-toggle{
+    width:100%; min-height:42px; display:flex; align-items:center; gap:10px;
+    padding:8px 10px; cursor:pointer; text-align:left;
+    background:rgba(255,255,255,.025); color:#ddd;
+    border:1px solid rgba(215,213,44,.25); border-left:3px solid var(--hd-yellow);
+    font:700 10px 'Oswald', Impact, sans-serif; letter-spacing:1px;
+    transition:border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease;
+}
+.site-theme-toggle:hover{color:var(--hd-yellow);border-color:var(--hd-yellow);background:rgba(215,213,44,.07);box-shadow:0 0 14px rgba(215,213,44,.08)}
+.site-theme-toggle small{display:block;color:#777;font:700 7px Arial,sans-serif;letter-spacing:1.4px;margin-bottom:1px}
+.theme-toggle-icon{width:23px;height:23px;display:grid;place-items:center;border:1px solid currentColor;font-size:13px;flex:0 0 23px}
+
+body.theme-meridian{
+    --hd-yellow:#9c86ff;
+    --hd-orange:#59c9ff;
+    --hd-card:rgba(10,7,18,.90);
+    background:#030208 url('imagens/fundos/especiais/meridian.png') center/cover fixed !important;
+}
+body.theme-meridian .main-content{background:rgba(5,3,10,.70)}
+body.theme-meridian .sidebar{background:rgba(7,5,13,.97);border-right-color:#9c86ff;box-shadow:8px 0 28px rgba(67,43,125,.12)}
+body.theme-meridian .logo-container{border-bottom-color:rgba(156,134,255,.30)}
+body.theme-meridian .section-header{border-bottom-color:rgba(156,134,255,.22)}
+body.theme-meridian .menu-list li a{border-color:rgba(156,134,255,.16);border-left-color:rgba(156,134,255,.42)}
+body.theme-meridian .menu-list li a:hover,
+body.theme-meridian .menu-list li a.active{border-color:#9c86ff;border-left-color:#9c86ff;background:rgba(156,134,255,.09)}
+body.theme-meridian .site-theme-wrap{border-bottom-color:rgba(156,134,255,.20)}
+body.theme-meridian .site-theme-toggle{border-color:rgba(156,134,255,.35);border-left-color:#9c86ff;background:rgba(88,61,150,.08)}
+body.theme-meridian .site-theme-toggle:hover{border-color:#9c86ff;background:rgba(156,134,255,.11);box-shadow:0 0 18px rgba(117,89,255,.14)}
+
+@media(max-width:768px){
+    .site-theme-wrap{margin:0 0 12px;padding-bottom:12px}
+}
+
+/* ========================================================================== 
+   TEMA GLOBAL V2 — aplica a preferência salva também pelo marcador no <html>.
+   Isso reduz o "flash" do tema padrão ao navegar entre páginas.
+   ========================================================================== */
+html[data-hd-theme="meridian"] body{
+    --hd-yellow:#9c86ff;
+    --hd-orange:#59c9ff;
+    --hd-card:rgba(10,7,18,.90);
+    background:#030208 url('imagens/fundos/especiais/meridian.png') center/cover fixed !important;
+}
+html[data-hd-theme="meridian"] body .main-content{background:rgba(5,3,10,.70)}
+html[data-hd-theme="meridian"] body .sidebar{background:rgba(7,5,13,.97);border-right-color:#9c86ff;box-shadow:8px 0 28px rgba(67,43,125,.12)}
+html[data-hd-theme="meridian"] body .logo-container{border-bottom-color:rgba(156,134,255,.30)}
+html[data-hd-theme="meridian"] body .section-header{border-bottom-color:rgba(156,134,255,.22)}
+html[data-hd-theme="meridian"] body .menu-list li a{border-color:rgba(156,134,255,.16);border-left-color:rgba(156,134,255,.42)}
+html[data-hd-theme="meridian"] body .menu-list li a:hover,
+html[data-hd-theme="meridian"] body .menu-list li a.active{border-color:#9c86ff;border-left-color:#9c86ff;background:rgba(156,134,255,.09)}
+html[data-hd-theme="meridian"] body .site-theme-wrap{border-bottom-color:rgba(156,134,255,.20)}
+html[data-hd-theme="meridian"] body .site-theme-toggle{border-color:rgba(156,134,255,.35);border-left-color:#9c86ff;background:rgba(88,61,150,.08)}
+html[data-hd-theme="meridian"] body .site-theme-toggle:hover{border-color:#9c86ff;background:rgba(156,134,255,.11);box-shadow:0 0 18px rgba(117,89,255,.14)}
+
+/* ==========================================================================
+   RESPONSIVIDADE INTELIGENTE — PÁGINAS DE ESTRATAGEMAS
+   --------------------------------------------------------------------------
+   O espaço disponível decide quantas tabelas cabem:
+   - celular estreito/retrato: 1 coluna
+   - celular deitado/tablet: 1 ou 2 colunas
+   - desktop: 2, 3 ou mais, conforme houver espaço
+
+   A regra é propositalmente restrita a body.fundo-estrategema para NÃO
+   interferir nos grids da Home, Central de Guerra, Mapas, Facções etc.
+   ========================================================================== */
+
+/* Regra forte para vencer CSS local antigo dos index sem precisar editá-los. */
+html body.fundo-estrategema .main-content .stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(300px, 100%), 340px)
+    ) !important;
+    gap: 14px !important;
+    align-items: start !important;
+    justify-content: start !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+html body.fundo-estrategema .main-content .stats-grid > .stats-box {
+    width: 100% !important;
+    max-width: 340px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Em uma tela realmente estreita, usa toda a largura disponível. */
+@media (max-width: 599px) {
+    html body.fundo-estrategema .main-content .stats-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    html body.fundo-estrategema .main-content .stats-grid > .stats-box {
+        max-width: 100% !important;
+    }
+}
+
+/* Celular/tablet deitado funciona como um "mini desktop":
+   a área inteira fica disponível e o grid decide se cabem 1 ou 2+ tabelas. */
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    html body.fundo-estrategema .main-content .stats-grid {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(300px, 100%), 340px)
+        ) !important;
+    }
+}
+
+
+
+/* ==========================================================================
+   MERIDIAN V3 — COMPONENTES COMPLETOS DAS ESTRATÉGIAS
+   Corrige páginas antigas que ainda têm amarelo/preto gravado no CSS local.
+   Restrito às páginas de estratagemas/listagem para não alterar Guerra/Mapa.
+   ========================================================================== */
+html[data-hd-theme="meridian"] body.fundo-estrategema {
+    --hd-yellow: #9c86ff;
+    --hd-orange: #59c9ff;
+    --hd-card: rgba(10, 7, 18, .92);
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .wiki-title-block h1,
+html[data-hd-theme="meridian"] body.fundo-estrategema .page-title-block h1,
+html[data-hd-theme="meridian"] body.fundo-estrategema .section-title,
+html[data-hd-theme="meridian"] body.fundo-estrategema .category-title,
+html[data-hd-theme="meridian"] body.fundo-estrategema .wiki-left-text > h3 {
+    color: #9c86ff !important;
+    border-color: rgba(156, 134, 255, .46) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .lore-quote {
+    color: #d9d1ff !important;
+    background: rgba(89, 201, 255, .055) !important;
+    border-left-color: #59c9ff !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .general-table,
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-box,
+html[data-hd-theme="meridian"] body.fundo-estrategema .stratagem-infobox,
+html[data-hd-theme="meridian"] body.fundo-estrategema .detail-column,
+html[data-hd-theme="meridian"] body.fundo-estrategema .video-section,
+html[data-hd-theme="meridian"] body.fundo-estrategema .table-responsive,
+html[data-hd-theme="meridian"] body.fundo-estrategema .wiki-card {
+    background: rgba(10, 7, 18, .92) !important;
+    border-color: rgba(156, 134, 255, .72) !important;
+    box-shadow: inset 0 0 0 1px rgba(89, 201, 255, .025), 0 12px 28px rgba(0,0,0,.22);
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-box .stats-box-header,
+html[data-hd-theme="meridian"] body.fundo-estrategema .detail-header {
+    background: linear-gradient(90deg, #8f78f4, #a692ff) !important;
+    color: #090711 !important;
+    border-color: #59c9ff !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .detail-subheader,
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-table tr.table-sub-header th,
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-table th {
+    background: rgba(156, 134, 255, .14) !important;
+    color: #cfc5ff !important;
+    border-color: rgba(89, 201, 255, .22) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-table td,
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-table th,
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-table td,
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-table th,
+html[data-hd-theme="meridian"] body.fundo-estrategema .hd-table td,
+html[data-hd-theme="meridian"] body.fundo-estrategema .hd-table th {
+    border-color: rgba(156, 134, 255, .18) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .stats-table td:first-child,
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-table td:first-child,
+html[data-hd-theme="meridian"] body.fundo-estrategema .hd-table th,
+html[data-hd-theme="meridian"] body.fundo-estrategema .strat-link:hover {
+    color: #b8a9ff !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-title {
+    background: rgba(156, 134, 255, .18) !important;
+    color: #bcaeff !important;
+    border-color: rgba(89, 201, 255, .24) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-kicker {
+    background: rgba(5, 4, 10, .74) !important;
+    color: #bcaeff !important;
+    border-color: rgba(156, 134, 255, .30) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-media {
+    background:
+        repeating-linear-gradient(135deg, rgba(156,134,255,.028) 0 1px, transparent 1px 9px),
+        linear-gradient(180deg, rgba(89,201,255,.065), rgba(0,0,0,.24)) !important;
+    border-color: rgba(156, 134, 255, .30) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-media img.main-art,
+html[data-hd-theme="meridian"] body.fundo-estrategema .main-art {
+    border-color: rgba(156, 134, 255, .42) !important;
+    box-shadow: inset 0 0 0 1px rgba(89, 201, 255, .15) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-section-label {
+    color: #bcaeff !important;
+    background: rgba(156, 134, 255, .12) !important;
+    border-color: rgba(156, 134, 255, .30) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-expand-trigger {
+    color: #bcaeff !important;
+    border-color: rgba(89, 201, 255, .45) !important;
+    background:
+        linear-gradient(90deg, rgba(89,201,255,.08), rgba(0,0,0,.12), rgba(156,134,255,.10)),
+        rgba(10,7,18,.92) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-expand-trigger .expand-hint,
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-expand-trigger .expand-arrow,
+html[data-hd-theme="meridian"] body.fundo-estrategema .acquisition-panel-title {
+    color: #69d5ff !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .infobox-collapsible {
+    background: linear-gradient(180deg, rgba(14,10,26,.99), rgba(7,5,13,.99)) !important;
+    border-color: #59c9ff !important;
+    box-shadow: 0 -12px 30px rgba(0,0,0,.6), 0 0 18px rgba(89,201,255,.13) !important;
+}
+
+html[data-hd-theme="meridian"] body.fundo-estrategema .video-wrapper video {
+    border-color: rgba(89, 201, 255, .55) !important;
+}
+
+/* Listagem geral de estratagemas */
+html[data-hd-theme="meridian"] body.fundo-estrategema .table-responsive {
+    border-color: rgba(156,134,255,.42) !important;
+}
+html[data-hd-theme="meridian"] body.fundo-estrategema .hd-table th {
+    background: rgba(156,134,255,.16) !important;
+    border-bottom-color: #9c86ff !important;
+}
+html[data-hd-theme="meridian"] body.fundo-estrategema .hd-table tr:hover td {
+    background: rgba(156,134,255,.055) !important;
+}
+
+/* Botão neutro Mostrar/Ocultar acompanha Meridian; estados verde/vermelho continuam semânticos. */
+html[data-hd-theme="meridian"] body.fundo-estrategema .blink-toggle:not(.btn-mostrar):not(.btn-ocultar) {
+    color: #bcaeff !important;
+    border-color: #9c86ff !important;
+    background: rgba(156,134,255,.14) !important;
+}
+
+/* Modal de imagem */
+html[data-hd-theme="meridian"] body.fundo-estrategema #imageModal .modal-content {
+    border-color: #9c86ff !important;
+    box-shadow: 0 0 26px rgba(89,201,255,.17), 0 0 20px rgba(0,0,0,.8) !important;
+}
+html[data-hd-theme="meridian"] body.fundo-estrategema #imageModal .close-btn {
+    color: #bcaeff !important;
+}
+
+/* ==========================================================================
+   PLAYER GLOBAL — HINO DA SUPER TERRA
+   O HTML é criado pelo theme.js. O player só aparece se o MP3 existir.
+   ========================================================================== */
+.site-audio-wrap {
+    margin: -5px 0 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(215,213,44,.18);
+}
+.site-audio-wrap[hidden] { display: none !important; }
+.site-audio-panel {
+    border: 1px solid rgba(215,213,44,.24);
+    border-left: 3px solid var(--hd-yellow);
+    background: rgba(255,255,255,.022);
+    padding: 8px 9px;
+}
+.site-audio-head {
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    color:#ddd; font:700 9px 'Oswald',Impact,sans-serif; letter-spacing:.9px;
+    text-transform:uppercase;
+}
+.site-audio-head small { display:block; color:#777; font:700 7px Arial,sans-serif; letter-spacing:1.2px; margin-top:2px; }
+.site-audio-controls { display:grid; grid-template-columns:34px 1fr; gap:8px; align-items:center; margin-top:8px; }
+.site-audio-toggle {
+    width:34px; height:30px; cursor:pointer; color:var(--hd-yellow);
+    border:1px solid currentColor; background:rgba(0,0,0,.35);
+    font:700 13px Arial,sans-serif;
+}
+.site-audio-toggle:hover { background:rgba(215,213,44,.08); }
+.site-audio-volume { width:100%; accent-color:var(--hd-yellow); cursor:pointer; }
+.site-audio-status { color:#777; font:700 7px Arial,sans-serif; letter-spacing:.7px; text-transform:uppercase; margin-top:5px; }
+.site-audio-status.is-playing { color:#72df7d; }
+.site-audio-status.is-blocked { color:#e0b44e; }
+html[data-hd-theme="meridian"] body .site-audio-wrap { border-bottom-color:rgba(156,134,255,.20); }
+html[data-hd-theme="meridian"] body .site-audio-panel {
+    border-color:rgba(156,134,255,.35); border-left-color:#9c86ff; background:rgba(88,61,150,.08);
+}
+html[data-hd-theme="meridian"] body .site-audio-toggle { color:#9c86ff; }
+html[data-hd-theme="meridian"] body .site-audio-toggle:hover { background:rgba(156,134,255,.11); }
+
+/* ==========================================================================
+   DISCORD — cor oficial Blurple
+   ========================================================================== */
+.hd-button.discord {
+    background: #5865F2 !important;
+    border-color: #7983F5 !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 rgba(88,101,242,0);
+}
+.hd-button.discord:hover {
+    background: #6875F5 !important;
+    border-color: #A5ADFF !important;
+    color: #fff !important;
+    box-shadow: 0 0 20px rgba(88,101,242,.34) !important;
+}
+
+/* ==========================================================================
+   ZOOM GLOBAL DO HELLDIVERS-BR
+   Criado pelo theme.js e persistido via localStorage.
+   ========================================================================== */
+.site-zoom-wrap {
+    margin: -5px 0 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(215,213,44,.18);
+}
+.site-zoom-panel {
+    border: 1px solid rgba(215,213,44,.24);
+    border-left: 3px solid var(--hd-yellow);
+    background: rgba(255,255,255,.022);
+    padding: 8px 9px;
+}
+.site-zoom-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #ddd;
+    font: 700 9px 'Oswald', Impact, sans-serif;
+    letter-spacing: .9px;
+    text-transform: uppercase;
+}
+.site-zoom-head small {
+    display: block;
+    color: #777;
+    font: 700 7px Arial, sans-serif;
+    letter-spacing: 1.15px;
+    margin-top: 2px;
+}
+.site-zoom-value {
+    color: var(--hd-yellow);
+    font: 800 11px 'Oswald', Impact, sans-serif;
+    letter-spacing: .5px;
+}
+.site-zoom-controls {
+    display: grid;
+    grid-template-columns: 34px 1fr 34px;
+    gap: 6px;
+    align-items: stretch;
+    margin-top: 8px;
+}
+.site-zoom-btn,
+.site-zoom-reset {
+    min-height: 32px;
+    cursor: pointer;
+    border: 1px solid rgba(215,213,44,.34);
+    background: rgba(0,0,0,.34);
+    color: #ddd;
+}
+.site-zoom-btn {
+    font: 900 18px Arial, sans-serif;
+    color: var(--hd-yellow);
+}
+.site-zoom-reset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 4px 6px;
+}
+.site-zoom-reset small {
+    margin-top: 3px;
+    color: #777;
+    font: 700 6px Arial, sans-serif;
+    letter-spacing: .6px;
+}
+.site-zoom-btn:hover,
+.site-zoom-reset:hover {
+    border-color: var(--hd-yellow);
+    background: rgba(215,213,44,.075);
+}
+.site-zoom-btn:disabled {
+    opacity: .28;
+    cursor: not-allowed;
+}
+html[data-hd-theme="meridian"] body .site-zoom-wrap {
+    border-bottom-color: rgba(156,134,255,.20);
+}
+html[data-hd-theme="meridian"] body .site-zoom-panel {
+    border-color: rgba(156,134,255,.35);
+    border-left-color: #9c86ff;
+    background: rgba(88,61,150,.08);
+}
+html[data-hd-theme="meridian"] body .site-zoom-btn,
+html[data-hd-theme="meridian"] body .site-zoom-reset {
+    border-color: rgba(156,134,255,.35);
+}
+html[data-hd-theme="meridian"] body .site-zoom-btn:hover,
+html[data-hd-theme="meridian"] body .site-zoom-reset:hover {
+    border-color: #9c86ff;
+    background: rgba(156,134,255,.11);
+}
+
+@media(max-width:768px){
+    .site-zoom-wrap{
+        margin:0 0 12px;
+        padding-bottom:12px;
+    }
+}
+

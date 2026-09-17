@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFE800">
+    <meta name="description" content="Guia completo e estatísticas detalhadas de Sentinela Morteiro de Gás em Helldivers 2.">
+    <title>Sentinela Morteiro de Gás - Helldivers BR</title>
+    <!-- Fonte técnica dos dados: https://helldivers.wiki.gg/wiki/A/GM-17_Gas_Mortar_Sentry -->
+    <link class="styles" rel="stylesheet" href="../../../style.css">
+    <style>
+        .lore-quote {
+            position: relative; margin: 20px 0 20px 50px; padding: 15px 20px;
+            border-left: 3px solid var(--hd-yellow); font-style: italic; color: var(--hd-yellow);
+            line-height: 1.6; background-color: rgba(0,0,0,.6); border-radius: 0 8px 8px 0;
+        }
+        .lore-quote::before {
+            content: "“"; position:absolute; left:-45px; top:-10px; font-size:60px;
+            color:var(--hd-yellow); font-family:Georgia,serif; line-height:1;
+        }
+        .wiki-overview-section { display:flex; justify-content:flex-start!important; gap:40px; max-width:1200px; align-items:flex-start; }
+        .wiki-left-text { flex:1; max-width:750px; min-width:0; }
+        .section-title {
+            color:var(--hd-yellow); font-size:20px; text-transform:uppercase;
+            margin:40px 0 15px; border-bottom:1px solid color-mix(in srgb, var(--hd-yellow) 40%, transparent);
+            padding-bottom:5px;
+        }
+        .stats-grid { display:flex; flex-wrap:wrap; justify-content:flex-start; align-items:flex-start; gap:14px; margin-top:20px; }
+        .stats-box {
+            overflow:hidden; width:340px; max-width:100%; background:rgba(20,20,20,.85);
+            border:1px solid var(--hd-yellow); padding:10px; box-sizing:border-box;
+        }
+        .stats-table { width:100%; border-collapse:collapse; table-layout:fixed; }
+        .stats-table td,.stats-table th { padding:4px 8px; border-bottom:1px solid color-mix(in srgb, var(--hd-yellow) 10%, transparent); vertical-align:middle; }
+        .stats-table td:first-child {
+            font-weight:bold; font-size:12px; width:55%; color:var(--hd-yellow)!important;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .stats-table td:last-child { font-size:13px; text-align:right; padding-left:10px; padding-right:8px; }
+        .stats-table tr.table-sub-header th {
+            font-size:13px; text-transform:uppercase; padding:7px 6px; text-align:center;
+            background:color-mix(in srgb, var(--hd-yellow) 10%, transparent); color:var(--hd-yellow);
+        }
+        .stats-box .stats-box-header {
+            background-color:var(--hd-yellow); color:#000; padding:6px 10px; margin:-10px -10px 10px;
+            text-align:center; font-size:14px; font-weight:bold; position:relative; border-bottom:none; text-transform:none;
+        }
+        .flex-td,.value-with-icon { display:flex; align-items:center; justify-content:flex-end; gap:5px; white-space:nowrap; }
+        .value-with-icon img,.flex-td img { width:18px; height:18px; object-fit:contain; }
+        .code-inline { display:flex; gap:3px; justify-content:flex-end; }
+        .code-inline img { width:14px; height:14px; }
+        .blink-toggle {
+            font-size:11px; font-weight:bold; text-transform:uppercase; cursor:pointer;
+            padding:2px 6px; border-radius:4px; margin-left:8px; animation:piscar 4s ease-in-out infinite;
+            transition:background .2s,color .2s; user-select:none;
+        }
+        .blink-toggle.btn-mostrar { color:#4CAF50; border:1px solid #4CAF50; background:rgba(76,175,80,.15); }
+        .blink-toggle.btn-ocultar { color:#F44336; border:1px solid #F44336; background:rgba(244,67,54,.15); }
+        .blink-toggle.btn-mostrar:hover { background:#4CAF50; color:#000; animation:none; }
+        .blink-toggle.btn-ocultar:hover { background:#F44336; color:#000; animation:none; }
+        @keyframes piscar { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .stratagem-infobox {
+            width:320px; max-width:100%; background:rgba(20,20,20,.85); border:2px solid var(--hd-yellow);
+            padding:15px; box-sizing:border-box;
+        }
+        .infobox-title {
+            background:color-mix(in srgb, var(--hd-yellow) 20%, transparent); color:var(--hd-yellow);
+            text-align:center; font-weight:bold; padding:8px; text-transform:uppercase; font-size:16px; margin-bottom:15px;
+        }
+        .infobox-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .infobox-table td,.infobox-table th { padding:8px; border-bottom:1px solid color-mix(in srgb, var(--hd-yellow) 10%, transparent); }
+        .infobox-table td:first-child { color:var(--hd-yellow); font-weight:bold; }
+        .infobox-table td:last-child { text-align:right; }
+        .general-table {
+            background:rgba(20,20,20,.85); margin-bottom:20px; border:1px solid color-mix(in srgb, var(--hd-yellow) 20%, transparent);
+        }
+        @media(max-width:900px){
+            .wiki-overview-section{flex-direction:column;gap:20px}
+            .wiki-left-text{max-width:100%}
+            .stratagem-infobox{width:100%;max-width:420px}
+        }
+</style>
+    <script src="../../../theme.js" defer></script>
+</head>
+<body class="fundo-estrategema">
+    <div class="mobile-header">
+        <button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img src="../../../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Comunidade</div>
+            <ul class="menu-list">
+                <li><a href="../../../index.html">Página Principal</a></li>
+                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="section-header">Equipamento</div>
+            <ul class="menu-list">
+                <li><a class="active" href="../../../estratagemas.html">Estratagemas</a></li>
+                <li><a href="#">Armas Primárias</a></li>
+                <li><a href="#">Armas Secundárias</a></li>
+                <li><a href="#">Granadas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="wiki-title-block">
+            <h1>Sentinela Morteiro de Gás</h1>
+        </div>
+
+        <div class="wiki-overview-section">
+            <div class="wiki-left-text">
+                <div class="lore-quote">Morteiro automático que lança projéteis de gás e prioriza hostis ainda não afetados, espalhando controle de área sobre posições inimigas.</div>
+                <p class="description-text" style="line-height:1.6;font-size:15px;margin-bottom:25px;">
+                    A Sentinela Morteiro de Gás combina tiro indireto com dano e confusão por gás. Ela consegue atingir inimigos atrás de cobertura e manter áreas contaminadas por vários segundos.
+                </p>
+
+                <h3 style="color:var(--hd-yellow);font-size:16px;text-transform:uppercase;margin-bottom:15px;border-bottom:1px solid color-mix(in srgb,var(--hd-yellow) 40%,transparent);padding-bottom:5px;">Estatísticas Gerais</h3>
+                <table class="stats-table general-table">
+                    <tr><td>Tempo de Chamada</td><td>7,75s (padrão) / 4,75s (melhorado)</td></tr>
+<tr><td>Recarga (Cooldown)</td><td>180 segundos</td></tr>
+<tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
+<tr><td>Cadência</td><td>≈32 RPM</td></tr>
+<tr><td>Munição</td><td>15 (padrão) / 23 (melhorado)</td></tr>
+<tr><td>Vida</td><td>400 (padrão) / 600 (melhorado)</td></tr>
+                </table>
+            </div>
+
+            <div class="stratagem-infobox">
+                <div class="infobox-title">Detalhes da Estratagema</div>
+                <div class="infobox-media" style="text-align:center;margin-bottom:15px;">
+                    <img id="armaImg"
+                         src="../../../imagens/estratagemas/5-sentinelas/Gas_Mortar_Sentry_Stratagem_Icon_Background.svg"
+                         alt="Sentinela Morteiro de Gás"
+                         class="main-art"
+                         style="cursor:pointer;transition:opacity .3s;width:150px;height:150px;border:1px solid color-mix(in srgb,var(--hd-yellow) 30%,transparent);background:#000;object-fit:contain;"
+                         title="Clique para ampliar">
+                </div>
+                <table class="infobox-table">
+                    <tr><th colspan="2" style="background:color-mix(in srgb,var(--hd-yellow) 10%,transparent);color:var(--hd-yellow);text-align:left;font-size:11px;text-transform:uppercase;">Informações de Combate</th></tr>
+                    <tr><td>Tipo de Permissão:</td><td style="color:var(--hd-orange);font-weight:bold;">Defensivo</td></tr>
+                    <tr><td>Características:</td><td>Hellpod • Cáustico • Sentinela</td></tr>
+                    <tr><td>Código de Ativação:</td><td><div class="code-inline"><img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo">
+<img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima">
+<img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita">
+<img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo">
+<img src="../../../imagens/ui/icons/seta-esquerda.png" alt="Esquerda"></div></td></tr>
+                    <tr><td>Recarga Base:</td><td>180s</td></tr>
+                    <tr><td>Nível de Desbloqueio:</td><td>Não se aplica</td></tr>
+                    <tr><td>Custo:</td><td><span class="value-with-icon"><img src="../../../imagens/ui/icons/medals.png" alt="Medalhas"> 85 Medalhas</span></td></tr>
+                    <tr><td>Fonte:</td><td>Entrenched Division P2</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+
+        <div class="stats-grid">
+            <div class="stats-box">
+                <h3 class="stats-box-header">A/GM-17 GAS MORTAR SENTRY</h3>
+                <table class="stats-table">
+                    <tr><td>Recarga (Cooldown)</td><td>180 s</td></tr>
+<tr><td>Usos</td><td>∞</td></tr>
+<tr><td>Vida Principal</td><td>400</td></tr>
+<tr><td>Armadura Principal</td><td>Leve</td></tr>
+<tr><td>Rotação Horizontal</td><td>55</td></tr>
+<tr><td>Rotação Vertical</td><td>55</td></tr>
+<tr><td>Duração</td><td>180 s</td></tr>
+<tr><td>Limite Vertical</td><td>35° / 89°</td></tr>
+                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+                    <tr><td>SWP GAS MORTAR SENTRY</td><td class="flex-td">Arma <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-detalhe-1', this)">[Ocultar]</span></td></tr><tr><td>GAS MORTAR SHELL P</td><td class="flex-td">Projétil <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-2', this)">[Mostrar]</span></td></tr><tr><td>GAS MORTAR SHELL P IE</td><td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-3', this)">[Mostrar]</span></td></tr><tr><td>GAS</td><td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-4', this)">[Mostrar]</span></td></tr><tr><td>GAS CONFUSION</td><td class="flex-td">Status <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-5', this)">[Mostrar]</span></td></tr>
+                </table>
+            </div>
+
+            <div class="stats-box" id="janela-detalhe-1" style="display: block;">
+<h3 class="stats-box-header">SWP GAS MORTAR SENTRY</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Arma</th></tr>
+<tr><td>Vida Principal</td><td>400</td></tr>
+<tr><td>Armadura Principal</td><td>Leve</td></tr>
+<tr><td>Cadência</td><td>80 rpm</td></tr>
+<tr><td>Recuo</td><td>6,25</td></tr>
+<tr><td>Recuo Horizontal</td><td>2,5</td></tr>
+<tr><td>Recuo Vertical</td><td>10</td></tr>
+<tr><td>Dispersão</td><td>↔ 50,00 / ↕ 50,00</td></tr>
+<tr><td>Oscilação</td><td>1</td></tr>
+<tr><td>Ergonomia</td><td>65</td></tr>
+<tr><td>Capacidade</td><td>16</td></tr>
+</table>
+</div><div class="stats-box" id="janela-detalhe-2" style="display: none;">
+<h3 class="stats-box-header">GAS MORTAR SHELL P</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
+<tr><td>Massa</td><td>70 kg</td></tr>
+<tr><td>Velocidade Inicial</td><td>100 m/s</td></tr>
+<tr><td>Fator de Arrasto</td><td>25%</td></tr>
+<tr><td>Fator de Gravidade</td><td>600%</td></tr>
+<tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
+<tr><td>Explosão no Impacto</td><td>Sim</td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Padrão</td><td>20 Dano</td></tr>
+<tr><td>vs. Durável</td><td>2 Dano</td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</span></td></tr>
+<tr><td>Ângulo Ligeiro</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</span></td></tr>
+<tr><td>Ângulo Amplo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</span></td></tr>
+<tr><td>Ângulo Extremo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</span></td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+<tr><td>Força de Demolição</td><td>10</td></tr>
+<tr><td>Força de Stun (Stagger)</td><td>30</td></tr>
+<tr><td>Força de Push (Push)</td><td>10</td></tr>
+</table>
+</div><div class="stats-box" id="janela-detalhe-3" style="display: none;">
+<h3 class="stats-box-header">GAS MORTAR SHELL P IE</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
+<tr><td>Raio Interno</td><td>2 m</td></tr>
+<tr><td>Raio Externo</td><td>7 m</td></tr>
+<tr><td>Raio da Onda de Choque</td><td>7 m</td></tr>
+<tr><td>Duração do AoE</td><td>15 s</td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Elemento de Dano</td><td>Gás</td></tr>
+<tr><td>Raio Interno</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-gas.png" alt="Gás"> 0 Gás</span></td></tr>
+<tr><td>Interno Durável</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-gas.png" alt="Gás"> 0 Gás</span></td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-tank-2.png" alt="Anti-Tank II"> Anti-Tank II</span></td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
+<tr><td>Status</td><td>Gas</td></tr>
+<tr><td>Força do Status</td><td>100</td></tr>
+<tr><td>Segundo Status</td><td>Gas Confusion</td></tr>
+<tr><td>Força do Segundo Status</td><td>100</td></tr>
+<tr><td>Força de Demolição</td><td>30</td></tr>
+<tr><td>Força de Stun (Stagger)</td><td>10</td></tr>
+<tr><td>Força de Push (Push)</td><td>20</td></tr>
+</table>
+</div><div class="stats-box" id="janela-detalhe-4" style="display: none;">
+<h3 class="stats-box-header">GAS</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Status</th></tr>
+<tr><td>Duração do Status</td><td>6 s</td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Elemento</td><td>Gás</td></tr>
+<tr><td>Padrão</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-gas.png" alt="Gás"> 25 Gás</span></td></tr>
+<tr><td>vs. Durável</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-gas.png" alt="Gás"> 25 Gás</span></td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-tank-2.png" alt="Anti-Tank II"> Anti-Tank II</span></td></tr>
+<tr><td>Ângulo Ligeiro</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-tank-2.png" alt="Anti-Tank II"> Anti-Tank II</span></td></tr>
+<tr><td>Ângulo Amplo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-tank-2.png" alt="Anti-Tank II"> Anti-Tank II</span></td></tr>
+<tr><td>Ângulo Extremo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</span></td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+<tr><td>Força de Demolição</td><td>0</td></tr>
+<tr><td>Força de Stun (Stagger)</td><td>0</td></tr>
+<tr><td>Força de Push (Push)</td><td>0</td></tr>
+</table>
+</div><div class="stats-box" id="janela-detalhe-5" style="display: none;">
+<h3 class="stats-box-header">GAS CONFUSION</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Status</th></tr>
+<tr><td>Duração do Status</td><td>5 s</td></tr>
+</table>
+</div>
+        </div>
+    </main>
+
+    <div id="imageModal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.85);align-items:center;justify-content:center;">
+        <span class="close-btn" style="position:absolute;top:20px;right:40px;color:var(--hd-yellow);font-size:40px;font-weight:bold;cursor:pointer;">&times;</span>
+        <img class="modal-content" id="imgAmpliada" alt="" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);">
+    </div>
+
+    <script>
+        function toggleJanelaLateral(idJanela, botao) {
+            const janela = document.getElementById(idJanela);
+            if (!janela) return;
+            const oculta = getComputedStyle(janela).display === 'none';
+            janela.style.display = oculta ? 'block' : 'none';
+            botao.textContent = oculta ? '[Ocultar]' : '[Mostrar]';
+            botao.classList.toggle('btn-mostrar', !oculta);
+            botao.classList.toggle('btn-ocultar', oculta);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    menuBtn.innerHTML = sidebar.classList.contains('active') ? '✕ FECHAR MENU' : '☰ MENU DE NAVEGAÇÃO';
+                });
+            }
+
+            const modal = document.getElementById("imageModal");
+            const imgArma = document.getElementById("armaImg");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const btnFechar = document.querySelector(".close-btn");
+
+            if (imgArma && modal && imgAmpliada) {
+                imgArma.onclick = function() {
+                    modal.style.display = "flex";
+                    imgAmpliada.src = this.src;
+                    imgAmpliada.alt = this.alt;
+                };
+                if (btnFechar) btnFechar.onclick = () => modal.style.display = "none";
+                modal.onclick = event => {
+                    if (event.target === modal) modal.style.display = "none";
+                };
+            }
+        });
+    </script>
+</body>
+</html>

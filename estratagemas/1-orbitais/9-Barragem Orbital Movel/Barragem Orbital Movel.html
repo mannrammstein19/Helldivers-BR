@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guia completo e status detalhados da Barragem Móvel Orbital em Helldivers 2.">
-    <title>Barragem Móvel Orbital - Helldivers BR</title>
-
-    <!-- O CSS geral -->
-    <link class="styles" rel="stylesheet" href="../../../style.css">
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="theme-color" content="#FFE800">
+<meta content="Guia completo e status detalhados da Barragem Móvel Orbital em Helldivers 2." name="description"/>
+<title>Barragem Móvel Orbital - Helldivers BR</title>
+<!-- O CSS geral -->
+<link class="styles" href="../../../style.css" rel="stylesheet"/>
+<style>
         /* Estilo da caixa de texto (ATUALIZADO COM CORES E FUNDO TRANSPARENTE) */
         .lore-quote {
             position: relative;
@@ -132,200 +132,332 @@
             margin-top: 40px;
         }
     </style>
+<style id="orbital-standard-layout">
+/* ==========================================================
+   PADRÃO ORBITAIS — MESMO ESQUELETO DOS MODELOS CORRETOS
+   ========================================================== */
+.stats-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    margin-top: 20px !important;
+}
+
+.stats-box {
+    overflow: hidden !important;
+    width: 340px !important;
+    max-width: 100% !important;
+    background: rgba(20, 20, 20, 0.85) !important;
+    border: 1px solid #d7d52c !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+}
+
+.stats-box .stats-box-header {
+    background-color: #d7d52c !important;
+    color: #000 !important;
+    padding: 6px 10px !important;
+    margin: -10px -10px 10px -10px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    position: relative !important;
+    border-bottom: none !important;
+    text-transform: none !important;
+}
+
+.stats-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+}
+
+.stats-table td,
+.stats-table th {
+    padding: 4px 8px !important;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1) !important;
+    vertical-align: middle !important;
+}
+
+.stats-table td:first-child {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    width: 55% !important;
+    color: #d7d52c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.stats-table td:last-child {
+    font-size: 13px !important;
+    text-align: right !important;
+}
+
+.stats-table tr.table-sub-header th {
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    padding: 6px !important;
+    text-align: center !important;
+    background: rgba(215, 213, 44, 0.1) !important;
+    color: #d7d52c !important;
+}
+
+.flex-td {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+}
+
+.flex-td img {
+    width: 18px !important;
+    height: 18px !important;
+    object-fit: contain !important;
+}
+
+.blink-toggle {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #d7d52c;
+    background: rgba(215, 213, 44, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #d7d52c;
+    margin-left: 8px;
+    animation: orbitalPiscar 4s ease-in-out infinite;
+    transition: background .2s, color .2s;
+    user-select: none;
+}
+
+.blink-toggle.btn-mostrar {
+    color: #4CAF50;
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.blink-toggle.btn-ocultar {
+    color: #F44336;
+    border-color: #F44336;
+    background: rgba(244, 67, 54, 0.15);
+}
+
+.blink-toggle:hover {
+    animation: none;
+}
+
+.blink-toggle.btn-mostrar:hover {
+    background: #4CAF50;
+    color: #000;
+}
+
+.blink-toggle.btn-ocultar:hover {
+    background: #F44336;
+    color: #000;
+}
+
+@keyframes orbitalPiscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+}
+</style>
+    <!-- Ajustes locais das páginas de Orbitais:
+         1) demonstração em vídeo segue o mesmo fluxo à esquerda
+         2) tema compartilhado do site permanece ao abrir a estratagema -->
+    <style id="orbital-page-flow-fix">
+        .video-section {
+            margin: 40px 0 0 0 !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            text-align: left !important;
+            width: fit-content !important;
+            max-width: 100% !important;
+        }
+
+        .video-wrapper {
+            display: flex !important;
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            margin-top: 15px !important;
+        }
+
+        .video-wrapper video {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    </style>
+    <script src="../../../theme.js" defer></script>
 </head>
 <body class="fundo-estrategema">
-
-    <div class="mobile-header">
-        <button id="menu-btn" class="mobile-menu-btn">☰ Menu de Navegação</button>
-    </div>
-
-    <nav id="sidebar" class="sidebar">
-        <div class="logo-container">
-            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'">
-        </div>
-
-        <div class="menu-section">
-            <div class="section-header">Comunidade</div>
-            <ul class="menu-list">
-                <li><a href="../../../index.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
-                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
-            </ul>
-        </div>
-        <div class="menu-section">
-            <div class="section-header">Equipamento</div>
-            <ul class="menu-list">
-                <li><a href="../../../estratagemas.html" class="active">Estratagemas</a></li>
-                <li><a href="#">Armas Primárias</a></li>
-                <li><a href="#">Armas Secundárias</a></li>
-                <li><a href="#">Granadas</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <main class="main-content">
-
-        <div class="wiki-title-block">
-            <h1>Barragem Móvel Orbital</h1>
-        </div>
-
-        <div class="wiki-overview-section">
-            
-            <div class="wiki-left-text">
-                <div class="lore-quote">
+<div class="mobile-header">
+<button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+</div>
+<nav class="sidebar" id="sidebar">
+<div class="logo-container">
+<img alt="Logo Helldivers BR" onerror="this.src='https://via.placeholder.com/220x100?text=LOGO'" src="../../../imagens/fundos/site/logo.jpg"/>
+</div>
+<div class="menu-section">
+<div class="section-header">Comunidade</div>
+<ul class="menu-list">
+<li><a href="../../../index.html">Página Principal</a></li>
+<li><a href="#">Portal da Comunidade</a></li>
+<li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+</ul>
+</div>
+<div class="menu-section">
+<div class="section-header">Equipamento</div>
+<ul class="menu-list">
+<li><a class="active" href="../../../estratagemas.html">Estratagemas</a></li>
+<li><a href="#">Armas Primárias</a></li>
+<li><a href="#">Armas Secundárias</a></li>
+<li><a href="#">Granadas</a></li>
+</ul>
+</div>
+</nav>
+<main class="main-content">
+<div class="wiki-title-block">
+<h1>Barragem Móvel Orbital</h1>
+</div>
+<div class="wiki-overview-section">
+<div class="wiki-left-text">
+<div class="lore-quote">
                     "Uma barragem de artilharia linear que avança progressivamente, ideal para abrir caminho através de linhas inimigas fortificadas ou limpar a zona de extração."
-                    <br>— Terminal de Gerenciamento de Navios
+                    <br/>— Terminal de Gerenciamento de Navios
                 </div>
-                
-                <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
+<p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
                     A <strong>Barragem Móvel Orbital</strong> é uma estratagema ofensiva devastadora. Diferente das barragens estáticas que concentram fogo em um único ponto, esta cria um "tapete de bombas" que se move para frente a partir do ponto de impacto inicial, obliterando bases pesadas e limpando hordas inteiras em seu caminho.
                 </p>
-                
-                <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
-                <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
-                    <tr><td>Tempo de Recarga (Cooldown)</td><td>240 segundos</td></tr>
-                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
-                    <tr><td>Tamanho da Área</td><td>25 metros</td></tr>
-                </table>
-            </div>
-
-            <!-- INFOBOX DA ESTRATAGEMA -->
-            <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
-                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
-                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
-                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Barragem Orbital Movel.svg" alt="Barragem Móvel Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
-                </div>
-                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <tr>
-                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff4a4a; font-weight: bold;">Ofensivo / Artilharia pesada</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Área Móvel</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
-                            <div class="code-inline">
-                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
-                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
-                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
-                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
-                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
-                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">240s</td>
-                    </tr>
-                </table>
-            </div>
-
-        </div> 
-        
-        <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
-        
-        <div class="stats-grid">
-            
-            <!-- CAIXA 1: BARRAGEM MÓVEL ORBITAL -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">BARRAGEM MÓVEL ORBITAL</h3>
-                <table class="stats-table">
-                    <tr><td>Esfriar (Cooldown)</td><td>240 s</td></tr>
-                    <tr><td>Usos</td><td>∞</td></tr>
-                    <tr><td>Bombas</td><td>3</td></tr>
-                    <tr><td>Salvas</td><td>5</td></tr>
-                    <tr><td>Tamanho da Área de Bombardeio</td><td>25 m</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
-                    <tr><td>CANHÃO HE 380mm ROUND P1</td><td>Projétil</td></tr>
-                    <tr><td>CANHÃO HE 380mm ROUND P1 IE</td><td>Explosão</td></tr>
-                </table>
-            </div>
-
-            <!-- CAIXA 2: CANHÃO HE 380mm ROUND P1 -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">CANHÃO HE 380mm ROUND P1</h3>
-                <table class="stats-table">
-                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
-                    <tr><td>Massa</td><td>30 kg</td></tr>
-                    <tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
-                    <tr><td>Fator de Arrasto</td><td>0%</td></tr>
-                    <tr><td>Fator de Gravidade</td><td>100%</td></tr>
-                    <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explosão no Impacto</td><td>Sim (CANHÃO HE 380mm ROUND P1 IE)</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano</td></tr>
-                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 4000 Dano</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-4.png" alt="Penetração"> Antitanque IV</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
-                    <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Atordoamento (Stagger)</td><td>50</td></tr>
-                    <tr><td>Força de Empurrão (Push)</td><td>20</td></tr>
-                </table>
-            </div>
-
-            <!-- CAIXA 3: CANHÃO HE 380mm ROUND P1 IE -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">CANHÃO HE 380mm ROUND P1 IE</h3>
-                <table class="stats-table">
-                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
-                    <tr><td>Raio Interno</td><td>4 m</td></tr>
-                    <tr><td>Raio Externo</td><td>12 m</td></tr>
-                    <tr><td>Raio da Onda de Choque</td><td>18 m</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
-                    <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
-                    <tr><td>Raio Externo</td><td>1499 - 0</td></tr>
-                    <tr><td>Externo Durável</td><td>1499 - 0</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
-                    <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Atordoamento (Stagger)</td><td>70</td></tr>
-                    <tr><td>Força de Empurrão (Push)</td><td>60</td></tr>
-                </table>
-            </div>
-
-        </div> 
-        
-        <div class="video-section" style="margin-top: 40px; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; max-width: 100%;">
-            <h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
-            <div class="video-wrapper" style="display: flex; justify-content: center; margin-top: 15px;">
-                <video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
-                    <source src="Orbital_Walking_Barrage_Preview_Video.mp4" type="video/mp4">
+<h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
+<table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+<tr><td>Recarga (Cooldown)</td><td>240 segundos</td></tr>
+<tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
+<tr><td>Tamanho da Área</td><td>25 metros</td></tr>
+</table>
+</div>
+<!-- INFOBOX DA ESTRATAGEMA -->
+<div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+<div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+<div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+<img alt="Barragem Móvel Orbital" class="main-art" id="armaImg" src="../../../imagens/estratagemas/2-orbitais/Barragem Orbital Movel.svg" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar"/>
+</div>
+<table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr>
+<th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #ff4a4a; font-weight: bold;">Ofensivo / Artilharia pesada</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Explosivo • Área Móvel</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+<div class="code-inline">
+<img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/>
+<img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/>
+<img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/>
+<img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/>
+<img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/>
+<img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/>
+</div>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">240s</td>
+</tr>
+</table>
+</div>
+</div>
+<h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+<div class="stats-grid">
+<!-- CAIXA 1: BARRAGEM MÓVEL ORBITAL -->
+<div class="stats-box">
+<h3 class="stats-box-header">BARRAGEM MÓVEL ORBITAL</h3>
+<table class="stats-table">
+<tr><td>Esfriar (Cooldown)</td><td>240 s</td></tr>
+<tr><td>Usos</td><td>∞</td></tr>
+<tr><td>Bombas</td><td>3</td></tr>
+<tr><td>Salvas</td><td>5</td></tr>
+<tr><td>Área de Bombardeio</td><td>25 m</td></tr>
+<tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+<tr><td>CANHÃO HE 380mm ROUND P1</td><td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-detalhe-1', this)">[Ocultar]</span></td></tr>
+<tr><td>CANHÃO HE 380mm ROUND P1 IE</td><td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-2', this)">[Mostrar]</span></td></tr>
+</table>
+</div>
+<!-- CAIXA 2: CANHÃO HE 380mm ROUND P1 -->
+<div class="stats-box" id="janela-detalhe-1" style="display: block;">
+<h3 class="stats-box-header">CANHÃO HE 380mm ROUND P1</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
+<tr><td>Massa</td><td>30 kg</td></tr>
+<tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
+<tr><td>Fator de Arrasto</td><td>0%</td></tr>
+<tr><td>Fator de Gravidade</td><td>100%</td></tr>
+<tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
+<tr><td>Explosão no Impacto</td><td>Sim (CANHÃO HE 380mm ROUND P1 IE)</td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Padrão</td><td class="flex-td"><img alt="Balístico" src="../../../imagens/ui/dano/dano-balistico.png"/> 4000 Dano</td></tr>
+<tr><td>vs. Durável</td><td class="flex-td"><img alt="Balístico" src="../../../imagens/ui/dano/dano-balistico.png"/> 4000 Dano</td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-4.png"/> Antitanque IV</td></tr>
+<tr><td>Ângulo Ligeiro</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</td></tr>
+<tr><td>Ângulo Amplo</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-2.png"/> Antitanque II</td></tr>
+<tr><td>Ângulo Extremo</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-2.png"/> Antitanque II</td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+<tr><td>Força de Demolição</td><td>50</td></tr>
+<tr><td>Força de Stun (Stagger)</td><td>50</td></tr>
+<tr><td>Força de Push (Push)</td><td>20</td></tr>
+</table>
+</div>
+<!-- CAIXA 3: CANHÃO HE 380mm ROUND P1 IE -->
+<div class="stats-box" id="janela-detalhe-2" style="display: none;">
+<h3 class="stats-box-header">CANHÃO HE 380mm ROUND P1 IE</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
+<tr><td>Raio Interno</td><td>4 m</td></tr>
+<tr><td>Raio Externo</td><td>12 m</td></tr>
+<tr><td>Raio da Onda de Choque</td><td>18 m</td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
+<tr><td>Raio Interno</td><td class="flex-td"><img alt="Explosão" src="../../../imagens/ui/dano/dano-explosao.png"/> 1500 Explosão</td></tr>
+<tr><td>Interno Durável</td><td class="flex-td"><img alt="Explosão" src="../../../imagens/ui/dano/dano-explosao.png"/> 1500 Explosão</td></tr>
+<tr><td>Raio Externo</td><td>1499 - 0</td></tr>
+<tr><td>Externo Durável</td><td>1499 - 0</td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-2.png"/> Antitanque II</td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
+<tr><td>Força de Demolição</td><td>50</td></tr>
+<tr><td>Força de Stun (Stagger)</td><td>70</td></tr>
+<tr><td>Força de Push (Push)</td><td>60</td></tr>
+</table>
+</div>
+</div>
+<div class="video-section" style="margin-top: 40px; background: rgba(20, 20, 20, 0.85); border: 1px solid #d7d52c; padding: 20px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; max-width: 100%;">
+<h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
+<div class="video-wrapper" style="display: flex; justify-content: center; margin-top: 15px;">
+<video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
+<source src="Orbital_Walking_Barrage_Preview_Video.mp4" type="video/mp4"/>
                     Seu navegador atual não suporta a visualização de vídeos.
                 </video>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
-    <div id="imageModal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
-        <span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-        <img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
-    </div>
-
-    <!-- SCRIPTS INTERNOS (MENU + MODAL) -->
-    <script>
+</div>
+</div>
+</main>
+<!-- ESTRUTURA DO MODAL (ZOOM DA IMAGEM) -->
+<div class="modal" id="imageModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+<span class="close-btn" style="position: absolute; top: 20px; right: 40px; color: #d7d52c; font-size: 40px; font-weight: bold; cursor: pointer;">×</span>
+<img class="modal-content" id="imgAmpliada" style="max-width: 90%; max-height: 90%; border: 2px solid #d7d52c; box-shadow: 0 0 20px rgba(0,0,0,0.8);"/>
+</div>
+<!-- SCRIPTS INTERNOS (MENU + MODAL) -->
+<script>
         document.addEventListener("DOMContentLoaded", function() {
             // Lógica do Menu Retrátil Lateral
             const menuBtn = document.getElementById('menu-btn');
@@ -367,5 +499,26 @@
         });
     </script>
 
+<script>
+/* Controle padrão das tabelas de detalhe das Orbitais */
+function toggleJanelaLateral(idJanela, botao) {
+    const janela = document.getElementById(idJanela);
+    if (!janela) return;
+
+    const estaOculta = getComputedStyle(janela).display === 'none';
+
+    if (estaOculta) {
+        janela.style.display = 'block';
+        botao.textContent = '[Ocultar]';
+        botao.classList.remove('btn-mostrar');
+        botao.classList.add('btn-ocultar');
+    } else {
+        janela.style.display = 'none';
+        botao.textContent = '[Mostrar]';
+        botao.classList.remove('btn-ocultar');
+        botao.classList.add('btn-mostrar');
+    }
+}
+</script>
 </body>
 </html>

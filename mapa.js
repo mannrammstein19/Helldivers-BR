@@ -73,11 +73,11 @@
         'intense heat': { name:'Calor Intenso', icon:'🔥', file:'Intense Heat.png', wikiFile:'Intense Heat Environmental Condition Icon.svg' },
         'fire tornadoes': { name:'Tornados de Fogo', icon:'🌪', file:'Fire Tornados.png', wikiFile:'Fire Tornados Environmental Condition Icon.svg' },
         'acid storms': { name:'Tempestades Ácidas', icon:'☣', file:'Acid Storms.png', wikiFile:'Acid Storms Environmental Condition Icon.svg' },
-        'heavy gloom shroud': { name:'Manto de Escuridão Intensa', icon:'◐', file:'Heavy Gloom Shroud.png', wikiFile:'Heavy Gloom Shroud Environmental Condition Icon.svg' },
+        'heavy gloom shroud': { name:'Manto de Escuridão Intensa', icon:'◐', file:'Heavy Gloom Shroud .png', wikiFile:'Heavy Gloom Shroud Environmental Condition Icon.svg' },
         'ion storms': { name:'Tempestades de Íons', icon:'⚡', file:'Ion Storms.png', wikiFile:'Ion Storms Environmental Condition Icon.svg' },
         'flooding': { name:'Inundações', icon:'≋', file:'', wikiFile:'' }
     };
-    const HAZARD_ICON_PATH = 'imagens/icones/efeito-dss/';
+    const HAZARD_ICON_PATH = 'imagens/ui/efeito-planeta/';
     const WIKI_FILE = name => `https://helldivers.wiki.gg/wiki/Special:Redirect/file/${encodeURIComponent(name)}`;
 
     function hazardInfo(raw) {
@@ -285,7 +285,7 @@
         return { minX: minX - padX, maxX: maxX + padX, minY: minY - padY, maxY: maxY + padY };
     }
 
-    function buildDefs(blurAmount) {
+    function buildDefs() {
         const defs = svgEl('defs', {});
         const gradients = {
             human: ['#fff9d0', '#d7d52c', '#8a8712'],
@@ -301,18 +301,6 @@
             grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': dark }));
             defs.appendChild(grad);
         });
-
-        const blur = svgEl('filter', { id: 'mapa-halo-blur', x: '-80%', y: '-80%', width: '260%', height: '260%' });
-        blur.appendChild(svgEl('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: blurAmount }));
-        defs.appendChild(blur);
-
-        const glow = svgEl('filter', { id:'mapa-soft-glow', x:'-100%', y:'-100%', width:'300%', height:'300%' });
-        glow.appendChild(svgEl('feGaussianBlur', { stdDeviation: Math.max(.7, blurAmount / 16), result:'blur' }));
-        const merge = svgEl('feMerge', {});
-        merge.appendChild(svgEl('feMergeNode', { in:'blur' }));
-        merge.appendChild(svgEl('feMergeNode', { in:'SourceGraphic' }));
-        glow.appendChild(merge);
-        defs.appendChild(glow);
         return defs;
     }
 
@@ -380,7 +368,7 @@
         viewport.appendChild(sectorGroup);
         viewport.appendChild(linesGroup);
         viewport.appendChild(dotsGroup);
-        svg.appendChild(buildDefs(mapSize / 45));
+        svg.appendChild(buildDefs());
         svg.appendChild(viewport);
 
         // Cartografia de fundo: anéis e eixos sutis, como uma mesa de comando orbital.
@@ -458,7 +446,7 @@
 
             const halo = svgEl('circle', {
                 class:'mapa-planet-halo', cx:x, cy:y, r:baseRadius * (underAttack ? 2.7 : 2.1),
-                fill:accent, filter:'url(#mapa-soft-glow)'
+                fill:accent
             });
             group.appendChild(halo);
 
@@ -506,7 +494,7 @@
             if (dssHostIndex != null && String(dssHostIndex) === String(raw.index)) {
                 const size = baseRadius * .95;
                 const cy2 = y - baseRadius * 3.2;
-                const dssHalo = svgEl('circle', { class:'mapa-dss-halo', cx:x, cy:cy2, r:size*1.6, fill:'#ffd23f', filter:'url(#mapa-soft-glow)' });
+                const dssHalo = svgEl('circle', { class:'mapa-dss-halo', cx:x, cy:cy2, r:size*1.6, fill:'#ffd23f' });
                 group.appendChild(dssHalo);
                 const diamond = svgEl('path', {
                     class:'mapa-dss-marker', d:`M ${x} ${cy2-size} L ${x+size} ${cy2} L ${x} ${cy2+size} L ${x-size} ${cy2} Z`,
@@ -567,12 +555,13 @@
     function setupPanZoom(svg, viewport) {
         const LABEL_ZOOM_THRESHOLD = 1.75;
         const DETAIL_ZOOM_THRESHOLD = 3.0;
+        const LOW_DETAIL_THRESHOLD = 1.18;
 
         let state = svg._mapaPanZoomState;
         if (state) {
             state.viewport = viewport;
             state.scale = 1; state.tx = 0; state.ty = 0;
-            state.apply();
+            state.requestApply(true);
             return;
         }
 
@@ -581,19 +570,35 @@
             scale:1, tx:0, ty:0,
             isPanning:false, lastX:0, lastY:0, moved:false,
             pinchStartDist:null, pinchStartScale:1,
-            activePointers:new Map()
+            activePointers:new Map(),
+            rafId:0,
+            dragRect:null,
+            dragViewBox:null
         };
         svg._mapaPanZoomState = state;
         svg._activePointers = state.activePointers;
 
-        state.apply = () => {
+        state.applyNow = () => {
+            state.rafId = 0;
             const vp = state.viewport;
             if (!vp) return;
             vp.setAttribute('transform', `translate(${state.tx},${state.ty}) scale(${state.scale})`);
             vp.classList.toggle('mapa-labels-on', state.scale >= LABEL_ZOOM_THRESHOLD);
             vp.classList.toggle('mapa-detail-on', state.scale >= DETAIL_ZOOM_THRESHOLD);
+            vp.classList.toggle('mapa-low-detail', state.scale < LOW_DETAIL_THRESHOLD);
             vp.classList.toggle('mapa-sector-fade', state.scale >= 4.2);
             applyLayerVisibility();
+        };
+
+        state.requestApply = (immediate = false) => {
+            if (immediate) {
+                if (state.rafId) cancelAnimationFrame(state.rafId);
+                state.rafId = 0;
+                state.applyNow();
+                return;
+            }
+            if (state.rafId) return;
+            state.rafId = requestAnimationFrame(state.applyNow);
         };
 
         const clientToSvgPoint = (clientX, clientY) => {
@@ -611,7 +616,7 @@
             state.tx = before.x - (before.x - state.tx) * (newScale / state.scale);
             state.ty = before.y - (before.y - state.ty) * (newScale / state.scale);
             state.scale = newScale;
-            state.apply();
+            state.requestApply();
         };
 
         svg.addEventListener('wheel', event => {
@@ -621,6 +626,10 @@
 
         svg.addEventListener('pointerdown', event => {
             state.activePointers.set(event.pointerId, event);
+            state.viewport?.classList.add('mapa-is-moving');
+            state.dragRect = svg.getBoundingClientRect();
+            const vb = svg.viewBox.baseVal;
+            state.dragViewBox = { width:vb.width, height:vb.height };
             if (event.pointerType === 'touch' && state.activePointers.size > 1) return;
             state.isPanning = true; state.moved = false;
             state.lastX = event.clientX; state.lastY = event.clientY;
@@ -645,18 +654,23 @@
             if (!state.isPanning) return;
             const dx = event.clientX-state.lastX, dy = event.clientY-state.lastY;
             if (Math.abs(dx)>2 || Math.abs(dy)>2) state.moved = true;
-            const rect = svg.getBoundingClientRect();
-            const vb = svg.viewBox.baseVal;
+            const rect = state.dragRect || svg.getBoundingClientRect();
+            const vb = state.dragViewBox || svg.viewBox.baseVal;
             state.tx += dx/rect.width*vb.width;
             state.ty += dy/rect.height*vb.height;
             state.lastX = event.clientX; state.lastY = event.clientY;
-            state.apply();
+            state.requestApply();
         });
 
         const clearPointer = event => {
             state.activePointers.delete(event.pointerId);
             if (state.activePointers.size < 2) state.pinchStartDist = null;
-            state.isPanning = false;
+            if (state.activePointers.size === 0) {
+                state.isPanning = false;
+                state.dragRect = null;
+                state.dragViewBox = null;
+                state.viewport?.classList.remove('mapa-is-moving');
+            }
             try { svg.releasePointerCapture(event.pointerId); } catch {}
         };
         svg.addEventListener('pointerup', clearPointer);
@@ -682,10 +696,10 @@
             const r=svg.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.35);
         });
         bindZoomButton('mapa-zoom-reset', () => {
-            state.scale=1; state.tx=0; state.ty=0; state.apply();
+            state.scale=1; state.tx=0; state.ty=0; state.requestApply(true);
         });
 
-        state.apply();
+        state.requestApply(true);
     }
 
     // ================================================================

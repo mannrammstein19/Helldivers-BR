@@ -20,6 +20,7 @@
     <meta name="twitter:image" content="https://mannrammstein19.github.io/Helldivers-BR/discord/images_index/wallpaper_principal_4_helldivers.png">
 
     <meta name="theme-color" content="#00aaff">
+    <script src="../theme.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +62,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background-image: url("../imagens/0-banners/faccoes/molusco/iluminados-hero.png");
+            background-image: url("../imagens/fundos/site/molusco/iluminados-hero.png");
             background-repeat: no-repeat;
             background-position: center 38%;
             background-size: cover;
@@ -456,7 +457,22 @@
                 max-width: 100%;
             }
         }
-    </style>
+    
+
+        /* Integração com a responsividade global atual.
+           O limite de 1400px continua no desktop, mas não força largura/altura
+           artificial em celular retrato ou paisagem. */
+        @media (max-width: 768px), (orientation: landscape) and (hover: none) and (pointer: coarse) {
+            main.main-content {
+                flex: 1 1 auto;
+                flex-basis: auto;
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+            }
+        }
+
+</style>
 </head>
 <body class="fundo-iluminados">
 
@@ -468,14 +484,14 @@
 
     <nav class="sidebar">
         <div class="logo-container">
-            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+            <img src="../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Comunidade</div>
+            <div class="section-header">Comando</div>
             <ul class="menu-list">
                 <li><a href="../index.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
+                <li><a href="../guerra.html">⚔ Central de Guerra</a></li>
                 <li><a href="../discord/index.html" target="_blank">Nosso Servidor Discord</a></li>
             </ul>
         </div>
@@ -495,13 +511,13 @@
                 <li><a href="#">Armas Primárias</a></li>
                 <li><a href="#">Armas Secundárias</a></li>
                 <li><a href="#">Granadas</a></li>
-                <li><a href="#">Armaduras & Passivas</a></li>
+                <li><a href="#">Armaduras &amp; Passivas</a></li>
                 <li><a href="#">Boosters</a></li>
             </ul>
         </div>
 
         <div class="menu-section">
-            <div class="section-header">Inimigos & Facções</div>
+            <div class="section-header">Inimigos &amp; Facções</div>
             <ul class="menu-list">
                 <li><a href="../faccoes.html">Visão Geral das Facções</a></li>
                 <li><a href="automatos.html">Autômatos</a></li>
@@ -515,7 +531,7 @@
         <div class="page-title-block">
             <h1>
                 <a href="../inimigos/Iluminados/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo illuminats.png" alt="" class="lore-title-icon">Iluminados
+                    <img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-title-icon">Iluminados
                 </a>
             </h1>
         </div>
@@ -535,7 +551,7 @@
             <span class="lore-badge">Ameaça Psiônica</span>
             <h1>
                 <a href="../inimigos/Iluminados/index.html" class="lore-term-link">
-                    <img src="../imagens/icones/logo illuminats.png" alt="" class="lore-title-icon">Iluminados
+                    <img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-title-icon">Iluminados
                 </a>
             </h1>
             <div class="lore-subtitle">"Super Terra os declarou extintos. Eles só estavam esperando."</div>
@@ -547,7 +563,7 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Muito antes de qualquer Helldiver nascer, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> — ou <span class="lore-highlight">Squ'ith</span>, como se autodenominam — já eram uma civilização ancestral, com uma história de centenas de milhares de anos. Originalmente uma espécie aquática, evoluíram até dominar tecnologias muito além de qualquer coisa produzida por Super Terra, incluindo escudos de energia, teletransporte e armamento de plasma.
+                        Muito antes de qualquer Helldiver nascer, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> — ou <span class="lore-highlight">Squ'ith</span>, como se autodenominam — já eram uma civilização ancestral, com uma história de centenas de milhares de anos. Originalmente uma espécie aquática, evoluíram até dominar tecnologias muito além de qualquer coisa produzida por Super Terra, incluindo escudos de energia, teletransporte e armamento de plasma.
                     </p>
                     <p>
                         Seu mundo natal, <span class="lore-highlight">Squ'bai Shrine</span>, era um santuário coberto de florestas e pântanos. Isolacionistas por natureza, os Iluminados preferiam manter distância do restante da galáxia — até que o contato com Super Terra transformou essa postura em guerra aberta.
@@ -557,7 +573,7 @@
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/molusco/orda.jpg" alt="Iluminados em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/orda.jpg" alt="Iluminados em combate" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -569,14 +585,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Por cerca de <span class="lore-highlight">cem anos</span>, a galáxia acreditou que os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> haviam sido completamente exterminados. Na realidade, os sobreviventes nunca desapareceram: apenas se retiraram, reorganizando-se longe do alcance de Super Terra enquanto reconstruíam sua sociedade e sua força militar em segredo.
+                        Por cerca de <span class="lore-highlight">cem anos</span>, a galáxia acreditou que os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> haviam sido completamente exterminados. Na realidade, os sobreviventes nunca desapareceram: apenas se retiraram, reorganizando-se longe do alcance de Super Terra enquanto reconstruíam sua sociedade e sua força militar em segredo.
                     </p>
                     <p>
                         Esse silêncio prolongado é hoje interpretado como parte da natureza da própria espécie — uma civilização que pensa em escalas de tempo muito maiores que a humana, disposta a esperar gerações inteiras antes de agir.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/molusco/super-terra.png" alt="Squ'bai Shrine, mundo natal dos Iluminados" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/super-terra.png" alt="Squ'bai Shrine, mundo natal dos Iluminados" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -588,14 +604,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Em <span class="lore-highlight">12 de dezembro de 2184</span>, durante a Segunda Guerra Galáctica, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> reapareceram sem aviso, atacando o planeta <span class="lore-highlight">Calypso</span> com uma força militar como nunca havia sido vista em nenhuma das duas Guerras Galácticas. Foi o primeiro contato direto de Super Terra com a espécie que julgava extinta.
+                        Em <span class="lore-highlight">12 de dezembro de 2184</span>, durante a Segunda Guerra Galáctica, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> reapareceram sem aviso, atacando o planeta <span class="lore-highlight">Calypso</span> com uma força militar como nunca havia sido vista em nenhuma das duas Guerras Galácticas. Foi o primeiro contato direto de Super Terra com a espécie que julgava extinta.
                     </p>
                     <p>
-                        Desde então, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> conduziram uma campanha de terror pelo setor sul da galáxia e chegaram a ameaçar a própria <span class="lore-highlight">Super Terra</span>, tornando-se rapidamente a maior ameaça à Democracia Gerenciada — à frente até mesmo de Autômatos e Terminídeos.
+                        Desde então, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> conduziram uma campanha de terror pelo setor sul da galáxia e chegaram a ameaçar a própria <span class="lore-highlight">Super Terra</span>, tornando-se rapidamente a maior ameaça à Democracia Gerenciada — à frente até mesmo de Autômatos e Terminídeos.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/molusco/iluminados.png" alt="Invasão de Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/iluminados.png" alt="Invasão de Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -607,14 +623,14 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        Diferente do avanço bruto dos Terminídeos ou da mecanização fria dos Autômatos, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> combatem com <span class="lore-highlight">tecnologia psiônica</span>: escudos de energia, teletransporte de curta distância, armas de plasma e drones de reconhecimento. O resultado é um inimigo imprevisível, capaz de manipular percepção e espaço em combate.
+                        Diferente do avanço bruto dos Terminídeos ou da mecanização fria dos Autômatos, os <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> combatem com <span class="lore-highlight">tecnologia psiônica</span>: escudos de energia, teletransporte de curta distância, armas de plasma e drones de reconhecimento. O resultado é um inimigo imprevisível, capaz de manipular percepção e espaço em combate.
                     </p>
                     <p>
                         Sua motivação declarada é a <span class="lore-highlight">vingança</span> pelo que consideram o genocídio de seu povo por Super Terra na Primeira Guerra Galáctica. Mas relatos do Ministério da Ciência sugerem objetivos mais amplos — possivelmente ligados ao próprio mistério do <span class="lore-highlight">Fluido Sombrio</span> e ao planeta Meridia, ainda sob investigação.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/molusco/tecnologia.jpg" alt="Overseer Iluminado" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/tecnologia.jpg" alt="Overseer Iluminado" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -645,11 +661,11 @@
             <div class="lore-section-grid">
                 <div class="lore-text">
                     <p>
-                        O grosso das forças <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminadas</a> encontradas em campo se divide entre a <span class="lore-highlight">Frota de Invasão</span> — a subfacção oficial que sustenta a presença Iluminada nos planetas — e duas categorias de unidades que definem o estilo de combate da espécie.
+                        O grosso das forças <a href="../inimigos/Iluminados/index.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminadas</a> encontradas em campo se divide entre a <span class="lore-highlight">Frota de Invasão</span> — a subfacção oficial que sustenta a presença Iluminada nos planetas — e duas categorias de unidades que definem o estilo de combate da espécie.
                     </p>
                 </div>
                 <figure class="lore-inline-photo">
-                    <img src="../imagens/inimigos/molusco/tripod.jpg" alt="Voteless" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/tripod.jpg" alt="Voteless" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('.lore-inline-photo').style.display='none'">
                     <figcaption>Clique para ampliar</figcaption>
                 </figure>
             </div>
@@ -675,35 +691,35 @@
             <h2>Galeria</h2>
             <div class="lore-gallery">
                 <figure>
-                    <img src="../imagens/inimigos/molusco/portais.jpg" alt="Overseer" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/portais.jpg" alt="Overseer" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Portais</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/molusco/variante.jpg" alt="Voteless" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/variante.jpg" alt="Voteless" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Variante</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/molusco/variante v1.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/variante v1.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Variante</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/molusco/tecnologia.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/tecnologia.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Tecnologias</figcaption>
                 </figure>
 				 <figure>
-                    <img src="../imagens/inimigos/molusco/projetos.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/projetos.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Projetos</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/molusco/tripod.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/tripod.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Tripod</figcaption>
                 </figure>
 				<figure>
-                    <img src="../imagens/inimigos/molusco/nave.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/nave.jpg" alt="Calypso" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Naves</figcaption>
                 </figure>
                 <figure>
-                    <img src="../imagens/inimigos/molusco/observador.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
+                    <img src="../imagens/inimigos/illuminates/observador.jpg" alt="Squ'bai Shrine" class="zoomable-img" title="Clique para ampliar" onerror="this.closest('figure').style.display='none'">
                     <figcaption>Obsevador</figcaption>
                 </figure>
                 <!-- Para adicionar mais fotos, duplique o bloco <figure> acima
@@ -721,7 +737,7 @@
                 </li>
                 <li>
                     <span class="timeline-date">Primeira Guerra Galáctica</span>
-                    <span class="timeline-text">Squ'bai Shrine cai para o S.E.A.F. Os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> são forçados a entregar sua tecnologia a Super Terra e são declarados extintos.</span>
+                    <span class="timeline-text">Squ'bai Shrine cai para o S.E.A.F. Os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> são forçados a entregar sua tecnologia a Super Terra e são declarados extintos.</span>
                 </li>
                 <li>
                     <span class="timeline-date">Um século de silêncio</span>
@@ -729,11 +745,11 @@
                 </li>
                 <li>
                     <span class="timeline-date">12 de dezembro de 2184</span>
-                    <span class="timeline-text">Os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> retornam de forma abrupta, atacando o planeta Calypso com uma força de invasão sem precedentes.</span>
+                    <span class="timeline-text">Os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> retornam de forma abrupta, atacando o planeta Calypso com uma força de invasão sem precedentes.</span>
                 </li>
                 <li>
                     <span class="timeline-date">2184 em diante</span>
-                    <span class="timeline-text">A campanha se espalha pelo setor sul da galáxia, chegando a ameaçar diretamente Super Terra e tornando os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/icones/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> a maior ameaça ativa à Democracia Gerenciada.</span>
+                    <span class="timeline-text">A campanha se espalha pelo setor sul da galáxia, chegando a ameaçar diretamente Super Terra e tornando os <a href="iluminados.html" class="lore-term-link"><img src="../imagens/guerra/faccoes/logo illuminats.png" alt="" class="lore-term-icon">Iluminados</a> a maior ameaça ativa à Democracia Gerenciada.</span>
                 </li>
             </ul>
         </div>
@@ -793,6 +809,7 @@
                     }
                 });
             }
+        });
     </script>
 
 </body>

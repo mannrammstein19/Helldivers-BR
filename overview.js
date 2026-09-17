@@ -1,6 +1,6 @@
 /* HELLDIVERS-BR — OVERVIEW DA GUERRA GALÁCTICA */
 (()=>{'use strict';
-const API='https://api.helldivers2.dev/api/v1',REFRESH=60000,CACHE='hdbr_home_overview_v1',HIST='hdbr_home_order_history_v1';
+const API='https://api.helldivers2.dev/api/v1',REFRESH=60000,CACHE='hdbr_home_overview_v1',HIST='hdbr_home_order_history_v1',TASK_HIST='hdbr_home_order_task_history_v2';
 /* ORDEM MAIOR PERSISTENTE
    O site tenta a API ao vivo primeiro. Quando a ordem some, le este snapshot
    atualizado pelo GitHub Actions diretamente do repositorio (raw), sem depender
@@ -12,10 +12,10 @@ const ORDER_SNAPSHOT_CACHE='hdbr_major_order_snapshot_v1';
    Basta salvar as duas novas imagens nestes caminhos. Se ainda nao existirem,
    o CSS usa major_order.png como fallback automaticamente. */
 const ORDER_IMAGES={
- active:'imagens/icones/efeito-dss/major_order.png',
- completed:'imagens/icones/efeito-dss/major_order_vitoria.png',
- failed:'imagens/icones/efeito-dss/major_order_derrota.png',
- pending:'imagens/icones/efeito-dss/major_order.png'
+ active:'imagens/fundos/major-order/major-order-ativa.png',
+ completed:'imagens/fundos/major-order/major-order-vitoria.png',
+ failed:'imagens/fundos/major-order/major-order-derrota.png',
+ pending:'imagens/fundos/major-order/major-order-ativa.png'
 };
 const HEAD={'X-Super-Client':'mannrammstein19.github.io/Helldivers-BR','X-Super-Contact':'https://github.com/mannrammstein19/Helldivers-BR','Accept-Language':'pt-BR,pt;q=0.9,en;q=0.5'};
 const $=id=>document.getElementById(id), esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -43,16 +43,119 @@ let planetCatalog={};
 function catalogBiome(p){const c=planetCatalog[String(p?.index??'')]||{};return clean(p?.biome?.name||p?.biome)||clean(c?.biome?.name||c?.biome)||''}
 function planetImageUrl(p){const index=String(p?.index??'').trim(),name=clean(p?.name).toLowerCase().trim();const specific=PLANET_IMAGES[index]||PLANET_IMAGES_BY_NAME[name];const biome=catalogBiome(p).toLowerCase().trim();return PLANET_IMG_PATH+(specific||BIOME_IMAGES[biome]||'Sandy_base_Landscape.png')}
 async function loadPlanetCatalog(){try{const r=await fetch('https://raw.githubusercontent.com/helldivers-2/json/master/planets/planets.json',{cache:'force-cache'});if(r.ok){const d=await r.json();planetCatalog=d&&typeof d==='object'?d:{};return planetCatalog}}catch{}return planetCatalog}
-function order(d){return arr(d).find(x=>x&&(x.title||x.briefing||x.tasks||x.progress))||null}
-function goal(o){const t=o?.tasks?.[0],v=t?.values||[],ty=t?.valueTypes||[],i=ty.indexOf(3),g=i>=0?Number(v[i]):Number(o?.goal);return Number.isFinite(g)&&g>0?g:null}
-function prog(o){const p=Array.isArray(o?.progress)?Number(o.progress[0]):Number(o?.progress);if(Number.isFinite(p))return Math.max(0,p);const q=o?.tasks?.[0]?.progress;return Number.isFinite(Number(q?.[0]??q))?Number(q?.[0]??q):0}
-function target(o){const direct=clean(o?.targetFaction||o?.target||'');if(direct)return direct;const t=o?.tasks?.[0],v=t?.values||[],ty=t?.valueTypes||[],i=ty.indexOf(1),m={1:'Super Terra',2:'Terminídeos',3:'Autômatos',4:'Iluminados'};return i>=0?m[Number(v[i])]||'':''}
-function rate(p,g){const now=Date.now(),old=store(HIST,null);save(HIST,{time:now,progress:p,goal:g});if(!old||old.goal!==g)return null;const h=(now-old.time)/3600000;return h>0?(p-old.progress)/h:null}
-function eta(p,g,r){if(r==null||r<=0||!g||p>=g)return null;const h=(g-p)/r;if(!Number.isFinite(h)||h>720)return null;const m=Math.max(1,Math.round(h*60)),d=Math.floor(m/1440),hh=Math.floor(m%1440/60),mm=m%60;return d?`${d}d ${hh}h`:hh?`${hh}h ${mm}min`:`${mm}min`}
+function order(d){return arr(d).find(x=>x&&(x.title||x.briefing||x.tasks||x.progress||x.setting))||null}
+function assignmentTitle(o){return clean(o?.title||o?.setting?.overrideTitle)||'ORDEM MAIOR'}
+function assignmentBrief(o){return clean(o?.briefing||o?.setting?.overrideBrief||o?.description||o?.setting?.taskDescription)||'Objetivos do Alto Comando indisponíveis.'}
+function assignmentTasks(o){
+ const a=Array.isArray(o?.tasks)?o.tasks:(Array.isArray(o?.setting?.tasks)?o.setting.tasks:[]);
+ if(a.length)return a.filter(Boolean);
+ const directGoal=Number(o?.goal),directProgress=Array.isArray(o?.progress)?Number(o.progress[0]):Number(o?.progress);
+ return [{
+   _direct:true,
+   type:Number(o?.type||o?.setting?.type||0),
+   title:clean(o?.description||o?.setting?.taskDescription),
+   _goal:Number.isFinite(directGoal)?directGoal:null,
+   _progress:Number.isFinite(directProgress)?directProgress:0,
+   _faction:o?.targetFaction||o?.target||''
+ }];
+}
+function taskValue(t,valueType){
+ const types=Array.isArray(t?.valueTypes)?t.valueTypes:[];
+ const values=Array.isArray(t?.values)?t.values:[];
+ const i=types.indexOf(valueType);
+ return i>=0?values[i]:null;
+}
+function taskGoal(t){
+ const g=t?._direct?Number(t._goal):Number(taskValue(t,3));
+ return Number.isFinite(g)&&g>0?g:null;
+}
+function taskProgress(o,t,i){
+ if(t?._direct)return Math.max(0,Number(t._progress)||0);
+ const p=Array.isArray(o?.progress)?Number(o.progress[i]):Number(t?.progress?.[0]??t?.progress);
+ return Number.isFinite(p)?Math.max(0,p):0;
+}
+function taskFactionValue(t){
+ if(t?._direct){
+   const raw=t._faction;
+   if(Number.isFinite(Number(raw)))return Number(raw);
+   const x=String(raw||'').toLowerCase();
+   return x.includes('terminid')?2:x.includes('automaton')?3:x.includes('illuminate')?4:x.includes('human')||x.includes('super')?1:0;
+ }
+ const n=Number(taskValue(t,1));
+ return Number.isFinite(n)?n:0;
+}
+function taskPlanetIndex(t){
+ const n=Number(taskValue(t,12));
+ return Number.isFinite(n)&&n>0?n:0;
+}
+function taskLiberationFlag(t){
+ const n=Number(taskValue(t,11));
+ return Number.isFinite(n)?n:null;
+}
+function planetNameByIndex(id){
+ if(!id)return'';
+ const c=planetCatalog[String(id)]||{};
+ return clean(c?.name||c?.names||c?.planetName)||`PLANETA #${id}`;
+}
+function taskTypeName(t){
+ const m={2:'OBJETIVO ESPECIAL',3:'ERRADICAÇÃO',9:'OBJETIVO ESPECIAL',11:'LIBERTAÇÃO',12:'DEFESA',13:'CONTROLE'};
+ const n=Number(t?.type||0);
+ return m[n]||`OBJETIVO${n?' TIPO '+n:''}`;
+}
+function taskFactionName(t){
+ const n=taskFactionValue(t);
+ return n?fName(n):'';
+}
+function taskFactionClass(t){
+ const n=taskFactionValue(t);
+ return n?fClass(n):'neutral';
+}
+function taskTitle(t,i){
+ const direct=clean(t?.title||t?.description||t?.name);
+ if(direct)return direct;
+ const type=Number(t?.type||0),g=taskGoal(t),fac=taskFactionName(t),planet=planetNameByIndex(taskPlanetIndex(t));
+ if(type===3)return`Eliminar ${g?fmt(g)+' ':''}${fac||'inimigos'}`;
+ if(type===11)return planet?`Liberar ${planet}`:`Cumprir objetivo de libertação`;
+ if(type===12){
+   if(planet)return`Defender ${planet}`;
+   if(g&&fac)return`Defender ${fmt(g)} ${g===1?'planeta':'planetas'} contra ${fac}`;
+   if(g)return`Concluir ${fmt(g)} ${g===1?'defesa':'defesas'}`;
+   return fac?`Defender território contra ${fac}`:'Defender território da Super Terra';
+ }
+ if(type===13)return planet?`Manter controle de ${planet}`:'Manter controle do objetivo designado';
+ if(planet&&fac)return`${taskTypeName(t)} em ${planet} // ${fac}`;
+ if(planet)return`${taskTypeName(t)} em ${planet}`;
+ if(g&&fac)return`${taskTypeName(t)} // ${fmt(g)} // ${fac}`;
+ if(fac)return`${taskTypeName(t)} // ${fac}`;
+ if(g)return`${taskTypeName(t)} // alvo ${fmt(g)}`;
+ return`Objetivo ${i+1} do Alto Comando`;
+}
+function taskTargetMeta(t){
+ const fac=taskFactionName(t),planet=planetNameByIndex(taskPlanetIndex(t));
+ return fac||planet||taskTypeName(t);
+}
+function taskRate(o,i,p,g){
+ if(!g||g<=1)return null;
+ const now=Date.now(),all=store(TASK_HIST,{}),orderKey=String(o?.id??o?.index??o?.id32??'ordem'),key=`${orderKey}:${i}:${g}`,old=all[key];
+ let r=null;
+ if(old&&Number(old.goal)===Number(g)){
+   const elapsed=now-Number(old.time||0),h=elapsed/3600000;
+   if(elapsed>=30000&&h>0&&p>=Number(old.progress||0))r=(p-Number(old.progress||0))/h;
+   else if(elapsed<30000&&Number.isFinite(Number(old.rate)))r=Number(old.rate);
+ }
+ if(!old||now-Number(old.time||0)>=30000){
+   all[key]={time:now,progress:p,goal:g,rate:Number.isFinite(r)?r:null};
+   const keys=Object.keys(all);
+   if(keys.length>80)keys.sort((a,b)=>Number(all[b]?.time||0)-Number(all[a]?.time||0)).slice(80).forEach(k=>delete all[k]);
+   save(TASK_HIST,all);
+ }
+ return Number.isFinite(r)?r:null;
+}
+function eta(p,g,r){if(r==null||r<=0||!g||p>=g)return null;const h=(g-p)/r;if(!Number.isFinite(h)||h>2160)return null;const m=Math.max(1,Math.round(h*60)),w=Math.floor(m/10080),d=Math.floor(m%10080/1440),hh=Math.floor(m%1440/60),mm=m%60;return w?`${w}sem ${d}d`:d?`${d}d ${hh}h`:hh?`${hh}h ${mm}min`:`${mm}min`}
 function reward(o){
- const r=o?.reward;
+ const r=o?.reward||o?.setting?.reward;
  const medalId=897894480;
- const rid=Number(o?.rewardId??r?.id??r?.itemId??r?.itemID);
+ const rid=Number(o?.rewardId??r?.id??r?.id32??r?.itemId??r?.itemID);
  if(r&&typeof r==='object'){
    const a=Number(r.amount??r.value??r.quantity);
    let t=clean(r.name||r.description||'');
@@ -63,7 +166,64 @@ function reward(o){
  }
  return rid===medalId?'MEDALHAS':o?.rewardId?'RECOMPENSA REGISTRADA':'RECOMPENSA NÃO INFORMADA';
 }
-function orderAboutHTML(){return`<div class="hd-ov-order-about"><small>🎖️ O QUE É UMA ORDEM MAIOR?</small><p>Não é só qualquer missãozinha comum no mapa, meu parceiro. A <strong>Ordem Maior</strong> (ou <em>Major Order</em>, para os íntimos) é a <strong>diretriz estratégica suprema</strong> mandada direto pelo Alto Comando da Super Terra.<br><br>Ela é o verdadeiro motor da nossa guerra galáctica: é o que dita para onde toda a comunidade vai marchar unida, define os rumos da campanha e tem o poder de decidir o destino de uma frente de batalha inteira — seja conquistando um planeta-chave, testando novas tecnologias ou garantindo que a democracia gerida continue firme e forte.<span class="mo-salute">PELA LIBERDADE! · PELA DEMOCRACIA! · PELA SUPER TERRA!</span></p></div>`}
+
+function taskPercent(progress,goal,state){
+ if(state==='completed')return 100;
+ if(!goal)return 0;
+ return Math.max(0,Math.min(100,(progress/goal)*100));
+}
+function taskIsDone(progress,goal,state){return state==='completed'||Boolean(goal&&progress>=goal)}
+function orderExpiration(o){
+ if(o?.expiration||o?.expiresAt||o?.expireTime)return o.expiration||o.expiresAt||o.expireTime;
+ const sec=Number(o?.expiresIn);
+ return Number.isFinite(sec)&&sec>0?new Date(Date.now()+sec*1000).toISOString():null;
+}
+function orderTaskCard(o,t,i,state){
+ const g=taskGoal(t),p=taskProgress(o,t,i),pc=taskPercent(p,g,state),done=taskIsDone(p,g,state);
+ const fc=taskFactionClass(t),type=taskTypeName(t),meta=taskTargetMeta(t),title=taskTitle(t,i);
+ const rateValue=state==='active'&&g&&g>1&&!done?taskRate(o,i,p,g):null;
+ const estimate=state==='active'&&!done?eta(p,g,rateValue):null;
+ const progressText=g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:(done?'OBJETIVO CUMPRIDO':'TELEMETRIA EM ACOMPANHAMENTO');
+ const status=done?'CUMPRIDO':state==='failed'?'ENCERRADO':state==='pending'?'AGUARDANDO':'EM ANDAMENTO';
+ const rateText=done?'FINALIZADO':rateValue!=null?`${rateValue>=0?'+':''}${fmt(Math.round(rateValue))}/h`:'COLETANDO';
+ const etaText=done?'CONCLUÍDO':estimate||((g&&g<=1)?'ACOMPANHANDO':'CALCULANDO');
+ return`<article class="hd-mo-task ${fc}${done?' is-complete':''}">
+   <div class="hd-mo-task-kicker"><span>OBJETIVO ${String(i+1).padStart(2,'0')} // ${esc(type)}</span><strong>${esc(meta)}</strong></div>
+   <h4>${esc(title)}</h4>
+   <div class="hd-mo-task-progress"><i style="width:${pc.toFixed(2)}%"></i></div>
+   <div class="hd-mo-task-progress-label"><span>${esc(progressText)}</span><strong>${g?pc.toFixed(1)+'%':'—'}</strong></div>
+   <div class="hd-mo-task-meta">
+     <div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div>
+     <div><small>Conclusão estimada</small><strong>${esc(etaText)}</strong></div>
+   </div>
+   <div class="hd-mo-task-status">${done?'✓ ':''}${esc(status)}</div>
+ </article>`;
+}
+
+function orderAboutHTML(){return`<div class="hd-mo-about-popover">
+ <button class="hd-mo-about-trigger" type="button" aria-expanded="false">
+   <span><b>🎖️ O QUE É UMA ORDEM MAIOR?</b><small>CLIQUE PARA SABER A IMPORTÂNCIA</small></span>
+   <i aria-hidden="true">▲</i>
+ </button>
+ <div class="hd-ov-order-about" aria-hidden="true">
+   <div class="hd-mo-about-panel-head"><strong>🎖️ O QUE É UMA ORDEM MAIOR?</strong><button type="button" class="hd-mo-about-close" aria-label="Fechar">✕</button></div>
+   <p>Não é só qualquer missãozinha comum no mapa, meu parceiro. A <strong>Ordem Maior</strong> (ou <em>Major Order</em>, para os íntimos) é a <strong>diretriz estratégica suprema</strong> mandada direto pelo Alto Comando da Super Terra.<br><br>Ela é o verdadeiro motor da nossa guerra galáctica: é o que dita para onde toda a comunidade vai marchar unida, define os rumos da campanha e tem o poder de decidir o destino de uma frente de batalha inteira — seja conquistando um planeta-chave, testando novas tecnologias ou garantindo que a democracia gerida continue firme e forte.<span class="mo-salute">PELA LIBERDADE! · PELA DEMOCRACIA! · PELA SUPER TERRA!</span></p>
+ </div>
+</div>`}
+function bindOrderAbout(root){
+ const wrap=root?.querySelector('.hd-mo-about-popover');
+ const trigger=wrap?.querySelector('.hd-mo-about-trigger');
+ const panel=wrap?.querySelector('.hd-ov-order-about');
+ const close=wrap?.querySelector('.hd-mo-about-close');
+ if(!wrap||!trigger||!panel)return;
+ const setOpen=open=>{
+   wrap.classList.toggle('is-open',open);
+   trigger.setAttribute('aria-expanded',open?'true':'false');
+   panel.setAttribute('aria-hidden',open?'false':'true');
+ };
+ trigger.addEventListener('click',()=>setOpen(!wrap.classList.contains('is-open')));
+ close?.addEventListener('click',()=>setOpen(false));
+}
 function orderState(s){return['active','completed','failed','pending'].includes(s)?s:'active'}
 function applyOrderVisual(card,state){
  state=orderState(state);
@@ -91,33 +251,56 @@ function renderOrder(d,opt={}){
  if(!b)return;
  if(!o){b.innerHTML='<div class="hd-ov-error">NENHUMA ORDEM MAIOR REGISTRADA NO MOMENTO.</div>';return}
  applyOrderVisual(b,state);
- const g=goal(o),p=prog(o),livePc=g?Math.max(0,Math.min(100,p/g*100)):0;
- const finalPc=Number(snap?.final_percent);
- const pc=state==='completed'?100:(Number.isFinite(finalPc)?Math.max(0,Math.min(100,finalPc)):livePc);
- const r=state==='active'&&g?rate(p,g):null,e=state==='active'?eta(p,g,r):null,t=target(o);
- const brief=clean(o.briefing||o.description)||'Objetivos do Alto Comando indisponíveis.';
- const obj=clean(o.description)||`Objetivo: ${g?fmt(g)+' unidades.':'dados recebidos pelo Alto Comando.'}`;
- const exp=o.expiration||o.expiresAt||o.expireTime;
- const rw=reward(o);
- if(state==='active'){
-   b.innerHTML=`<div class="hd-ov-order-main"><div class="hd-ov-kicker">ORDEM MAIOR ATIVA${t?' // ALVO: '+esc(t):''}</div><h3 class="hd-ov-title">${esc(clean(o.title)||'ORDEM MAIOR')}</h3><p class="hd-ov-brief">${esc(brief)}</p><div class="hd-ov-objective">◆ <span>${esc(obj)}</span></div><div class="hd-ov-progress"><i style="width:${pc.toFixed(2)}%"></i></div><div class="hd-ov-progress-label"><span>${g?fmt(p)+' / '+fmt(g):'PROGRESSO DISPONÍVEL NA TELEMETRIA'}</span><strong>${g?pc.toFixed(1)+'%':'—'}</strong></div><div class="hd-ov-order-meta"><div class="hd-ov-statbox"><small>Tempo restante</small><strong>${esc(remain(exp))}</strong></div><div class="hd-ov-statbox"><small>Ritmo observado</small><strong class="yellow">${r!=null?(r>=0?'+':'')+r.toFixed(2)+'/h':'coletando'}</strong></div><div class="hd-ov-statbox"><small>Conclusão estimada</small><strong>${esc(e||'calculando')}</strong></div></div><div class="hd-ov-order-foot"><span>RECOMPENSA // ${esc(rw)}</span><span>ALTO COMANDO</span></div></div>${orderAboutHTML()}`;
-   return;
- }
- const completed=state==='completed',failed=state==='failed';
- const kicker=completed?'✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA':failed?'✕ ORDEM MAIOR ENCERRADA // OBJETIVO NÃO CUMPRIDO':'◉ ORDEM ENCERRADA // AGUARDANDO CONFIRMAÇÃO DO ALTO COMANDO';
- const result=completed?'VITÓRIA':failed?'FALHA':'AGUARDANDO';
- const resultClass=completed?'green':failed?'red':'yellow';
- const progressLeft=completed?(g?`${fmt(g)} / ${fmt(g)}`:'OBJETIVO CUMPRIDO'):Number.isFinite(finalPc)?`ÚLTIMA TELEMETRIA: ${pc.toFixed(1)}%`:'TELEMETRIA FINAL INDISPONÍVEL';
- const statusText=completed?'OBJETIVO CUMPRIDO':failed?'OBJETIVO NÃO CUMPRIDO':'CONFIRMAÇÃO PENDENTE';
- b.innerHTML=`<div class="hd-ov-order-main"><div class="hd-ov-kicker">${kicker}${t?' // ALVO: '+esc(t):''}</div><h3 class="hd-ov-title">${esc(clean(o.title)||'ORDEM MAIOR')}</h3><p class="hd-ov-brief">${esc(brief)}</p><div class="hd-ov-objective">◆ <span>${esc(obj)}</span></div><div class="hd-ov-progress"><i style="width:${pc.toFixed(2)}%"></i></div><div class="hd-ov-progress-label"><span>${esc(progressLeft)}</span><strong>${completed?'100%':Number.isFinite(finalPc)?pc.toFixed(1)+'%':'—'}</strong></div><div class="hd-ov-order-meta"><div class="hd-ov-statbox"><small>Resultado</small><strong class="${resultClass}">${result}</strong></div><div class="hd-ov-statbox"><small>Status final</small><strong>${statusText}</strong></div><div class="hd-ov-statbox"><small>Recompensa prevista</small><strong class="yellow">${esc(rw)}</strong></div></div><div class="hd-ov-order-foot"><span>${completed?'ORDEM CONCLUÍDA':failed?'ORDEM ENCERRADA':'AGUARDANDO RESULTADO'} // REGISTRO PRESERVADO</span><span>ALTO COMANDO</span></div></div>${orderAboutHTML()}`;
+
+ const tasks=assignmentTasks(o);
+ const taskData=tasks.map((t,i)=>({t,i,g:taskGoal(t),p:taskProgress(o,t,i)}));
+ const doneCount=state==='completed'?taskData.length:taskData.filter(x=>taskIsDone(x.p,x.g,state)).length;
+ const brief=assignmentBrief(o),exp=orderExpiration(o),rw=reward(o);
+ const count=taskData.length;
+ const singleFaction=count===1?taskFactionName(taskData[0].t):'';
+ const taskHTML=taskData.map(x=>orderTaskCard(o,x.t,x.i,state)).join('');
+
+ const completed=state==='completed',failed=state==='failed',pending=state==='pending';
+ const kicker=state==='active'
+   ?`ORDEM MAIOR ATIVA // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'}${singleFaction?' // ALVO: '+singleFaction:''}`
+   :completed?'✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA'
+   :failed?'✕ ORDEM MAIOR ENCERRADA // OBJETIVO NÃO CUMPRIDO'
+   :'◉ ORDEM ENCERRADA // AGUARDANDO CONFIRMAÇÃO DO ALTO COMANDO';
+
+ const statusMain=state==='active'?'EM ANDAMENTO':completed?'VITÓRIA':failed?'FALHA':'AGUARDANDO';
+ const statusClass=completed?'green':failed?'red':'yellow';
+ const footer=completed?'ORDEM CONCLUÍDA':failed?'ORDEM ENCERRADA':pending?'AGUARDANDO RESULTADO':'ORDEM EM EXECUÇÃO';
+
+ b.innerHTML=`<div class="hd-ov-order-main">
+   <div class="hd-ov-kicker">${esc(kicker)}</div>
+   <h3 class="hd-ov-title">${esc(assignmentTitle(o))}</h3>
+   <p class="hd-ov-brief">${esc(brief)}</p>
+
+   <div class="hd-mo-summary">
+     <div class="hd-ov-statbox"><small>Tempo restante</small><strong>${esc(state==='active'?remain(exp):'ENCERRADA')}</strong></div>
+     <div class="hd-ov-statbox"><small>Objetivos concluídos</small><strong class="${statusClass}">${doneCount} / ${count}</strong></div>
+     <div class="hd-ov-statbox"><small>Recompensa</small><strong class="yellow">${esc(rw)}</strong></div>
+   </div>
+
+   <div class="hd-mo-objectives-head">
+     <span>◆ OBJETIVOS DA ORDEM</span>
+     <small>${count} ${count===1?'FRENTE / OBJETIVO':'FRENTES / OBJETIVOS'} // ${esc(statusMain)}</small>
+   </div>
+
+   <div class="hd-mo-objectives-grid">${taskHTML}</div>
+
+   <div class="hd-ov-order-foot"><span>${esc(footer)} // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'} REGISTRADOS</span><span>ALTO COMANDO</span></div>
+ </div>${orderAboutHTML()}`;
+ bindOrderAbout(b);
 }
-function renderWar(d){const cs=arr(d);if(!cs.length)return;const total=cs.reduce((n,c)=>n+Number(c?.planet?.statistics?.playerCount||0),0),def=cs.filter(c=>c?.planet?.event).length,atk=cs.length-def;set('hd-ov-players',fmt(total));set('hd-ov-fronts',fmt(cs.length));set('hd-ov-attacks',fmt(atk));set('hd-ov-defenses',fmt(def));const by={term:0,auto:0,illum:0};cs.forEach(c=>{const k=fClass(c?.planet?.event?.faction||c?.planet?.currentOwner);if(by[k]!=null)by[k]+=Number(c?.planet?.statistics?.playerCount||0)});const mx=Math.max(by.term,by.auto,by.illum,1);['term','auto','illum'].forEach(k=>{set('hd-num-'+k,fmt(by[k]));const e=$('hd-bar-'+k);if(e)e.style.width=(by[k]/mx*100).toFixed(1)+'%'});const ranked=[...cs].sort((a,b)=>Number(b?.planet?.statistics?.playerCount||0)-Number(a?.planet?.statistics?.playerCount||0));$('hd-ov-front-list').innerHTML=ranked.slice(0,4).map(c=>{const p=c.planet||{},n=clean(p.name)||'PLANETA',pc=Number(p.statistics?.playerCount||0),fc=fClass(p.event?.faction||p.currentOwner),bg=planetImageUrl(p);return`<div class="hd-front-row" style="--planet-bg:url('${esc(bg)}')"><span class="front-name">${p.event?'🛡 ':''}<i class="front-faction-logo ${fc}" aria-hidden="true"></i><span>${esc(n)}</span></span><span class="hd-front-count"><img class="hd-count-icon" src="imagens/icones/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong class="${fc}">${fmt(pc)}</strong></span></div>`}).join('')||'<div class="hd-ov-loading">SEM FRENTES ATIVAS.</div>';const p=ranked[0]?.planet;if(p){const fc=fName(p.event?.faction||p.currentOwner),pc=Number(p.statistics?.playerCount||0),lib=p.health!=null&&p.maxHealth?Math.max(0,Math.min(100,(1-p.health/p.maxHealth)*100)):0,bg=planetImageUrl(p);$('hd-ov-campaign').innerHTML=`<div class="hd-ov-campaign" style="background-image:url('${esc(bg)}')" title="${esc(clean(p.name)||'Planeta')}"><div class="hd-campaign-tag">${p.event?'DEFESA EM DESTAQUE':'FRENTE EM DESTAQUE'}</div><div class="hd-campaign-name">${esc(clean(p.name)||'PLANETA')}</div><div class="hd-campaign-planet">${esc(clean(p.sector)||'SETOR')} · ${esc(fc)}</div><p class="hd-campaign-desc">A frente com maior concentração de Helldivers no momento. Acompanhe a situação detalhada na Central de Guerra.</p><div class="hd-campaign-meta"><span class="hd-campaign-chip">HELLDIVERS <b>${fmt(pc)}</b></span><span class="hd-campaign-chip">CONTROLE <b>${lib.toFixed(1)}%</b></span></div></div>`}}
+function renderWar(d){const cs=arr(d);if(!cs.length)return;const total=cs.reduce((n,c)=>n+Number(c?.planet?.statistics?.playerCount||0),0),def=cs.filter(c=>c?.planet?.event).length,atk=cs.length-def;set('hd-ov-players',fmt(total));set('hd-ov-fronts',fmt(cs.length));set('hd-ov-attacks',fmt(atk));set('hd-ov-defenses',fmt(def));const defenseCard=document.querySelector('.hd-war-number.defenses');if(defenseCard)defenseCard.classList.toggle('invasion-alert',def>0);const by={term:0,auto:0,illum:0};cs.forEach(c=>{const k=fClass(c?.planet?.event?.faction||c?.planet?.currentOwner);if(by[k]!=null)by[k]+=Number(c?.planet?.statistics?.playerCount||0)});const mx=Math.max(by.term,by.auto,by.illum,1);['term','auto','illum'].forEach(k=>{set('hd-num-'+k,fmt(by[k]));const e=$('hd-bar-'+k);if(e)e.style.width=(by[k]/mx*100).toFixed(1)+'%'});const ranked=[...cs].sort((a,b)=>Number(b?.planet?.statistics?.playerCount||0)-Number(a?.planet?.statistics?.playerCount||0));$('hd-ov-front-list').innerHTML=ranked.slice(0,4).map(c=>{const p=c.planet||{},n=clean(p.name)||'PLANETA',pc=Number(p.statistics?.playerCount||0),fc=fClass(p.event?.faction||p.currentOwner),bg=planetImageUrl(p);return`<div class="hd-front-row" style="--planet-bg:url('${esc(bg)}')"><span class="front-name">${p.event?'🛡 ':''}<i class="front-faction-logo ${fc}" aria-hidden="true"></i><span>${esc(n)}</span></span><span class="hd-front-count"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong class="${fc}">${fmt(pc)}</strong></span></div>`}).join('')||'<div class="hd-ov-loading">SEM FRENTES ATIVAS.</div>';const p=ranked[0]?.planet;if(p){const fc=fName(p.event?.faction||p.currentOwner),pc=Number(p.statistics?.playerCount||0),lib=p.health!=null&&p.maxHealth?Math.max(0,Math.min(100,(1-p.health/p.maxHealth)*100)):0,bg=planetImageUrl(p);$('hd-ov-campaign').innerHTML=`<div class="hd-ov-campaign" style="background-image:url('${esc(bg)}')" title="${esc(clean(p.name)||'Planeta')}"><div class="hd-campaign-tag">${p.event?'DEFESA EM DESTAQUE':'FRENTE EM DESTAQUE'}</div><div class="hd-campaign-name">${esc(clean(p.name)||'PLANETA')}</div><div class="hd-campaign-planet">${esc(clean(p.sector)||'SETOR')} · ${esc(fc)}</div><p class="hd-campaign-desc">A frente com maior concentração de Helldivers no momento. Acompanhe a situação detalhada na Central de Guerra.</p><div class="hd-campaign-meta"><span class="hd-campaign-chip">HELLDIVERS <b>${fmt(pc)}</b></span><span class="hd-campaign-chip">CONTROLE <b>${lib.toFixed(1)}%</b></span></div></div>`}}
 function relative(iso){if(!iso)return'AGORA';const s=Math.max(0,Math.floor((Date.now()-new Date(iso))/1000));return s<60?'AGORA':s<3600?'HÁ '+Math.floor(s/60)+'MIN':s<86400?'HÁ '+Math.floor(s/3600)+'H':'HÁ '+Math.floor(s/86400)+'D'}
 function renderDispatch(d){const a=arr(d).slice(0,3),b=$('hd-ov-feed');if(!b)return;b.innerHTML=a.length?a.map(x=>`<div class="hd-feed-item"><div class="hd-feed-time">${esc(relative(x.published||x.publishedAt||x.date))}</div><div class="hd-feed-text">${esc(clean(x.message)||'Comunicação do Alto Comando.')}</div></div>`).join(''):'<div class="hd-ov-loading">NENHUM DESPACHO RECENTE.</div>'}
 async function update(){
  const st=$('hd-ov-status');
  try{
    if(st){st.textContent='SINCRONIZANDO';st.classList.remove('live')}
+   await loadPlanetCatalog();
    const orderData=await get('assignments','assignments',60000);
    const liveOrder=order(orderData);
    if(liveOrder)renderOrder(orderData,{state:'active',order:liveOrder});
@@ -127,7 +310,7 @@ async function update(){
      else renderOrder([]);
    }
    await new Promise(r=>setTimeout(r,250));
-   const campaignData=await get('campaigns','campaigns',60000);renderWar(campaignData);loadPlanetCatalog().then(()=>renderWar(campaignData));
+   const campaignData=await get('campaigns','campaigns',60000);renderWar(campaignData);
    await new Promise(r=>setTimeout(r,250));
    renderDispatch(await get('dispatches','dispatches',300000));
    if(st){st.textContent='DADOS ATUALIZADOS';st.classList.add('live')}

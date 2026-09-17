@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             result.innerHTML = `
                 <div class="search-item-icon">
-                    <img src="${rootPath + item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='${rootPath}imagens/0-banners/logo.jpg'">
+                    <img src="${rootPath + item.icon}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='${rootPath}imagens/fundos/site/logo.jpg'">
                 </div>
                 <div>
                     <strong style="color: var(--hd-yellow);">${item.title}</strong><br>

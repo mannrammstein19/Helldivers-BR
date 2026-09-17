@@ -1,14 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guia completo e status detalhados do Ataque de Fumaça Orbital em Helldivers 2. Confira raio de cobertura, duração e propriedades táticas.">
-    <title>Ataque de Fumaça Orbital - Helldivers BR</title>
-
-    <link rel="stylesheet" href="../../../style.css">
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="theme-color" content="#FFE800">
+<meta content="Guia completo e status detalhados do Ataque de Fumaça Orbital em Helldivers 2. Confira raio de cobertura, duração e propriedades táticas." name="description"/>
+<title>Ataque de Fumaça Orbital - Helldivers BR</title>
+<link href="../../../style.css" rel="stylesheet"/>
+<style>
         .lore-quote {
             position: relative;
             margin: 20px 0 20px 50px;
@@ -177,179 +177,316 @@
             }
         }
     </style>
+<style id="orbital-standard-layout">
+/* ==========================================================
+   PADRÃO ORBITAIS — MESMO ESQUELETO DOS MODELOS CORRETOS
+   ========================================================== */
+.stats-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    margin-top: 20px !important;
+}
 
+.stats-box {
+    overflow: hidden !important;
+    width: 340px !important;
+    max-width: 100% !important;
+    background: rgba(20, 20, 20, 0.85) !important;
+    border: 1px solid #d7d52c !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+}
+
+.stats-box .stats-box-header {
+    background-color: #d7d52c !important;
+    color: #000 !important;
+    padding: 6px 10px !important;
+    margin: -10px -10px 10px -10px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    position: relative !important;
+    border-bottom: none !important;
+    text-transform: none !important;
+}
+
+.stats-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+}
+
+.stats-table td,
+.stats-table th {
+    padding: 4px 8px !important;
+    border-bottom: 1px solid rgba(215, 213, 44, 0.1) !important;
+    vertical-align: middle !important;
+}
+
+.stats-table td:first-child {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    width: 55% !important;
+    color: #d7d52c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.stats-table td:last-child {
+    font-size: 13px !important;
+    text-align: right !important;
+}
+
+.stats-table tr.table-sub-header th {
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    padding: 6px !important;
+    text-align: center !important;
+    background: rgba(215, 213, 44, 0.1) !important;
+    color: #d7d52c !important;
+}
+
+.flex-td {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+}
+
+.flex-td img {
+    width: 18px !important;
+    height: 18px !important;
+    object-fit: contain !important;
+}
+
+.blink-toggle {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #d7d52c;
+    background: rgba(215, 213, 44, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #d7d52c;
+    margin-left: 8px;
+    animation: orbitalPiscar 4s ease-in-out infinite;
+    transition: background .2s, color .2s;
+    user-select: none;
+}
+
+.blink-toggle.btn-mostrar {
+    color: #4CAF50;
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.blink-toggle.btn-ocultar {
+    color: #F44336;
+    border-color: #F44336;
+    background: rgba(244, 67, 54, 0.15);
+}
+
+.blink-toggle:hover {
+    animation: none;
+}
+
+.blink-toggle.btn-mostrar:hover {
+    background: #4CAF50;
+    color: #000;
+}
+
+.blink-toggle.btn-ocultar:hover {
+    background: #F44336;
+    color: #000;
+}
+
+@keyframes orbitalPiscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+}
+</style>
+    <!-- Ajustes locais das páginas de Orbitais:
+         1) demonstração em vídeo segue o mesmo fluxo à esquerda
+         2) tema compartilhado do site permanece ao abrir a estratagema -->
+    <style id="orbital-page-flow-fix">
+        .video-section {
+            margin: 40px 0 0 0 !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            text-align: left !important;
+            width: fit-content !important;
+            max-width: 100% !important;
+        }
+
+        .video-wrapper {
+            display: flex !important;
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            margin-top: 15px !important;
+        }
+
+        .video-wrapper video {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    </style>
+    <script src="../../../theme.js" defer></script>
 </head>
 <body class="fundo-estrategema">
-
-    <div class="mobile-header">
-        <button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
-    </div>
-
-    <nav class="sidebar" id="sidebar">
-        <div class="logo-container">
-            <img src="../../../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
-        </div>
-
-        <div class="menu-section">
-            <div class="section-header">Comunidade</div>
-            <ul class="menu-list">
-                <li><a href="../../../index.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
-                <li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-section">
-            <div class="section-header">Equipamento</div>
-            <ul class="menu-list">
-                <li><a href="../../../estratagemas.html" class="active">Estratagemas</a></li>
-                <li><a href="#">Armas Primárias</a></li>
-                <li><a href="#">Armas Secundárias</a></li>
-                <li><a href="#">Granadas</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <main class="main-content">
-        <div class="wiki-title-block">
-            <h1>Ataque de Fumaça Orbital</h1>
-        </div>
-
-        <div class="wiki-overview-section">
-            
-            <div class="wiki-left-text">
-                <div class="lore-quote">
-                    "Uma barragem de projéteis de fumaça que criam uma densa cortina, obscurecendo a linha de visão e ocultando o movimento dos Helldivers do fogo inimigo." <br>
+<div class="mobile-header">
+<button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+</div>
+<nav class="sidebar" id="sidebar">
+<div class="logo-container">
+<img alt="Logo Helldivers BR" src="../../../imagens/fundos/site/logo.jpg"/>
+</div>
+<div class="menu-section">
+<div class="section-header">Comunidade</div>
+<ul class="menu-list">
+<li><a href="../../../index.html">Página Principal</a></li>
+<li><a href="#">Portal da Comunidade</a></li>
+<li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+</ul>
+</div>
+<div class="menu-section">
+<div class="section-header">Equipamento</div>
+<ul class="menu-list">
+<li><a class="active" href="../../../estratagemas.html">Estratagemas</a></li>
+<li><a href="#">Armas Primárias</a></li>
+<li><a href="#">Armas Secundárias</a></li>
+<li><a href="#">Granadas</a></li>
+</ul>
+</div>
+</nav>
+<main class="main-content">
+<div class="wiki-title-block">
+<h1>Ataque de Fumaça Orbital</h1>
+</div>
+<div class="wiki-overview-section">
+<div class="wiki-left-text">
+<div class="lore-quote">
+                    "Uma barragem de projéteis de fumaça que criam uma densa cortina, obscurecendo a linha de visão e ocultando o movimento dos Helldivers do fogo inimigo." <br/>
                     — Terminal de Gerenciamento de Navios
                 </div>
-                
-                <p class="description-text">
+<p class="description-text">
                     O <strong>Ataque de Fumaça Orbital</strong> é uma Estratégia tática voltada para utilidade e defesa. Ao ser chamado, o Supercontratorpedeiro dispara salvas que não visam causar dano direto aos inimigos em área, mas sim levantar uma espessa nuvem de fumaça para proteger recuos, progressões ou ocultar a equipe durante a realização de objetivos.
                 </p>
-                
-                <h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
-                <table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
-                    <tr><td>Tempo de Chamada (Call-in Time)</td><td>2 segundos</td></tr>
-                    <tr><td>Tempo de Recarga (Cooldown)</td><td>75 segundos</td></tr>
-                    <tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
-                </table>
-            </div>
-
-            <aside class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
-                <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
-                <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
-                    <img id="armaImg" src="../../../imagens/2-estratagemas/2-orbitais/Ataque de Fumaça Orbital.svg" alt="Ataque de Fumaça Orbital" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar">
-                </div>
-                <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <tr>
-                        <th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #65d565; font-weight: bold;">Tático / Defensivo</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Fumaça • Tático</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
-                            <div class="code-inline">
-                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
-                                <img src="../../../imagens/icones/seta-direita.png" alt="Direita">
-                                <img src="../../../imagens/icones/seta-baixo.png" alt="Baixo">
-                                <img src="../../../imagens/icones/seta-cima.png" alt="Cima">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">75s</td>
-                    </tr>
-                </table>
-            </aside>
-
-        </div>
-
-        <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
-        
-        <div class="stats-grid">
-            
-            <!-- BLOCO 1: ATAQUE DE FUMAÇA ORBITAL -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">ATAQUE DE FUMAÇA ORBITAL</h3>
-                <table class="stats-table">
-                    <tr><td>Recarga (Cooldown)</td><td>75 s</td></tr>
-                    <tr><td>Usos</td><td>&infin;</td></tr>
-                    <tr><td>Bombas</td><td>1</td></tr>
-                    <tr><td>Salvas</td><td>6</td></tr>
-                    <tr><td>Tamanho da Área de Bombardeio</td><td>15 m</td></tr>
-                    <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
-                    <tr><td>*S P <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Projétil</td></tr>
-                    <tr><td>**S P IE <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td><td>Explosão</td></tr>
-                </table>
-            </div>
-
-            <!-- BLOCO 2: S P (PROJÉTIL) -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">S P</h3>
-                <table class="stats-table">
-                    <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
-                    <tr><td>Massa</td><td>5 kg</td></tr>
-                    <tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
-                    <tr><td>Fator de Arrasto</td><td>0%</td></tr>
-                    <tr><td>Fator de Gravidade</td><td>100%</td></tr>
-                    <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explosão no Impacto</td><td>S_P_IE <span style="font-size: 0.85em; font-weight: bold; cursor: pointer;">[esconder]</span></td></tr>
-                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
-                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/icones/dano/dano-balistico.png" alt="Balístico"> 300 Dano</td></tr>
-                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/icones/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
-                    <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
-                    <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Escalonamento</td><td>60</td></tr>
-                    <tr><td>Força de Empurrão</td><td>15</td></tr>
-                </table>
-            </div>
-
-            <!-- BLOCO 3: S P IE (EXPLOSÃO) -->
-            <div class="stats-box">
-                <h3 style="background-color: #d7d52c; color: #000; padding: 6px; margin: -15px -15px 15px -15px; text-align: center; font-size: 14px; font-weight: bold;">S P IE</h3>
-                <table class="stats-table">
-                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
-                    <tr><td>Raio Interno</td><td>12 m</td></tr>
-                    <tr><td>Raio Externo</td><td>12 m</td></tr>
-                    <tr><td>Raio da Onda de Choque</td><td>0 m</td></tr>
-                    <tr><td>Duração AoE</td><td>30 s</td></tr>
-                </table>
-            </div>
-
-        </div>
-
-        <div class="video-section">
-            <h2 class="section-title">Demonstração em Vídeo</h2>
-            <div class="video-wrapper">
-                <video autoplay loop muted playsinline controls preload="metadata">
-                    <source src="Orbital_Smoke_Strike_Preview_Video.mp4" type="video/mp4">
+<h3 class="section-title" style="font-size: 16px;">Estatísticas Gerais</h3>
+<table class="stats-table" style="background: var(--hd-card); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
+<tr><td>Tempo de Chamada</td><td>2 segundos</td></tr>
+<tr><td>Recarga (Cooldown)</td><td>75 segundos</td></tr>
+<tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr>
+</table>
+</div>
+<aside class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
+<div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
+<div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
+<img alt="Ataque de Fumaça Orbital" class="main-art" id="armaImg" src="../../../imagens/estratagemas/2-orbitais/Ataque de Fumaça Orbital.svg" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar"/>
+</div>
+<table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr>
+<th colspan="2" style="background: rgba(215, 213, 44, 0.1); color: #d7d52c; padding: 6px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(215, 213, 44, 0.2);">Informações de Combate</th>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Tipo de Permissão:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right; color: #65d565; font-weight: bold;">Tático / Defensivo</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Orbital • Fumaça • Tático</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1);">
+<div class="code-inline">
+<img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/>
+<img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/>
+<img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/>
+<img alt="Cima" src="../../../imagens/ui/icons/seta-cima.png"/>
+</div>
+</td>
+</tr>
+<tr>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Recarga Base:</td>
+<td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">75s</td>
+</tr>
+</table>
+</aside>
+</div>
+<h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+<div class="stats-grid">
+<!-- BLOCO 1: ATAQUE DE FUMAÇA ORBITAL -->
+<div class="stats-box">
+<h3 class="stats-box-header">ATAQUE DE FUMAÇA ORBITAL</h3>
+<table class="stats-table">
+<tr><td>Recarga (Cooldown)</td><td>75 s</td></tr>
+<tr><td>Usos</td><td>∞</td></tr>
+<tr><td>Bombas</td><td>1</td></tr>
+<tr><td>Salvas</td><td>6</td></tr>
+<tr><td>Área de Bombardeio</td><td>15 m</td></tr>
+<tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
+<tr><td>S P </td><td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-detalhe-1', this)">[Ocultar]</span></td></tr>
+<tr><td>S P IE </td><td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-detalhe-2', this)">[Mostrar]</span></td></tr>
+</table>
+</div>
+<!-- BLOCO 2: S P (PROJÉTIL) -->
+<div class="stats-box" id="janela-detalhe-1" style="display: block;">
+<h3 class="stats-box-header">S P</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
+<tr><td>Massa</td><td>5 kg</td></tr>
+<tr><td>Velocidade Inicial</td><td>400 m/s</td></tr>
+<tr><td>Fator de Arrasto</td><td>0%</td></tr>
+<tr><td>Fator de Gravidade</td><td>100%</td></tr>
+<tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
+<tr><td>Explosão no Impacto</td><td>S_P_IE </td></tr>
+<tr class="table-sub-header"><th colspan="2">Dano</th></tr>
+<tr><td>Padrão</td><td class="flex-td"><img alt="Balístico" src="../../../imagens/ui/dano/dano-balistico.png"/> 300 Dano</td></tr>
+<tr><td>vs. Durável</td><td class="flex-td"><img alt="Balístico" src="../../../imagens/ui/dano/dano-balistico.png"/> 300 Dano</td></tr>
+<tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
+<tr><td>Direto</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</td></tr>
+<tr><td>Ângulo Ligeiro</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</td></tr>
+<tr><td>Ângulo Amplo</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-2.png"/> Antitanque II</td></tr>
+<tr><td>Ângulo Extremo</td><td class="flex-td"><img alt="Penetração" src="../../../imagens/ui/penetracao/penetracao-tank-2.png"/> Antitanque II</td></tr>
+<tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
+<tr><td>Força de Demolição</td><td>50</td></tr>
+<tr><td>Força de Escalonamento</td><td>60</td></tr>
+<tr><td>Força de Empurrão</td><td>15</td></tr>
+</table>
+</div>
+<!-- BLOCO 3: S P IE (EXPLOSÃO) -->
+<div class="stats-box" id="janela-detalhe-2" style="display: none;">
+<h3 class="stats-box-header">S P IE</h3>
+<table class="stats-table">
+<tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
+<tr><td>Raio Interno</td><td>12 m</td></tr>
+<tr><td>Raio Externo</td><td>12 m</td></tr>
+<tr><td>Raio da Onda de Choque</td><td>0 m</td></tr>
+<tr><td>Duração AoE</td><td>30 s</td></tr>
+</table>
+</div>
+</div>
+<div class="video-section">
+<h2 class="section-title">Demonstração em Vídeo</h2>
+<div class="video-wrapper">
+<video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata">
+<source src="Orbital_Smoke_Strike_Preview_Video.mp4" type="video/mp4"/>
                     Seu navegador não suporta a visualização de vídeos.
                 </video>
-            </div>
-        </div>
-
-    </main>
-
-
-    <div id="imageModal" class="modal">
-        <span class="close-btn" id="closeModal">&times;</span>
-        <img class="modal-content" id="imgAmpliada" alt="Ataque de Fumaça Orbital ampliado">
-    </div>
-
-    <script>
+</div>
+</div>
+</main>
+<div class="modal" id="imageModal">
+<span class="close-btn" id="closeModal">×</span>
+<img alt="Ataque de Fumaça Orbital ampliado" class="modal-content" id="imgAmpliada"/>
+</div>
+<script>
         document.addEventListener("DOMContentLoaded", function() {
             const menuBtn = document.getElementById('menu-btn');
             const sidebar = document.getElementById('sidebar');
@@ -399,5 +536,26 @@
         });
     </script>
 
+<script>
+/* Controle padrão das tabelas de detalhe das Orbitais */
+function toggleJanelaLateral(idJanela, botao) {
+    const janela = document.getElementById(idJanela);
+    if (!janela) return;
+
+    const estaOculta = getComputedStyle(janela).display === 'none';
+
+    if (estaOculta) {
+        janela.style.display = 'block';
+        botao.textContent = '[Ocultar]';
+        botao.classList.remove('btn-mostrar');
+        botao.classList.add('btn-ocultar');
+    } else {
+        janela.style.display = 'none';
+        botao.textContent = '[Mostrar]';
+        botao.classList.remove('btn-ocultar');
+        botao.classList.add('btn-mostrar');
+    }
+}
+</script>
 </body>
 </html>

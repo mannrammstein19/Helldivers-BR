@@ -87,6 +87,23 @@
         applyTheme(nextTheme);
     }
 
+    function ensureGlobalSearchScript() {
+        const target = new URL('busca.js', SITE_BASE_URL).href;
+        const existing = [...document.scripts].find(script => {
+            if (!script.src) return false;
+            try { return new URL(script.src, window.location.href).href === target; }
+            catch { return false; }
+        });
+        if (existing) return true;
+
+        const script = document.createElement('script');
+        script.src = target;
+        script.defer = true;
+        script.dataset.hdGlobalSearchScript = '';
+        document.head.appendChild(script);
+        return true;
+    }
+
     function ensureThemeButton() {
         if (document.querySelector('[data-hd-theme-toggle]')) {
             return true;
@@ -398,6 +415,7 @@
         ensureThemeButton();
         ensureZoomControl();
         ensureAnthemPlayer();
+        ensureGlobalSearchScript();
         applyTheme(readTheme());
         applyZoom(readZoom());
     }

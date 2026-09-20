@@ -1,4 +1,6 @@
 .mobile-dock{display:none}
+.mobile-dock .mobile-nav-icon{display:block;width:28px;height:28px;max-width:none;object-fit:contain;flex:0 0 28px;filter:grayscale(1);opacity:.85}
+.mobile-dock [aria-current] .mobile-nav-icon,.mobile-dock [aria-expanded=true] .mobile-nav-icon,.mobile-dock a:hover .mobile-nav-icon,.mobile-dock button:hover .mobile-nav-icon{filter:none;opacity:1}
 @media(max-width:768px),(orientation:landscape) and (hover:none) and (pointer:coarse){
  body.has-mobile-navigation .mobile-dock{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:fixed;inset:auto 0 0;z-index:2200;width:100%;margin:0;padding:6px max(6px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));background:#0b0b0bf5;border-top:1px solid #555;backdrop-filter:blur(14px);transform:none}
  body.has-mobile-navigation .mobile-dock a,body.has-mobile-navigation .mobile-dock button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:54px;padding:3px 0;border:0;background:none;color:#ccc;font:10px/1.3 Arial;cursor:pointer;text-decoration:none}

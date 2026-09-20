@@ -59,6 +59,52 @@
     const FACTION_COLORS = { human:'#d7d52c', terminid:'#ff9900', automaton:'#ff4242', illuminate:'#8b3fd6' };
     function factionColor(owner) { return FACTION_COLORS[factionKey(owner)] || FACTION_COLORS.human; }
 
+    // Ícones de facção usados dentro dos planetas. Mantemos só 4 recursos e
+    // reutilizamos via <symbol>/<use> no SVG para não duplicar imagens pesadas.
+    const FACTION_ICONS = {
+        human:{ primary:'imagens/icones/faccoes/logo super terra.svg', fallback:'imagens/ui/icons/logo super terra.svg' },
+        automaton:{ primary:'imagens/icones/faccoes/logo automatons.png', fallback:'imagens/guerra/faccoes/logo automatons.png' },
+        terminid:{ primary:'imagens/icones/faccoes/logo terminids.png', fallback:'imagens/guerra/faccoes/logo terminids.png' },
+        illuminate:{ primary:'imagens/icones/faccoes/logo illuminates.png', fallback:'imagens/guerra/faccoes/logo illuminats.png' }
+    };
+    function factionIconInfo(owner) { return FACTION_ICONS[factionKey(owner)] || FACTION_ICONS.human; }
+    function factionIconUrl(owner) { return factionIconInfo(owner).primary; }
+
+    // Mesmo padrão visual da Central de Guerra / Overview: uma imagem por bioma
+    // com exceções pontuais por planeta. Não há chamada extra de API aqui.
+    const BIOME_IMAGES = {
+        'desert dunes':'Sandy_base_Landscape.png','desert cliffs':'Sandy_spiky_Landscape.png',
+        'acidic badlands':'Sandy_acid_Landscape.png','rocky canyons':'Sandy_mineral_Landscape.png',
+        'moon':'Sandy_moon_Landscape.png','volcanic jungle':'Primordial_base_Landscape.png',
+        'deadlands':'Primordial_dead_Landscape.png','ethereal jungle':'Primordial_purple_Landscape.png',
+        'ionic jungle':'Primordial_blue_Landscape.png','icy glaciers':'Arctic_glacier_base_Landscape.png',
+        'boneyard':'Arctic_glacier_coldrocky_Landscape.png','plains':'Moor_baseplanet_Landscape.png',
+        'tundra':'Moor_tundra_Landscape.png','scorched moor':'Moor_arid_Landscape.png',
+        'ionic crimson':'Moor_red_Landscape.png','basic swamp':'Swamp_base_Landscape.png',
+        'haunted swamp':'Swamp_haunted_Landscape.png','hive world':'Bug_hiveworld_Landscape.png',
+        'supercolony':'Supercolony_Landscape.png','magma desert':'Magma_Base_Landscape.png',
+        'cyberstan megafactory':'Cyberstan_landscape.png','super earth metropolis':'Super_Earth_landscape.png',
+        'void source forest':'Rift_active_landscape.png'
+    };
+    const PLANET_IMAGES = { '262':'Magma_Base_Landscape.png', '269':'Brilliance_Planet_Landscape_Header.jpg' };
+    const PLANET_IMAGES_BY_NAME = { 'k':'Magma_Base_Landscape.png', 'brilliance':'Brilliance_Planet_Landscape_Header.jpg' };
+    const PLANET_IMG_PATH = 'imagens/planetas/';
+    function planetBiome(p) { return clean(p?.biome?.name || p?.biome) || 'Bioma desconhecido'; }
+    function planetImageUrl(p) {
+        const index = String(p?.index ?? '').trim();
+        const name = clean(p?.name).toLowerCase().trim();
+        const specific = PLANET_IMAGES[index] || PLANET_IMAGES_BY_NAME[name];
+        const biome = planetBiome(p).toLowerCase().trim();
+        return PLANET_IMG_PATH + (specific || BIOME_IMAGES[biome] || 'Sandy_base_Landscape.png');
+    }
+    function planetClimateLabel(p) {
+        const direct = clean(p?.weather?.name || p?.weather?.description || p?.climate || p?.weatherName || (typeof p?.weather === 'string' ? p.weather : ''));
+        if (direct) return direct;
+        const hazards = Array.isArray(p?.hazards) ? p.hazards : [];
+        const names = hazards.map(h => hazardInfo(h?.name || h).name).filter(Boolean);
+        return names.length ? names.slice(0, 2).join(' · ') : 'Sem condição registrada';
+    }
+
     // Mesmo catálogo usado na Central de Guerra (guerra.js), pra manter os dois
     // painéis consistentes: nome PT-BR + ícone local + fallback do wiki.gg + emoji.
     const HAZARD_INFO = {
@@ -137,6 +183,9 @@
     let searchQuery = '';
     let selectedIndex = null;
     let lineRecords = [];
+    let quickIntelIndex = null;
+    let quickIntelPlanet = null;
+    let quickIntelHideTimer = 0;
     const layerVisibility = { routes:true, territories:true, sectors:true };
 
     const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -160,6 +209,143 @@
         const maxHealth = Number(event.maxHealth || 0);
         if (!maxHealth) return null;
         return Math.max(0, Math.min(100, (1 - health / maxHealth) * 100));
+    }
+
+    function regenPercentPerHour(p) {
+        const regen = Number(p?.regenPerSecond ?? p?.regen_per_second ?? 0);
+        const maxHealth = Number(p?.maxHealth ?? p?.max_health ?? 0);
+        if (!regen || !maxHealth) return 0;
+        return Math.max(0, (regen * 3600 / maxHealth) * 100);
+    }
+
+    function formatRate(value) {
+        const n = Number(value || 0);
+        if (!n) return '0%';
+        if (n < .01) return '<0,01%';
+        return `${n.toFixed(n < 1 ? 2 : 1).replace('.', ',')}%`;
+    }
+
+    function getAttackingIndexes(p) {
+        return Array.isArray(p?.attacking) ? p.attacking.map(Number).filter(Number.isFinite) : [];
+    }
+
+    function getAttackTargetNames(p, limit = 2) {
+        const ids = getAttackingIndexes(p);
+        const names = ids.map(id => allPlanets.find(pl => Number(pl.index) === id))
+            .filter(Boolean).map(pl => clean(pl.name) || `Planeta ${pl.index}`);
+        if (!names.length) return '';
+        const shown = names.slice(0, limit);
+        return shown.join(' · ') + (names.length > limit ? ` · +${names.length - limit}` : '');
+    }
+
+    function isCoarseInput() {
+        return (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) || navigator.maxTouchPoints > 0;
+    }
+
+    function cancelQuickIntelHide() {
+        if (quickIntelHideTimer) window.clearTimeout(quickIntelHideTimer);
+        quickIntelHideTimer = 0;
+    }
+
+    function showQuickIntel(p, options = {}) {
+        const card = $('mapa-intel-card');
+        if (!card || !p) return;
+        cancelQuickIntelHide();
+        quickIntelPlanet = p;
+        quickIntelIndex = String(p.index);
+        const owner = p.currentOwner || p.owner;
+        const event = p.event;
+        const accent = factionColor(event ? (event.faction || owner) : owner);
+        const progress = campaignProgress(p);
+        const players = Number(p.statistics?.playerCount || 0);
+        const regions = Array.isArray(p.regions) ? p.regions.length : 0;
+        const attacks = getAttackingIndexes(p).length;
+        const regen = regenPercentPerHour(p);
+        const targets = getAttackTargetNames(p);
+        const biome = planetBiome(p);
+        const climate = planetClimateLabel(p);
+        const ownerName = factionName(owner);
+        const ownerIconInfo = factionIconInfo(owner);
+        const ownerIcon = ownerIconInfo.primary;
+        const photoUrl = planetImageUrl(p);
+
+        card.style.setProperty('--accent', accent);
+        card.dataset.sticky = options.sticky ? '1' : '0';
+        $('mapa-intel-title').textContent = clean(p.name) || 'Planeta desconhecido';
+        $('mapa-intel-sector').textContent = clean(p.sector) || 'Setor desconhecido';
+        $('mapa-intel-status').textContent = event
+            ? `SOB ATAQUE · ${factionName(event.faction || owner)}`
+            : `CONTROLADO POR · ${ownerName}`;
+        $('mapa-intel-biome').textContent = biome;
+        $('mapa-intel-climate').textContent = climate;
+        $('mapa-intel-faction-name').textContent = ownerName.toUpperCase();
+        const factionImg = $('mapa-intel-faction-icon');
+        if (factionImg) {
+            factionImg.src = ownerIcon;
+            factionImg.alt = `Símbolo ${ownerName}`;
+            factionImg.style.display = '';
+            factionImg.dataset.fallback = ownerIconInfo.fallback || '';
+            factionImg.onerror = () => {
+                if (factionImg.dataset.fallback && factionImg.src !== new URL(factionImg.dataset.fallback, document.baseURI).href) {
+                    factionImg.src = factionImg.dataset.fallback;
+                } else {
+                    factionImg.style.display = 'none';
+                }
+            };
+        }
+        const photo = $('mapa-intel-photo');
+        if (photo) {
+            photo.src = photoUrl;
+            photo.alt = `Paisagem de ${clean(p.name) || 'planeta'}`;
+            photo.hidden = false;
+            photo.onerror = () => { photo.hidden = true; };
+        }
+        $('mapa-intel-players').textContent = players.toLocaleString('pt-BR');
+        $('mapa-intel-regen').textContent = `${formatRate(regen)}/h`;
+        $('mapa-intel-regions').textContent = regions.toLocaleString('pt-BR');
+        $('mapa-intel-attacking').textContent = attacks.toLocaleString('pt-BR');
+
+        const progressBox = $('mapa-intel-progress');
+        if (progress != null) {
+            progressBox.hidden = false;
+            $('mapa-intel-progress-value').textContent = `${progress.toFixed(0)}%`;
+            $('mapa-intel-progress-bar').style.width = `${progress}%`;
+            $('mapa-intel-progress-bar').style.background = accent;
+        } else {
+            progressBox.hidden = true;
+        }
+
+        const route = $('mapa-intel-route');
+        if (targets) {
+            route.hidden = false;
+            route.innerHTML = `<small>ROTAS OFENSIVAS</small><span>${escapeHTML(targets)}</span>`;
+        } else {
+            route.hidden = true;
+            route.textContent = '';
+        }
+
+        card.classList.add('open');
+        card.setAttribute('aria-hidden', 'false');
+        if (options.sticky) card.classList.add('sticky'); else card.classList.remove('sticky');
+    }
+
+    function hideQuickIntel(options = {}) {
+        const card = $('mapa-intel-card');
+        if (!card) return;
+        cancelQuickIntelHide();
+        card.classList.remove('open', 'sticky');
+        card.setAttribute('aria-hidden', 'true');
+        card.dataset.sticky = '0';
+        quickIntelIndex = null;
+        quickIntelPlanet = null;
+        if (options.clearSelection !== false) setSelectedPlanet(null);
+    }
+
+    function scheduleQuickIntelHide() {
+        const card = $('mapa-intel-card');
+        if (!card || card.dataset.sticky === '1') return;
+        cancelQuickIntelHide();
+        quickIntelHideTimer = window.setTimeout(() => hideQuickIntel({ clearSelection:false }), 260);
     }
 
     function cross(o, a, b) {
@@ -301,6 +487,29 @@
             grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': dark }));
             defs.appendChild(grad);
         });
+
+        // Quatro símbolos compartilhados; cada planeta cria só um <use> leve.
+        const iconBoxes = {
+            human:{x:10,y:10,w:80,h:80},
+            automaton:{x:2,y:14,w:96,h:72},
+            terminid:{x:9,y:8,w:82,h:84},
+            illuminate:{x:10,y:10,w:80,h:80}
+        };
+        Object.entries(FACTION_ICONS).forEach(([key, iconInfo]) => {
+            const box = iconBoxes[key] || iconBoxes.human;
+            const symbol = svgEl('symbol', { id:`faction-icon-${key}`, viewBox:'0 0 100 100', overflow:'visible' });
+            const image = svgEl('image', {
+                href:iconInfo.primary, x:box.x, y:box.y, width:box.w, height:box.h,
+                preserveAspectRatio:'xMidYMid meet'
+            });
+            if (iconInfo.fallback) {
+                image.addEventListener('error', () => {
+                    if (image.getAttribute('href') !== iconInfo.fallback) image.setAttribute('href', iconInfo.fallback);
+                }, { once:false });
+            }
+            symbol.appendChild(image);
+            defs.appendChild(symbol);
+        });
         return defs;
     }
 
@@ -334,6 +543,7 @@
         nodeByIndex.clear();
         lineRecords = [];
         selectedIndex = null;
+        hideQuickIntel({ clearSelection:false });
 
         const withPos = planets
             .map(p => {
@@ -442,7 +652,17 @@
             const accent = factionColor(owner);
             const underAttack = !!raw.event;
             const progress = campaignProgress(raw);
-            const group = svgEl('g', { class:'mapa-planet-group', 'data-index': raw.index, 'data-faction': fKey });
+            const planetName = clean(raw.name) || 'Planeta desconhecido';
+            const sectorName = clean(raw.sector) || 'Setor desconhecido';
+            const group = svgEl('g', {
+                class:'mapa-planet-group', 'data-index': raw.index, 'data-faction': fKey,
+                tabindex:'0', role:'button', 'aria-label':`${planetName}, ${sectorName}. Abrir informações táticas.`
+            });
+
+            // Área invisível maior: facilita o toque no celular sem aumentar o planeta visualmente.
+            group.appendChild(svgEl('circle', {
+                class:'mapa-planet-hit', cx:x, cy:y, r:baseRadius * 3.05, fill:'transparent'
+            }));
 
             const halo = svgEl('circle', {
                 class:'mapa-planet-halo', cx:x, cy:y, r:baseRadius * (underAttack ? 2.7 : 2.1),
@@ -491,6 +711,16 @@
             circle.appendChild(title);
             group.appendChild(circle);
 
+            // Símbolo do proprietário dentro da bolinha. O anel externo continua
+            // mostrando o atacante quando houver defesa/invasão.
+            const iconSize = baseRadius * (underAttack ? 2.05 : 1.55);
+            group.appendChild(svgEl('use', {
+                class:'mapa-planet-faction-icon',
+                href:`#faction-icon-${fKey}`,
+                x:x - iconSize/2, y:y - iconSize/2, width:iconSize, height:iconSize,
+                'aria-hidden':'true'
+            }));
+
             if (dssHostIndex != null && String(dssHostIndex) === String(raw.index)) {
                 const size = baseRadius * .95;
                 const cy2 = y - baseRadius * 3.2;
@@ -521,7 +751,33 @@
                 group.appendChild(eventLabel);
             }
 
-            group.addEventListener('click', () => {
+            group.addEventListener('pointerenter', event => {
+                if (event.pointerType === 'mouse') showQuickIntel(raw, { sticky:false });
+            });
+            group.addEventListener('pointerleave', event => {
+                if (event.pointerType === 'mouse') scheduleQuickIntelHide();
+            });
+            group.addEventListener('focus', () => showQuickIntel(raw, { sticky:true }));
+            group.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setSelectedPlanet(raw.index);
+                    openPlanetModal(raw);
+                }
+            });
+            group.addEventListener('click', event => {
+                const touchMode = event.pointerType === 'touch' || event.pointerType === 'pen' || (!event.pointerType && isCoarseInput());
+                if (touchMode) {
+                    const alreadyOpen = quickIntelIndex === String(raw.index) && $('mapa-intel-card')?.classList.contains('open');
+                    if (alreadyOpen) {
+                        setSelectedPlanet(raw.index);
+                        openPlanetModal(raw);
+                    } else {
+                        setSelectedPlanet(raw.index);
+                        showQuickIntel(raw, { sticky:true });
+                    }
+                    return;
+                }
                 setSelectedPlanet(raw.index);
                 openPlanetModal(raw);
             });
@@ -718,13 +974,21 @@
         const maxHealth = event ? Number(event.maxHealth || 1) : Number(p.maxHealth || 1);
         const pct = maxHealth ? Math.max(0, Math.min(100, Math.round((1 - health / maxHealth) * 100))) : 0;
         const accent = factionColor(event ? (event.faction || owner) : owner);
+        const climate = planetClimateLabel(p);
+        const photoUrl = planetImageUrl(p);
 
         modal.querySelector('.tactical-modal-card').style.setProperty('--accent', accent);
+        const modalPhoto = $('planet-modal-photo');
+        if (modalPhoto) {
+            modalPhoto.style.backgroundImage = `linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.72)),url("${photoUrl.replace(/"/g,'')}")`;
+            modalPhoto.setAttribute('aria-label', `Paisagem de ${name}`);
+        }
         modal.querySelector('#planet-modal-title').textContent = name;
         modal.querySelector('.tactical-modal-sector').textContent = sector;
         modal.querySelector('.tactical-modal-meta').innerHTML = `
             <span>${event ? 'SOB ATAQUE' : 'CONTROLADO POR'} · ${escapeHTML(factionName(event ? event.faction : owner))}</span>
             <span>Bioma: ${escapeHTML(biome)}</span>
+            <span>Clima: ${escapeHTML(climate)}</span>
             ${dssHostIndex != null && String(dssHostIndex) === String(p.index) ? '<span>🛰 Sede da DSS</span>' : ''}
         `;
 
@@ -738,9 +1002,15 @@
             modal.querySelector('.tactical-modal-progress').style.display = 'none';
         }
 
+        const regenHour = regenPercentPerHour(p);
+        const regionCount = Array.isArray(p.regions) ? p.regions.length : 0;
+        const attackCount = getAttackingIndexes(p).length;
         modal.querySelector('.tactical-modal-metrics').innerHTML = `
             <div><small>HELLDIVERS EM CAMPO</small><strong>${players.toLocaleString('pt-BR')}</strong></div>
             <div><small>SETOR</small><strong style="font-size:13px">${escapeHTML(sector)}</strong></div>
+            <div><small>REGENERAÇÃO DO PLANETA</small><strong>${escapeHTML(formatRate(regenHour))}/h</strong><span>${Number(p.regenPerSecond || 0).toLocaleString('pt-BR')} HP/s</span></div>
+            <div><small>REGIÕES REGISTRADAS</small><strong>${regionCount.toLocaleString('pt-BR')}</strong></div>
+            <div><small>ROTAS OFENSIVAS</small><strong>${attackCount.toLocaleString('pt-BR')}</strong></div>
             <div><small>ÍNDICE</small><strong>${escapeHTML(String(p.index))}</strong></div>
         `;
 
@@ -753,6 +1023,7 @@
             }).join('')}</div>`
             : '<div class="empty-state">Nenhuma condição ambiental registrada.</div>';
 
+        hideQuickIntel({ clearSelection:false });
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('tactical-modal-open');
@@ -820,7 +1091,25 @@
         $('planet-modal')?.addEventListener('click', event => {
             if (event.target.matches('[data-close-planet]') || event.target.closest('[data-close-planet]')) closePlanetModal();
         });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape') closePlanetModal(); });
+
+        $('mapa-intel-close')?.addEventListener('click', () => hideQuickIntel());
+        $('mapa-intel-details')?.addEventListener('click', () => {
+            if (!quickIntelPlanet) return;
+            setSelectedPlanet(quickIntelPlanet.index);
+            openPlanetModal(quickIntelPlanet);
+        });
+        $('mapa-intel-card')?.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') cancelQuickIntelHide(); });
+        $('mapa-intel-card')?.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') scheduleQuickIntelHide(); });
+        $('mapa-svg')?.addEventListener('click', event => {
+            if (!event.target.closest?.('.mapa-planet-group')) hideQuickIntel();
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                if ($('planet-modal')?.classList.contains('open')) closePlanetModal();
+                else hideQuickIntel();
+            }
+        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {

@@ -318,3 +318,156 @@ body.tactical-modal-open { overflow:hidden; }
     .mapa-layer{font-size:9px;padding:0 8px}
 }
 .mapa-legend-frontline{width:16px!important;height:2px!important;border-radius:0!important;background:#d8c85d!important;box-shadow:0 0 7px rgba(216,200,93,.7)}
+
+
+/* ================================================================
+   V4 — INTEL RÁPIDA RESPONSIVA
+   Um único painel reutilizado para todos os planetas: mais informação
+   sem criar centenas de elementos HTML nem novas chamadas à API.
+   ================================================================ */
+.mapa-planet-hit{pointer-events:all;cursor:pointer}
+.mapa-planet-group:focus{outline:none}
+.mapa-planet-group:focus .mapa-planet-dot{stroke:#fff;stroke-width:1.05}
+
+.mapa-intel-card{
+    --accent:var(--hd-yellow);
+    position:absolute;right:12px;bottom:12px;z-index:8;
+    width:min(310px,calc(100% - 24px));
+    padding:13px 13px 12px;
+    background:linear-gradient(145deg,rgba(8,11,14,.97),rgba(4,6,8,.98));
+    border:1px solid #353b42;border-left:3px solid var(--accent);
+    box-shadow:0 18px 44px rgba(0,0,0,.48),inset 0 0 26px rgba(255,255,255,.018);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateY(8px);
+    transition:opacity .14s ease,transform .14s ease,visibility .14s;
+}
+.mapa-intel-card.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.mapa-intel-close{
+    position:absolute;top:8px;right:8px;width:30px;height:30px;
+    border:1px solid #343b42;background:#0d1014;color:#8b949e;cursor:pointer
+}
+.mapa-intel-close:hover{color:#fff;border-color:var(--accent)}
+.mapa-intel-kicker{padding-right:38px;color:var(--accent);font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:1.5px}
+.mapa-intel-title{padding-right:38px;margin-top:3px;color:#fff;font:700 22px 'Oswald',Impact,sans-serif;line-height:1;text-transform:uppercase}
+.mapa-intel-sector{margin-top:4px;color:#717b85;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.mapa-intel-status{margin-top:9px;padding:6px 7px;border:1px solid #292f35;background:#0b0e11;color:#c9cfd5;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.7px;text-transform:uppercase}
+.mapa-intel-progress{margin-top:10px}
+.mapa-intel-progress>div:first-child{display:flex;justify-content:space-between;gap:8px;color:#7c858e;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.5px}
+.mapa-intel-progress>div:first-child strong{color:#e8ecef;font-size:9px}
+.mapa-intel-progress-track{height:5px;margin-top:5px;background:#171b1f;border:1px solid #252b30;overflow:hidden}
+.mapa-intel-progress-track i{display:block;height:100%;width:0;box-shadow:0 0 8px var(--accent);transition:width .25s ease}
+.mapa-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:10px}
+.mapa-intel-grid>div{min-width:0;padding:7px 6px;border:1px solid #252b30;background:#0a0d10}
+.mapa-intel-grid small{display:block;color:#5d6872;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.35px;white-space:nowrap}
+.mapa-intel-grid strong{display:block;margin-top:2px;color:#e7ebee;font:700 12px 'Oswald',Impact,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapa-intel-route{margin-top:7px;padding:7px 8px;border:1px solid #252b30;background:#090c0f}
+.mapa-intel-route small{display:block;color:#5f6973;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.6px}
+.mapa-intel-route span{display:block;margin-top:2px;color:#bdc5cc;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapa-intel-details{width:100%;min-height:38px;margin-top:9px;border:1px solid color-mix(in srgb,var(--accent) 55%,#30363d);background:color-mix(in srgb,var(--accent) 8%,#0b0e11);color:var(--accent);font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.8px;cursor:pointer}
+.mapa-intel-details:hover{background:color-mix(in srgb,var(--accent) 13%,#0b0e11)}
+.mapa-intel-mobile-tip{display:none;margin-top:7px;color:#68717a;font-size:8px;line-height:1.35;text-align:center}
+
+/* A legenda se desloca quando a intel rápida aparece no desktop. */
+@media (min-width:769px){
+    .mapa-intel-card.open~.mapa-svg{}
+}
+
+@media (hover:none), (pointer:coarse){
+    .mapa-planet-group:hover .mapa-planet-dot{stroke:#080a0d;stroke-width:.45}
+    .mapa-planet-group:hover .mapa-planet-halo{opacity:.12}
+    .mapa-dots g[data-index]:hover .mapa-planet-label,
+    .mapa-dots g[data-index]:hover .mapa-player-label{display:none;opacity:0!important}
+    .mapa-intel-mobile-tip{display:block}
+}
+
+@media(max-width:768px){
+    .mapa-viewport-wrap{min-height:500px;height:min(68vh,620px)}
+    .mapa-intel-card{
+        position:absolute;left:0;right:0;bottom:0;width:100%;
+        padding:13px 14px calc(12px + env(safe-area-inset-bottom));
+        border-left:0;border-right:0;border-bottom:0;border-top:2px solid var(--accent);
+        transform:translateY(18px);
+        box-shadow:0 -18px 44px rgba(0,0,0,.58)
+    }
+    .mapa-intel-card.open{transform:translateY(0)}
+    .mapa-intel-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .mapa-intel-close{width:38px;height:38px;top:8px;right:8px}
+    .mapa-intel-details{min-height:44px;font-size:10px}
+    .mapa-zoom-controls button{width:38px;height:38px}
+    .mapa-legend{bottom:8px;max-width:calc(100% - 16px)}
+    .mapa-intel-card.open~.mapa-svg{filter:none}
+}
+
+@media(max-width:430px){
+    .mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .mapa-intel-grid>div{padding:6px 7px}
+    .mapa-intel-title{font-size:20px}
+}
+
+/* ================================================================
+   V5 — FACÇÕES NO PLANETA + FOTO/CLIMA NA INTEL RÁPIDA
+   Reutiliza 4 símbolos SVG e carrega a imagem do bioma só quando o
+   planeta é inspecionado. Mantém o custo inicial praticamente igual.
+   ================================================================ */
+.mapa-planet-faction-icon{
+    pointer-events:none;
+    opacity:.94;
+    filter:drop-shadow(0 0 .45px rgba(0,0,0,.95));
+}
+.mapa-planet-group:hover .mapa-planet-faction-icon,
+.mapa-planet-group.selected .mapa-planet-faction-icon{opacity:1}
+
+.mapa-intel-card{
+    width:min(334px,calc(100% - 24px));
+    padding:0;
+    overflow:hidden;
+}
+.mapa-intel-close{z-index:4;background:rgba(7,10,13,.88);backdrop-filter:blur(4px)}
+.mapa-intel-visual{
+    position:relative;height:92px;overflow:hidden;background:#080b0e;
+    border-bottom:1px solid #2a3036;
+}
+.mapa-intel-photo{
+    display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+    opacity:.88;transform:scale(1.01)
+}
+.mapa-intel-photo[hidden]{display:none}
+.mapa-intel-visual-shade{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(2,4,6,.08) 0%,rgba(3,5,7,.2) 42%,rgba(3,5,7,.93) 100%);
+}
+.mapa-intel-faction-badge{
+    position:absolute;left:10px;bottom:8px;z-index:2;
+    display:flex;align-items:center;gap:7px;min-height:28px;padding:4px 8px 4px 5px;
+    background:rgba(4,6,8,.82);border:1px solid color-mix(in srgb,var(--accent) 58%,#30363d);
+    box-shadow:0 5px 18px rgba(0,0,0,.28);backdrop-filter:blur(4px)
+}
+.mapa-intel-faction-badge img{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(0,0,0,.7))}
+.mapa-intel-faction-badge span{color:#f1f3f5;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.8px}
+.mapa-intel-body{padding:11px 13px 12px}
+.mapa-intel-environment{display:grid;grid-template-columns:.8fr 1.2fr;gap:5px;margin-top:7px}
+.mapa-intel-environment>div{min-width:0;padding:7px 8px;border:1px solid #252b30;background:#090c0f}
+.mapa-intel-environment small{display:block;color:#5f6973;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.55px}
+.mapa-intel-environment span{display:block;margin-top:2px;color:#bdc5cc;font-size:8.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.tactical-modal-photo{
+    position:relative;height:168px;margin:12px 0 10px;
+    background-color:#050607;background-repeat:no-repeat;background-size:cover;background-position:center;
+    border:1px solid #292f35;box-shadow:inset 0 -35px 55px rgba(0,0,0,.35)
+}
+
+@media(max-width:768px){
+    .mapa-intel-card{
+        padding:0;
+        max-height:64%;overflow-y:auto;overscroll-behavior:contain;
+    }
+    .mapa-intel-visual{height:86px}
+    .mapa-intel-body{padding:10px 14px calc(12px + env(safe-area-inset-bottom))}
+    .mapa-intel-environment{grid-template-columns:1fr 1.35fr}
+    .tactical-modal-photo{height:130px}
+}
+@media(max-width:430px){
+    .mapa-intel-visual{height:78px}
+    .mapa-intel-environment{grid-template-columns:1fr}
+    .mapa-intel-environment span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+}

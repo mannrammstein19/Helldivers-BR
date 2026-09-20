@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#FFE800" name="theme-color"/>
+<meta content="Guia completo e estatísticas detalhadas do EXO-51 LUMBERER EXOSUIT em Helldivers 2." name="description"/>
+<title>Bomba do Inferno Portátil - Helldivers BR</title>
+<!-- Fonte técnica dos dados: https://helldivers.wiki.gg/wiki/B-100_Portable_Hellbomb -->
+<link class="styles" href="../../../style.css" rel="stylesheet"/>
+<style>
+        .lore-quote {
+            position: relative;
+            margin: 20px 0 20px 50px;
+            padding: 15px 20px;
+            border-left: 3px solid var(--hd-yellow);
+            font-style: italic;
+            color: var(--hd-yellow);
+            line-height: 1.6;
+            background-color: rgba(0,0,0,.60);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .lore-quote::before {
+            content: "“";
+            position: absolute;
+            left: -45px;
+            top: -10px;
+            font-size: 60px;
+            color: var(--hd-yellow);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .wiki-overview-section {
+            display: flex;
+            justify-content: flex-start !important;
+            gap: 34px;
+            max-width: 1200px;
+            align-items: flex-start;
+        }
+
+        .wiki-left-text {
+            flex: 1;
+            max-width: 750px;
+            min-width: 0;
+        }
+
+        .section-title {
+            color: var(--hd-yellow);
+            font-size: 20px;
+            text-transform: uppercase;
+            margin: 40px 0 18px;
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 55%, transparent);
+            padding-bottom: 5px;
+        }
+
+        /* ==========================================================
+           INFOBOX — IDENTIDADE HELLDIVERS-BR
+           ========================================================== */
+
+        .stratagem-infobox {
+            width: 336px;
+            max-width: 100%;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.025), transparent 32%),
+                rgba(12,12,12,.94);
+            border: 1px solid var(--hd-yellow);
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,.025),
+                0 14px 34px rgba(0,0,0,.34);
+        }
+
+        .stratagem-infobox::before,
+        .stratagem-infobox::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 3px;
+            background: var(--hd-yellow);
+            z-index: 3;
+        }
+
+        .stratagem-infobox::before { top: -1px; left: -1px; }
+        .stratagem-infobox::after  { bottom: -1px; right: -1px; }
+
+        .infobox-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 7px 11px 6px;
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 35%, transparent);
+            color: color-mix(in srgb, var(--hd-yellow) 78%, white);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,.48);
+        }
+
+        .infobox-kicker .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #8fda72;
+        }
+
+        .infobox-kicker .status-dot::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #8fda72;
+            box-shadow: 0 0 8px rgba(143,218,114,.7);
+        }
+
+        .infobox-title {
+            margin: 0;
+            padding: 10px 13px 9px;
+            text-align: left;
+            color: #080808;
+            background: var(--hd-yellow);
+            font-weight: 900;
+            font-size: 19px;
+            line-height: 1.05;
+            letter-spacing: .25px;
+            text-transform: uppercase;
+        }
+
+        .infobox-subtitle {
+            display: block;
+            margin-top: 4px;
+            font-size: 9px;
+            letter-spacing: 1.25px;
+            opacity: .72;
+        }
+
+        .infobox-media {
+            position: relative;
+            width: 100%;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            background:
+                repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 1px, transparent 1px 9px),
+                linear-gradient(180deg, rgba(83,133,62,.11), rgba(0,0,0,.22));
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 35%, transparent);
+        }
+
+        .infobox-media::after {
+            content: attr(data-media-label);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 14px;
+            padding: 3px 6px;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #d8ffd0;
+            background: rgba(0,0,0,.72);
+            border-left: 2px solid #7fbd68;
+            pointer-events: none;
+        }
+
+        .infobox-media .main-art {
+            display: block;
+            width: 75% !important;
+            margin: 0 auto;
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform .18s ease, filter .18s ease;
+            border: 0 !important;
+            background: #071107 !important;
+            box-shadow: inset 0 0 0 1px rgba(127,189,104,.28);
+        }
+
+        .infobox-media .main-art:hover {
+            transform: scale(1.012);
+            filter: brightness(1.06);
+        }
+
+        .infobox-section-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 7px 10px;
+            color: var(--hd-yellow);
+            background: color-mix(in srgb, var(--hd-yellow) 12%, rgba(0,0,0,.82));
+            border-top: 1px solid color-mix(in srgb, var(--hd-yellow) 26%, transparent);
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 22%, transparent);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .infobox-section-label small {
+            font-size: 8px;
+            color: rgba(255,255,255,.45);
+            letter-spacing: .8px;
+        }
+
+        .infobox-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 12px;
+        }
+
+        .infobox-table tr {
+            border-bottom: 1px solid rgba(255,255,255,.065);
+        }
+
+        .infobox-table tr:last-child {
+            border-bottom: 0;
+        }
+
+        .infobox-table td {
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+
+        .infobox-table td:first-child {
+            width: 43%;
+            color: var(--hd-yellow);
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .infobox-table td:last-child {
+            text-align: right;
+            color: #f4f4f4;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .infobox-table .combat-type {
+            color: var(--hd-orange);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .35px;
+        }
+
+        .infobox-table .trait-line {
+            font-size: 11px;
+            color: #f0f0f0;
+        }
+
+        .code-inline {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .code-inline img {
+            width: 17px;
+            height: 17px;
+            object-fit: contain;
+        }
+
+        .value-with-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .value-with-icon img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .general-table {
+            background: rgba(20,20,20,.85);
+            margin-bottom: 20px;
+            border: 1px solid color-mix(in srgb, var(--hd-yellow) 20%, transparent);
+        }
+
+        /* ==========================================================
+           TABELAS DETALHADAS — ESTRUTURA COMPACTA EM DUAS COLUNAS
+           ========================================================== */
+
+        .detailed-grid {
+            display: grid;
+            grid-template-columns: minmax(315px, 350px) minmax(315px, 350px);
+            gap: 5px;
+            align-items: start;
+            justify-content: start;
+            max-width: 760px;
+        }
+
+        .detail-column {
+            width: 100%;
+            background: rgba(19,19,19,.92);
+            border: 1px solid var(--hd-yellow);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .detail-header {
+            margin: 0;
+            padding: 7px 8px;
+            text-align: center;
+            background: var(--hd-yellow);
+            color: #080808;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.12;
+        }
+
+        .detail-subheader {
+            margin: 0;
+            padding: 6px 8px;
+            text-align: center;
+            background: color-mix(in srgb, var(--hd-yellow) 88%, white 12%);
+            color: #090909;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .stats-table td,
+        .stats-table th {
+            padding: 5px 6px;
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 78%, transparent);
+            vertical-align: middle;
+        }
+
+        .stats-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .stats-table td:first-child {
+            width: 53%;
+            color: var(--hd-yellow) !important;
+            font-size: 11.5px;
+            font-weight: 900;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stats-table td:last-child {
+            color: #f6f6f6;
+            font-size: 12.5px;
+            text-align: left;
+            padding-left: 7px;
+        }
+
+        .stats-table tr.table-sub-header th {
+            padding: 6px 7px;
+            text-align: center;
+            background: color-mix(in srgb, var(--hd-yellow) 92%, white 8%);
+            color: #090909;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: none;
+        }
+
+        .stats-table .value-with-icon,
+        .stats-table .flex-td {
+            justify-content: flex-start;
+        }
+
+        .stats-table .value-with-icon img,
+        .stats-table .flex-td img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .attack-control-row td {
+            background: color-mix(in srgb, var(--hd-yellow) 7%, transparent);
+        }
+
+        .attack-control-row td:first-child {
+            color: var(--hd-yellow) !important;
+            font-size: 10.5px;
+            max-width: 190px;
+        }
+
+        .attack-control-row td:last-child {
+            white-space: nowrap;
+        }
+
+        .blink-toggle {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 0;
+            border: 0 !important;
+            background: transparent !important;
+            border-radius: 0;
+            font-size: 10.5px;
+            font-weight: 900;
+            text-transform: lowercase;
+            cursor: pointer;
+            animation: none;
+            transition: color .15s ease;
+            user-select: none;
+        }
+
+        .blink-toggle.btn-mostrar { color: #61dd6c; }
+        .blink-toggle.btn-ocultar { color: #d9d52a; }
+        .blink-toggle:hover { color: #fff; }
+
+        .detail-right {
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .wiki-overview-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .wiki-left-text {
+                max-width: 100%;
+            }
+
+            .stratagem-infobox {
+                width: 100%;
+                max-width: 420px;
+            }
+
+            .detailed-grid {
+                grid-template-columns: minmax(0, 1fr);
+                max-width: 420px;
+            }
+        }
+    
+        /* ==========================================================
+           AQUISIÇÃO RECOLHÍVEL
+           ========================================================== */
+        .infobox-expand-trigger {
+            width: 100%;
+            border: 0;
+            border-top: 1px solid color-mix(in srgb, var(--hd-yellow) 26%, transparent);
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 22%, transparent);
+            background: color-mix(in srgb, var(--hd-yellow) 12%, rgba(0,0,0,.82));
+            color: var(--hd-yellow);
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+        }
+
+        .infobox-expand-trigger:hover {
+            background: color-mix(in srgb, var(--hd-yellow) 18%, rgba(0,0,0,.82));
+        }
+
+        .infobox-expand-trigger .expand-main {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .infobox-expand-trigger .expand-hint {
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .8px;
+            color: rgba(255,255,255,.48);
+            text-transform: uppercase;
+        }
+
+        .infobox-expand-trigger .expand-arrow {
+            display: inline-block;
+            transition: transform .2s ease;
+            font-size: 11px;
+        }
+
+        .infobox-expand-trigger[aria-expanded="true"] .expand-arrow {
+            transform: rotate(180deg);
+        }
+
+        .infobox-collapsible {
+            display: none;
+        }
+
+        .infobox-collapsible.is-open {
+            display: block;
+        }
+
+        /* ==========================================================
+           CONTROLES DAS TABELAS DETALHADAS
+           Primeiras 3: abertas por padrão.
+           Demais: poderão iniciar recolhidas nas próximas páginas.
+           ========================================================== */
+        .detail-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 0 0 10px;
+            max-width: 760px;
+        }
+
+        .detail-control-btn {
+            border: 1px solid var(--hd-yellow);
+            background: rgba(0,0,0,.68);
+            color: var(--hd-yellow);
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: .25px;
+            text-transform: uppercase;
+            transition: background .16s ease, color .16s ease, border-color .16s ease;
+        }
+
+        .detail-control-btn.is-visible {
+            color: #ff6a5d;
+            border-color: #ff6a5d;
+            background: rgba(255,106,93,.10);
+        }
+
+        .detail-control-btn.is-hidden {
+            color: #67dc73;
+            border-color: #67dc73;
+            background: rgba(103,220,115,.10);
+        }
+
+        .detail-control-btn:hover {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .detail-column.is-collapsed {
+            display: none;
+        }
+
+    
+        /* Status OPERACIONAL: pulso discreto */
+        .infobox-kicker .status-dot::before {
+            animation: operationalPulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes operationalPulse {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 5px rgba(143,218,114,.55);
+            }
+            50% {
+                opacity: .42;
+                box-shadow: 0 0 12px rgba(143,218,114,.95);
+            }
+        }
+
+        /* Aquisição: chamada visual discreta para indicar que é expansível */
+        .infobox-expand-trigger {
+            animation: acquisitionPulse 2.6s ease-in-out infinite;
+        }
+
+        .infobox-expand-trigger:hover,
+        .infobox-expand-trigger[aria-expanded="true"] {
+            animation: none;
+        }
+
+        @keyframes acquisitionPulse {
+            0%, 100% {
+                border-color: rgba(103,220,115,.34);
+                box-shadow: inset 0 0 0 rgba(103,220,115,0);
+            }
+            50% {
+                border-color: rgba(103,220,115,.82);
+                box-shadow: inset 0 0 15px rgba(103,220,115,.075);
+            }
+        }
+
+    
+        /* ==========================================================
+           ESTATÍSTICAS DETALHADAS — PADRÃO DO PROJETO
+           Caixa 1 controla as janelas de detalhe.
+           Até 3 detalhes ficam abertos inicialmente; extras podem vir ocultos.
+           ========================================================== */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .stats-box {
+            overflow: hidden;
+            width: 340px;
+            max-width: 100%;
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid var(--hd-yellow);
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .stats-box .stats-box-header {
+            background-color: var(--hd-yellow);
+            color: #000;
+            padding: 6px 10px;
+            margin: -10px -10px 10px -10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            position: relative;
+            border-bottom: none;
+            text-transform: none;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .stats-table td,
+        .stats-table th {
+            padding: 4px 8px;
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 10%, transparent);
+            vertical-align: middle;
+        }
+
+        .stats-table td:first-child {
+            font-weight: bold;
+            font-size: 12px;
+            width: 58%;
+            color: var(--hd-yellow) !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stats-table td:last-child {
+            font-size: 13px;
+            text-align: right;
+        }
+
+        .stats-table tr.table-sub-header th {
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 6px;
+            text-align: center;
+            background: color-mix(in srgb, var(--hd-yellow) 10%, transparent);
+            color: var(--hd-yellow);
+        }
+
+        .flex-td {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .flex-td img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            flex: 0 0 18px;
+        }
+
+        .blink-toggle {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--hd-yellow);
+            background: color-mix(in srgb, var(--hd-yellow) 15%, transparent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--hd-yellow);
+            margin-left: 8px;
+            animation: tableTogglePulse 4s ease-in-out infinite;
+            transition: background .2s, color .2s, border-color .2s;
+            user-select: none;
+        }
+
+        .blink-toggle.btn-mostrar {
+            color: #4CAF50;
+            border-color: #4CAF50;
+            background: rgba(76,175,80,.15);
+        }
+
+        .blink-toggle.btn-mostrar:hover {
+            background: #4CAF50;
+            color: #000;
+            animation: none;
+        }
+
+        .blink-toggle.btn-ocultar {
+            color: #F44336;
+            border-color: #F44336;
+            background: rgba(244,67,54,.15);
+        }
+
+        .blink-toggle.btn-ocultar:hover {
+            background: #F44336;
+            color: #000;
+            animation: none;
+        }
+
+        @keyframes tableTogglePulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: .45; }
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                gap: 12px;
+            }
+
+            .stats-box {
+                width: 100%;
+                max-width: 420px;
+            }
+        }
+
+    
+        /* ==========================================================
+           AJUSTES V5 — ALINHAMENTO / BOTÕES / AQUISIÇÃO SOBREPOSTA
+           ========================================================== */
+
+        /* Permite o painel de Aquisição sair para cima do card */
+        .stratagem-infobox {
+            overflow: visible !important;
+            z-index: 5;
+        }
+
+        /* Apenas o título principal da caixa fica centralizado.
+           Dados: nomes à esquerda, valores à direita. */
+        .stats-box .stats-box-header {
+            text-align: center !important;
+        }
+
+        .stats-table td:first-child {
+            text-align: left !important;
+        }
+
+        .stats-table td:last-child {
+            text-align: right !important;
+        }
+
+        .stats-table .flex-td,
+        .stats-table .value-with-icon {
+            justify-content: flex-end !important;
+            text-align: right !important;
+        }
+
+        /* Cabeçalhos internos (Arma, Projétil, Dano, Penetração...)
+           não ficam mais centralizados. */
+        .stats-table tr.table-sub-header th {
+            text-align: left !important;
+            padding-left: 8px !important;
+        }
+
+        /* ==========================================================
+           BOTÃO MOSTRAR/OCULTAR — EXATAMENTE NO PADRÃO DO PROJETO
+           ========================================================== */
+        .blink-toggle {
+            font-size: 11px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            cursor: pointer !important;
+            color: #d7d52c !important;
+            background: rgba(215, 213, 44, 0.15) !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            border: 1px solid #d7d52c !important;
+            margin-left: 8px !important;
+            animation: piscar 4.0s ease-in-out infinite !important;
+            transition: background 0.2s, color 0.2s, border-color 0.2s !important;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .blink-toggle:hover {
+            background: #d7d52c !important;
+            color: #000 !important;
+            animation: none !important;
+        }
+
+        .blink-toggle.btn-mostrar {
+            color: #4CAF50 !important;
+            border-color: #4CAF50 !important;
+            background: rgba(76, 175, 80, 0.15) !important;
+        }
+
+        .blink-toggle.btn-mostrar:hover {
+            background: #4CAF50 !important;
+            color: #000 !important;
+        }
+
+        .blink-toggle.btn-ocultar {
+            color: #F44336 !important;
+            border-color: #F44336 !important;
+            background: rgba(244, 67, 54, 0.15) !important;
+        }
+
+        .blink-toggle.btn-ocultar:hover {
+            background: #F44336 !important;
+            color: #000 !important;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+
+        /* ==========================================================
+           AQUISIÇÃO — ABRE PARA CIMA E FICA SOBREPOSTA
+           ========================================================== */
+        .acquisition-popover {
+            position: relative;
+            z-index: 30;
+        }
+
+        .infobox-expand-trigger {
+            position: relative;
+            z-index: 32;
+            width: 100%;
+            border: 0 !important;
+            border-top: 1px solid rgba(103,220,115,.45) !important;
+            background:
+                linear-gradient(90deg, rgba(103,220,115,.08), rgba(0,0,0,.12), rgba(103,220,115,.08)),
+                color-mix(in srgb, var(--hd-yellow) 9%, rgba(0,0,0,.88)) !important;
+            color: var(--hd-yellow) !important;
+            padding: 8px 10px !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            animation: acquisitionPulse 2.5s ease-in-out infinite;
+        }
+
+        .infobox-expand-trigger:hover,
+        .infobox-expand-trigger[aria-expanded="true"] {
+            animation: none;
+            background:
+                linear-gradient(90deg, rgba(103,220,115,.15), rgba(0,0,0,.16), rgba(103,220,115,.15)),
+                color-mix(in srgb, var(--hd-yellow) 12%, rgba(0,0,0,.88)) !important;
+        }
+
+        .infobox-expand-trigger .expand-main {
+            display: block;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .infobox-expand-trigger .expand-hint {
+            display: block;
+            margin-top: 2px;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .75px;
+            color: #72df7d;
+            text-transform: uppercase;
+        }
+
+        .infobox-expand-trigger .expand-arrow {
+            color: #72df7d;
+            font-size: 12px;
+            transition: transform .2s ease;
+        }
+
+        .infobox-expand-trigger[aria-expanded="true"] .expand-arrow {
+            transform: rotate(180deg);
+        }
+
+        .infobox-collapsible {
+            display: block !important;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(100% + 6px);
+            z-index: 31;
+            background:
+                linear-gradient(180deg, rgba(17,25,16,.98), rgba(8,8,8,.99));
+            border: 1px solid #72df7d;
+            box-shadow: 0 -12px 30px rgba(0,0,0,.6), 0 0 18px rgba(103,220,115,.12);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(8px) scale(.985);
+            transform-origin: bottom center;
+            transition:
+                opacity .18s ease,
+                transform .18s ease,
+                visibility .18s ease;
+        }
+
+        .infobox-collapsible.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .acquisition-panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 7px 10px;
+            color: #72df7d;
+            background: rgba(103,220,115,.09);
+            border-bottom: 1px solid rgba(103,220,115,.30);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+
+        .acquisition-panel-title small {
+            color: rgba(255,255,255,.45);
+            font-size: 8px;
+            letter-spacing: .7px;
+        }
+
+        @keyframes acquisitionPulse {
+            0%, 100% {
+                box-shadow: inset 0 0 0 rgba(103,220,115,0);
+            }
+            50% {
+                box-shadow: inset 0 0 18px rgba(103,220,115,.11);
+            }
+        }
+
+        /* O modal sempre fica acima inclusive do popover de Aquisição */
+        #imageModal {
+            z-index: 99999 !important;
+        }
+
+    
+        /* V6 — subtítulos internos centralizados */
+        .stats-table tr.table-sub-header th {
+            text-align: center !important;
+        }
+
+        /* Área pronta para vídeo futuro */
+        .video-section {
+            margin: 40px 0 0 0;
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid var(--hd-yellow);
+            padding: 20px;
+            width: fit-content;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .video-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .video-wrapper video {
+            width: 700px;
+            max-width: 100%;
+            border: 2px solid rgba(255, 123, 0, 0.4);
+            background: #000;
+        }
+
+    
+        /* VEÍCULOS — ajustes sobre o padrão das Sentinelas */
+        .infobox-media::after { content: attr(data-media-label) !important; }
+        .acquisition-source-link {
+            color: var(--hd-yellow);
+            font-weight: 900;
+            text-decoration: none;
+            border-bottom: 1px solid color-mix(in srgb, var(--hd-yellow) 52%, transparent);
+        }
+        .acquisition-source-link:hover { color:#fff; border-bottom-color:#fff; }
+        .acquisition-source-link:focus-visible {
+            outline: 1px solid var(--hd-yellow);
+            outline-offset: 2px;
+        }
+
+    </style>
+<script defer="" src="../../../theme.js"></script>
+</head>
+<body class="fundo-estrategema">
+<div class="mobile-header">
+<button class="mobile-menu-btn" id="menu-btn">☰ Menu de Navegação</button>
+</div>
+<nav class="sidebar" id="sidebar">
+<div class="logo-container">
+<img alt="Logo Helldivers BR" src="../../../imagens/fundos/site/logo.jpg"/>
+</div>
+<div class="menu-section">
+<div class="section-header">Comunidade</div>
+<ul class="menu-list">
+<li><a href="../../../index.html">Página Principal</a></li>
+<li><a href="#">Portal da Comunidade</a></li>
+<li><a href="https://discord.gg/helldiversbr" target="_blank">Nosso Servidor Discord</a></li>
+</ul>
+</div>
+<div class="menu-section">
+<div class="section-header">Equipamento</div>
+<ul class="menu-list">
+<li><a class="active" href="../../../estratagemas.html">Estratagemas</a></li>
+<li><a href="#">Armas Primárias</a></li>
+<li><a href="#">Armas Secundárias</a></li>
+<li><a href="#">Granadas</a></li>
+</ul>
+</div>
+</nav>
+<main class="main-content">
+<div class="wiki-title-block"><h1>Bomba do Inferno Portátil</h1></div>
+
+<div class="wiki-overview-section">
+<div class="wiki-left-text">
+<div class="lore-quote">Uma Hellbomb nas costas. A parte realmente importante do manual é saber quando soltá-la.</div>
+<p class="description-text" style="line-height:1.6;font-size:15px;margin-bottom:25px;">A B-100 Portable Hellbomb leva o poder de uma Hellbomb para qualquer área alcançável pelo operador. Após ser armada, inicia uma contagem regressiva irreversível antes da detonação.</p>
+
+<h3 style="color:var(--hd-yellow);font-size:16px;text-transform:uppercase;margin-bottom:15px;border-bottom:1px solid color-mix(in srgb,var(--hd-yellow) 40%,transparent);padding-bottom:5px;">Estatísticas Gerais</h3>
+<table class="stats-table general-table"><tr><td>Tempo de Chamada</td><td>9,75s</td></tr><tr><td>Recarga (Cooldown)</td><td>300 segundos</td></tr><tr><td>Usos por Missão</td><td>Ilimitado (∞)</td></tr><tr><td>Contagem após Armamento</td><td>10 segundos</td></tr><tr><td>Raio Interno</td><td>17 m</td></tr><tr><td>Raio Externo</td><td>25 m</td></tr></table>
+</div>
+
+<div class="stratagem-infobox">
+<div class="infobox-kicker">
+<span>SUPER EARTH // BACKPACK SYSTEM</span>
+<span class="status-dot">OPERACIONAL</span>
+</div>
+
+<div class="infobox-title">
+B-100 PORTABLE HELLBOMB
+<span class="infobox-subtitle">EXPLOSIVO ESTRATÉGICO PORTÁTIL</span>
+</div>
+
+<div class="infobox-media" data-media-label="BACKPACK // FIELD SUPPORT SYSTEM">
+<img id="armaImg" src="../../../imagens/estratagemas/3-mochilas/Portable_Hellbomb_Stratagem_Icon_Background.svg"
+alt="Bomba do Inferno Portátil" class="main-art" title="Clique para ampliar">
+</div>
+
+<div class="infobox-section-label"><span>Informações de Combate</span><small>FIELD DATA</small></div>
+<table class="infobox-table">
+<tr><td>Tipo de Permissão</td><td class="combat-type">Suprimento</td></tr>
+<tr><td>Características</td><td class="trait-line">Hellpod • Mochila • Explosivo • Anti-Tank</td></tr>
+<tr><td>Código de Ativação</td><td><div class="code-inline"><img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo"><img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita"><img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima"><img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima"><img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima"></div></td></tr>
+<tr><td>Recarga Base</td><td>300s</td></tr>
+</table>
+
+
+<div class="acquisition-popover">
+<button aria-controls="acquisitionPanel" aria-expanded="false" class="infobox-expand-trigger" id="acquisitionToggle" type="button">
+<span><span class="expand-main">Aquisição</span><span class="expand-hint">Clique para expandir</span></span>
+<span class="expand-arrow">▲</span>
+</button>
+<div class="infobox-collapsible" id="acquisitionPanel">
+<div class="acquisition-panel-title"><span>Dados de Aquisição</span><small>REQUISITION DATA</small></div>
+<table class="infobox-table">
+<tr><td>Nível de Desbloqueio</td><td>N/A</td></tr>
+<tr><td>Custo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/icons/medals.png" alt="Medalhas"> 110 Medalhas</span></td></tr>
+<tr><td>Fonte</td><td><a class="acquisition-source-link" href="../../../warbonds/warbonds-wiki.html" title="Abrir Passe de Guerra">Servants of Freedom P3</a></td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
+<div class="stats-grid"><div class="stats-box"><h3 class="stats-box-header">B-100 PORTABLE HELLBOMB</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Área de Efeito</th></tr><tr><td>Raio Interno</td><td>17 m</td></tr><tr><td>Raio Externo</td><td>25 m</td></tr><tr><td>Raio da Onda de Choque</td><td>45 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Raio Interno</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 10.000 Explosão</span></td></tr><tr><td>Interno Durável</td><td><span class="value-with-icon"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 10.000 Explosão</span></td></tr><tr><td>Raio Externo</td><td>9.999 - 0</td></tr><tr><td>Externo Durável</td><td>9.999 - 0</td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direto</td><td>Anti-Tank VI</td></tr><tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr><tr><td>Força de Demolição</td><td>60</td></tr><tr><td>Força de Stun (Stagger)</td><td>50</td></tr><tr><td>Força de Push (Push)</td><td>100</td></tr></table></div></div>
+
+
+<section class="video-section" id="demonstracao-video">
+<h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
+<div class="video-wrapper">
+<video autoplay loop muted playsinline controls preload="metadata">
+<source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/4-mochilas/Portable_Hellbomb_Preview_Video.mp4" type="video/mp4">
+Seu navegador atual não suporta a visualização de vídeos.
+</video>
+</div>
+</section>
+</main>
+<div class="modal" id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.85);align-items:center;justify-content:center;">
+<span class="close-btn" style="position:absolute;top:20px;right:40px;color:var(--hd-yellow);font-size:40px;font-weight:bold;cursor:pointer;">×</span>
+<img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);"/>
+</div>
+<script>
+        function toggleJanelaLateral(idJanela, botao) {
+            const janela = document.getElementById(idJanela);
+            if (!janela) return;
+
+            const estaOculta = getComputedStyle(janela).display === 'none';
+
+            if (estaOculta) {
+                janela.style.display = 'block';
+                botao.textContent = '[Ocultar]';
+                botao.classList.remove('btn-mostrar');
+                botao.classList.add('btn-ocultar');
+            } else {
+                janela.style.display = 'none';
+                botao.textContent = '[Mostrar]';
+                botao.classList.remove('btn-ocultar');
+                botao.classList.add('btn-mostrar');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            /* Menu lateral */
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    menuBtn.innerHTML = sidebar.classList.contains('active')
+                        ? '✕ FECHAR MENU'
+                        : '☰ MENU DE NAVEGAÇÃO';
+                });
+            }
+
+            /* Aquisição: popover abre para cima sem alterar altura do card */
+            const acquisitionToggle = document.getElementById('acquisitionToggle');
+            const acquisitionPanel = document.getElementById('acquisitionPanel');
+
+            if (acquisitionToggle && acquisitionPanel) {
+                acquisitionToggle.addEventListener('click', function(event) {
+                    event.stopPropagation();
+
+                    const abrir = !acquisitionPanel.classList.contains('is-open');
+                    acquisitionPanel.classList.toggle('is-open', abrir);
+                    acquisitionToggle.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+
+                    const hint = acquisitionToggle.querySelector('.expand-hint');
+                    if (hint) {
+                        hint.textContent = abrir
+                            ? 'Clique para recolher'
+                            : 'Clique para expandir';
+                    }
+                });
+
+                acquisitionPanel.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (
+                        acquisitionPanel.classList.contains('is-open') &&
+                        !acquisitionToggle.contains(event.target) &&
+                        !acquisitionPanel.contains(event.target)
+                    ) {
+                        acquisitionPanel.classList.remove('is-open');
+                        acquisitionToggle.setAttribute('aria-expanded', 'false');
+
+                        const hint = acquisitionToggle.querySelector('.expand-hint');
+                        if (hint) hint.textContent = 'Clique para expandir';
+                    }
+                });
+            }
+
+            /* Zoom da imagem */
+            const modal = document.getElementById('imageModal');
+            const imgArma = document.getElementById('armaImg');
+            const imgAmpliada = document.getElementById('imgAmpliada');
+            const btnFechar = document.querySelector('#imageModal .close-btn');
+
+            function fecharModal() {
+                if (modal) modal.style.display = 'none';
+            }
+
+            if (imgArma && modal && imgAmpliada) {
+                imgArma.addEventListener('click', function() {
+                    imgAmpliada.src = imgArma.src;
+                    imgAmpliada.alt = imgArma.alt || 'Imagem ampliada';
+                    modal.style.display = 'flex';
+                });
+
+                if (btnFechar) {
+                    btnFechar.addEventListener('click', fecharModal);
+                }
+
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) fecharModal();
+                });
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape' && modal.style.display === 'flex') {
+                        fecharModal();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

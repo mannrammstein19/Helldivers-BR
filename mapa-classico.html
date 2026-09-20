@@ -121,9 +121,45 @@
                 <span><i class="mapa-legend-event"></i> Sob ataque</span>
                 <span><i class="mapa-legend-frontline"></i> Linha de frente</span>
             </div>
+
+            <aside class="mapa-intel-card" id="mapa-intel-card" aria-hidden="true" aria-live="polite">
+                <button class="mapa-intel-close" id="mapa-intel-close" type="button" aria-label="Fechar informações rápidas">✕</button>
+                <div class="mapa-intel-visual">
+                    <img class="mapa-intel-photo" id="mapa-intel-photo" alt="" decoding="async">
+                    <div class="mapa-intel-visual-shade" aria-hidden="true"></div>
+                    <div class="mapa-intel-faction-badge">
+                        <img id="mapa-intel-faction-icon" alt="" decoding="async">
+                        <span id="mapa-intel-faction-name">SUPER TERRA</span>
+                    </div>
+                </div>
+                <div class="mapa-intel-body">
+                    <div class="mapa-intel-kicker">INTEL RÁPIDA // PLANETA</div>
+                    <div class="mapa-intel-title" id="mapa-intel-title">PLANETA</div>
+                    <div class="mapa-intel-sector" id="mapa-intel-sector">SETOR</div>
+                    <div class="mapa-intel-status" id="mapa-intel-status">—</div>
+                    <div class="mapa-intel-progress" id="mapa-intel-progress" hidden>
+                        <div><span>PROGRESSO DA FRENTE</span><strong id="mapa-intel-progress-value">0%</strong></div>
+                        <div class="mapa-intel-progress-track"><i id="mapa-intel-progress-bar"></i></div>
+                    </div>
+                    <div class="mapa-intel-grid">
+                        <div><small>HELLDIVERS</small><strong id="mapa-intel-players">0</strong></div>
+                        <div><small>REGEN./H</small><strong id="mapa-intel-regen">0%</strong></div>
+                        <div><small>REGIÕES</small><strong id="mapa-intel-regions">0</strong></div>
+                        <div><small>OFENSIVAS</small><strong id="mapa-intel-attacking">0</strong></div>
+                    </div>
+                    <div class="mapa-intel-environment">
+                        <div><small>BIOMA</small><span id="mapa-intel-biome">—</span></div>
+                        <div><small>CLIMA / EFEITOS</small><span id="mapa-intel-climate">—</span></div>
+                    </div>
+                    <div class="mapa-intel-route" id="mapa-intel-route" hidden></div>
+                    <button class="mapa-intel-details" id="mapa-intel-details" type="button">ABRIR DOSSIÊ COMPLETO</button>
+                    <div class="mapa-intel-mobile-tip">Toque novamente no planeta ou use o botão acima para abrir o dossiê.</div>
+                </div>
+            </aside>
+
             <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
-        <div class="mapa-hint">↕ Role/pince para zoom · ⇕ Arraste para navegar · Clique em um planeta para focar as rotas e abrir o dossiê</div>
+        <div class="mapa-hint">PC: passe o mouse para ver a intel rápida e clique para abrir o dossiê · CELULAR: toque para inspecionar, toque novamente para abrir · Arraste/pince para navegar</div>
     </section>
 
     <div class="mapa-footer">HELLDIVERS-BR // Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>
@@ -137,6 +173,7 @@
         <div class="tactical-modal-kicker">DOSSIÊ TÁTICO · INTELIGÊNCIA PLANETÁRIA</div>
         <h2 class="tactical-modal-title" id="planet-modal-title">Planeta</h2>
         <div class="tactical-modal-sector"></div>
+        <div class="tactical-modal-photo" id="planet-modal-photo" aria-hidden="true"></div>
         <div class="tactical-modal-meta"></div>
         <div class="tactical-modal-progress-label"></div>
         <div class="progress tactical-modal-progress"><i></i></div>

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Helldivers BR | Comando da Comunidade</title>
 
 <meta property="og:type" content="website">
@@ -853,14 +853,19 @@
 }
 
 </style>
+<link rel="stylesheet" href="home-mobile.css">
+<script src="home-mobile.js" defer></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<script src="pwa.js" defer></script>
 </head>
 
 <body class="fundo-principal">
 <div class="mobile-header">
-    <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
+    <button aria-controls="home-menu" aria-expanded="false" id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
 </div>
 
-<nav class="sidebar">
+<nav class="sidebar" id="home-menu" aria-label="Menu principal">
     <div class="logo-container">
         <img src="imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
     </div>
@@ -906,7 +911,7 @@
 </nav>
 
 <main class="main-content">
-<div class="home-shell">
+<div class="home-shell" id="inicio">
 
     <section class="home-hero">
         <div class="hero-corner">REDE HDBR // <strong>ONLINE</strong></div>
@@ -926,7 +931,8 @@
     </section>
 
 
-    <section class="hd-overview-wrap" aria-label="Overview da Guerra Galáctica">
+<section class="mobile-missions" aria-label="Terminais de comando"><div class="mobile-section-title"><h2>Escolha sua missão</h2><span>DESLIZE →</span></div><div class="mission-track" tabindex="0" aria-label="Cards de navegação, deslize para explorar"><a class="mission-card" href="#guerra-agora" style="--mission-image:url('imagens/fundos/major-order/major-order-ativa.png')"><span class="mission-number">TERMINAL 01 / 06</span><div><h3>ORDEM MAIOR</h3><p>O próximo objetivo é de todos.</p><span class="mission-cta">Acompanhar missão <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="guerra.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_page.png')"><span class="mission-number">TERMINAL 02 / 06</span><div><h3>CENTRAL DE GUERRA</h3><p>Acompanhe as frentes. Escolha onde lutar.</p><span class="mission-cta">Abrir central <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="mapa-galatico.html" style="--mission-image:url('imagens/fundos/fundos-grids/frente.jpg')"><span class="mission-number">TERMINAL 03 / 06</span><div><h3>MAPA GALÁCTICO</h3><p>Toda a galáxia no seu radar.</p><span class="mission-cta">Explorar mapa <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="estratagemas.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_estratagema.png')"><span class="mission-number">TERMINAL 04 / 06</span><div><h3>ESTRATAGEMAS</h3><p>Prepare o arsenal do próximo mergulho.</p><span class="mission-cta">Consultar códigos <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="warbonds/warbonds-wiki.html" style="--mission-image:url('imagens/fundos/site/warbonds.png')"><span class="mission-number">TERMINAL 05 / 06</span><div><h3>WARBONDS</h3><p>Encontre seu próximo equipamento.</p><span class="mission-cta">Ver passes <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="faccoes.html" style="--mission-image:url('imagens/fundos/fundos-grids/campo.jpg')"><span class="mission-number">TERMINAL 06 / 06</span><div><h3>FACÇÕES</h3><p>Conheça as ameaças à democracia.</p><span class="mission-cta">Consultar inteligência <b aria-hidden="true">↗</b></span></div></a></div><div class="mission-pagination" aria-label="Selecionar terminal"><button type="button" aria-label="Mostrar ORDEM MAIOR" aria-pressed="true"></button><button type="button" aria-label="Mostrar CENTRAL DE GUERRA" aria-pressed="false"></button><button type="button" aria-label="Mostrar MAPA GALÁCTICO" aria-pressed="false"></button><button type="button" aria-label="Mostrar ESTRATAGEMAS" aria-pressed="false"></button><button type="button" aria-label="Mostrar WARBONDS" aria-pressed="false"></button><button type="button" aria-label="Mostrar FACÇÕES" aria-pressed="false"></button></div></section>
+    <section id="guerra-agora" class="hd-overview-wrap" aria-label="Overview da Guerra Galáctica">
         <div class="hd-overview-head">
             <div><h2>Overview da Guerra Galáctica</h2><p>Panorama rápido da guerra // dados comunitários em tempo real</p></div>
             <span class="hd-overview-status" id="hd-ov-status">SINCRONIZANDO</span>
@@ -1087,7 +1093,7 @@
     </div>
 
 </div>
-</main>
+</main><nav class="mobile-dock" aria-label="Atalhos principais"><a href="#inicio" aria-current="page"><span aria-hidden="true">⌂</span>Início</a><a href="guerra.html"><span aria-hidden="true">⚔</span>Guerra</a><a href="mapa-galatico.html"><span aria-hidden="true">◎</span>Mapa</a><a href="estratagemas.html"><span aria-hidden="true">↯</span>Arsenal</a><button type="button" id="dock-menu" aria-controls="home-menu" aria-expanded="false"><span aria-hidden="true">☰</span>Menu</button></nav>
 
 <script src="dados.js"></script>
 <script src="warbonds.js"></script>

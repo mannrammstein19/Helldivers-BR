@@ -1,0 +1,5 @@
+#hd-install{margin:16px 0;padding:12px;min-height:48px;border:1px solid var(--hd-yellow,#d7d52c);background:#161616;color:#d7d52c;font:bold 13px Arial;cursor:pointer}
+#hd-install[hidden]{display:none}
+#hd-pwa-notice{position:fixed;z-index:3000;bottom:20px;right:20px;max-width:420px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px;background:#101010;color:#eee;border:1px solid #d7d52c;box-shadow:0 8px 40px #000;font:14px/1.5 Arial}
+#hd-pwa-notice span{flex:1 1 100%}#hd-pwa-notice button{min-height:44px;padding:10px 14px;background:#d7d52c;border:0;color:#090909;font-weight:bold;cursor:pointer}
+@media(max-width:768px){#hd-pwa-notice{left:16px;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));max-width:none}}

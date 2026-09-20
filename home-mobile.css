@@ -1,0 +1,54 @@
+/* Deliberately scoped to the Home and to phone widths. */
+.mobile-missions,.mobile-dock{display:none}
+@media(max-width:768px){
+ body.fundo-principal{padding-top:56px!important;background-attachment:scroll}
+ .fundo-principal .main-content{padding:20px 16px calc(96px + env(safe-area-inset-bottom));overflow-x:clip}
+ .fundo-principal .mobile-header{height:56px;padding-top:env(safe-area-inset-top);clip-path:none}
+ .fundo-principal .mobile-menu-btn{font-size:12px;letter-spacing:1.4px;min-height:48px}
+ .fundo-principal .sidebar{top:56px!important;height:calc(100dvh - 130px - env(safe-area-inset-bottom));max-width:90vw}
+ .fundo-principal .sidebar:not(.active){visibility:hidden}
+ .fundo-principal .menu-list a{min-height:44px;display:flex;align-items:center}
+ .home-shell{display:flex;flex-direction:column;min-width:0}
+ .home-hero{min-height:0;padding:22px 18px;margin-bottom:26px;clip-path:none;border:0;border-left:3px solid var(--hd-yellow);background-position:center}
+ .hero-stamp{font-size:9px;letter-spacing:.7px;margin-bottom:14px;padding:6px 8px}
+ .home-kicker{font-size:10px;letter-spacing:1px;line-height:1.5}
+ .home-title{font-size:38px;line-height:1.05;margin-bottom:12px}
+ .home-lead{font-size:14px;line-height:1.6;color:#ccc}
+ .hero-actions{gap:8px;margin-top:18px}
+ .hero-actions a{flex:1 1 130px;min-height:48px;font-size:11px;padding:8px;text-align:center}
+ .mobile-missions{display:block;margin-bottom:30px;min-width:0}
+ .mobile-section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+ .mobile-section-title h2{font:700 23px 'Oswald',sans-serif;color:#fff;text-transform:uppercase}
+ .mobile-section-title>span{font:700 10px Arial;color:var(--hd-yellow);letter-spacing:1px}
+ .mission-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;padding:0 16px 8px;margin:0 -16px;scrollbar-width:thin;scrollbar-color:var(--hd-yellow) #222;overscroll-behavior-x:contain}
+ .mission-card{flex:0 0 86%;min-height:310px;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:22px;border:1px solid #555;border-top:3px solid var(--hd-yellow);background:linear-gradient(180deg,rgba(0,0,0,.15),#090909 96%),var(--mission-image) center/cover,#252722;color:#fff}
+ .mission-number{font:700 10px 'Oswald',sans-serif;letter-spacing:2px;color:var(--hd-yellow);align-self:flex-start;padding:7px;background:#090909c9}
+ .mission-card h3{font:700 32px/1.08 'Oswald',sans-serif;max-width:220px;margin:50px 0 12px}
+ .mission-card p{font:14px/1.5 Arial;color:#ddd;max-width:230px;margin-bottom:18px}
+ .mission-cta{display:flex;justify-content:space-between;align-items:center;min-height:46px;border-top:1px solid #777;color:var(--hd-yellow);font:700 13px 'Oswald',sans-serif;text-transform:uppercase}
+ .mission-pagination{display:flex;justify-content:center;margin-top:4px}
+ .mission-pagination button{width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+ .mission-pagination button::before{content:'';height:6px;width:6px;border-radius:10px;background:#666}
+ .mission-pagination button[aria-pressed=true]::before{width:22px;background:var(--hd-yellow)}
+ .mobile-dock{position:fixed;bottom:0;left:0;right:0;z-index:2001;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:#0b0b0bf5;border-top:1px solid #555;backdrop-filter:blur(14px)}
+ .mobile-dock a,.mobile-dock button{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;min-height:54px;border:0;background:none;color:#ccc;font:11px Arial;cursor:pointer}
+ .mobile-dock span{font-size:23px;line-height:24px}.mobile-dock [aria-current],.mobile-dock [aria-expanded=true]{color:var(--hd-yellow);background:#d7d52c12}
+ .hd-overview-head h2{font-size:23px;line-height:1.2}.hd-overview-head p{font-size:11px;line-height:1.6;margin-top:8px}
+ .hd-overview-grid,.hd-ov-side,.hd-overview-lower{grid-template-columns:1fr;gap:16px}
+ .hd-overview-lower .hd-lower-card:last-child{grid-column:auto}
+ .hd-overview-card.order{padding:0}.hd-ov-order-main{padding:20px 16px}
+ .hd-ov-brief{font-size:14px;line-height:1.6}.hd-ov-order-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hd-ov-statbox{padding:10px;min-height:60px}.hd-ov-statbox small,.hd-war-number small{font-size:11px;line-height:1.4}
+ .hd-war-number{padding:12px;min-height:80px}.hd-war-number strong{font-size:28px}
+ .hd-home-link{min-height:48px;align-items:center;font-size:12px;line-height:1.5}
+ .hd-feed{max-height:none;overflow:visible}.hd-feed-text{font-size:14px;line-height:1.6}.hd-feed-time{font-size:11px}
+ .hd-front-row{min-height:60px}.hd-faction-line{grid-template-columns:120px minmax(12px,1fr) 66px;gap:6px}
+ .hd-mo-about-close{width:44px;height:44px}.hd-mo-about-trigger small{font-size:10px;line-height:1.4}
+ .section-head{align-items:flex-start;flex-direction:column;gap:8px}.section-head h2{font-size:23px;line-height:1.2}
+ .command-grid{grid-template-columns:1fr 1fr;gap:10px}.command-card{padding:15px;min-height:180px}.command-card h3{font-size:20px;line-height:1.25;overflow-wrap:anywhere}.command-card p{font-size:13px}.command-link{font-size:12px}
+ .channel-info small{font-size:11px;line-height:1.5}.feature p{font-size:14px;line-height:1.6}
+ .home-footer{font-size:11px;line-height:1.6}.home-shell a:focus-visible,.home-shell button:focus-visible,.mobile-dock :focus-visible{outline:3px solid var(--hd-yellow);outline-offset:3px}
+ #inicio,#guerra-agora{scroll-margin-top:72px}
+}
+@media(max-width:359px){.command-grid{grid-template-columns:1fr}.mission-card{padding:18px}.mission-card h3{font-size:28px}}
+@media(prefers-reduced-motion:reduce){.mission-track{scroll-behavior:auto}}

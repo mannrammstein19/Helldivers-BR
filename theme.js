@@ -447,3 +447,19 @@
         applyZoom(readZoom());
     });
 })();
+
+// PWA shared with pages in subfolders: resolve paths from this script.
+(() => {
+ const base = new URL('.', document.currentScript.src);
+ const boot = () => {
+  if (!document.querySelector('link[rel="manifest"]')) {
+   const link = document.createElement('link'); link.rel = 'manifest';
+   link.href = new URL('manifest.webmanifest', base); document.head.append(link);
+  }
+  if (!document.querySelector('script[data-hd-pwa], script[src$="pwa.js"]')) {
+   const script = document.createElement('script'); script.dataset.hdPwa = '';
+   script.src = new URL('pwa.js', base); document.head.append(script);
+  }
+ };
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
+})();

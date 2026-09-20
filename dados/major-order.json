@@ -3,16 +3,16 @@
   "state": "active",
   "key": "806233317",
   "first_seen_at": "2026-09-18T00:13:27.962200Z",
-  "last_seen_at": "2026-09-19T23:00:44.895803Z",
-  "last_progress_update_at": "2026-09-19T23:00:44.895803Z",
-  "final_percent": 51.51,
+  "last_seen_at": "2026-09-20T06:11:04.235425Z",
+  "last_progress_update_at": "2026-09-20T06:11:04.235425Z",
+  "final_percent": 59.31,
   "outcome_source": null,
   "order": {
     "id": 806233317,
     "progress": [
-      647439037,
+      797698576,
       500000000,
-      140374633
+      185166626
     ],
     "title": "MAJOR ORDER",
     "briefing": "Uphold election security by destroying all those who would threaten it.",
@@ -110,7 +110,7 @@
         "amount": 40
       }
     ],
-    "expiration": "2026-09-21T16:01:42.2441707Z",
+    "expiration": "2026-09-21T16:02:40.310198Z",
     "flags": 0
   }
 }

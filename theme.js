@@ -463,3 +463,10 @@
  };
  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
 })();
+
+// Shared fixed mobile navigation, resolved relative to the site root.
+(() => {
+ const base=new URL('.',document.currentScript.src);
+ const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('mobile-nav.css',base);document.head.append(css);
+ const script=document.createElement('script');script.src=new URL('mobile-nav.js',base);script.async=false;document.head.append(script);
+})();

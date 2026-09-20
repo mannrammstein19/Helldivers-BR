@@ -6,7 +6,7 @@
  if(window.__hdDeployCheck||!window.isSecureContext||!crypto.subtle)return;
  window.__hdDeployCheck=true;
  const base=new URL('.',document.currentScript.src);
- const paths=['index.html','guerra.html','estratagemas.html','faccoes.html','mapa-galatico.html','mapa-classico.html','style.css','home-mobile.css','home-mobile.js','theme.js','pwa.js','deploy-check.js','pwa.css','guerra.css','guerra.js','mapa.css','mapa.js','overview.js','dados.js','warbonds.js','busca.js','manifest.webmanifest'];
+ const paths=['mobile-nav.js','mobile-nav.css','ptbr.js','index.html','guerra.html','estratagemas.html','faccoes.html','mapa-galatico.html','mapa-classico.html','style.css','home-mobile.css','home-mobile.js','theme.js','pwa.js','deploy-check.js','pwa.css','guerra.css','guerra.js','mapa.css','mapa.js','overview.js','dados.js','warbonds.js','busca.js','manifest.webmanifest'];
  const urls=new Set(paths.map(path=>new URL(path,base).href));
  // Include scripts/styles and the current page for nested sections of the site.
  const pageUrl=new URL(location.href);pageUrl.hash='';pageUrl.search='';

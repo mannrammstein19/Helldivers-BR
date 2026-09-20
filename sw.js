@@ -1,7 +1,7 @@
 /* Network-first delivery without caching live pages/assets: each navigation gets
    the current deploy. Only the explicit offline screen is stored. Never cache
    API/JSON responses or replace failed scripts/images with HTML. */
-const VERSION='2026-09-20-mobile-2';
+const VERSION='2026-09-20-mobile-3';
 const PREFIX='hdbr-offline-'+encodeURIComponent(self.registration.scope)+'-';
 const CACHE=PREFIX+VERSION;
 const OFFLINE=new URL('offline.html',self.registration.scope).href;

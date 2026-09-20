@@ -1,4 +1,15 @@
-# Helldivers BR — Home mobile enxuta + PWA (versão 2)
+# Helldivers BR — Barra inferior compartilhada + Home PT-BR (versão 3)
+
+## Novidades desta entrega
+
+- Barra inferior compartilhada nas páginas que carregam `theme.js`, com Início, Guerra, Ordem, Mapa, Arsenal e Menu. Mantém posição fixa ao rolar, respeita a área de gestos do aparelho e reserva espaço no fim do conteúdo. Inclui celular em paisagem. Diálogos continuam sobre a navegação para preservar o fechamento e a interação do modal.
+- O atalho Ordem leva para a seção já existente `guerra.html#ordem-maior`. Não há duplicação de páginas ou de dados.
+- A Home traduz os títulos/textos da Ordem Maior, títulos de objetivos e despachos usando o mesmo provedor público já utilizado pela Central (MyMemory). Inclui cache local, agrupamento de chamadas repetidas, divisão de textos longos e proteção contra respostas antigas sobrescreverem uma atualização. A tradução da Central foi preservada.
+- A tradução depende de conexão e disponibilidade/cota do provedor; se falhar, mantém o original e identifica essa situação no atributo de idioma e na dica do texto. Textos já identificados como português não são enviados novamente. A detecção automática pode não reconhecer todos os títulos curtos.
+- O resumo mobile acompanha a tradução da Ordem Maior. Os despachos completos continuam na apresentação desktop da Home e na Central, conforme o layout enxuto aprovado.
+- Mapa completo: continua sendo o site externo `hd2galaxy.com` dentro de um iframe. Não foi traduzido nesta entrega. Para traduzir seu conteúdo interno é necessária uma opção fornecida pelo próprio mapa ou uma adaptação do código dele; editar o HTML do Helldivers BR não dá acesso aos textos dentro desse iframe.
+
+Validação v3: comparação desktop sem diferenças; barra fixa e menu único na Home, Central, seção Ordem e página do mapa, inclusive após rolar; tradução de Ordem e despachos com respostas simuladas e reutilização do cache; testes anteriores de PWA, atualização e offline continuam passando. As requisições externas reais foram bloqueadas no teste; a tradução ao vivo e o mapa precisam de verificação após publicar.
 
 Este pacote é uma atualização para aplicar SOBRE o repositório atual. O ZIP de origem tinha apenas 17 arquivos; imagens, áudio, dados e páginas em subpastas não estavam incluídos. Não apague essas pastas do GitHub.
 

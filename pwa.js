@@ -4,6 +4,7 @@
  window.__hdPwaLoaded=true;
  const base=new URL('.',document.currentScript.src);
  const style=document.createElement('link');style.rel='stylesheet';style.href=new URL('pwa.css',base);document.head.append(style);
+ const detector=document.createElement('script');detector.src=new URL('deploy-check.js',base);document.head.append(detector);
  let installEvent;
  const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
  function banner(message,label,action){

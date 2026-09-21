@@ -1004,7 +1004,134 @@
             outline-offset: 2px;
         }
 
-    </style>
+    
+/* V2 — tabelas técnicas completas: preservar leitura também no mobile */
+.stats-table td:first-child{
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    overflow-wrap:anywhere;
+}
+.stats-table td:last-child{
+    overflow-wrap:anywhere;
+}
+@media (max-width: 600px){
+    .stats-grid{gap:10px;}
+    .stats-box{width:100%;max-width:100%;}
+    .stats-table td:first-child{width:52%;}
+}
+
+
+
+/* ==========================================================
+   HELLDIVERS-BR — ARMAS DE APOIO / PADRÃO SENTINELAS
+   Controlador + janelas de componentes + ícones técnicos
+   ========================================================== */
+.stats-grid{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:14px!important;
+}
+.stats-box{
+    width:340px!important;
+    max-width:100%!important;
+    flex:0 1 340px!important;
+    box-sizing:border-box!important;
+}
+.stats-box.controller-box{
+    border-color:var(--hd-yellow)!important;
+    box-shadow:0 0 14px rgba(255,235,0,.08);
+}
+.stats-box .stats-box-header,
+.stats-table .table-sub-header th{
+    text-align:center!important;
+}
+.stats-table{
+    width:100%!important;
+    table-layout:auto!important;
+}
+.stats-table td:first-child{
+    width:54%!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    text-align:left!important;
+    overflow-wrap:anywhere;
+}
+.stats-table td:last-child{
+    text-align:right!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere;
+}
+.stats-table .table-sub-header th{
+    background:var(--hd-yellow)!important;
+    color:#060606!important;
+    font-weight:900!important;
+    letter-spacing:.25px;
+}
+.attack-toggle{
+    display:inline-block;
+    margin-left:8px;
+    padding:1px 4px;
+    border:1px solid currentColor;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.15px;
+    cursor:pointer;
+    user-select:none;
+    vertical-align:middle;
+    background:rgba(0,0,0,.38);
+}
+.attack-toggle.is-visible{
+    color:#ff6158;
+    animation:hdToggleRed 2s ease-in-out infinite;
+}
+.attack-toggle.is-hidden{
+    color:#66e07a;
+    animation:hdToggleGreen 2s ease-in-out infinite;
+}
+.attack-toggle:hover,.attack-toggle:focus-visible{
+    color:#fff;
+    outline:none;
+    animation:none;
+}
+@keyframes hdToggleRed{0%,100%{opacity:.72;box-shadow:0 0 0 rgba(255,97,88,0)}50%{opacity:1;box-shadow:0 0 8px rgba(255,97,88,.34)}}
+@keyframes hdToggleGreen{0%,100%{opacity:.72;box-shadow:0 0 0 rgba(102,224,122,0)}50%{opacity:1;box-shadow:0 0 8px rgba(102,224,122,.34)}}
+.stat-value-with-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+    min-width:0;
+}
+.stat-value-with-icon img{
+    width:21px!important;
+    height:21px!important;
+    min-width:21px!important;
+    object-fit:contain!important;
+}
+.value-with-icon img[src*="medals.png"]{
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    aspect-ratio:1/1!important;
+    object-fit:contain!important;
+}
+.infobox-media .main-art{cursor:zoom-in;}
+.component-hidden{display:none!important;}
+@media(max-width:720px){
+    .stats-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;}
+    .stats-box{width:100%!important;max-width:none!important;flex:none!important;}
+    .stats-table td,.stats-table th{font-size:11px!important;}
+    .attack-toggle{font-size:9px;margin-left:5px;}
+}
+@media(min-width:721px) and (max-width:1100px){
+    .stats-box{flex:1 1 320px!important;width:auto!important;}
+}
+
+</style>
 <script defer="" src="../../../theme.js"></script>
 </head>
 <body class="fundo-estrategema">
@@ -1046,29 +1173,36 @@
 <div class="infobox-kicker"><span>SUPER EARTH // SUPPORT WEAPON</span><span class="status-dot">OPERACIONAL</span></div>
 <div class="infobox-title">PLAS-45 EPOCH<span class="infobox-subtitle">ARMA DE PLASMA CARREGADA</span></div>
 <div class="infobox-media" data-media-label="SUPPORT WEAPON // FIELD SYSTEM">
-<img id="armaImg" src="../../../imagens/estratagemas/1-armas-de-apoio/Época.svg" alt="Época PLAS-45" class="main-art" title="Clique para ampliar">
+<img alt="Época PLAS-45" class="main-art" decoding="async" id="armaImg" loading="eager" src="../../../imagens/estratagemas/1-armas-de-apoio/Época.svg" title="Clique para ampliar"/>
 </div>
 <div class="infobox-section-label"><span>Informações de Combate</span><small>FIELD DATA</small></div>
 <table class="infobox-table">
 <tr><td>Tipo de Permissão</td><td class="combat-type">Suprimento</td></tr>
 <tr><td>Características</td><td class="trait-line">Arma de Apoio • Explosiva • Penetração Pesada • Recarga Estacionária • Carregamento</td></tr>
-<tr><td>Código de Ativação</td><td><div class="code-inline"><img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo"><img src="../../../imagens/ui/icons/seta-esquerda.png" alt="Esquerda"><img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima"><img src="../../../imagens/ui/icons/seta-esquerda.png" alt="Esquerda"><img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita"></div></td></tr>
+<tr><td>Código de Ativação</td><td><div class="code-inline"><img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/><img alt="Esquerda" src="../../../imagens/ui/icons/seta-esquerda.png"/><img alt="Cima" src="../../../imagens/ui/icons/seta-cima.png"/><img alt="Esquerda" src="../../../imagens/ui/icons/seta-esquerda.png"/><img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/></div></td></tr>
 <tr><td>Recarga Base</td><td>480s</td></tr>
 </table>
 <div class="acquisition-popover">
 <button aria-controls="acquisitionPanel" aria-expanded="false" class="infobox-expand-trigger" id="acquisitionToggle" type="button"><span><span class="expand-main">Aquisição</span><span class="expand-hint">Clique para expandir</span></span><span class="expand-arrow">▲</span></button>
 <div class="infobox-collapsible" id="acquisitionPanel"><div class="acquisition-panel-title"><span>Dados de Aquisição</span><small>REQUISITION DATA</small></div>
-<table class="infobox-table"><tr><td>Nível de Desbloqueio</td><td>N/A</td></tr><tr><td>Custo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/icons/medals.png" alt="Medalhas"> 75 Medalhas</span></td></tr><tr><td>Fonte</td><td><a class="acquisition-source-link" href="../../../warbonds/warbonds-wiki.html" title="Abrir Passe de Guerra">Control Group P1</a></td></tr></table>
+<table class="infobox-table"><tr><td>Nível de Desbloqueio</td><td>N/A</td></tr><tr><td>Custo</td><td><span class="value-with-icon"><img alt="Medalhas" class="medal-icon" src="../../../imagens/ui/icons/medals.png"/> 75 Medalhas</span></td></tr><tr><td>Fonte</td><td><a class="acquisition-source-link" href="../../../warbonds/warbonds-wiki.html" title="Abrir Passe de Guerra">Control Group P1</a></td></tr></table>
 </div></div></div></div>
 <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
-<div class="stats-grid"><div class="stats-box"><h3 class="stats-box-header">PLAS-45 EPOCH</h3><table class="stats-table"><tr><td>Dano Principal</td><td>400 + 500 explosão (sem carga) • 800 + 800 explosão (carregada)</td></tr><tr><td>Penetração</td><td>Antitanque I</td></tr><tr><td>Cadência</td><td>600 rpm</td></tr><tr><td>Capacidade</td><td>3</td></tr><tr><td>Reserva</td><td>4 carregadores</td></tr><tr><td>Ergonomia</td><td>25</td></tr><tr><td>Recarga da Arma</td><td>5,15 s (4,65 s aprimorado)</td></tr></table></div></div>
-<section class="video-section" id="demonstracao-video"><h2 class="section-title" style="margin-top:0;">Demonstração em Vídeo</h2><div class="video-wrapper"><video autoplay loop muted playsinline controls preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/Epoch_Preview_Video.mp4" type="video/mp4">Seu navegador atual não suporta a visualização de vídeos.</video></div><h3 style="color:var(--hd-yellow);font-size:14px;text-transform:uppercase;margin:24px 0 10px;">Ângulo / Disparo Carregado</h3><div class="video-wrapper"><video autoplay loop muted playsinline controls preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/PLAS-45_Epoch_Charged_Shot.mp4" type="video/mp4">Seu navegador atual não suporta a visualização de vídeos.</video></div></section>
-<div style="margin-top:26px;padding:10px 12px;border-left:2px solid var(--hd-yellow);background:rgba(0,0,0,.45);font-size:11px;color:#999;line-height:1.5;">Fonte técnica de referência: <a class="acquisition-source-link" href="https://helldivers.wiki.gg/wiki/PLAS-45_Epoch" target="_blank" rel="noopener">Helldivers Wiki</a>. Dados apresentados em português e organizados no padrão Helldivers-BR.</div>
+<div class="stats-grid">
+<div class="stats-box controller-box"><h3 class="stats-box-header">PLAS-45 EPOCH</h3><table class="stats-table"><tr><td>Cadência</td><td>600 rpm</td></tr><tr><td>Recuo</td><td>36.25</td></tr><tr><td>Recuo Horizontal</td><td>17.5</td></tr><tr><td>Recuo Vertical</td><td>55</td></tr><tr><td>Dispersão</td><td>↔[30.00] ↕[30.00]</td></tr><tr><td>Oscilação</td><td>1</td></tr><tr><td>Ergonomia</td><td>25</td></tr><tr><td>Capacidade</td><td>3</td></tr><tr><td>Carregadores Reserva</td><td>4</td></tr><tr><td>Carregadores Iniciais</td><td>2</td></tr><tr><td>Carregadores por Suprimento</td><td>2</td></tr><tr><td>Carregadores por Caixa de Munição</td><td>1</td></tr><tr class="table-sub-header"><th colspan="2">Carga</th></tr><tr><td>em 1.00</td><td>P1 ×1</td></tr><tr><td>em 2.50</td><td>P2 ×1.94</td></tr><tr><td>em 2.60</td><td>P2 ×2</td></tr><tr><td>Multiplicador de Velocidade</td><td>(1) → (1)</td></tr><tr><td>Multiplicador de Distância</td><td>(0.70) → (1.40)</td></tr><tr><td>Multiplicador de Dano</td><td>(1) → (2)</td></tr><tr class="table-sub-header"><th colspan="2">Ataques</th></tr><tr><td>P1</td><td>Projétil <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-plas-45-epoch-p1" role="button" tabindex="0">[Ocultar]</span></td></tr><tr><td>P1 IE</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> Explosão</span> <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-plas-45-epoch-p1-ie" role="button" tabindex="0">[Ocultar]</span></td></tr><tr><td>P2</td><td>Projétil <span aria-expanded="false" class="attack-toggle is-hidden" data-target="componente-plas-45-epoch-p2" role="button" tabindex="0">[Mostrar]</span></td></tr><tr><td>P2 IE</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> Explosão</span> <span aria-expanded="false" class="attack-toggle is-hidden" data-target="componente-plas-45-epoch-p2-ie" role="button" tabindex="0">[Mostrar]</span></td></tr><tr><td>Overcharge E</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> Explosão</span> <span aria-expanded="false" class="attack-toggle is-hidden" data-target="componente-plas-45-epoch-overcharge-e" role="button" tabindex="0">[Mostrar]</span></td></tr></table></div>
+<div class="stats-box" id="componente-plas-45-epoch-p1"><h3 class="stats-box-header">PLAS-45 EPOCH P1</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Projétil</th></tr><tr><td>Massa</td><td>100 g</td></tr><tr><td>Velocidade Inicial</td><td>250 m/s</td></tr><tr><td>Arrasto</td><td>10%</td></tr><tr><td>Gravidade</td><td>200%</td></tr><tr><td>Vida Útil</td><td>0.600000024 sec</td></tr><tr><td>Perda de Penetração</td><td>35%</td></tr><tr><td>Explosão no Impacto</td><td>P1 IE</td></tr><tr><td>Explode Após</td><td>P1 IE</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Balístico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-balistico.png"/> 400 Balístico</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Balístico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-balistico.png"/> 200 Balístico</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Força de Demolição</td><td>10</td></tr><tr><td>Força de Cambaleio</td><td>30</td></tr><tr><td>Força de Empurrão</td><td>15</td></tr></table></div>
+<div class="stats-box" id="componente-plas-45-epoch-p1-ie"><h3 class="stats-box-header">PLAS-45 EPOCH P1 IE</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Área de Efeito</th></tr><tr><td>Raio Interno</td><td>2.29999995 m</td></tr><tr><td>Raio Externo</td><td>3 m</td></tr><tr><td>Raio da Onda</td><td>4 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Raio Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 500 Explosão</span></td></tr><tr><td>Durável Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 500 Explosão</span></td></tr><tr><td>Raio Externo</td><td>499 - 0</td></tr><tr><td>Durável Externo</td><td>499 - 0</td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeito em Área</th></tr><tr><td>Força de Demolição</td><td>10</td></tr><tr><td>Força de Cambaleio</td><td>20</td></tr><tr><td>Força de Empurrão</td><td>7</td></tr></table></div>
+<div class="stats-box component-hidden" id="componente-plas-45-epoch-p2" style="display:none;"><h3 class="stats-box-header">PLAS-45 EPOCH P2</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Projétil</th></tr><tr><td>Massa</td><td>100 g</td></tr><tr><td>Velocidade Inicial</td><td>250 m/s</td></tr><tr><td>Arrasto</td><td>10%</td></tr><tr><td>Gravidade</td><td>200%</td></tr><tr><td>Vida Útil</td><td>0.600000024 sec</td></tr><tr><td>Perda de Penetração</td><td>35%</td></tr><tr><td>Explosão no Impacto</td><td>P2 IE</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Balístico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-balistico.png"/> 800 Balístico</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Balístico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-balistico.png"/> 400 Balístico</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Força de Demolição</td><td>10</td></tr><tr><td>Força de Cambaleio</td><td>30</td></tr><tr><td>Força de Empurrão</td><td>15</td></tr></table></div>
+<div class="stats-box component-hidden" id="componente-plas-45-epoch-p2-ie" style="display:none;"><h3 class="stats-box-header">PLAS-45 EPOCH P2 IE</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Área de Efeito</th></tr><tr><td>Raio Interno</td><td>3 m</td></tr><tr><td>Raio Externo</td><td>4 m</td></tr><tr><td>Raio da Onda</td><td>5 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Raio Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 800 Explosão</span></td></tr><tr><td>Durável Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 800 Explosão</span></td></tr><tr><td>Raio Externo</td><td>799 - 0</td></tr><tr><td>Durável Externo</td><td>799 - 0</td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeito em Área</th></tr><tr><td>Força de Demolição</td><td>30</td></tr><tr><td>Força de Cambaleio</td><td>35</td></tr><tr><td>Força de Empurrão</td><td>30</td></tr></table></div>
+<div class="stats-box component-hidden" id="componente-plas-45-epoch-overcharge-e" style="display:none;"><h3 class="stats-box-header">PLAS-45 EPOCH Overcharge E</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Área de Efeito</th></tr><tr><td>Raio Interno</td><td>3 m</td></tr><tr><td>Raio Externo</td><td>4 m</td></tr><tr><td>Raio da Onda</td><td>5 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Raio Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 800 Explosão</span></td></tr><tr><td>Durável Interno</td><td><span class="stat-value-with-icon"><img alt="Explosão" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-explosao.png"/> 800 Explosão</span></td></tr><tr><td>Raio Externo</td><td>799 - 0</td></tr><tr><td>Durável Externo</td><td>799 - 0</td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-1.png"/> Antitanque I</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeito em Área</th></tr><tr><td>Força de Demolição</td><td>30</td></tr><tr><td>Força de Cambaleio</td><td>35</td></tr><tr><td>Força de Empurrão</td><td>30</td></tr></table></div>
+</div>
+<section class="video-section" id="demonstracao-video"><h2 class="section-title" style="margin-top:0;">Demonstração em Vídeo</h2><div class="video-wrapper"><video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/Epoch_Preview_Video.mp4" type="video/mp4"/>Seu navegador atual não suporta a visualização de vídeos.</video></div><h3 style="color:var(--hd-yellow);font-size:14px;text-transform:uppercase;margin:24px 0 10px;">Ângulo / Disparo Carregado</h3><div class="video-wrapper"><video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/PLAS-45_Epoch_Charged_Shot.mp4" type="video/mp4"/>Seu navegador atual não suporta a visualização de vídeos.</video></div></section>
+<div style="margin-top:26px;padding:10px 12px;border-left:2px solid var(--hd-yellow);background:rgba(0,0,0,.45);font-size:11px;color:#999;line-height:1.5;">Fonte técnica de referência: <a class="acquisition-source-link" href="https://helldivers.wiki.gg/wiki/PLAS-45_Epoch" rel="noopener" target="_blank">Helldivers Wiki</a>. Dados apresentados em português e organizados no padrão Helldivers-BR.</div>
 </main>
 <div class="modal" id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.85);align-items:center;justify-content:center;">
 <span class="close-btn" style="position:absolute;top:20px;right:40px;color:var(--hd-yellow);font-size:40px;font-weight:bold;cursor:pointer;">×</span>
-<img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);"/>
-</div>
+<img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);">
+</img></div>
 <script>
         function toggleJanelaLateral(idJanela, botao) {
             const janela = document.getElementById(idJanela);
@@ -1175,5 +1309,40 @@
             }
         });
     </script>
-</body>
+<script>
+// HELLDIVERS-BR — controles das tabelas detalhadas das Armas de Apoio
+function hdSupportToggle(button){
+    const targetId = button.getAttribute('data-target');
+    const box = document.getElementById(targetId);
+    if(!box) return;
+    const hidden = box.classList.contains('component-hidden') || getComputedStyle(box).display === 'none';
+    if(hidden){
+        box.classList.remove('component-hidden');
+        box.style.display = '';
+        button.textContent = '[Ocultar]';
+        button.classList.remove('is-hidden');
+        button.classList.add('is-visible');
+        button.setAttribute('aria-expanded','true');
+    }else{
+        box.classList.add('component-hidden');
+        box.style.display = 'none';
+        button.textContent = '[Mostrar]';
+        button.classList.remove('is-visible');
+        button.classList.add('is-hidden');
+        button.setAttribute('aria-expanded','false');
+    }
+}
+document.addEventListener('click', function(ev){
+    const b = ev.target.closest('.attack-toggle');
+    if(!b) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    hdSupportToggle(b);
+});
+document.addEventListener('keydown', function(ev){
+    if((ev.key==='Enter'||ev.key===' ') && ev.target.classList && ev.target.classList.contains('attack-toggle')){
+        ev.preventDefault(); hdSupportToggle(ev.target);
+    }
+});
+</script></body>
 </html>

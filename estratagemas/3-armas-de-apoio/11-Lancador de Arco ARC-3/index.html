@@ -1004,7 +1004,134 @@
             outline-offset: 2px;
         }
 
-    </style>
+    
+/* V2 — tabelas técnicas completas: preservar leitura também no mobile */
+.stats-table td:first-child{
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    overflow-wrap:anywhere;
+}
+.stats-table td:last-child{
+    overflow-wrap:anywhere;
+}
+@media (max-width: 600px){
+    .stats-grid{gap:10px;}
+    .stats-box{width:100%;max-width:100%;}
+    .stats-table td:first-child{width:52%;}
+}
+
+
+
+/* ==========================================================
+   HELLDIVERS-BR — ARMAS DE APOIO / PADRÃO SENTINELAS
+   Controlador + janelas de componentes + ícones técnicos
+   ========================================================== */
+.stats-grid{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:14px!important;
+}
+.stats-box{
+    width:340px!important;
+    max-width:100%!important;
+    flex:0 1 340px!important;
+    box-sizing:border-box!important;
+}
+.stats-box.controller-box{
+    border-color:var(--hd-yellow)!important;
+    box-shadow:0 0 14px rgba(255,235,0,.08);
+}
+.stats-box .stats-box-header,
+.stats-table .table-sub-header th{
+    text-align:center!important;
+}
+.stats-table{
+    width:100%!important;
+    table-layout:auto!important;
+}
+.stats-table td:first-child{
+    width:54%!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    text-align:left!important;
+    overflow-wrap:anywhere;
+}
+.stats-table td:last-child{
+    text-align:right!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere;
+}
+.stats-table .table-sub-header th{
+    background:var(--hd-yellow)!important;
+    color:#060606!important;
+    font-weight:900!important;
+    letter-spacing:.25px;
+}
+.attack-toggle{
+    display:inline-block;
+    margin-left:8px;
+    padding:1px 4px;
+    border:1px solid currentColor;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.15px;
+    cursor:pointer;
+    user-select:none;
+    vertical-align:middle;
+    background:rgba(0,0,0,.38);
+}
+.attack-toggle.is-visible{
+    color:#ff6158;
+    animation:hdToggleRed 2s ease-in-out infinite;
+}
+.attack-toggle.is-hidden{
+    color:#66e07a;
+    animation:hdToggleGreen 2s ease-in-out infinite;
+}
+.attack-toggle:hover,.attack-toggle:focus-visible{
+    color:#fff;
+    outline:none;
+    animation:none;
+}
+@keyframes hdToggleRed{0%,100%{opacity:.72;box-shadow:0 0 0 rgba(255,97,88,0)}50%{opacity:1;box-shadow:0 0 8px rgba(255,97,88,.34)}}
+@keyframes hdToggleGreen{0%,100%{opacity:.72;box-shadow:0 0 0 rgba(102,224,122,0)}50%{opacity:1;box-shadow:0 0 8px rgba(102,224,122,.34)}}
+.stat-value-with-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+    min-width:0;
+}
+.stat-value-with-icon img{
+    width:21px!important;
+    height:21px!important;
+    min-width:21px!important;
+    object-fit:contain!important;
+}
+.value-with-icon img[src*="medals.png"]{
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    aspect-ratio:1/1!important;
+    object-fit:contain!important;
+}
+.infobox-media .main-art{cursor:zoom-in;}
+.component-hidden{display:none!important;}
+@media(max-width:720px){
+    .stats-grid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;}
+    .stats-box{width:100%!important;max-width:none!important;flex:none!important;}
+    .stats-table td,.stats-table th{font-size:11px!important;}
+    .attack-toggle{font-size:9px;margin-left:5px;}
+}
+@media(min-width:721px) and (max-width:1100px){
+    .stats-box{flex:1 1 320px!important;width:auto!important;}
+}
+
+</style>
 <script defer="" src="../../../theme.js"></script>
 </head>
 <body class="fundo-estrategema">
@@ -1046,29 +1173,33 @@
 <div class="infobox-kicker"><span>SUPER EARTH // SUPPORT WEAPON</span><span class="status-dot">OPERACIONAL</span></div>
 <div class="infobox-title">ARC-3 ARC THROWER<span class="infobox-subtitle">LANÇADOR DE ARCO ELÉTRICO</span></div>
 <div class="infobox-media" data-media-label="SUPPORT WEAPON // FIELD SYSTEM">
-<img id="armaImg" src="../../../imagens/estratagemas/1-armas-de-apoio/Lançador de Arco.svg" alt="Lançador de Arco ARC-3" class="main-art" title="Clique para ampliar">
+<img alt="Lançador de Arco ARC-3" class="main-art" decoding="async" id="armaImg" loading="eager" src="../../../imagens/estratagemas/1-armas-de-apoio/Lançador de Arco.svg" title="Clique para ampliar"/>
 </div>
 <div class="infobox-section-label"><span>Informações de Combate</span><small>FIELD DATA</small></div>
 <table class="infobox-table">
 <tr><td>Tipo de Permissão</td><td class="combat-type">Suprimento</td></tr>
 <tr><td>Características</td><td class="trait-line">Arma de Apoio • Antitanque • Carregamento • Arco</td></tr>
-<tr><td>Código de Ativação</td><td><div class="code-inline"><img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo"><img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita"><img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo"><img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima"><img src="../../../imagens/ui/icons/seta-esquerda.png" alt="Esquerda"><img src="../../../imagens/ui/icons/seta-esquerda.png" alt="Esquerda"></div></td></tr>
+<tr><td>Código de Ativação</td><td><div class="code-inline"><img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/><img alt="Direita" src="../../../imagens/ui/icons/seta-direita.png"/><img alt="Baixo" src="../../../imagens/ui/icons/seta-baixo.png"/><img alt="Cima" src="../../../imagens/ui/icons/seta-cima.png"/><img alt="Esquerda" src="../../../imagens/ui/icons/seta-esquerda.png"/><img alt="Esquerda" src="../../../imagens/ui/icons/seta-esquerda.png"/></div></td></tr>
 <tr><td>Recarga Base</td><td>480s</td></tr>
 </table>
 <div class="acquisition-popover">
 <button aria-controls="acquisitionPanel" aria-expanded="false" class="infobox-expand-trigger" id="acquisitionToggle" type="button"><span><span class="expand-main">Aquisição</span><span class="expand-hint">Clique para expandir</span></span><span class="expand-arrow">▲</span></button>
 <div class="infobox-collapsible" id="acquisitionPanel"><div class="acquisition-panel-title"><span>Dados de Aquisição</span><small>REQUISITION DATA</small></div>
-<table class="infobox-table"><tr><td>Nível de Desbloqueio</td><td>15</td></tr><tr><td>Custo</td><td><span class="value-with-icon"><img src="../../../imagens/ui/icons/Requisition_Slip.svg" alt="Requisições"> 7.000</span></td></tr><tr><td>Fonte</td><td>Baía de Engenharia</td></tr></table>
+<table class="infobox-table"><tr><td>Nível de Desbloqueio</td><td>15</td></tr><tr><td>Custo</td><td><span class="value-with-icon"><img alt="Requisições" src="../../../imagens/ui/icons/Requisition_Slip.svg"/> 7.000</span></td></tr><tr><td>Fonte</td><td>Baía de Engenharia</td></tr></table>
 </div></div></div></div>
 <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
-<div class="stats-grid"><div class="stats-box"><h3 class="stats-box-header">ARC-3 ARC THROWER</h3><table class="stats-table"><tr><td>Dano Principal</td><td>250 Arc</td></tr><tr><td>Penetração</td><td>Antitanque III</td></tr><tr><td>Cadência</td><td>60 rpm</td></tr><tr><td>Capacidade</td><td>∞</td></tr><tr><td>Ergonomia</td><td>50</td></tr></table></div></div>
-<section class="video-section" id="demonstracao-video"><h2 class="section-title" style="margin-top:0;">Demonstração em Vídeo</h2><div class="video-wrapper"><video autoplay loop muted playsinline controls preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/Arc_Thrower_Preview_Video.mp4" type="video/mp4">Seu navegador atual não suporta a visualização de vídeos.</video></div></section>
-<div style="margin-top:26px;padding:10px 12px;border-left:2px solid var(--hd-yellow);background:rgba(0,0,0,.45);font-size:11px;color:#999;line-height:1.5;">Fonte técnica de referência: <a class="acquisition-source-link" href="https://helldivers.wiki.gg/wiki/ARC-3_Arc_Thrower" target="_blank" rel="noopener">Helldivers Wiki</a>. Dados apresentados em português e organizados no padrão Helldivers-BR.</div>
+<div class="stats-grid">
+<div class="stats-box controller-box"><h3 class="stats-box-header">ARC-3 ARC THROWER</h3><table class="stats-table"><tr><td>Recuo</td><td>45</td></tr><tr><td>Recuo Horizontal</td><td>45</td></tr><tr><td>Recuo Vertical</td><td>45</td></tr><tr><td>Dispersão</td><td>↔[10.00] ↕[10.00]</td></tr><tr><td>Oscilação</td><td>1</td></tr><tr><td>Ergonomia</td><td>50</td></tr><tr class="table-sub-header"><th colspan="2">Carga</th></tr><tr><td>em 1.00</td><td>DEFAULT ×1</td></tr><tr><td>em 1.10</td><td>×1</td></tr><tr><td>em 1.20</td><td>×1</td></tr><tr><td>Multiplicador de Velocidade</td><td>(0.70) → (1.40)</td></tr><tr><td>Multiplicador de Distância</td><td>(1) → (1)</td></tr><tr><td>Multiplicador de Dano</td><td>(1) → (1)</td></tr><tr class="table-sub-header"><th colspan="2">Ataques</th></tr><tr><td>ARC-3 ARC THROWER A</td><td><span class="stat-value-with-icon"><img alt="Elétrico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-eletrico.png"/> Arco</span> <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-arc-3-arc-thrower-a" role="button" tabindex="0">[Ocultar]</span></td></tr><tr><td>Stun Small</td><td>Status <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-stun-small" role="button" tabindex="0">[Ocultar]</span></td></tr></table></div>
+<div class="stats-box" id="componente-arc-3-arc-thrower-a"><h3 class="stats-box-header">ARC-3 ARC THROWER A</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Arco</th></tr><tr><td>Alcance do Arco</td><td>55 m</td></tr><tr><td>Velocidade</td><td>300 m/s</td></tr><tr><td>Dispersão</td><td>40°</td></tr><tr><td>Dispersão da Corrente</td><td>60°</td></tr><tr><td>Saltos da Corrente</td><td>1</td></tr><tr><td>Máximo de Divisões</td><td>1</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Elemento</td><td><span class="stat-value-with-icon"><img alt="Elétrico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-eletrico.png"/> Arco</span></td></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Elétrico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-eletrico.png"/> 250 Arco</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Elétrico" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-eletrico.png"/> 100 Arco</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-tank-3.png"/> Antitanque III</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png"/> Sem Armadura</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Status</td><td>Stun Small</td></tr><tr><td>Força do Status</td><td>8</td></tr><tr><td>Força de Demolição</td><td>20</td></tr><tr><td>Força de Cambaleio</td><td>35</td></tr><tr><td>Força de Empurrão</td><td>10</td></tr></table></div>
+<div class="stats-box" id="componente-stun-small"><h3 class="stats-box-header">Stun Small</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Status</th></tr><tr><td>Duração do Status</td><td>1.5 sec</td></tr></table></div>
+</div>
+<section class="video-section" id="demonstracao-video"><h2 class="section-title" style="margin-top:0;">Demonstração em Vídeo</h2><div class="video-wrapper"><video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/Arc_Thrower_Preview_Video.mp4" type="video/mp4"/>Seu navegador atual não suporta a visualização de vídeos.</video></div></section>
+<div style="margin-top:26px;padding:10px 12px;border-left:2px solid var(--hd-yellow);background:rgba(0,0,0,.45);font-size:11px;color:#999;line-height:1.5;">Fonte técnica de referência: <a class="acquisition-source-link" href="https://helldivers.wiki.gg/wiki/ARC-3_Arc_Thrower" rel="noopener" target="_blank">Helldivers Wiki</a>. Dados apresentados em português e organizados no padrão Helldivers-BR.</div>
 </main>
 <div class="modal" id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.85);align-items:center;justify-content:center;">
 <span class="close-btn" style="position:absolute;top:20px;right:40px;color:var(--hd-yellow);font-size:40px;font-weight:bold;cursor:pointer;">×</span>
-<img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);"/>
-</div>
+<img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);">
+</img></div>
 <script>
         function toggleJanelaLateral(idJanela, botao) {
             const janela = document.getElementById(idJanela);
@@ -1175,5 +1306,40 @@
             }
         });
     </script>
-</body>
+<script>
+// HELLDIVERS-BR — controles das tabelas detalhadas das Armas de Apoio
+function hdSupportToggle(button){
+    const targetId = button.getAttribute('data-target');
+    const box = document.getElementById(targetId);
+    if(!box) return;
+    const hidden = box.classList.contains('component-hidden') || getComputedStyle(box).display === 'none';
+    if(hidden){
+        box.classList.remove('component-hidden');
+        box.style.display = '';
+        button.textContent = '[Ocultar]';
+        button.classList.remove('is-hidden');
+        button.classList.add('is-visible');
+        button.setAttribute('aria-expanded','true');
+    }else{
+        box.classList.add('component-hidden');
+        box.style.display = 'none';
+        button.textContent = '[Mostrar]';
+        button.classList.remove('is-visible');
+        button.classList.add('is-hidden');
+        button.setAttribute('aria-expanded','false');
+    }
+}
+document.addEventListener('click', function(ev){
+    const b = ev.target.closest('.attack-toggle');
+    if(!b) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    hdSupportToggle(b);
+});
+document.addEventListener('keydown', function(ev){
+    if((ev.key==='Enter'||ev.key===' ') && ev.target.classList && ev.target.classList.contains('attack-toggle')){
+        ev.preventDefault(); hdSupportToggle(ev.target);
+    }
+});
+</script></body>
 </html>

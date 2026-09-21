@@ -153,18 +153,7 @@ function taskRate(o,i,p,g){
 }
 function eta(p,g,r){if(r==null||r<=0||!g||p>=g)return null;const h=(g-p)/r;if(!Number.isFinite(h)||h>2160)return null;const m=Math.max(1,Math.round(h*60)),w=Math.floor(m/10080),d=Math.floor(m%10080/1440),hh=Math.floor(m%1440/60),mm=m%60;return w?`${w}sem ${d}d`:d?`${d}d ${hh}h`:hh?`${hh}h ${mm}min`:`${mm}min`}
 function reward(o){
- const r=o?.reward||o?.setting?.reward;
- const medalId=897894480;
- const rid=Number(o?.rewardId??r?.id??r?.id32??r?.itemId??r?.itemID);
- if(r&&typeof r==='object'){
-   const a=Number(r.amount??r.value??r.quantity);
-   let t=clean(r.name||r.description||'');
-   if(!t&&rid===medalId)t='MEDALHAS';
-   if(!t&&typeof r.type==='string'&&!/^\d+$/.test(r.type.trim()))t=clean(r.type);
-   if(Number.isFinite(a)&&a>0)return`${fmt(a)} ${t||'RECOMPENSA'}`;
-   if(t)return t;
- }
- return rid===medalId?'MEDALHAS':o?.rewardId?'RECOMPENSA REGISTRADA':'RECOMPENSA NÃO INFORMADA';
+ return window.HDBRRewards.render(o);
 }
 
 function taskPercent(progress,goal,state){
@@ -184,7 +173,7 @@ function orderTaskCard(o,t,i,state){
  const rateValue=state==='active'&&g&&g>1&&!done?taskRate(o,i,p,g):null;
  const estimate=state==='active'&&!done?eta(p,g,rateValue):null;
  const progressText=g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:(done?'OBJETIVO CUMPRIDO':'TELEMETRIA EM ACOMPANHAMENTO');
- const status=done?'CUMPRIDO':state==='failed'?'ENCERRADO':state==='pending'?'AGUARDANDO':'EM ANDAMENTO';
+ const status=done?'CUMPRIDO':state==='failed'?'ENCERRADO':state==='unknown'?'ENCERRADO':state==='pending'?'AGUARDANDO':'EM ANDAMENTO';
  const rateText=done?'FINALIZADO':state!=='active'?'ÚLTIMO REGISTRO':rateValue!=null?`${rateValue>=0?'+':''}${fmt(Math.round(rateValue))}/h`:'COLETANDO';
  const etaText=done?'CONCLUÍDO':state!=='active'?'—':estimate||((g&&g<=1)?'ACOMPANHANDO':'CALCULANDO');
  return`<article class="hd-mo-task ${fc}${done?' is-complete':''}">
@@ -224,10 +213,10 @@ function bindOrderAbout(root){
  trigger.addEventListener('click',()=>setOpen(!wrap.classList.contains('is-open')));
  close?.addEventListener('click',()=>setOpen(false));
 }
-function orderState(s){return['active','completed','failed','pending'].includes(s)?s:'active'}
+function orderState(s){return['active','completed','failed','pending','unknown'].includes(s)?s:'active'}
 function applyOrderVisual(card,state){
  state=orderState(state);
- card.classList.remove('order-active','order-completed','order-failed','order-pending');
+ card.classList.remove('order-active','order-completed','order-failed','order-pending','order-unknown');
  card.classList.add(`order-${state}`);
  const img=ORDER_IMAGES[state]||ORDER_IMAGES.active;
  card.style.setProperty('--major-order-image',`url("${img}")`);
@@ -260,16 +249,17 @@ function renderOrder(d,opt={}){
  const singleFaction=count===1?taskFactionName(taskData[0].t):'';
  const taskHTML=taskData.map(x=>orderTaskCard(o,x.t,x.i,state)).join('');
 
- const completed=state==='completed',failed=state==='failed',pending=state==='pending';
+ const completed=state==='completed',failed=state==='failed',pending=state==='pending'||state==='unknown';
  const kicker=state==='active'
    ?`ORDEM MAIOR ATIVA // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'}${singleFaction?' // ALVO: '+singleFaction:''}`
    :completed?'✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA'
    :failed?'✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS'
+   :state==='unknown'?'ORDEM ENCERRADA // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
    :'◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO';
 
- const statusMain=state==='active'?'EM ANDAMENTO':completed?'VITÓRIA':failed?'FALHA':'AGUARDANDO';
+ const statusMain=state==='active'?'EM ANDAMENTO':completed?'VITÓRIA':failed?'FALHA':state==='unknown'?'RESULTADO INDISPONÍVEL':'AGUARDANDO';
  const statusClass=completed?'green':failed?'red':'yellow';
- const footer=completed?'ORDEM CONCLUÍDA':failed?'ORDEM ENCERRADA':pending?'AGUARDANDO RESULTADO':'ORDEM EM EXECUÇÃO';
+ const footer=completed?'ORDEM CONCLUÍDA':failed?'ORDEM ENCERRADA':state==='unknown'?'AGUARDANDO NOVAS ORDENS':pending?'AGUARDANDO RESULTADO':'ORDEM EM EXECUÇÃO';
 
  b.innerHTML=`<div class="hd-ov-order-main">
    <div class="hd-ov-kicker">${esc(kicker)}</div>
@@ -279,7 +269,7 @@ function renderOrder(d,opt={}){
    <div class="hd-mo-summary">
      <div class="hd-ov-statbox"><small>Tempo restante</small><strong>${esc(state==='active'?remain(exp):'ENCERRADA')}</strong></div>
      <div class="hd-ov-statbox"><small>Objetivos concluídos</small><strong class="${statusClass}">${doneCount} / ${count}</strong></div>
-     <div class="hd-ov-statbox"><small>Recompensa</small><strong class="yellow">${esc(rw)}</strong></div>
+     <div class="hd-ov-statbox"><small>Recompensa</small><strong class="yellow">${rw}</strong></div>
    </div>
 
    <div class="hd-mo-objectives-head">

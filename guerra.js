@@ -379,6 +379,7 @@
     async function autoTranslate(value) {
         const raw = clean(value);
         if (!raw) return '';
+        if (/^(major order|pedido principal|ordem maior)$/i.test(raw)) return 'ORDEM MAIOR';
 
         const cache = readTranslateCache();
         if (cache[raw]) return cache[raw];
@@ -475,7 +476,8 @@
     }
 
     function majorOrderTitle(order) {
-        return clean(order?.title || order?.setting?.overrideTitle) || 'ORDEM MAIOR';
+        const title = clean(order?.title || order?.setting?.overrideTitle);
+        return !title || /^(major order|pedido principal|ordem maior)$/i.test(title) ? 'ORDEM MAIOR' : title;
     }
 
     function majorOrderBrief(order) {
@@ -636,22 +638,11 @@
     }
 
     function majorOrderReward(order) {
-        const reward = order?.reward || order?.setting?.reward;
-        const medalId = 897894480;
-        const rid = Number(order?.rewardId ?? reward?.id ?? reward?.id32 ?? reward?.itemId ?? reward?.itemID);
-        if (reward && typeof reward === 'object') {
-            const amount = Number(reward.amount ?? reward.value ?? reward.quantity);
-            let label = clean(reward.name || reward.description || '');
-            if (!label && rid === medalId) label = 'Medalhas';
-            if (!label && typeof reward.type === 'string' && !/^\d+$/.test(reward.type.trim())) label = clean(reward.type);
-            if (Number.isFinite(amount) && amount > 0) return `${amount.toLocaleString('pt-BR')} ${label || 'recompensa'}`;
-            if (label) return label;
-        }
-        return rid === medalId ? 'Medalhas' : (order?.rewardId ? 'Recompensa registrada' : 'Recompensa não informada');
+        return window.HDBRRewards.render(order);
     }
 
     function majorOrderState(value) {
-        return ['active','completed','failed','pending'].includes(value) ? value : 'active';
+        return ['active','completed','failed','pending','unknown'].includes(value) ? value : 'active';
     }
 
     function readMajorOrderStorage(key, fallback=null) {
@@ -704,7 +695,7 @@
 
     function majorOrderVisual(article, state) {
         state = majorOrderState(state);
-        article.classList.remove('order-active','order-completed','order-failed','order-pending');
+        article.classList.remove('order-active','order-completed','order-failed','order-pending','order-unknown');
         article.classList.add(`order-${state}`);
         article.style.setProperty('--major-order-image', `url("${ORDER_IMAGES[state] || ORDER_IMAGES.active}")`);
     }
@@ -733,7 +724,7 @@
 
         const completed = state === 'completed';
         const failed = state === 'failed';
-        const pending = state === 'pending';
+        const pending = state === 'pending' || state === 'unknown';
         const doneCount = completed
             ? taskData.length
             : taskData.filter(item=>majorOrderTaskDone(item.progress,item.goal,state)).length;
@@ -750,11 +741,12 @@
                 ? `✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA`
                 : failed
                     ? `✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS`
+                    : state === 'unknown' ? 'ORDEM ENCERRADA // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
                     : `◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO`;
 
         const statusMain = state === 'active'
             ? 'EM ANDAMENTO'
-            : completed ? 'VITÓRIA' : failed ? 'FALHA' : 'AGUARDANDO';
+            : completed ? 'VITÓRIA' : failed ? 'FALHA' : state === 'unknown' ? 'RESULTADO INDISPONÍVEL' : 'AGUARDANDO';
 
         const taskCards = taskData.map(({task,index,goal,progress})=>{
             const done = majorOrderTaskDone(progress, goal, state);
@@ -820,7 +812,7 @@
                 <div class="guerra-mo-summary">
                     <div class="guerra-order-stat"><small>Tempo restante</small><strong>${escapeHTML(state === 'active' ? remaining(expiration).replace(' restantes','') : 'ENCERRADA')}</strong></div>
                     <div class="guerra-order-stat"><small>Objetivos concluídos</small><strong class="order-accent">${doneCount} / ${count}</strong></div>
-                    <div class="guerra-order-stat"><small>Recompensa</small><strong class="order-accent">${escapeHTML(reward)}</strong></div>
+                    <div class="guerra-order-stat"><small>Recompensa</small><strong class="order-accent">${reward}</strong></div>
                 </div>
 
                 <div class="guerra-mo-head">
@@ -831,7 +823,7 @@
                 <div class="guerra-mo-grid">${taskCards}</div>
 
                 <div class="guerra-order-foot">
-                    <span>${escapeHTML(state === 'active' ? 'ORDEM EM EXECUÇÃO' : completed ? 'ORDEM CONCLUÍDA' : failed ? 'ORDEM ENCERRADA' : 'AGUARDANDO RESULTADO')} // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'} REGISTRADOS</span>
+                    <span>${escapeHTML(state === 'active' ? 'ORDEM EM EXECUÇÃO' : completed ? 'ORDEM CONCLUÍDA' : failed ? 'ORDEM ENCERRADA' : state === 'unknown' ? 'AGUARDANDO NOVAS ORDENS' : 'AGUARDANDO RESULTADO')} // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'} REGISTRADOS</span>
                     <span>ALTO COMANDO</span>
                 </div>
             </article>`;

@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="#ffe34d" role="img" aria-labelledby="title"><title id="title">Estratagema — Helldivers BR</title><defs><mask id="shape" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128"><g fill="#fff"><path d="M57 8v18A39 39 0 0 0 27 70L11 80A57 57 0 0 1 57 8zM71 8a57 57 0 0 1 46 72l-16-10a39 39 0 0 0-30-44zM19 92l16-10a39 39 0 0 0 58 0l16 10a57 57 0 0 1-90 0z"/>
+<path d="m64 40 17 7 7 17-7 17-17 7-17-7-7-17 7-17z"/>
+<path d="m64 49 5 10 11 2-8 8 2 11-10-6-10 6 2-11-8-8 11-2z" fill="#000"/></g></mask></defs><path d="M0 0h128v128H0z" mask="url(#shape)"/></svg>

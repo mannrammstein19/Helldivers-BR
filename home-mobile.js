@@ -25,7 +25,7 @@
   const title=order.querySelector('.hd-ov-title'),stale=!sourceStatus.textContent.includes('DADOS ATUALIZADOS');
   summaryTitle.textContent=title?.textContent||'A missão continua.';
   summaryBrief.textContent=order.querySelector('.hd-ov-brief')?.textContent||'Consulte os objetivos e o andamento da operação na Central de Guerra.';
-  summaryState.textContent=title?(order.classList.contains('order-completed')?'CONCLUÍDA — AGUARDANDO NOVAS ORDENS':order.classList.contains('order-failed')?'PERDIDA — AGUARDANDO NOVAS ORDENS':order.classList.contains('order-pending')?'AGUARDANDO CONFIRMAÇÃO DO RESULTADO':stale?'ÚLTIMO REGISTRO':'EM ANDAMENTO'):'CONSULTE A CENTRAL';
+  summaryState.textContent=title?(order.classList.contains('order-completed')?'CONCLUÍDA — AGUARDANDO NOVAS ORDENS':order.classList.contains('order-failed')?'PERDIDA — AGUARDANDO NOVAS ORDENS':order.classList.contains('order-unknown')?'RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS':order.classList.contains('order-pending')?'AGUARDANDO CONFIRMAÇÃO DO RESULTADO':stale?'ÚLTIMO REGISTRO':'EM ANDAMENTO'):'CONSULTE A CENTRAL';
   summaryMeta.replaceChildren();
   [...order.querySelectorAll('.hd-mo-summary .hd-ov-statbox')].slice(0,2).forEach(stat=>{
    const label=stat.querySelector('small'),value=stat.querySelector('strong');if(!label||!value)return;

@@ -12,6 +12,11 @@ window.HDBROrderState = (() => {
     let state = live ? 'active' : (terminal(snapshot?.state) ? snapshot.state : 'pending');
     // O navegador nao transforma dados antigos em prova de derrota.
     if (state === 'active' && Number.isFinite(expires) && expires <= now) state = 'pending';
+    if (state === 'pending') {
+      const missing = Date.parse(snapshot?.missing_since);
+      const ended = Number.isFinite(expires) && expires <= now ? expires : missing;
+      if (Number.isFinite(ended) && now - ended >= 30*60*1000) state = 'unknown';
+    }
     return {order, state, snapshot};
   }
   return {resolve};

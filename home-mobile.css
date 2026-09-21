@@ -1,11 +1,8 @@
 /* Deliberately scoped to the Home and to phone widths. */
 .mobile-missions,.mobile-dock{display:none}
 @media(max-width:768px){
- body.fundo-principal{padding-top:56px!important;background-attachment:scroll}
+ body.fundo-principal{background-attachment:scroll}
  .fundo-principal .main-content{padding:20px 16px calc(96px + env(safe-area-inset-bottom));overflow-x:clip}
- .fundo-principal .mobile-header{height:56px;padding-top:env(safe-area-inset-top);clip-path:none}
- .fundo-principal .mobile-menu-btn{font-size:12px;letter-spacing:1.4px;min-height:48px}
- .fundo-principal .sidebar{top:56px!important;height:calc(100dvh - 130px - env(safe-area-inset-bottom));max-width:90vw}
  .fundo-principal .sidebar:not(.active){visibility:hidden}
  .fundo-principal .menu-list a{min-height:44px;display:flex;align-items:center}
  .home-shell{display:flex;flex-direction:column;min-width:0}
@@ -56,9 +53,6 @@
 /* Mobile gateway: replaces the long Home presentation without altering desktop. */
 .mobile-welcome,.mobile-order,.mobile-community{display:none}
 @media(max-width:768px){
- body.fundo-principal{padding-top:calc(56px + env(safe-area-inset-top))!important}
- .fundo-principal .mobile-header{height:calc(56px + env(safe-area-inset-top))}
- .fundo-principal .sidebar{top:calc(56px + env(safe-area-inset-top))!important;height:calc(100dvh - 130px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
  .home-shell>.home-hero,.home-shell>.hd-overview-wrap,.home-shell>.home-section{display:none}
  .mobile-welcome{display:block;margin:4px 0 26px}
  .mobile-eyebrow{font:700 10px 'Oswald',Arial,sans-serif;letter-spacing:2px;color:var(--hd-yellow)}
@@ -79,8 +73,18 @@
  .mobile-order p{font:14px/1.55 Arial;color:#bbb;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
  .mobile-order-meta{display:flex;gap:14px;flex-wrap:wrap;font:12px/1.5 Arial;color:#bbb;margin-top:12px}.mobile-order-meta[hidden]{display:none}.mobile-order-meta strong{color:#eee}
  .mobile-order>a{display:flex;justify-content:space-between;align-items:center;min-height:48px;margin-top:12px;border-top:1px solid #333;color:var(--hd-yellow);font:700 13px 'Oswald',sans-serif;text-transform:uppercase}
- .mobile-community{display:flex;align-items:center;gap:12px;padding:18px 14px;border:1px solid #6267c9;background:#252746;color:#fff;min-height:88px}
- .community-mark{font-size:27px;color:#c0c3ff}.mobile-community div{flex:1}.mobile-community h2{font:700 16px/1.3 'Oswald',sans-serif}.mobile-community p{font:12px/1.5 Arial;color:#d2d3ea;margin-top:4px}
  .home-footer{margin-top:24px;padding:14px 0 0;gap:6px;font-size:10px;line-height:1.5}.home-footer span:last-child{display:none}
  #inicio{scroll-margin-top:calc(72px + env(safe-area-inset-top))}
+}
+
+/* Discord invitation: the reserved logo uses icons/discord.png when supplied. */
+@media(max-width:768px){
+ .mobile-community{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;padding:20px;background:linear-gradient(135deg,#181a30,#0c0e17);border:1px solid #454a7a;border-top:2px solid #8890ff;color:#fff;position:relative;overflow:hidden}
+ .discord-logo-slot{width:64px;height:64px;border:1px solid #676eab66;border-radius:14px;background:#5865f21c;display:grid;place-items:center;align-self:center;overflow:hidden}
+ .discord-logo-slot img{width:48px;height:48px;object-fit:contain}.discord-logo-slot img[hidden]{display:none}
+ .discord-copy{min-width:0}.discord-eyebrow{display:block;color:#b5baff;font:700 10px/1.5 Arial;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+ .mobile-community h2{font:700 23px/1.15 'Oswald',Arial,sans-serif;margin:0;color:#fff}
+ .mobile-community p{font:13px/1.6 Arial;color:#bdc1d8;margin:8px 0 0}
+ .discord-join{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 16px;background:#5865f2;color:white;border:1px solid #8a93ff;font:700 13px/1.4 Arial}
+ .mobile-community:hover .discord-join,.mobile-community:focus-visible .discord-join{background:#6975ff}
 }

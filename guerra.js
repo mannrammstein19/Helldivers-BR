@@ -1399,6 +1399,10 @@
     }
 
     async function updateAll(force=false) {
+        if (document.body.hasAttribute('data-order-only')) {
+            await fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d));
+            return;
+        }
         setText('stat-updated','ATUALIZANDO');
         // Sequencial de propósito: respeita o limite atual de 5 req/10s e evita rajadas.
         const tasks = [

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Helldivers BR | Ordem Maior</title>
+<meta name="description" content="Ordem Maior Helldivers BR: objetivos, recompensas e resultado da missão.">
+<meta name="theme-color" content="#FFE800">
+<script src="theme.js"></script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Helldivers BR | Ordem Maior">
+<meta property="og:description" content="Acompanhe os objetivos, as recompensas e o resultado da Ordem Maior.">
+<meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/imagens/fundos/site/wallpaper_principal_4_helldivers.png">
+<meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/ordem.html">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="guerra.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<script src="pwa.js" defer></script>
+</head>
+<body class="fundo-guerra" data-order-only>
+
+<div class="mobile-header">
+    <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
+</div>
+
+<nav class="sidebar">
+    <div class="logo-container">
+        <img src="imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Comunidade</div>
+        <ul class="menu-list">
+            <li><a href="index.html">Página Principal</a></li>
+            <li><a href="guerra.html" class="active">⚔ Central de Guerra</a></li>
+            <li><a href="discord/index.html" target="_blank" rel="noopener">Nosso Servidor Discord</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Aquisições</div>
+        <ul class="menu-list">
+            <li><a href="warbonds/warbonds-wiki.html">Passes de Guerra</a></li>
+            <li><a href="#">Superloja</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Equipamento</div>
+        <ul class="menu-list">
+            <li><a href="estratagemas.html">Estratagemas</a></li>
+            <li><a href="#">Armas Primárias</a></li>
+            <li><a href="#">Armas Secundárias</a></li>
+            <li><a href="#">Granadas</a></li>
+            <li><a href="#">Armaduras &amp; Passivas</a></li>
+            <li><a href="#">Boosters</a></li>
+        </ul>
+    </div>
+    <div class="menu-section">
+        <div class="section-header">Inimigos &amp; Facções</div>
+        <ul class="menu-list">
+            <li><a href="faccoes.html">Facções</a></li>
+            <li><a href="inimigos/automatos.html">Autômatos</a></li>
+            <li><a href="inimigos/terminideos.html">Termínios</a></li>
+            <li><a href="inimigos/iluminados.html">Iluminados</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content guerra-main">
+<div class="guerra-shell">
+    <div class="guerra-topbar"><strong>HELLDIVERS-BR // ORDEM MAIOR</strong></div>
+    <section class="guerra-panel" aria-label="Ordem Maior">
+        <div class="guerra-panel-head"><h1 style="font-size:inherit;margin:0">◆ Ordem Maior</h1><small>Alto Comando da Super Terra</small></div>
+        <div class="guerra-panel-body" id="ordem-maior"><div class="loading">Consultando Alto Comando...</div></div>
+    </section>
+</div>
+</main>
+
+<link rel="stylesheet" href="order-rewards.css">
+<script src="order-rewards.js"></script>
+<script src="order-state.js"></script>
+<script src="guerra.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');
+    if(btn && side) btn.addEventListener('click',()=>{ side.classList.toggle('active'); btn.textContent=side.classList.contains('active')?'✕ Fechar Menu':'☰ MENU DE NAVEGAÇÃO'; });
+});
+</script>
+</body>
+</html>

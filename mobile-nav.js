@@ -15,7 +15,7 @@
   if(document.querySelector('[data-hd-navigation]'))return;
   document.querySelector('.mobile-dock')?.remove();
   const nav=document.createElement('nav');nav.className='mobile-dock';nav.dataset.hdNavigation='';nav.setAttribute('aria-label','Navegação principal');
-  const entries=[['index.html','⌂','Início'],['guerra.html','⚔','Guerra'],['guerra.html#ordem-maior','◆','Ordem'],['mapa-galatico.html','◎','Mapa'],['estratagemas.html','↯','Arsenal']];
+  const entries=[['index.html','⌂','Início'],['guerra.html','⚔','Guerra'],['ordem.html','◆','Ordem'],['mapa-galatico.html','◎','Mapa'],['estratagemas.html','↯','Arsenal']];
   for(const [path,icon,label] of entries){
    const link=document.createElement('a');link.href=new URL(path,base);appendIcon(link,label,icon);nav.append(link);
   }

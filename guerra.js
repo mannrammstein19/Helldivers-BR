@@ -715,15 +715,8 @@
 
         await loadPlanetCatalog();
 
-        let order = majorOrderPick(assignments);
-        let snapshot = null;
-        let state = 'active';
-
-        if (!order) {
-            snapshot = await loadMajorOrderSnapshot();
-            order = snapshot?.order || null;
-            state = majorOrderState(snapshot?.state || 'pending');
-        }
+        const snapshot = await loadMajorOrderSnapshot();
+        const {order, state} = window.HDBROrderState.resolve(majorOrderPick(assignments), snapshot);
 
         if (!order) {
             box.innerHTML = '<div class="empty-state">Nenhuma Ordem Maior registrada no momento.</div>';
@@ -756,8 +749,8 @@
             : completed
                 ? `✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA`
                 : failed
-                    ? `✕ ORDEM MAIOR ENCERRADA // OBJETIVO NÃO CUMPRIDO`
-                    : `◉ ORDEM ENCERRADA // AGUARDANDO CONFIRMAÇÃO DO ALTO COMANDO`;
+                    ? `✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS`
+                    : `◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO`;
 
         const statusMain = state === 'active'
             ? 'EM ANDAMENTO'
@@ -789,11 +782,13 @@
                 : failed ? 'ENCERRADO' : pending ? 'AGUARDANDO' : 'EM ANDAMENTO';
             const rateText = done
                 ? 'FINALIZADO'
+                : state !== 'active' ? 'ÚLTIMO REGISTRO'
                 : rate != null
                     ? `${rate >= 0 ? '+' : ''}${Math.round(rate).toLocaleString('pt-BR')}/h`
                     : 'COLETANDO';
             const etaText = done
                 ? 'CONCLUÍDO'
+                : state !== 'active' ? '—'
                 : (eta || ((goal && goal <= 1) ? 'ACOMPANHANDO' : 'CALCULANDO'));
 
             return `

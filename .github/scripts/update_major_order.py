@@ -183,7 +183,7 @@ def completion_metrics(order):
     total_goal = sum(g for _, g in known)
     total_progress = sum(min(p, g) for p, g in known)
     percent = (total_progress / total_goal * 100) if total_goal else None
-    return {"known": True, "all_complete": done == total, "percent": percent, "done": done, "total": total}
+    return {"known": True, "all_complete": done == total and total == len(tasks), "percent": percent, "done": done, "total": total}
 
 
 def published_time(dispatch):
@@ -202,16 +202,16 @@ def dispatch_outcome(dispatches, since):
         if not isinstance(d, dict):
             continue
         dt = published_time(d)
-        if since and dt and dt < since - timedelta(minutes=5):
+        if not since or not dt or dt < since:
             continue
         msg = clean_text(d.get("message") or d.get("title") or "")
         if msg:
-            candidates.append(msg)
-    joined = "\n".join(candidates)
-    if fail_re.search(joined):
-        return "failed", "dispatch"
-    if success_re.search(joined):
-        return "completed", "dispatch"
+            candidates.append((dt, msg))
+    for _, msg in sorted(candidates, reverse=True):
+        if fail_re.search(msg):
+            return "failed", "dispatch"
+        if success_re.search(msg):
+            return "completed", "dispatch"
     return None, None
 
 
@@ -242,11 +242,22 @@ def main():
 
     try:
         assignments = fetch_json("assignments")
+        if not isinstance(assignments, list) and not (isinstance(assignments, dict) and isinstance(assignments.get("data"), list)):
+            raise ValueError("Resposta de assignments invalida")
     except Exception as exc:
         print(f"[major-order] API indisponivel; snapshot preservado: {exc}")
         return 0
 
+    expired_live = False
     active = pick_order(assignments)
+    if active:
+        expiration = parse_date(active.get("expiration") or active.get("expiresAt") or active.get("expireTime"))
+        if expiration and now >= expiration:
+            expired_live = True
+            if not (same_order(previous, active) and previous.get("state") in {"completed", "failed"}):
+                previous = build_active(active, previous)
+                previous.update(state="pending", missing_since=iso(now - MISSING_CONFIRM))
+            active = None
     if active:
         key = order_key(active)
 
@@ -290,10 +301,10 @@ def main():
     order = previous["order"]
     metrics = completion_metrics(order)
     expiration = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
-    first_seen = parse_date(previous.get("first_seen_at"))
+    first_seen = parse_date(previous.get("last_seen_at"))
 
     # Primeira leitura vazia: nao conclui nada ainda, para evitar falso positivo por cache/API.
-    if previous.get("state") != "pending":
+    if previous.get("state") != "pending" and not (expiration and now >= expiration):
         pending = dict(previous)
         pending.update({"state": "pending", "missing_since": iso(now), "outcome_source": None})
         if metrics["percent"] is not None:
@@ -303,12 +314,14 @@ def main():
         return 0
 
     missing_since = parse_date(previous.get("missing_since")) or now
-    if now - missing_since < MISSING_CONFIRM:
+    if now - missing_since < MISSING_CONFIRM and not (expiration and now >= expiration):
         print("[major-order] Ainda dentro da janela de confirmacao.")
         return 0
 
-    # 1) objetivo numericamente completo
-    state = "completed" if metrics["all_complete"] else None
+    # Apenas contadores de eliminacao sao irreversiveis; manter planetas exige resultado.
+    tasks = order.get("tasks") or []
+    counters = bool(tasks) and all(t.get("type") == 3 for t in tasks)
+    state = "completed" if counters and metrics["all_complete"] else None
     source = "objective_progress" if state else None
 
     # 2) despacho do Alto Comando posterior ao inicio da ordem
@@ -319,15 +332,22 @@ def main():
         except Exception as exc:
             print(f"[major-order] Dispatches indisponiveis: {exc}")
 
-    # 3) se expirou sem cumprir, falhou
-    if not state and expiration and now >= expiration:
-        state, source = "failed", "expiration"
+    # Progresso antigo pode ter mudado antes do prazo; nao prova derrota.
+    # Uma coleta da propria ordem ja expirada com contador incompleto e conclusiva.
+    if not state and expired_live and counters and isinstance(order.get("progress"), list) and any(
+        i < len(order["progress"]) and num(order["progress"][i]) is not None
+        and task_goal(t) and num(order["progress"][i]) < task_goal(t)
+        for i, t in enumerate(tasks)
+    ):
+        state, source = "failed", "expired_live_progress"
 
-    # 4) se desapareceu antes do prazo e continua ausente, normalmente foi concluida cedo.
-    if not state and expiration and now < expiration:
-        state, source = "completed", "removed_before_expiration"
+    # Ausencia antes do prazo nao prova vitoria nem derrota.
 
     if not state:
+        pending = dict(previous)
+        pending.update(state="pending", missing_since=iso(missing_since))
+        if pending != load_snapshot():
+            write_snapshot(pending)
         print("[major-order] Resultado ainda inconclusivo; mantendo AGUARDANDO.")
         return 0
 

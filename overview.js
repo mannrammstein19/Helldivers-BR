@@ -185,8 +185,8 @@ function orderTaskCard(o,t,i,state){
  const estimate=state==='active'&&!done?eta(p,g,rateValue):null;
  const progressText=g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:(done?'OBJETIVO CUMPRIDO':'TELEMETRIA EM ACOMPANHAMENTO');
  const status=done?'CUMPRIDO':state==='failed'?'ENCERRADO':state==='pending'?'AGUARDANDO':'EM ANDAMENTO';
- const rateText=done?'FINALIZADO':rateValue!=null?`${rateValue>=0?'+':''}${fmt(Math.round(rateValue))}/h`:'COLETANDO';
- const etaText=done?'CONCLUÍDO':estimate||((g&&g<=1)?'ACOMPANHANDO':'CALCULANDO');
+ const rateText=done?'FINALIZADO':state!=='active'?'ÚLTIMO REGISTRO':rateValue!=null?`${rateValue>=0?'+':''}${fmt(Math.round(rateValue))}/h`:'COLETANDO';
+ const etaText=done?'CONCLUÍDO':state!=='active'?'—':estimate||((g&&g<=1)?'ACOMPANHANDO':'CALCULANDO');
  return`<article class="hd-mo-task ${fc}${done?' is-complete':''}">
    <div class="hd-mo-task-kicker"><span>OBJETIVO ${String(i+1).padStart(2,'0')} // ${esc(type)}</span><strong>${esc(meta)}</strong></div>
    <h4>${esc(title)}</h4>
@@ -264,8 +264,8 @@ function renderOrder(d,opt={}){
  const kicker=state==='active'
    ?`ORDEM MAIOR ATIVA // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'}${singleFaction?' // ALVO: '+singleFaction:''}`
    :completed?'✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA'
-   :failed?'✕ ORDEM MAIOR ENCERRADA // OBJETIVO NÃO CUMPRIDO'
-   :'◉ ORDEM ENCERRADA // AGUARDANDO CONFIRMAÇÃO DO ALTO COMANDO';
+   :failed?'✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS'
+   :'◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO';
 
  const statusMain=state==='active'?'EM ANDAMENTO':completed?'VITÓRIA':failed?'FALHA':'AGUARDANDO';
  const statusClass=completed?'green':failed?'red':'yellow';
@@ -303,12 +303,9 @@ async function update(){
    await loadPlanetCatalog();
    const orderData=await get('assignments','assignments',60000);
    const liveOrder=order(orderData);
-   if(liveOrder)renderOrder(orderData,{state:'active',order:liveOrder});
-   else{
-     const snap=await loadOrderSnapshot();
-     if(snap?.order)renderOrder(null,{state:snap.state||'pending',order:snap.order,snapshot:snap});
-     else renderOrder([]);
-   }
+   const snap=await loadOrderSnapshot();
+   const resolved=window.HDBROrderState.resolve(liveOrder,snap);
+   renderOrder(null,resolved);
    await new Promise(r=>setTimeout(r,250));
    const campaignData=await get('campaigns','campaigns',60000);renderWar(campaignData);
    await new Promise(r=>setTimeout(r,250));
@@ -316,7 +313,7 @@ async function update(){
    if(st){st.textContent='DADOS ATUALIZADOS';st.classList.add('live')}
  }catch(e){
    console.error('[Helldivers-BR] overview',e);
-   try{const snap=await loadOrderSnapshot();if(snap?.order)renderOrder(null,{state:snap.state||'pending',order:snap.order,snapshot:snap})}catch{}
+   try{const snap=await loadOrderSnapshot();if(snap?.order)renderOrder(null,window.HDBROrderState.resolve(null,snap))}catch{}
    if(st){st.textContent='TELEMETRIA EM CACHE';st.classList.add('live')}
  }
 }

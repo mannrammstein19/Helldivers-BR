@@ -1,100 +1,44 @@
 {
   "schema": 1,
-  "state": "failed",
-  "key": "806233317",
-  "first_seen_at": "2026-09-18T00:13:27.962200Z",
-  "last_seen_at": "2026-09-21T11:02:09.670355Z",
-  "last_progress_update_at": "2026-09-21T11:02:09.670355Z",
-  "final_percent": 88.85,
-  "outcome_source": "owner_confirmed",
+  "state": "active",
+  "key": "4174059175",
+  "first_seen_at": "2026-09-22T14:10:30.578232Z",
+  "last_seen_at": "2026-09-22T21:18:29.476905Z",
+  "last_progress_update_at": "2026-09-22T21:18:29.476905Z",
+  "final_percent": 0.0,
+  "outcome_source": null,
   "order": {
-    "id": 806233317,
+    "id": 4174059175,
     "progress": [
-      1378490212,
-      500000000,
-      342851667
+      0,
+      0
     ],
     "title": "MAJOR ORDER",
-    "briefing": "Uphold election security by destroying all those who would threaten it.",
+    "briefing": "Liberate the designated planets to secure territory for long-term construction of the TD-110 Maelstrom Tank.",
     "description": null,
     "tasks": [
       {
-        "type": 3,
+        "type": 11,
         "values": [
-          2,
-          0,
-          1500000000,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
+          1,
+          1,
+          198
         ],
         "valueTypes": [
-          1,
-          2,
           3,
-          4,
-          6,
-          5,
-          8,
-          9,
           11,
           12
         ]
       },
       {
-        "type": 3,
+        "type": 11,
         "values": [
-          3,
-          0,
-          500000000,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
+          1,
+          1,
+          217
         ],
         "valueTypes": [
-          1,
-          2,
           3,
-          4,
-          6,
-          5,
-          8,
-          9,
-          11,
-          12
-        ]
-      },
-      {
-        "type": 3,
-        "values": [
-          4,
-          0,
-          500000000,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "valueTypes": [
-          1,
-          2,
-          3,
-          4,
-          6,
-          5,
-          8,
-          9,
           11,
           12
         ]
@@ -102,17 +46,15 @@
     ],
     "reward": {
       "type": 1,
-      "amount": 40
+      "amount": 50
     },
     "rewards": [
       {
         "type": 1,
-        "amount": 40
+        "amount": 50
       }
     ],
-    "expiration": "2026-09-21T16:03:57.5583626Z",
+    "expiration": "2026-09-26T12:10:04.901849Z",
     "flags": 0
-  },
-  "missing_since": "2026-09-21T17:00:34.994695Z",
-  "ended_at": "2026-09-21T16:03:57.5583626Z"
+  }
 }

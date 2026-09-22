@@ -855,12 +855,19 @@
 
 </style>
 <link rel="stylesheet" href="home-mobile.css">
-<script src="home-mobile.js" defer></script>
+<script src="home-mobile.js?v=36" defer></script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <script src="pwa.js" defer></script>
 <link rel="stylesheet" href="order-desktop.css">
 <script src="order-desktop.js" defer></script>
+<style>
+.hd-mo-task{border-radius:13px;}
+.hd-mo-task h4{display:flex;align-items:center;gap:9px;}
+.order-task-faction-logo{width:28px;height:28px;object-fit:contain;flex:0 0 28px;}
+.order-task-faction-logo[hidden]{display:none;}
+.hd-mo-task-progress{border-radius:5px;overflow:hidden;}
+</style>
 </head>
 
 <body class="fundo-principal">
@@ -935,12 +942,13 @@
 
 
 <header class="mobile-welcome"><span class="mobile-eyebrow">HELLDIVERS BR // COMANDO</span><h1>Pronto para<br>o próximo <em>mergulho?</em></h1><p>Escolha seu destino. Pela Super Terra.</p></header>
-<section class="mobile-missions" aria-label="Terminais de comando"><div class="mobile-section-title"><h2>Seu próximo destino</h2><span>DESLIZE →</span></div><div class="mission-track" tabindex="0" aria-label="Cards de navegação, deslize para explorar"><a class="mission-card" href="guerra.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_page.png')"><span class="mission-number">TERMINAL 01 / 05</span><div><h3>CENTRAL DE GUERRA</h3><p>Acompanhe as frentes. Escolha onde lutar.</p><span class="mission-cta">Abrir central <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="mapa-galatico.html" style="--mission-image:url('imagens/fundos/fundos-grids/frente.jpg')"><span class="mission-number">TERMINAL 02 / 05</span><div><h3>MAPA GALÁCTICO</h3><p>Toda a galáxia no seu radar.</p><span class="mission-cta">Explorar mapa <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="estratagemas.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_estratagema.png')"><span class="mission-number">TERMINAL 03 / 05</span><div><h3>ESTRATAGEMAS</h3><p>Prepare o arsenal do próximo mergulho.</p><span class="mission-cta">Consultar códigos <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="warbonds/warbonds-wiki.html" style="--mission-image:url('imagens/fundos/site/warbonds.png')"><span class="mission-number">TERMINAL 04 / 05</span><div><h3>WARBONDS</h3><p>Encontre seu próximo equipamento.</p><span class="mission-cta">Ver passes <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="faccoes.html" style="--mission-image:url('imagens/fundos/fundos-grids/campo.jpg')"><span class="mission-number">TERMINAL 05 / 05</span><div><h3>FACÇÕES</h3><p>Conheça as ameaças à democracia.</p><span class="mission-cta">Consultar inteligência <b aria-hidden="true">↗</b></span></div></a></div><div class="mission-pagination" aria-label="Selecionar terminal"><button type="button" aria-label="Mostrar CENTRAL DE GUERRA" aria-pressed="true"></button><button type="button" aria-label="Mostrar MAPA GALÁCTICO" aria-pressed="false"></button><button type="button" aria-label="Mostrar ESTRATAGEMAS" aria-pressed="false"></button><button type="button" aria-label="Mostrar WARBONDS" aria-pressed="false"></button><button type="button" aria-label="Mostrar FACÇÕES" aria-pressed="false"></button></div></section>
+<section class="mobile-missions" aria-label="Terminais de comando"><div class="mobile-section-title"><h2>Seu próximo destino</h2><span>DESLIZE →</span></div><div class="mission-track" tabindex="0" aria-label="Cards de navegação, deslize para explorar"><a class="mission-card" href="guerra.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_page.png')"><span class="mission-number">TERMINAL 01 / 05</span><div><h3>CENTRAL DE GUERRA</h3><p>Acompanhe as frentes. Escolha onde lutar.</p><span class="mission-cta">Abrir central <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="mapa-classico.html" style="--mission-image:url('imagens/fundos/fundos-grids/frente.jpg')"><span class="mission-number">TERMINAL 02 / 05</span><div><h3>MAPA GALÁCTICO</h3><p>Toda a galáxia no seu radar.</p><span class="mission-cta">Explorar mapa <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="estratagemas.html" style="--mission-image:url('imagens/fundos/site/wallpaper_principal_estratagema.png')"><span class="mission-number">TERMINAL 03 / 05</span><div><h3>ESTRATAGEMAS</h3><p>Prepare o arsenal do próximo mergulho.</p><span class="mission-cta">Consultar códigos <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="warbonds/warbonds-wiki.html" style="--mission-image:url('imagens/fundos/site/warbonds.png')"><span class="mission-number">TERMINAL 04 / 05</span><div><h3>WARBONDS</h3><p>Encontre seu próximo equipamento.</p><span class="mission-cta">Ver passes <b aria-hidden="true">↗</b></span></div></a><a class="mission-card" href="faccoes.html" style="--mission-image:url('imagens/fundos/fundos-grids/campo.jpg')"><span class="mission-number">TERMINAL 05 / 05</span><div><h3>FACÇÕES</h3><p>Conheça as ameaças à democracia.</p><span class="mission-cta">Consultar inteligência <b aria-hidden="true">↗</b></span></div></a></div><div class="mission-pagination" aria-label="Selecionar terminal"><button type="button" aria-label="Mostrar CENTRAL DE GUERRA" aria-pressed="true"></button><button type="button" aria-label="Mostrar MAPA GALÁCTICO" aria-pressed="false"></button><button type="button" aria-label="Mostrar ESTRATAGEMAS" aria-pressed="false"></button><button type="button" aria-label="Mostrar WARBONDS" aria-pressed="false"></button><button type="button" aria-label="Mostrar FACÇÕES" aria-pressed="false"></button></div></section>
 <section class="mobile-order" aria-labelledby="mobile-order-heading">
  <div class="mobile-order-top"><h2 id="mobile-order-heading">Ordem Maior</h2><span id="mobile-order-state">ALTO COMANDO</span></div>
  <h3 id="mobile-order-title">A missão continua.</h3>
  <p id="mobile-order-brief">Consulte os objetivos e o andamento da operação na Central de Guerra.</p>
  <div class="mobile-order-meta" id="mobile-order-meta" hidden></div>
+ <div id="mobile-order-objectives" class="hd-mo-objectives-grid" aria-label="Objetivos da Ordem Maior"></div>
  <a href="guerra.html#ordem-maior">Acompanhar missão <span aria-hidden="true">→</span></a>
 </section>
 <a class="mobile-community" href="discord/index.html" target="_blank" rel="noopener noreferrer">
@@ -1025,7 +1033,7 @@
                 <p>Identifique os inimigos da democracia e conheça as ameaças presentes na galáxia.</p>
                 <span class="command-link">Ver facções →</span>
             </a>
-            <a class="command-card quick-map" href="mapa-galatico.html">
+            <a class="command-card quick-map" href="mapa-classico.html">
                 <div class="command-code">04 // NAVEGAÇÃO</div>
                 <h3>Mapa Galáctico</h3>
                 <p>Visualize o teatro de operações e navegue pelos setores da guerra.</p>
@@ -1117,7 +1125,7 @@
 <link rel="stylesheet" href="order-rewards.css">
 <script src="order-rewards.js"></script>
 <script src="order-state.js"></script>
-<script src="overview.js"></script>
+<script src="overview.js?v=36"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const menuBtn = document.getElementById("menu-toggle");

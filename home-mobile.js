@@ -33,6 +33,8 @@
    item.append(label.textContent+': ');strong.textContent=value.textContent;item.append(strong);summaryMeta.append(item);
   });
   summaryMeta.hidden=!summaryMeta.children.length;
+  const objectives=document.getElementById('mobile-order-objectives');
+  if(objectives){const source=order.querySelector('.hd-mo-objectives-grid');objectives.replaceChildren(...(source?[...source.children].map(card=>card.cloneNode(true)):[]));}
  }
  new MutationObserver(syncOrder).observe(order,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
  new MutationObserver(syncOrder).observe(sourceStatus,{childList:true,subtree:true});

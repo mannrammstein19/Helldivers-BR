@@ -12,9 +12,9 @@
 <meta property="og:description" content="Versão simplificada e própria do mapa galáctico: planetas, setores, linhas de suprimento e o avanço das facções em tempo real.">
 <meta property="og:image" content="https://mannrammstein19.github.io/Helldivers-BR/imagens/fundos/site/wallpaper_principal_4_helldivers.png">
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
-<link rel="preload" as="image" href="imagens/fundos/mapa/universo-fundo.jpg">
+
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa.css">
+<link rel="stylesheet" href="mapa-classico.css?v=20260923-39">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -75,22 +75,26 @@
     <section class="mapa-hero">
         <div class="mapa-kicker">RECONHECIMENTO ORBITAL // SUPER TERRA — VERSÃO PRÓPRIA</div>
         <h1 class="mapa-title">Mapa Galáctico Tático</h1>
-        <p class="mapa-subtitle">Nossa própria versão do mapa, feita do zero em SVG com dados ao vivo da API comunitária. Prefere o mapa 3D completo, com visual bem parecido com o do jogo? <a href="mapa-galatico.html" style="color:var(--hd-yellow)">Veja aqui ↗</a></p>
+        <p class="mapa-subtitle">Acompanhe as frentes de batalha e o controle dos setores. Setores da Super Terra ficam apagados; a presença inimiga acende a região. <a href="mapa-galatico.html" style="color:var(--hd-yellow)">Segundo mapa: comunidade · em inglês ↗</a></p>
+        <p class="mapa-author">Mapa desenvolvido por <strong>Daryl Dixon_19</strong> · HELLDIVERS-BR</p>
+        <p class="mapa-cartography-note">Demarcações aproximadas por setor — não representam os contornos oficiais do jogo. Nomes em destaque indicam campanhas ativas; aproxime para revelar os demais.</p>
     </section>
 
     <div class="mapa-toolbar">
-        <input class="mapa-search" id="mapa-busca" type="search" placeholder="🔍 Buscar planeta ou setor..." autocomplete="off">
+        <input class="mapa-search" id="mapa-busca" type="search" aria-label="Buscar planeta ou setor" placeholder="🔍 Buscar planeta ou setor..." autocomplete="off">
         <div class="mapa-filters" id="mapa-filtros">
-            <button class="mapa-filter active" data-faction="all">Todas as Facções</button>
+            <button class="mapa-filter active" data-faction="all"><svg class="mapa-filter-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg>Todas as Facções</button>
             <button class="mapa-filter" data-faction="human">Super Terra</button>
-            <button class="mapa-filter" data-faction="terminid">Termínideos</button>
+            <button class="mapa-filter" data-faction="terminid">Terminídeos</button>
             <button class="mapa-filter" data-faction="automaton">Autômatos</button>
             <button class="mapa-filter" data-faction="illuminate">Iluminados</button>
         </div>
         <div class="mapa-layer-controls" id="mapa-layer-controls" aria-label="Camadas táticas">
             <button class="mapa-layer active" type="button" data-layer="routes">ROTAS</button>
+            <button class="mapa-layer active" type="button" data-layer="invasions">INVASÕES</button>
             <button class="mapa-layer active" type="button" data-layer="territories">TERRITÓRIOS</button>
             <button class="mapa-layer active" type="button" data-layer="sectors">SETORES</button>
+            <button class="mapa-layer" type="button" data-layer="activeFronts" title="Exibir somente planetas e rotas ligados a campanhas ativas">APENAS FRENTES ATIVAS</button>
         </div>
     </div>
 
@@ -111,15 +115,16 @@
             <div class="mapa-zoom-controls" aria-hidden="false">
                 <button type="button" id="mapa-zoom-in" title="Aproximar">+</button>
                 <button type="button" id="mapa-zoom-out" title="Afastar">−</button>
-                <button type="button" id="mapa-zoom-reset" title="Resetar visão">⟲</button>
+                <button type="button" id="mapa-zoom-reset" title="Restaurar visão">⟲</button>
             </div>
             <div class="mapa-legend">
-                <span><i style="background:var(--hd-yellow)"></i> Super Terra</span>
-                <span><i style="background:#ff9900"></i> Termínideos</span>
+                <span><i style="background:#5089a2"></i> Super Terra</span>
+                <span><i style="background:#ff9900"></i> Terminídeos</span>
                 <span><i style="background:#ff4242"></i> Autômatos</span>
                 <span><i style="background:#8b3fd6"></i> Iluminados</span>
                 <span><i class="mapa-legend-event"></i> Sob ataque</span>
                 <span><i class="mapa-legend-frontline"></i> Linha de frente</span>
+                <span class="mapa-invasion-legend">➜ Origem da invasão</span>
             </div>
 
             <aside class="mapa-intel-card" id="mapa-intel-card" aria-hidden="true" aria-live="polite">
@@ -138,9 +143,10 @@
                     <div class="mapa-intel-sector" id="mapa-intel-sector">SETOR</div>
                     <div class="mapa-intel-status" id="mapa-intel-status">—</div>
                     <div class="mapa-intel-progress" id="mapa-intel-progress" hidden>
-                        <div><span>PROGRESSO DA FRENTE</span><strong id="mapa-intel-progress-value">0%</strong></div>
+                        <div><span id="mapa-intel-progress-label">PROGRESSO DA DEFESA</span><strong id="mapa-intel-progress-value">0%</strong></div>
                         <div class="mapa-intel-progress-track"><i id="mapa-intel-progress-bar"></i></div>
                     </div>
+                    <div class="mapa-intel-forecast" id="mapa-intel-forecast" hidden><strong></strong><p></p></div>
                     <div class="mapa-intel-grid">
                         <div><small>HELLDIVERS</small><strong id="mapa-intel-players">0</strong></div>
                         <div><small>REGEN./H</small><strong id="mapa-intel-regen">0%</strong></div>
@@ -153,39 +159,65 @@
                     </div>
                     <div class="mapa-intel-route" id="mapa-intel-route" hidden></div>
                     <button class="mapa-intel-details" id="mapa-intel-details" type="button">ABRIR DOSSIÊ COMPLETO</button>
-                    <div class="mapa-intel-mobile-tip">Toque novamente no planeta ou use o botão acima para abrir o dossiê.</div>
+                    <div class="mapa-intel-mobile-tip">Use o botão acima para consultar o dossiê completo.</div>
                 </div>
             </aside>
 
-            <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-        <div class="mapa-hint">PC: passe o mouse para ver a intel rápida e clique para abrir o dossiê · CELULAR: toque para inspecionar, toque novamente para abrir · Arraste/pince para navegar</div>
-    </section>
-
-    <div class="mapa-footer">HELLDIVERS-BR // Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>
-</div>
-</main>
-
-<div class="tactical-modal" id="planet-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="planet-modal-title">
-    <div class="tactical-modal-backdrop" data-close-planet></div>
+<div class="tactical-modal" id="planet-modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="planet-modal-title">
     <div class="tactical-modal-card">
         <button class="tactical-modal-close" type="button" aria-label="Fechar dossiê" data-close-planet>✕</button>
         <div class="tactical-modal-kicker">DOSSIÊ TÁTICO · INTELIGÊNCIA PLANETÁRIA</div>
         <h2 class="tactical-modal-title" id="planet-modal-title">Planeta</h2>
         <div class="tactical-modal-sector"></div>
-        <div class="tactical-modal-photo" id="planet-modal-photo" aria-hidden="true"></div>
-        <div class="tactical-modal-meta"></div>
-        <div class="tactical-modal-progress-label"></div>
-        <div class="progress tactical-modal-progress"><i></i></div>
-        <div class="tactical-modal-metrics"></div>
-        <section>
-            <div class="tactical-section-title">CONDIÇÕES AMBIENTAIS</div>
-            <div class="tactical-modal-hazards"></div>
-        </section>
+        <section class="dossier-section"><h3>Preparação para a missão</h3><div id="planet-dossier-advice"></div><p class="dossier-note">Sugestões do portal conforme os efeitos informados. Confirme os modificadores antes de embarcar.</p></section>
+        <section class="dossier-section"><h3>Histórico do planeta</h3><p class="dossier-note">Totais acumulados retornados pela API; não são resultados da campanha atual.</p><div id="planet-dossier-history" class="tactical-modal-metrics"></div></section>
+        <section class="dossier-section"><h3>Regiões registradas</h3><div id="planet-dossier-regions"></div></section>
+
     </div>
 </div>
 
-<script src="mapa.js"></script>
+            <svg id="mapa-intel-leader" class="mapa-intel-leader" aria-hidden="true" hidden><path /></svg>
+            <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="mapa-hint">Clique ou toque no planeta para fixar o painel · Dossiê completo no botão do painel · Arraste/pince para navegar</div>
+    </section>
+
+    <section class="mapa-command-section mapa-major-order-section" aria-labelledby="mapa-major-order-title">
+        <div class="mapa-command-head">
+            <div>
+                <div class="mapa-command-kicker">◆ DIRETRIZ DO ALTO COMANDO</div>
+                <h2 id="mapa-major-order-title">Ordem Maior</h2>
+                <p>Acompanhe os objetivos estratégicos sem sair do mapa galáctico.</p>
+            </div>
+
+        </div>
+        <div id="mapa-major-order" class="mapa-major-order" aria-live="polite">
+            <div class="mapa-command-loading">Carregando Ordem Maior...</div>
+        </div>
+    </section>
+
+    <section class="mapa-command-section mapa-offensive-section" aria-labelledby="mapa-offensive-title">
+        <div class="mapa-command-head">
+            <div>
+                <div class="mapa-command-kicker mapa-command-kicker-blue">OPERAÇÕES DE LIBERTAÇÃO</div>
+                <h2 id="mapa-offensive-title">Ofensiva da Super Terra</h2>
+                <p>Todos os planetas inimigos com campanha ativa de libertação pelos Helldivers.</p>
+            </div>
+            <div class="mapa-command-counter"><strong id="mapa-offensive-count">—</strong><span>FRENTES ATIVAS</span></div>
+        </div>
+        <div class="mapa-offensive-search"><label for="mapa-offensive-search">Filtrar planetas</label><input id="mapa-offensive-search" type="search" placeholder="Nome, setor ou facção…" autocomplete="off" aria-controls="mapa-offensive-grid"><span id="mapa-offensive-results" role="status"></span></div>
+        <div id="mapa-offensive-grid" class="mapa-offensive-grid" aria-live="polite">
+            <div class="mapa-command-loading">Carregando frentes ofensivas...</div>
+        </div>
+        <p id="mapa-offensive-no-results" class="mapa-command-empty" hidden>Nenhum planeta encontrado. Tente outro nome, setor ou facção.</p>
+    </section>
+
+    <div class="mapa-footer">HELLDIVERS-BR // Mapa desenvolvido por Daryl Dixon_19 · Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>
+</div>
+</main>
+
+
+<script src="mapa-classico.js?v=20260923-39"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

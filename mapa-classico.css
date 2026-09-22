@@ -1,0 +1,845 @@
+/* ================================================================
+   HELLDIVERS-BR — MAPA GALÁCTICO
+   Página self-contained: variáveis de cor vêm do style.css global
+   (--hd-yellow, --hd-orange). Nada aqui depende do guerra.css.
+   ================================================================ */
+
+.mapa-main { padding-top:0; }
+.mapa-shell { max-width:1400px; margin:0 auto; }
+
+.mapa-hero {
+    position:relative; overflow:hidden;
+    padding:20px; margin-bottom:16px;
+    background:linear-gradient(120deg,rgba(12,12,12,.96),rgba(26,26,22,.90));
+    border:1px solid #343434; border-top:2px solid var(--hd-yellow);
+}
+.mapa-kicker { color:var(--hd-orange); font:700 11px 'Oswald',Impact,sans-serif; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:7px; }
+.mapa-title { color:#fff; font:700 clamp(26px,4.5vw,40px) 'Oswald',Impact,sans-serif; text-transform:uppercase; letter-spacing:.5px; margin:0 0 8px; }
+.mapa-subtitle { color:#999; font-size:12.5px; line-height:1.6; max-width:820px; margin:0; }
+
+.mapa-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; align-items:center; }
+.mapa-search { flex:1 1 220px; height:38px; background:#141414; border:1px solid #333; color:#eee; padding:0 12px; font-size:12px; outline:none; }
+.mapa-search:focus { border-color:var(--hd-yellow); }
+.mapa-filters { display:flex; flex-wrap:wrap; gap:6px; }
+.mapa-filter { height:38px; background:#141414; border:1px solid #333; color:#bbb; padding:0 12px; font-size:11px; text-transform:uppercase; letter-spacing:.4px; cursor:pointer; transition:.15s ease; }
+.mapa-filter:hover { border-color:#555; color:#ddd; }
+.mapa-filter.active { border-color:var(--hd-yellow); color:var(--hd-yellow); background:rgba(215,213,44,.07); }
+
+.mapa-panel { background:rgba(11,11,11,.91); border:1px solid #2e2e2e; margin-bottom:16px; }
+
+.mapa-credit-banner {
+    display:flex; gap:11px; align-items:flex-start;
+    background:rgba(255,232,0,.07); border:1px solid rgba(255,232,0,.35); border-left:3px solid var(--hd-yellow);
+    padding:12px 14px; margin-bottom:16px; color:#ccc; font-size:12px; line-height:1.55;
+}
+.mapa-credit-banner span { font-size:18px; line-height:1; flex-shrink:0; }
+.mapa-credit-banner strong { color:#fff; }
+.mapa-credit-banner a { color:var(--hd-yellow); text-decoration:none; }
+.mapa-credit-banner a:hover { text-decoration:underline; }
+
+.mapa-embed-wrap { position:relative; height:min(78vh,820px); min-height:460px; background:#050505; }
+.mapa-embed-frame { width:100%; height:100%; display:block; border:0; }
+@media (max-width:768px) { .mapa-embed-wrap { height:min(68vh,620px); } }
+
+.mapa-viewport-wrap {
+    position:relative; height:min(72vh,720px); min-height:420px; overflow:hidden;
+    background:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,.40), transparent 60%),
+        radial-gradient(1.5px 1.5px at 80% 60%, rgba(255,255,255,.50), transparent 60%),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(1.5px 1.5px at 10% 70%, rgba(255,255,255,.40), transparent 60%),
+        radial-gradient(1px 1px at 55% 50%, rgba(255,255,255,.25), transparent 60%),
+        #050505;
+    background-size:400px 400px,350px 350px,300px 300px,380px 380px,320px 320px,360px 360px,340px 340px,100% 100%;
+}
+.mapa-svg { width:100%; height:100%; display:block; cursor:grab; touch-action:none; }
+.mapa-svg:active { cursor:grabbing; }
+.mapa-hint { padding:9px 14px; color:#666; font-size:9.5px; letter-spacing:.4px; text-transform:uppercase; border-top:1px solid #222; }
+
+.mapa-loading { position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center; background:#050505; }
+.mapa-loading.hidden { display:none; }
+.mapa-loading .loading { color:#888; font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+
+.mapa-zoom-controls { position:absolute; top:12px; right:12px; z-index:2; display:flex; flex-direction:column; gap:4px; }
+.mapa-zoom-controls button {
+    width:32px; height:32px; background:rgba(15,15,15,.9); border:1px solid #343434; color:#ddd;
+    font:700 15px 'Oswald',Impact,sans-serif; cursor:pointer; line-height:1;
+}
+.mapa-zoom-controls button:hover { border-color:var(--hd-yellow); color:var(--hd-yellow); }
+
+.mapa-legend {
+    position:absolute; left:12px; bottom:12px; z-index:2;
+    display:flex; flex-wrap:wrap; gap:10px;
+    background:rgba(10,10,10,.82); border:1px solid #2e2e2e; padding:8px 11px;
+    font-size:9.5px; color:#aaa; text-transform:uppercase; letter-spacing:.4px;
+}
+.mapa-legend span { display:flex; align-items:center; gap:5px; }
+.mapa-legend i { width:8px; height:8px; border-radius:50%; display:inline-block; }
+.mapa-legend-event { background:transparent !important; border:1.5px solid #fff; box-shadow:0 0 5px #fff; }
+
+.mapa-footer { text-align:center; color:#555; font-size:9.5px; padding:10px 0 2px; text-transform:uppercase; letter-spacing:.5px; }
+.mapa-footer a { color:var(--hd-yellow); text-decoration:none; }
+
+/* --- Nós e linhas do SVG --- */
+.mapa-supply-line { stroke:#333; stroke-width:.6; fill:none; opacity:.55; }
+.mapa-faction-halo { opacity:.16; pointer-events:none; mix-blend-mode:screen; }
+.mapa-planet-dot { cursor:pointer; stroke:#000; stroke-width:.35; transition:opacity .15s ease; }
+.mapa-planet-dot:hover { stroke:#fff; stroke-width:.6; }
+.mapa-planet-dot.dimmed { opacity:.12; }
+.mapa-planet-ring { fill:none; stroke:#fff; stroke-width:.5; opacity:.9; pointer-events:none; animation:mapa-pulse 1.8s ease-in-out infinite; }
+.mapa-planet-ring.dimmed { opacity:.08; animation:none; }
+.mapa-planet-tick { stroke-width:.55; opacity:.85; pointer-events:none; animation:mapa-pulse 1.8s ease-in-out infinite; }
+@keyframes mapa-pulse { 0%,100% { opacity:.5; } 50% { opacity:1; } }
+.mapa-dss-marker { pointer-events:none; }
+.mapa-dss-label {
+    fill:#ffd23f; font:700 6.5px 'Oswald',Impact,sans-serif; text-transform:uppercase;
+    letter-spacing:.5px; pointer-events:none; paint-order:stroke; stroke:#000; stroke-width:1.3px;
+}
+.mapa-planet-label {
+    fill:#eee; font:6px 'Oswald',Impact,sans-serif; text-transform:uppercase;
+    letter-spacing:.3px; pointer-events:none; paint-order:stroke; stroke:#000; stroke-width:1.4px;
+    opacity:0; transition:opacity .12s ease;
+}
+/* Nomes só aparecem quando dá zoom o bastante pra não virar sopa de letrinhas,
+   ou ao passar o mouse num planeta específico (mesmo sem zoom). */
+#mapa-viewport.mapa-labels-on .mapa-planet-label { opacity:1; }
+.mapa-dots g[data-index]:hover .mapa-planet-label { opacity:1 !important; }
+.mapa-planet-label.dimmed { opacity:0 !important; }
+
+@media (max-width:768px) {
+    .mapa-viewport-wrap { height:min(62vh,560px); }
+    .mapa-legend { font-size:8.5px; gap:7px; padding:6px 8px; }
+    .mapa-hint { display:none; }
+}
+
+/* ================================================================
+   MODAL TÁTICO (mesmo padrão visual usado na Central de Guerra)
+   ================================================================ */
+body.tactical-modal-open { overflow:hidden; }
+.tactical-modal { position:fixed; inset:0; z-index:9999; display:none; align-items:center; justify-content:center; padding:24px; }
+.tactical-modal.open { display:flex; }
+.tactical-modal-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.78); backdrop-filter:blur(3px); }
+.tactical-modal-card { --accent:#ffe800; position:relative; z-index:1; width:min(760px,94vw); max-height:90vh; overflow:auto; background:#090909; border:1px solid var(--accent); box-shadow:0 0 0 1px rgba(255,255,255,.04),0 20px 70px rgba(0,0,0,.75),inset 0 0 30px rgba(255,255,255,.025); padding:20px; animation:tactical-modal-in .16s ease-out; }
+@keyframes tactical-modal-in { from { opacity:0; transform:translateY(8px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+.tactical-modal-close { position:absolute; top:10px; right:10px; width:34px; height:34px; border:1px solid #3a3a3a; background:#111; color:#aaa; cursor:pointer; font-weight:700; }
+.tactical-modal-close:hover { color:#fff; border-color:var(--accent); }
+.tactical-modal-kicker { color:var(--accent); font:700 9px 'Oswald',Impact,sans-serif; letter-spacing:1.8px; text-transform:uppercase; padding-right:45px; }
+.tactical-modal-title { color:#fff; font:700 clamp(27px,5vw,40px) 'Oswald',Impact,sans-serif; text-transform:uppercase; line-height:1; margin-top:6px; padding-right:45px; }
+.tactical-modal-sector { color:#777; font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-top:6px; }
+.tactical-modal-meta { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.tactical-modal-meta span { border:1px solid #303030; background:#111; color:#aaa; padding:5px 8px; font-size:9px; text-transform:uppercase; }
+.tactical-modal-progress-label { display:flex; justify-content:space-between; gap:10px; margin-top:14px; color:#888; font-size:10px; }
+.tactical-modal-progress { margin-top:6px; height:7px; background:#202020; border:1px solid #2e2e2e; overflow:hidden; }
+.tactical-modal-progress > i { display:block; height:100%; width:0; background:var(--accent); box-shadow:0 0 8px var(--accent); transition:width .4s ease; }
+.tactical-modal-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:12px; }
+.tactical-modal-metrics > div { padding:10px; border:1px solid #292929; border-left:2px solid var(--accent); background:#0f0f0f; min-width:0; }
+.tactical-modal-metrics small { display:block; color:#666; font-size:8px; letter-spacing:.6px; text-transform:uppercase; }
+.tactical-modal-metrics strong { display:block; color:#eee; font:700 17px 'Oswald',Impact,sans-serif; margin-top:3px; }
+.tactical-modal-metrics span { display:block; color:#777; font-size:8px; margin-top:2px; }
+.tactical-modal-card section { margin-top:14px; }
+.tactical-section-title { color:#777; font:700 10px 'Oswald',Impact,sans-serif; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:8px; }
+
+.hazard-list { display:flex; gap:7px; align-items:center; flex-wrap:wrap; margin-top:9px; }
+.hazard { width:32px; height:32px; border:1px solid #343434; background:#101010; display:inline-flex; align-items:center; justify-content:center; cursor:help; }
+.hazard-img { width:24px; height:24px; object-fit:contain; }
+.hazard-fallback { display:none; font-size:18px; }
+.hazard-img[style*="display: none"] + .hazard-fallback { display:inline; }
+.empty-state, .error-state { color:#888; font-size:11px; padding:10px 0; }
+.error-state { color:#ff7b00; }
+
+@media (max-width:600px) {
+    .tactical-modal { padding:10px; }
+    .tactical-modal-card { width:96vw; max-height:94vh; padding:16px; }
+    .tactical-modal-metrics { grid-template-columns:1fr; }
+}
+/* ================================================================
+   V2 — CARTOGRAFIA TÁTICA // SUPER TERRA
+   Upgrade visual do mapa sem alterar a origem dos dados da API.
+   ================================================================ */
+
+.mapa-toolbar{align-items:stretch}
+.mapa-layer-controls{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.mapa-layer{
+    height:38px;padding:0 11px;border:1px solid #30343a;background:#101216;color:#686d75;
+    font:700 10px 'Oswald',Impact,sans-serif;letter-spacing:.8px;cursor:pointer;transition:.18s ease
+}
+.mapa-layer:hover{color:#ddd;border-color:#555}
+.mapa-layer.active{color:var(--hd-yellow);border-color:rgba(215,213,44,.55);background:rgba(215,213,44,.06);box-shadow:inset 0 0 12px rgba(215,213,44,.03)}
+
+.mapa-panel{position:relative;background:rgba(7,8,10,.94);border-color:#30343a;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.mapa-viewport-wrap{
+    isolation:isolate;
+    background:
+        radial-gradient(circle at 50% 48%,rgba(7,12,18,.10) 0%,rgba(2,4,7,.30) 54%,rgba(0,1,3,.76) 100%),
+        linear-gradient(rgba(1,3,6,.12),rgba(1,3,6,.34)),
+        url("imagens/fundos/mapa/universo-fundo.jpg") center / cover no-repeat,
+        #030508;
+}
+.mapa-viewport-wrap::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 12%,transparent 88%,rgba(255,255,255,.018));
+    box-shadow:inset 0 0 90px rgba(0,0,0,.92),inset 0 0 0 1px rgba(255,255,255,.018)
+}
+.mapa-viewport-wrap::after{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)
+}
+.mapa-svg{position:relative;z-index:1}
+
+.mapa-tactical-hud{
+    position:absolute;top:12px;left:12px;z-index:4;width:min(285px,calc(100% - 78px));
+    padding:10px 11px 9px;background:linear-gradient(135deg,rgba(5,8,11,.92),rgba(9,12,16,.78));
+    border:1px solid #30363d;border-left:2px solid var(--hd-yellow);pointer-events:none
+}
+.mapa-hud-status{display:flex;align-items:center;gap:7px;color:#8e949d;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:1.4px}
+.mapa-hud-status i{width:6px;height:6px;border-radius:50%;background:#d9e4ed;box-shadow:0 0 0 0 rgba(217,228,237,.45);animation:mapa-online 1.8s ease-out infinite}
+@keyframes mapa-online{0%{box-shadow:0 0 0 0 rgba(217,228,237,.45)}70%{box-shadow:0 0 0 7px rgba(217,228,237,0)}100%{box-shadow:0 0 0 0 rgba(217,228,237,0)}}
+.mapa-hud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px}
+.mapa-hud-grid div{min-width:0;border-top:1px solid #2a2f35;padding-top:6px}
+.mapa-hud-grid small{display:block;color:#555f69;font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:.7px}
+.mapa-hud-grid strong{display:block;color:#e8ebee;font:700 13px 'Oswald',Impact,sans-serif;margin-top:1px}
+
+.mapa-zoom-controls{z-index:5}
+.mapa-zoom-controls button{background:rgba(7,9,12,.92);border-color:#353b42}
+.mapa-legend{z-index:4;background:rgba(5,7,10,.90);border-color:#30363d}
+
+/* Cartografia orbital de fundo */
+.mapa-cartography{pointer-events:none}
+.mapa-orbit-guide{fill:none;stroke:#7f8c99;stroke-width:.55;opacity:.11;stroke-dasharray:2 5}
+.mapa-axis-guide{stroke:#8a98a6;stroke-width:.5;opacity:.08;stroke-dasharray:8 8}
+
+/* Territórios aproximados das facções */
+.mapa-territories{pointer-events:none;transition:opacity .2s ease}
+.mapa-territory{opacity:.085;stroke-width:.75;stroke-dasharray:2.4 3.8}
+.mapa-territory-terminid{opacity:.09}
+.mapa-territory-automaton{opacity:.10}
+.mapa-territory-illuminate{opacity:.115}
+#mapa-viewport.hide-territories .mapa-territories{opacity:0}
+
+/* Setores */
+.mapa-sectors{pointer-events:none;transition:opacity .2s ease}
+.mapa-sector-label{
+    fill:#86919d;font:700 10px 'Oswald',Impact,sans-serif;letter-spacing:2.4px;text-transform:uppercase;
+    paint-order:stroke;stroke:#030508;stroke-width:3px;opacity:.26
+}
+.mapa-sector-count{
+    fill:#5c6570;font:700 4.4px 'Oswald',Impact,sans-serif;letter-spacing:1px;
+    paint-order:stroke;stroke:#030508;stroke-width:1.6px;opacity:.32
+}
+#mapa-viewport.mapa-sector-fade .mapa-sectors{opacity:.18}
+#mapa-viewport.hide-sectors .mapa-sectors{opacity:0}
+
+/* Rotas holográficas */
+.mapa-lines{transition:opacity .2s ease}
+.mapa-supply-line-base{stroke:#020304;stroke-width:2.1;opacity:.82;stroke-linecap:round;transition:opacity .18s ease,stroke-width .18s ease}
+.mapa-supply-line{stroke:#6e7883;stroke-width:.72;opacity:.42;fill:none;stroke-linecap:round;stroke-dasharray:3 5;transition:opacity .18s ease,stroke .18s ease,stroke-width .18s ease}
+.mapa-front-line-base{stroke:#080806;stroke-width:3;opacity:.94}
+.mapa-front-line{stroke:#d8c85d;stroke-width:1.15;opacity:.86;stroke-dasharray:4 3;animation:mapa-route-flow 4.8s linear infinite}
+@keyframes mapa-route-flow{to{stroke-dashoffset:-32}}
+.mapa-supply-line.route-connected{stroke:#f4efb2;stroke-width:1.55;opacity:1;animation:mapa-route-flow 2.4s linear infinite}
+.mapa-supply-line-base.route-connected{stroke-width:3.4;opacity:1}
+.mapa-supply-line.route-muted,.mapa-supply-line-base.route-muted{opacity:.07}
+#mapa-viewport.hide-routes .mapa-lines{opacity:0}
+
+/* Planetas */
+.mapa-planet-group{cursor:pointer;transition:opacity .18s ease}
+.mapa-planet-halo{opacity:.12;pointer-events:none;transition:opacity .18s ease,r .18s ease}
+.mapa-planet-dot{stroke:#080a0d;stroke-width:.45;transition:opacity .16s ease,stroke .16s ease,stroke-width .16s ease}
+.mapa-planet-group:hover .mapa-planet-dot{stroke:#fff;stroke-width:.9}
+.mapa-planet-group:hover .mapa-planet-halo{opacity:.24}
+.mapa-planet-group.filtered-out{opacity:.08;pointer-events:none}
+.mapa-planet-group.selection-muted{opacity:.13}
+.mapa-planet-group.selected-neighbor{opacity:.84}
+.mapa-planet-group.selected .mapa-planet-dot{stroke:#fff;stroke-width:1.05}
+.mapa-planet-group.selected .mapa-planet-halo{opacity:.36}
+.mapa-planet-group.selected{opacity:1}
+
+.mapa-planet-ring{stroke-width:1;opacity:.72;stroke-dasharray:2 2.8}
+.mapa-planet-tick{stroke-width:1;opacity:.88}
+.mapa-progress-ring{fill:none;stroke-width:2;opacity:.94;stroke-linecap:round}
+.mapa-dss-halo{opacity:.22;pointer-events:none;animation:mapa-dss-breathe 2.6s ease-in-out infinite}
+.mapa-dss-marker{stroke:#ffd23f;stroke-width:.45}
+@keyframes mapa-dss-breathe{0%,100%{opacity:.13}50%{opacity:.34}}
+
+.mapa-planet-label{
+    fill:#f0f2f4;font:700 6.2px 'Oswald',Impact,sans-serif;letter-spacing:.35px;
+    stroke:#030508;stroke-width:1.8px;opacity:0
+}
+.mapa-player-label{
+    fill:#8e98a3;font:700 4.6px 'Oswald',Impact,sans-serif;letter-spacing:.45px;
+    paint-order:stroke;stroke:#030508;stroke-width:1.5px;opacity:0;pointer-events:none
+}
+.mapa-event-label{
+    font:700 4.7px 'Oswald',Impact,sans-serif;letter-spacing:.7px;
+    paint-order:stroke;stroke:#030508;stroke-width:1.5px;opacity:0;pointer-events:none
+}
+.mapa-planet-label,.mapa-player-label,.mapa-event-label{display:none}
+#mapa-viewport.mapa-labels-on .mapa-planet-label{display:block;opacity:.95}
+#mapa-viewport.mapa-detail-on .mapa-player-label,#mapa-viewport.mapa-detail-on .mapa-event-label{display:block;opacity:.88}
+.mapa-dots g[data-index]:hover .mapa-planet-label,.mapa-dots g[data-index].selected .mapa-planet-label{display:block;opacity:1!important}
+.mapa-dots g[data-index]:hover .mapa-player-label,.mapa-dots g[data-index].selected .mapa-player-label,.mapa-dots g[data-index].selected .mapa-event-label{display:block;opacity:1!important}
+
+/* V3 — otimização de renderização: mantém o visual, reduz repaints do SVG. */
+#mapa-viewport.mapa-low-detail .mapa-planet-halo{display:none}
+#mapa-viewport.mapa-low-detail .mapa-sector-count{display:none}
+#mapa-viewport.mapa-is-moving .mapa-front-line,
+#mapa-viewport.mapa-is-moving .mapa-supply-line.route-connected,
+#mapa-viewport.mapa-is-moving .mapa-planet-ring,
+#mapa-viewport.mapa-is-moving .mapa-planet-tick,
+#mapa-viewport.mapa-is-moving .mapa-dss-halo{animation-play-state:paused}
+#mapa-viewport.mapa-is-moving .mapa-territories,
+#mapa-viewport.mapa-is-moving .mapa-lines,
+#mapa-viewport.mapa-is-moving .mapa-planet-group{transition:none}
+@media (prefers-reduced-motion:reduce){
+    .mapa-front-line,.mapa-supply-line.route-connected,.mapa-planet-ring,.mapa-planet-tick,.mapa-dss-halo,.mapa-hud-status i{animation:none!important}
+}
+
+/* Modal ganha um pouco mais de linguagem de terminal */
+.tactical-modal-card{background:linear-gradient(145deg,#090b0e,#050607);box-shadow:0 0 0 1px rgba(255,255,255,.035),0 28px 80px rgba(0,0,0,.78),inset 0 0 45px rgba(255,255,255,.018)}
+.tactical-modal-meta span{background:#0c0f12;border-color:#2b3035}
+.tactical-modal-metrics>div{background:#0a0d10;border-color:#252b30}
+
+@media(max-width:980px){
+    .mapa-layer-controls{width:100%;margin-left:0}
+    .mapa-layer{flex:1 1 auto}
+}
+@media(max-width:768px){
+    .mapa-tactical-hud{top:8px;left:8px;width:min(245px,calc(100% - 58px));padding:8px 9px}
+    .mapa-hud-grid{gap:5px}
+    .mapa-hud-grid strong{font-size:11px}
+    .mapa-hud-grid small{font-size:6px}
+    .mapa-sector-label{font-size:8px}
+}
+@media(max-width:520px){
+    .mapa-tactical-hud{width:205px}
+    .mapa-hud-grid{grid-template-columns:repeat(2,1fr)}
+    .mapa-layer{font-size:9px;padding:0 8px}
+}
+.mapa-legend-frontline{width:16px!important;height:2px!important;border-radius:0!important;background:#d8c85d!important;box-shadow:0 0 7px rgba(216,200,93,.7)}
+
+
+/* ================================================================
+   V4 — INTEL RÁPIDA RESPONSIVA
+   Um único painel reutilizado para todos os planetas: mais informação
+   sem criar centenas de elementos HTML nem novas chamadas à API.
+   ================================================================ */
+.mapa-planet-hit{pointer-events:all;cursor:pointer}
+.mapa-planet-group:focus{outline:none}
+.mapa-planet-group:focus .mapa-planet-dot{stroke:#fff;stroke-width:1.05}
+
+.mapa-intel-card{
+    --accent:var(--hd-yellow);
+    position:absolute;right:12px;bottom:12px;z-index:8;
+    width:min(310px,calc(100% - 24px));
+    padding:13px 13px 12px;
+    background:linear-gradient(145deg,rgba(8,11,14,.97),rgba(4,6,8,.98));
+    border:1px solid #353b42;border-left:3px solid var(--accent);
+    box-shadow:0 18px 44px rgba(0,0,0,.48),inset 0 0 26px rgba(255,255,255,.018);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateY(8px);
+    transition:opacity .14s ease,transform .14s ease,visibility .14s;
+}
+.mapa-intel-card.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.mapa-intel-close{
+    position:absolute;top:8px;right:8px;width:30px;height:30px;
+    border:1px solid #343b42;background:#0d1014;color:#8b949e;cursor:pointer
+}
+.mapa-intel-close:hover{color:#fff;border-color:var(--accent)}
+.mapa-intel-kicker{padding-right:38px;color:var(--accent);font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:1.5px}
+.mapa-intel-title{padding-right:38px;margin-top:3px;color:#fff;font:700 22px 'Oswald',Impact,sans-serif;line-height:1;text-transform:uppercase}
+.mapa-intel-sector{margin-top:4px;color:#717b85;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.mapa-intel-status{margin-top:9px;padding:6px 7px;border:1px solid #292f35;background:#0b0e11;color:#c9cfd5;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.7px;text-transform:uppercase}
+.mapa-intel-progress{margin-top:10px}
+.mapa-intel-progress>div:first-child{display:flex;justify-content:space-between;gap:8px;color:#7c858e;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.5px}
+.mapa-intel-progress>div:first-child strong{color:#e8ecef;font-size:9px}
+.mapa-intel-progress-track{height:5px;margin-top:5px;background:#171b1f;border:1px solid #252b30;overflow:hidden}
+.mapa-intel-progress-track i{display:block;height:100%;width:0;box-shadow:0 0 8px var(--accent);transition:width .25s ease}
+.mapa-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:10px}
+.mapa-intel-grid>div{min-width:0;padding:7px 6px;border:1px solid #252b30;background:#0a0d10}
+.mapa-intel-grid small{display:block;color:#5d6872;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.35px;white-space:nowrap}
+.mapa-intel-grid strong{display:block;margin-top:2px;color:#e7ebee;font:700 12px 'Oswald',Impact,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapa-intel-route{margin-top:7px;padding:7px 8px;border:1px solid #252b30;background:#090c0f}
+.mapa-intel-route small{display:block;color:#5f6973;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.6px}
+.mapa-intel-route span{display:block;margin-top:2px;color:#bdc5cc;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapa-intel-details{width:100%;min-height:38px;margin-top:9px;border:1px solid color-mix(in srgb,var(--accent) 55%,#30363d);background:color-mix(in srgb,var(--accent) 8%,#0b0e11);color:var(--accent);font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.8px;cursor:pointer}
+.mapa-intel-details:hover{background:color-mix(in srgb,var(--accent) 13%,#0b0e11)}
+.mapa-intel-mobile-tip{display:none;margin-top:7px;color:#68717a;font-size:8px;line-height:1.35;text-align:center}
+
+/* A legenda se desloca quando a intel rápida aparece no desktop. */
+@media (min-width:769px){
+    .mapa-intel-card.open~.mapa-svg{}
+}
+
+@media (hover:none), (pointer:coarse){
+    .mapa-planet-group:hover .mapa-planet-dot{stroke:#080a0d;stroke-width:.45}
+    .mapa-planet-group:hover .mapa-planet-halo{opacity:.12}
+    .mapa-dots g[data-index]:hover .mapa-planet-label,
+    .mapa-dots g[data-index]:hover .mapa-player-label{display:none;opacity:0!important}
+    .mapa-intel-mobile-tip{display:block}
+}
+
+@media(max-width:768px){
+    .mapa-viewport-wrap{min-height:500px;height:min(68vh,620px)}
+    .mapa-intel-card{
+        position:absolute;left:0;right:0;bottom:0;width:100%;
+        padding:13px 14px calc(12px + env(safe-area-inset-bottom));
+        border-left:0;border-right:0;border-bottom:0;border-top:2px solid var(--accent);
+        transform:translateY(18px);
+        box-shadow:0 -18px 44px rgba(0,0,0,.58)
+    }
+    .mapa-intel-card.open{transform:translateY(0)}
+    .mapa-intel-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .mapa-intel-close{width:38px;height:38px;top:8px;right:8px}
+    .mapa-intel-details{min-height:44px;font-size:10px}
+    .mapa-zoom-controls button{width:38px;height:38px}
+    .mapa-legend{bottom:8px;max-width:calc(100% - 16px)}
+    .mapa-intel-card.open~.mapa-svg{filter:none}
+}
+
+@media(max-width:430px){
+    .mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .mapa-intel-grid>div{padding:6px 7px}
+    .mapa-intel-title{font-size:20px}
+}
+
+/* ================================================================
+   V5 — FACÇÕES NO PLANETA + FOTO/CLIMA NA INTEL RÁPIDA
+   Reutiliza 4 símbolos SVG e carrega a imagem do bioma só quando o
+   planeta é inspecionado. Mantém o custo inicial praticamente igual.
+   ================================================================ */
+.mapa-planet-faction-icon{
+    pointer-events:none;
+    opacity:.94;
+    filter:drop-shadow(0 0 .45px rgba(0,0,0,.95));
+}
+.mapa-planet-group:hover .mapa-planet-faction-icon,
+.mapa-planet-group.selected .mapa-planet-faction-icon{opacity:1}
+
+.mapa-intel-card{
+    width:min(334px,calc(100% - 24px));
+    padding:0;
+    overflow:hidden;
+}
+.mapa-intel-close{z-index:4;background:rgba(7,10,13,.88);backdrop-filter:blur(4px)}
+.mapa-intel-visual{
+    position:relative;height:92px;overflow:hidden;background:#080b0e;
+    border-bottom:1px solid #2a3036;
+}
+.mapa-intel-photo{
+    display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+    opacity:.88;transform:scale(1.01)
+}
+.mapa-intel-photo[hidden]{display:none}
+.mapa-intel-visual-shade{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(2,4,6,.08) 0%,rgba(3,5,7,.2) 42%,rgba(3,5,7,.93) 100%);
+}
+.mapa-intel-faction-badge{
+    position:absolute;left:10px;bottom:8px;z-index:2;
+    display:flex;align-items:center;gap:7px;min-height:28px;padding:4px 8px 4px 5px;
+    background:rgba(4,6,8,.82);border:1px solid color-mix(in srgb,var(--accent) 58%,#30363d);
+    box-shadow:0 5px 18px rgba(0,0,0,.28);backdrop-filter:blur(4px)
+}
+.mapa-intel-faction-badge img{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 0 3px rgba(0,0,0,.7))}
+.mapa-intel-faction-badge span{color:#f1f3f5;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.8px}
+.mapa-intel-body{padding:11px 13px 12px}
+.mapa-intel-environment{display:grid;grid-template-columns:.8fr 1.2fr;gap:5px;margin-top:7px}
+.mapa-intel-environment>div{min-width:0;padding:7px 8px;border:1px solid #252b30;background:#090c0f}
+.mapa-intel-environment small{display:block;color:#5f6973;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.55px}
+.mapa-intel-environment span{display:block;margin-top:2px;color:#bdc5cc;font-size:8.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.tactical-modal-photo{
+    position:relative;height:168px;margin:12px 0 10px;
+    background-color:#050607;background-repeat:no-repeat;background-size:cover;background-position:center;
+    border:1px solid #292f35;box-shadow:inset 0 -35px 55px rgba(0,0,0,.35)
+}
+
+@media(max-width:768px){
+    .mapa-intel-card{
+        padding:0;
+        max-height:64%;overflow-y:auto;overscroll-behavior:contain;
+    }
+    .mapa-intel-visual{height:86px}
+    .mapa-intel-body{padding:10px 14px calc(12px + env(safe-area-inset-bottom))}
+    .mapa-intel-environment{grid-template-columns:1fr 1.35fr}
+    .tactical-modal-photo{height:130px}
+}
+@media(max-width:430px){
+    .mapa-intel-visual{height:78px}
+    .mapa-intel-environment{grid-template-columns:1fr}
+    .mapa-intel-environment span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+}
+
+/* Mapa clássico 2026-09: camadas estáticas e leitura por nível de zoom. */
+.mapa-viewport-wrap { background:#000; }
+.mapa-viewport-wrap::before,.mapa-viewport-wrap::after { display:none; }
+.mapa-cartography-note { color:#969da5;font-size:12px;line-height:1.5;margin:10px 0 0; }
+.mapa-sector-borders,.mapa-sector-fill { pointer-events:none; }
+.mapa-sector-border { fill:none;stroke:#454b52;stroke-width:1.4;stroke-linejoin:round; }
+#mapa-viewport.hide-sectors .mapa-sector-borders { display:none; }
+#mapa-viewport.hide-territories .mapa-territories,#mapa-viewport.hide-routes .mapa-lines { display:none; }
+.mapa-supply-line,.mapa-front-line,.mapa-supply-line.route-connected { animation:none;stroke-dasharray:none; }
+.mapa-supply-line { stroke:#6094ae;opacity:.54; }
+.mapa-planet-ring,.mapa-planet-tick,.mapa-dss-halo,.mapa-hud-status i { animation:none; }
+.mapa-planet-faction-icon { filter:none; }
+.mapa-planet-group.planet-inactive .mapa-planet-dot { opacity:.42; }
+.mapa-planet-group.planet-inactive .mapa-planet-halo { display:none; }
+.mapa-planet-group.planet-inactive .mapa-planet-faction-icon { display:none; }
+#mapa-viewport.mapa-detail-on .mapa-planet-group.planet-inactive .mapa-planet-faction-icon { display:block; }
+#mapa-viewport .campaign-active .mapa-planet-label,
+#mapa-viewport .search-match .mapa-planet-label,
+#mapa-viewport .mapa-planet-group:focus .mapa-planet-label { display:block;opacity:1; }
+#mapa-viewport .mapa-planet-group.selected .mapa-planet-dot,
+#mapa-viewport .mapa-planet-group:hover .mapa-planet-dot,
+#mapa-viewport .mapa-planet-group:focus .mapa-planet-dot { opacity:1; }
+.mapa-sector-label { font-size:7px;letter-spacing:.6px;opacity:.36; }
+.mapa-sector-count { display:none; }
+.mapa-supply-line-base { display:none; }
+#mapa-viewport.mapa-is-moving .mapa-player-label,
+#mapa-viewport.mapa-is-moving .mapa-event-label { display:none; }
+@media(max-width:600px) {
+ .mapa-viewport-wrap {height:74svh;min-height:460px;}
+ .mapa-tactical-hud {max-width:140px;}
+ .mapa-legend {font-size:8px;gap:6px;left:6px;right:6px;bottom:6px;padding:6px;}
+ .mapa-zoom-controls button {width:40px;height:40px;}
+}
+
+/* V2: painel ancorado ao planeta, no acabamento dos cartões mobile. */
+.mapa-intel-card,.mapa-intel-card.open {
+ left:8px;right:auto;top:8px;bottom:auto;width:min(310px,calc(100% - 16px));
+ transform:none;border:1px solid #46515e;border-top:2px solid var(--accent);
+ border-radius:16px;padding:0;overflow:auto;overscroll-behavior:contain;
+ box-shadow:0 12px 32px #000b;transition:opacity .12s;scrollbar-width:thin;
+}
+.mapa-intel-body{padding:12px;}
+.mapa-intel-visual{height:70px;}
+.mapa-intel-title{font-size:21px;}
+.mapa-intel-grid>div,.mapa-intel-status,.mapa-intel-environment>div,.mapa-intel-route{border-radius:9px;}
+.mapa-intel-details,.mapa-intel-close{border-radius:9px;}
+.mapa-intel-close{position:sticky;float:right;top:6px;margin:6px 6px -44px 0;width:38px;height:38px;}
+.mapa-intel-forecast {margin:10px 0;padding:10px;border:1px solid #43505e;border-radius:10px;background:#111923;color:#c0ccdb;}
+.mapa-intel-forecast[data-tone="good"]{border-color:#438f6b;background:#10251b;color:#8ae2b3;}
+.mapa-intel-forecast[data-tone="bad"]{border-color:#a45454;background:#281617;color:#ffaaaa;}
+.mapa-intel-forecast strong{font-size:11px;letter-spacing:.5px;}
+.mapa-intel-forecast p{font:11px/1.5 Arial,sans-serif;margin:5px 0 0;}
+.mapa-intel-leader{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none;overflow:visible;}
+.mapa-intel-leader[hidden]{display:none;}
+.mapa-intel-leader path{fill:none;stroke:#ddd7a3;stroke-width:1.2;}
+#mapa-viewport .super-earth .mapa-planet-dot {opacity:1;stroke:#ffe7a0;stroke-width:.65;}
+#mapa-viewport .super-earth .mapa-planet-faction-icon {display:block;}
+#mapa-viewport .super-earth .mapa-planet-label {display:block;opacity:1!important;fill:#fff0bc;}
+#mapa-viewport .super-earth .mapa-earth-glory {display:block;}
+.mapa-attacker-badge{pointer-events:none;}
+@media(max-width:600px) {
+ .mapa-intel-card,.mapa-intel-card.open{width:min(290px,calc(100% - 16px));border-radius:16px;}
+ .mapa-intel-visual{height:54px;}
+ .mapa-intel-environment,.mapa-intel-route,.mapa-intel-mobile-tip{display:none;}
+ .mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+ .mapa-intel-body{padding:10px;}
+ .mapa-intel-title{font-size:19px;}
+}
+
+/* V3: direção da invasão declarada pela API, independente das rotas comuns. */
+.mapa-invasions { pointer-events:none; }
+.mapa-invasion-arrow { fill:none;stroke-width:1.8;opacity:.94;stroke-linecap:round; }
+#mapa-viewport.hide-invasions .mapa-invasions {display:none;}
+.mapa-invasion-legend {color:#edb0a8;}
+.mapa-earth-custom {pointer-events:none;}
+@media(max-width:600px) { .mapa-intel-route:not([hidden]) {display:block;} }
+
+/* V3.1 — acabamento estático, ícones reutilizados e controles arredondados. */
+.mapa-hero {border-radius:18px;padding:22px 24px;background:linear-gradient(115deg,#151a20,#101215);border-color:#303740;border-top-color:var(--hd-yellow);}
+.mapa-kicker {color:#d5ce88;letter-spacing:1.6px;}
+.mapa-subtitle {color:#b1bac5;}
+.mapa-cartography-note {color:#87929e;font-size:11px;}
+.mapa-toolbar {gap:10px;padding:12px;background:#101419;border:1px solid #29323d;border-radius:16px;}
+.mapa-search {min-width:180px;min-height:44px;box-sizing:border-box;border-radius:11px;background:#090d12;border-color:#303c49;}
+.mapa-search:focus-visible {outline:2px solid #d7d52c;outline-offset:2px;}
+.mapa-filters {gap:8px;}
+.mapa-filter {--faction:#c3cdd9;--faction-fill:#222c39;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;height:auto;padding:10px 13px;border-radius:12px;border:1px solid var(--faction);color:var(--faction);background:#10151c;font-weight:700;transition:background-color .12s,border-color .12s;}
+.mapa-filter[data-faction="human"] {--faction:#eee063;--faction-fill:#3a3516;}
+.mapa-filter[data-faction="terminid"] {--faction:#ffb442;--faction-fill:#392816;}
+.mapa-filter[data-faction="automaton"] {--faction:#ff797d;--faction-fill:#391f25;}
+.mapa-filter[data-faction="illuminate"] {--faction:#bd98ff;--faction-fill:#2d2241;}
+.mapa-filter:hover,.mapa-filter.active {background:var(--faction-fill);color:var(--faction);border-color:var(--faction);}
+.mapa-filter.active {box-shadow:inset 0 -3px 0 var(--faction);}
+.mapa-filter:focus-visible,.mapa-layer:focus-visible,.mapa-zoom-controls button:focus-visible {outline:2px solid #fff;outline-offset:3px;}
+.mapa-filter-icon {width:22px;height:22px;flex:0 0 22px;object-fit:contain;}
+.mapa-filter-icon[hidden] {display:none;}
+.mapa-layer-controls {gap:7px;}
+.mapa-layer {display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;height:auto;border-radius:10px;background:#151b22;border-color:#35404d;box-shadow:none;padding:9px 11px;transition:background-color .12s;}
+.mapa-layer::before {content:'';width:5px;height:5px;flex:0 0 5px;border-radius:50%;background:#63707e;}
+.mapa-layer.active {background:#24271b;border-color:#66653a;box-shadow:none;}
+.mapa-layer.active::before {background:#eee063;}
+.mapa-panel {border-radius:18px;overflow:hidden;border-color:#303943;}
+.mapa-zoom-controls button {border-radius:10px;box-shadow:none;}
+.mapa-legend {border-radius:11px;border-color:#35404b;}
+.mapa-tactical-hud {border-radius:12px;}
+.mapa-hint {background:#101419;color:#99a3af;line-height:1.6;}
+@media(max-width:768px){
+ .mapa-hero {border-radius:16px;padding:18px 16px;}
+ .mapa-toolbar {padding:10px;border-radius:15px;}
+ .mapa-search {flex:1 1 100%;width:100%;font-size:16px;}
+ .mapa-filters {width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+ .mapa-filter {min-width:0;padding:10px 8px;font-size:11px;}
+ .mapa-filter[data-faction="all"] {grid-column:1/-1;}
+ .mapa-layer-controls {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;}
+ .mapa-layer {min-height:42px;}
+}
+@media(prefers-reduced-motion:reduce){.mapa-filter,.mapa-layer{transition:none;}}
+
+/* V3.2 — anel de defesa proporcional ao progresso, sem animação. */
+.mapa-defense-track,.mapa-defense-fill {pointer-events:none;animation:none;transition:none;}
+.mapa-defense-track {opacity:.95;}
+.mapa-defense-fill {opacity:1;}
+
+/* ================================================================
+   V3.3 — COMANDO TÁTICO ABAIXO DO MAPA
+   Ordem Maior + frentes ofensivas da Super Terra.
+   ================================================================ */
+.mapa-command-section{
+    position:relative;overflow:hidden;margin:16px 0;padding:18px;
+    background:linear-gradient(145deg,rgba(8,11,14,.97),rgba(14,17,20,.94));
+    border:1px solid #303840;border-radius:18px;box-shadow:0 16px 42px rgba(0,0,0,.24)
+}
+.mapa-command-section::before{
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:.18;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 5px)
+}
+.mapa-major-order-section{border-top:2px solid var(--hd-yellow)}
+.mapa-offensive-section{border-top:2px solid #5089a2}
+.mapa-command-head{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:14px}
+.mapa-command-head h2{margin:3px 0 4px;color:#f2f4f5;font:700 clamp(23px,3vw,34px) 'Oswald',Impact,sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.mapa-command-head p{margin:0;max-width:760px;color:#808a94;font-size:11px;line-height:1.55}
+.mapa-command-kicker{color:var(--hd-yellow);font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:1.7px;text-transform:uppercase}
+.mapa-command-kicker-blue{color:#84b9d1}
+.mapa-command-link{flex:0 0 auto;padding:9px 11px;border:1px solid #4d5030;border-radius:10px;background:#1b1d13;color:#e7df5b;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.8px;text-decoration:none;text-transform:uppercase}
+.mapa-command-link:hover{border-color:var(--hd-yellow);background:#282a17;color:#fff}
+.mapa-command-counter{flex:0 0 auto;min-width:92px;padding:8px 10px;border:1px solid #34444e;border-radius:11px;background:#0d1418;text-align:center}
+.mapa-command-counter strong{display:block;color:#b9d7e5;font:700 24px 'Oswald',Impact,sans-serif;line-height:1}
+.mapa-command-counter span{display:block;margin-top:3px;color:#647680;font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:.8px}
+.mapa-command-loading,.mapa-command-empty{position:relative;z-index:1;padding:18px;border:1px dashed #343c44;border-radius:12px;background:#0b0e11;color:#7c8792;font-size:11px;text-align:center}
+
+/* Ordem Maior compacta */
+.mapa-mo-shell{position:relative;z-index:1}
+.mapa-mo-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.mapa-mo-summary>div{padding:10px 12px;border:1px solid #30363a;border-radius:11px;background:#0b0e10;border-left:2px solid var(--hd-yellow)}
+.mapa-mo-summary small{display:block;color:#646b70;font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:.9px;text-transform:uppercase}
+.mapa-mo-summary strong{display:block;margin-top:3px;color:#e8e9df;font:700 14px 'Oswald',Impact,sans-serif;text-transform:uppercase}
+.mapa-mo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:10px}
+.mapa-mo-task{--mo-accent:#d7d52c;position:relative;min-width:0;padding:12px;border:1px solid color-mix(in srgb,var(--mo-accent) 42%,#292d30);border-radius:13px;background:linear-gradient(145deg,color-mix(in srgb,var(--mo-accent) 7%,#0c0e10),#090b0d);overflow:hidden}
+.mapa-mo-task::after{content:'◆';position:absolute;right:10px;bottom:-11px;color:var(--mo-accent);font:700 56px 'Oswald',Impact,sans-serif;opacity:.055;pointer-events:none}
+.mapa-mo-task.human{--mo-accent:#d7d52c}.mapa-mo-task.terminid{--mo-accent:#ff9900}.mapa-mo-task.automaton{--mo-accent:#ff5353}.mapa-mo-task.illuminate{--mo-accent:#9e6de0}.mapa-mo-task.neutral{--mo-accent:#89939d}
+.mapa-mo-task.is-complete{--mo-accent:#67d795}
+.mapa-mo-task-top{display:flex;justify-content:space-between;gap:10px;color:#697078;font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:.7px;text-transform:uppercase}
+.mapa-mo-task-top strong{color:var(--mo-accent);text-align:right}
+.mapa-mo-task h3{margin:8px 0 10px;color:#eef0f1;font:700 16px 'Oswald',Impact,sans-serif;text-transform:uppercase;line-height:1.15}
+.mapa-mo-progress{height:7px;background:#181c20;border:1px solid #292f34;border-radius:999px;overflow:hidden}
+.mapa-mo-progress i{display:block;height:100%;background:var(--mo-accent);box-shadow:0 0 10px color-mix(in srgb,var(--mo-accent) 55%,transparent)}
+.mapa-mo-progress-row{display:flex;justify-content:space-between;gap:10px;margin-top:5px;color:#767f86;font:700 8px 'Oswald',Impact,sans-serif;text-transform:uppercase}
+.mapa-mo-progress-row strong{color:#f2f3f3;font-size:9px}
+.mapa-mo-task-status{margin-top:9px;color:var(--mo-accent);font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.7px;text-align:right;text-transform:uppercase}
+
+/* Ofensivas */
+.mapa-offensive-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mapa-offensive-grid>.mapa-command-empty{grid-column:1/-1}
+.mapa-offensive-card{--accent:#d7d52c;min-width:0;border:1px solid color-mix(in srgb,var(--accent) 46%,#2b333a);border-radius:15px;background:#0b0e11;overflow:hidden;cursor:pointer;outline:none;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.mapa-offensive-card:hover,.mapa-offensive-card:focus-visible{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 14px 30px rgba(0,0,0,.32)}
+.mapa-offensive-card:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.mapa-offensive-visual{position:relative;height:142px;overflow:hidden;background:#07090b}
+.mapa-offensive-visual>img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(.88) contrast(1.06)}
+.mapa-offensive-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,5,7,.16),rgba(3,5,7,.92))}
+.mapa-offensive-badge{position:absolute;top:9px;right:9px;display:flex;align-items:center;gap:6px;padding:5px 7px;border:1px solid color-mix(in srgb,var(--accent) 50%,#30353a);border-radius:999px;background:rgba(5,8,10,.82);color:var(--accent);font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:.6px;text-transform:uppercase}
+.mapa-offensive-badge img{width:17px;height:17px;object-fit:contain}
+.mapa-offensive-title{position:absolute;left:12px;right:12px;bottom:10px}
+.mapa-offensive-title small{display:block;color:#aab1b8;font:700 7px 'Oswald',Impact,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.mapa-offensive-title strong{display:block;margin-top:3px;color:#fff;font:700 22px 'Oswald',Impact,sans-serif;text-transform:uppercase;line-height:1}
+.mapa-offensive-body{padding:12px}
+.mapa-offensive-progress-head{display:flex;justify-content:space-between;gap:8px;color:#7d8790;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.5px;text-transform:uppercase}
+.mapa-offensive-progress-head strong{color:#f2f4f5;font-size:10px}
+.mapa-offensive-progress{height:8px;margin-top:6px;border:1px solid #2a3137;border-radius:999px;background:#161b20;overflow:hidden}
+.mapa-offensive-progress i{display:block;height:100%;background:linear-gradient(90deg,#5089a2,var(--hd-yellow));box-shadow:0 0 9px rgba(215,213,44,.22)}
+.mapa-offensive-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}
+.mapa-offensive-metrics>div{min-width:0;padding:8px 9px;border:1px solid #242b31;border-radius:9px;background:#0f1317;border-left:2px solid color-mix(in srgb,var(--accent) 62%,#4a555e)}
+.mapa-offensive-metrics small{display:block;color:#616c75;font:700 6.5px 'Oswald',Impact,sans-serif;letter-spacing:.7px;text-transform:uppercase}
+.mapa-offensive-metrics strong{display:block;margin-top:2px;color:#e6e9eb;font:700 12px 'Oswald',Impact,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapa-offensive-status{margin-top:9px;padding:8px 9px;border:1px solid #343d45;border-radius:9px;background:#10161b}
+.mapa-offensive-status strong{display:block;color:#b9c4cc;font:700 9px 'Oswald',Impact,sans-serif;letter-spacing:.5px;text-transform:uppercase}
+.mapa-offensive-status span{display:block;margin-top:3px;color:#707b84;font-size:8.5px;line-height:1.35}
+.mapa-offensive-status[data-tone="good"]{border-color:#315e47;background:#0e1a14}.mapa-offensive-status[data-tone="good"] strong{color:#7bd7a3}
+.mapa-offensive-status[data-tone="bad"]{border-color:#713f42;background:#211113}.mapa-offensive-status[data-tone="bad"] strong{color:#ff9297}
+.mapa-offensive-open{margin-top:10px;color:#9cbfce;font:700 8px 'Oswald',Impact,sans-serif;letter-spacing:.8px;text-align:right;text-transform:uppercase}
+
+/* O mesmo anel circular da defesa agora também marca planetas em libertação. */
+.mapa-offense-track,.mapa-offense-fill{pointer-events:none;animation:none;transition:none}
+.mapa-offense-track{opacity:.95}.mapa-offense-fill{opacity:1}
+.mapa-liberation-badge{pointer-events:none}
+
+@media(max-width:1050px){
+    .mapa-offensive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+    .mapa-command-section{padding:14px;margin:13px 0;border-radius:15px}
+    .mapa-command-head{align-items:stretch;flex-direction:column;gap:10px}
+    .mapa-command-link{align-self:flex-start}
+    .mapa-command-counter{align-self:flex-start;display:flex;align-items:center;gap:7px;min-width:0;text-align:left}
+    .mapa-command-counter strong{font-size:20px}.mapa-command-counter span{margin:0}
+    .mapa-mo-summary{grid-template-columns:1fr}
+    .mapa-mo-grid,.mapa-offensive-grid{grid-template-columns:1fr}
+    .mapa-offensive-visual{height:156px}
+    .mapa-offensive-title strong{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){.mapa-offensive-card{transition:none}}
+
+
+/* ================================================================
+   V3.4 — leitura limpa das frentes ativas
+   - rótulos de campanha mostram somente DEFENDENDO/LIBERTAÇÃO + %
+   - botão "Apenas Frentes Ativas" esconde planetas/rotas sem campanha
+   - setas de invasão permanecem sempre legíveis quando a camada está ativa
+   ================================================================ */
+#mapa-viewport.only-active-fronts .mapa-planet-group.planet-inactive:not(.super-earth){
+    display:none;
+}
+#mapa-viewport.only-active-fronts .mapa-lines .mapa-supply-line:not(.active-front-route),
+#mapa-viewport.only-active-fronts .mapa-lines .mapa-supply-line-base:not(.active-front-route){
+    display:none;
+}
+#mapa-viewport.only-active-fronts .mapa-sector-group{
+    opacity:.22;
+}
+.mapa-invasion-arrow{
+    stroke-width:2.1;
+    opacity:1;
+    filter:drop-shadow(0 0 2px rgba(255,255,255,.22));
+}
+#mapa-viewport.only-active-fronts .mapa-invasions{
+    display:block;
+}
+#mapa-viewport.only-active-fronts.hide-invasions .mapa-invasions{
+    display:none;
+}
+.mapa-event-label{
+    font-weight:700;
+    letter-spacing:.85px;
+}
+@media(max-width:600px){
+    .mapa-layer[data-layer="activeFronts"]{grid-column:1 / -1;}
+}
+
+/* Planetas humanos em paz: detalhes só com zoom maior, sem bloquear seleção/busca. */
+#mapa-viewport:not(.mapa-human-details-on) .peaceful-human:not(.selected):not(.search-match):not(:focus) .mapa-planet-label,
+#mapa-viewport:not(.mapa-human-details-on) .peaceful-human:not(.selected):not(.search-match):not(:focus) .mapa-player-label,
+#mapa-viewport:not(.mapa-human-details-on) .peaceful-human:not(.selected):not(.search-match):not(:focus) .mapa-planet-faction-icon {display:none!important;}
+
+/* V36: leitura da ordem, tipografia e painel sem cobrir o planeta. */
+.mapa-major-order-section{max-width:1000px;margin:22px auto;box-sizing:border-box;}
+.mapa-major-order-section .mapa-command-head{padding:18px;}
+.mapa-mo-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;}
+.mapa-mo-task{padding:18px;border-radius:14px;}
+.mapa-mo-task h3{font-size:20px;line-height:1.35;}
+.mapa-mo-task-top,.mapa-mo-task-status{font-size:11px;}
+.mapa-mo-progress{height:10px;}
+.mapa-mo-progress-row{font-size:12px;line-height:1.5;}
+.mapa-mo-progress-row strong{font-size:20px;}
+.mapa-mo-summary strong{font-size:20px;}
+.mapa-intel-card{min-height:0;overflow-y:auto;}
+.mapa-offensive-badge{gap:8px;font-size:10px;}
+.mapa-offensive-badge img{width:22px;height:22px;object-fit:contain;}
+/* Opcional: defina --mapa-wallpaper como url(...) para uma imagem estática. */
+.mapa-viewport-wrap{background-image:linear-gradient(#0009,#0009),var(--mapa-wallpaper,none);background-size:cover;background-position:center;background-color:#000;}
+@media(max-width:600px){.mapa-major-order-section{max-width:100%;}.mapa-mo-grid{grid-template-columns:1fr;}.mapa-mo-task{padding:15px;}.mapa-mo-task h3{font-size:19px;}}
+
+/* V3.7 — espaço útil, arte e painéis sobrepostos dentro do mapa. */
+.mapa-major-order-section{width:100%;max-width:1200px;padding:18px;}
+.mapa-major-order-section .mapa-command-head{padding:0 0 8px;}
+.mapa-offensive-card[hidden],#mapa-offensive-no-results[hidden]{display:none;}
+.mapa-offensive-search{position:relative;z-index:1;display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.mapa-offensive-search label{font-size:13px;color:#c5d5df;}
+.mapa-offensive-search input{box-sizing:border-box;flex:1;min-width:180px;max-width:460px;min-height:44px;padding:10px 14px;border:1px solid #425465;border-radius:12px;background:#0a1119;color:#fff;font:16px Arial,sans-serif;}
+.mapa-offensive-search input:focus-visible{outline:2px solid #8fc7e1;outline-offset:2px;}
+#mapa-offensive-results{font-size:12px;color:#acbdcc;}
+#mapa-offensive-no-results{margin-bottom:0;}
+#planet-modal{position:absolute;inset:auto;z-index:12;display:none;width:min(380px,calc(100% - 16px));padding:0;margin:0;overflow:auto;border:1px solid #586572;border-radius:16px;background:#090e15;box-shadow:0 12px 28px #0009;overscroll-behavior:contain;}
+#planet-modal.open{display:block;}
+#planet-modal .tactical-modal-card{position:relative;box-sizing:border-box;width:100%;max-width:none;max-height:none;margin:0;padding:16px;overflow:visible;border:0;border-radius:16px;box-shadow:none;}
+#planet-modal .tactical-modal-close{position:sticky;float:right;top:0;margin:0 0 8px 8px;right:auto;width:40px;height:40px;z-index:2;border-radius:10px;background:#101923;}
+#planet-modal .tactical-modal-title{font-size:25px;padding-right:40px;overflow-wrap:anywhere;}
+#planet-modal .tactical-modal-kicker{font-size:9px;}
+#planet-modal .tactical-modal-photo{height:110px;border-radius:12px;}
+#planet-modal .tactical-modal-metrics{grid-template-columns:repeat(2,minmax(0,1fr));}
+#planet-modal .tactical-modal-metrics>div,#planet-modal .tactical-modal-meta span{border-radius:10px;min-width:0;}
+@media(max-width:600px){
+ .mapa-major-order-section{padding:12px;}
+ .mapa-offensive-search label{width:100%;}
+ .mapa-offensive-search input{max-width:none;width:100%;}
+ #planet-modal{width:min(320px,calc(100% - 16px));}
+}
+
+/* V3.8 — mapa principal, Ordem compacta e imagens sem ampliação. */
+.mapa-author{margin:10px 0 0;color:#b7c4d0;font-size:12px;line-height:1.5;}
+.mapa-author strong{color:var(--hd-yellow);}
+@media(min-width:769px){.mapa-viewport-wrap{height:clamp(620px,85vh,1000px);}}
+.mapa-major-order-section{max-width:1000px;padding:16px;background:#0b0e12;isolation:isolate;}
+.mapa-major-order-section::before{inset:0;z-index:-1;opacity:1;background:linear-gradient(90deg,#090d12 5%,rgba(9,13,18,.9) 43%,rgba(9,13,18,.3)),url('imagens/fundos/major-order/major-order-ativa.png') center right/cover no-repeat;}
+.mapa-major-order-section .mapa-command-head{margin-bottom:10px;padding:0;}
+.mapa-major-order-section .mapa-command-head h2{font-size:25px;}
+.mapa-major-order-section .mapa-command-head p{font-size:11px;}
+.mapa-mo-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.mapa-mo-summary>div{padding:8px 10px;background:rgba(9,13,18,.8);}
+.mapa-mo-summary strong{font-size:15px;}
+.mapa-mo-grid{gap:9px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));}
+.mapa-mo-task{padding:12px;border-radius:12px;}
+.mapa-mo-task h3{font-size:17px;margin:7px 0;line-height:1.2;}
+.mapa-mo-task-top,.mapa-mo-task-status{font-size:9px;}
+.mapa-mo-progress{height:7px;}
+.mapa-mo-progress-row{font-size:10px;}
+.mapa-mo-progress-row strong{font-size:16px;}
+.mapa-mo-task-status{margin-top:5px;}
+.mapa-offensive-visual>img{opacity:1;filter:none;}
+.mapa-offensive-shade{background:linear-gradient(180deg,transparent 50%,rgba(3,5,7,.65));}
+.mapa-offensive-title{text-shadow:0 1px 4px #000;}
+.mapa-intel-card,.mapa-intel-card.open{background:#0b1017;}
+.mapa-intel-photo{opacity:1;transform:none;object-fit:contain;object-position:center;}
+.mapa-intel-visual-shade{background:linear-gradient(180deg,transparent 65%,rgba(3,5,7,.3));}
+@media(max-width:600px){
+ .mapa-major-order-section{padding:12px;}
+ .mapa-mo-summary{gap:5px;}
+ .mapa-mo-summary>div{padding:7px 5px;}
+ .mapa-mo-summary strong{font-size:12px;overflow-wrap:anywhere;}
+ .mapa-mo-summary small{font-size:7px;letter-spacing:.25px;}
+ .mapa-mo-task h3{font-size:17px;}
+}
+
+/* V3.9 — intel legível e dossiê complementar. */
+.mapa-intel-visual{height:138px;}
+.mapa-intel-photo{width:100%;height:100%;object-fit:cover;transform:none;opacity:1;}
+.mapa-intel-body{padding:13px;}
+.mapa-intel-title{font-size:24px;line-height:1.15;}
+.mapa-intel-kicker,.mapa-intel-sector{font-size:10px;line-height:1.4;}
+.mapa-intel-status{font-size:11px;line-height:1.5;padding:9px;}
+.mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.mapa-intel-grid>div{padding:10px;}
+.mapa-intel-grid small,.mapa-intel-environment small,.mapa-intel-route small{font-size:9px;letter-spacing:.3px;color:#9aabba;}
+.mapa-intel-grid strong{font-size:18px;margin-top:4px;}
+.mapa-intel-environment{display:grid;grid-template-columns:1fr;gap:7px;}
+.mapa-intel-environment>div{padding:9px;}
+.mapa-intel-environment span,.mapa-intel-route span{font-size:12px;line-height:1.5;white-space:normal;display:block;-webkit-line-clamp:unset;overflow:visible;}
+.mapa-intel-progress>div:first-child{font-size:10px;}
+.mapa-intel-progress>div:first-child strong{font-size:14px;}
+.mapa-intel-progress-track{height:8px;border-radius:10px;}
+.mapa-intel-forecast strong{font-size:12px;}
+.mapa-intel-forecast p{font-size:12px;line-height:1.5;}
+.mapa-intel-details{min-height:44px;font-size:11px;}
+#planet-modal .dossier-section{margin-top:16px;padding-top:12px;border-top:1px solid #303d48;}
+.dossier-section h3{font-size:14px;color:var(--accent);margin:0 0 8px;}
+.dossier-section p,.dossier-section li{font:13px/1.6 Arial,sans-serif;color:#c8d2db;}
+.dossier-section ul{padding-left:18px;margin:8px 0;}
+.dossier-section li+li{margin-top:9px;}
+.dossier-section .dossier-note{font-size:11px;color:#91a0ae;}
+#planet-dossier-history small{font-size:9px;line-height:1.4;}
+#planet-dossier-history strong{font-size:16px;overflow-wrap:anywhere;}
+#planet-dossier-regions span{display:block;font-size:12px;color:#9aabba;}
+@media(max-width:600px){.mapa-intel-visual{height:130px;}.mapa-intel-environment{display:grid;}.mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}

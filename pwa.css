@@ -3,3 +3,13 @@
 #hd-pwa-notice{position:fixed;z-index:3000;bottom:20px;right:20px;max-width:420px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px;background:#101010;color:#eee;border:1px solid #d7d52c;box-shadow:0 8px 40px #000;font:14px/1.5 Arial}
 #hd-pwa-notice span{flex:1 1 100%}#hd-pwa-notice button{min-height:44px;padding:10px 14px;background:#d7d52c;border:0;color:#090909;font-weight:bold;cursor:pointer}
 @media(max-width:768px){#hd-pwa-notice{left:16px;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));max-width:none}}
+
+/* Aviso compartilhado pela PWA e pelo detector de deploy. */
+#hd-pwa-notice{box-sizing:border-box;border-radius:18px;background:#11171e;border-color:#8d873e;box-shadow:0 10px 28px #0007;padding:18px;gap:10px;max-width:min(420px,calc(100vw - 32px));}
+#hd-pwa-notice span{min-width:0;overflow-wrap:anywhere;}
+#hd-pwa-notice button{border-radius:10px;min-height:44px;padding:11px 16px;}
+#hd-pwa-notice button:last-child{background:#222c37;color:#e2e8ef;border:1px solid #43505f;}
+#hd-pwa-notice button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+#hd-pwa-notice button:disabled{opacity:.6;cursor:wait;}
+#hd-install{border-radius:10px;}
+@media(max-width:768px){#hd-pwa-notice{border-radius:16px;max-width:none;padding:16px;}#hd-pwa-notice button{flex:1 1 auto;}}

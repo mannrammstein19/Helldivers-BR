@@ -548,6 +548,37 @@
         return Number.isFinite(id) && id > 0 ? id : 0;
     }
 
+    // Objetivos planetários (libertação/defesa) usam um contador binário na
+    // assignment (0/1). Para mostrar o avanço real, cruzamos o planeta do
+    // objetivo com /campaigns e usamos a porcentagem viva da campanha.
+    function majorOrderTaskCampaign(task) {
+        const planetIndex = majorOrderTaskPlanetIndex(task);
+        if (!planetIndex || !Array.isArray(campaigns) || !campaigns.length) return null;
+        return campaigns.find(campaign => Number(campaign?.planet?.index) === planetIndex) || null;
+    }
+
+    function majorOrderTaskLivePercent(task, done=false) {
+        if (done) return 100;
+        const type = Number(task?.type || 0);
+        if (![11, 12, 13].includes(type)) return null;
+        const campaign = majorOrderTaskCampaign(task);
+        if (!campaign?.planet) return null;
+        return planetProgress(campaign.planet);
+    }
+
+    function majorOrderTaskVisualFactionClass(task, campaign=null) {
+        const assignmentClass = majorOrderTaskFactionClass(task);
+        const type = Number(task?.type || 0);
+        const planet = campaign?.planet;
+        // Em objetivos planetários, a campanha sabe qual facção controla/ataca
+        // o planeta e é a melhor fonte para definir a cor temática do card.
+        if ([11, 12, 13].includes(type) && planet) {
+            const enemy = planet?.event?.faction || planet?.currentOwner || '';
+            if (enemy) return factionClass(enemy);
+        }
+        return assignmentClass;
+    }
+
     function majorOrderPlanetName(id) {
         if (!id) return '';
         const item = planetCatalog[String(id)] || {};
@@ -621,6 +652,14 @@
         if (state === 'completed') return 100;
         if (!goal) return 0;
         return Math.max(0, Math.min(100, progress / goal * 100));
+    }
+
+    function majorOrderPercentLabel(value) {
+        const percent = Math.max(0, Math.min(100, Number(value) || 0));
+        // Evita mostrar 0.0% quando já existe um avanço pequeno, sem poluir
+        // percentuais maiores com casas decimais desnecessárias.
+        const digits = percent > 0 && percent < 0.1 ? 2 : 1;
+        return `${percent.toFixed(digits)}%`;
     }
 
     function majorOrderTaskDone(progress, goal, state) {
@@ -727,7 +766,12 @@
         const pending = state === 'pending' || state === 'unknown';
         const doneCount = completed
             ? taskData.length
-            : taskData.filter(item=>majorOrderTaskDone(item.progress,item.goal,state)).length;
+            : taskData.filter(item=>{
+                if (majorOrderTaskDone(item.progress,item.goal,state)) return true;
+                if (state !== 'active') return false;
+                const live = majorOrderTaskLivePercent(item.task, false);
+                return Number.isFinite(live) && live >= 99.999;
+            }).length;
 
         const reward = majorOrderReward(order);
         const expiration = majorOrderExpiration(order);
@@ -749,24 +793,44 @@
             : completed ? 'VITÓRIA' : failed ? 'FALHA' : state === 'unknown' ? 'RESULTADO INDISPONÍVEL' : 'AGUARDANDO';
 
         const taskCards = taskData.map(({task,index,goal,progress})=>{
-            const done = majorOrderTaskDone(progress, goal, state);
-            const percent = majorOrderTaskPercent(progress, goal, state);
+            const assignmentDone = majorOrderTaskDone(progress, goal, state);
+            const liveCampaign = majorOrderTaskCampaign(task);
+            const livePlanet = liveCampaign?.planet || null;
+            const livePercent = state === 'active' ? majorOrderTaskLivePercent(task, assignmentDone) : null;
+            const hasLivePercent = Number.isFinite(livePercent);
+            const done = assignmentDone || (state === 'active' && hasLivePercent && livePercent >= 99.999);
+            const percent = hasLivePercent
+                ? Math.max(0, Math.min(100, livePercent))
+                : majorOrderTaskPercent(progress, goal, state);
             const factionName = majorOrderTaskFactionName(task);
-            const factionClassName = majorOrderTaskFactionClass(task);
+            const factionClassName = majorOrderTaskVisualFactionClass(task, liveCampaign);
             const planet = majorOrderPlanetName(majorOrderTaskPlanetIndex(task));
+            const taskTypeId = Number(task?.type || 0);
             const type = majorOrderTaskTypeName(task);
             const title = majorOrderTaskTitle(task,index);
 
-            const rate = state === 'active' && goal && goal > 1 && !done
-                ? majorOrderTaskRate(order,index,progress,goal)
+            const liveMode = livePlanet?.event ? 'defense' : 'attack';
+            const livePlanetKey = livePlanet ? (livePlanet.index ?? clean(livePlanet.name)) : null;
+            const liveRate = hasLivePercent && livePlanetKey != null
+                ? getPlanetRate(livePlanetKey, liveMode)
+                : null;
+            const rate = state === 'active' && !done
+                ? (hasLivePercent
+                    ? liveRate
+                    : (goal && goal > 1 ? majorOrderTaskRate(order,index,progress,goal) : null))
                 : null;
             const eta = state === 'active' && !done
-                ? majorOrderEta(progress,goal,rate)
+                ? (hasLivePercent ? formatEtaFromRate(percent,rate) : majorOrderEta(progress,goal,rate))
                 : null;
 
+            const liveLabel = taskTypeId === 11
+                ? 'LIBERTAÇÃO'
+                : taskTypeId === 12 ? 'DEFESA'
+                : taskTypeId === 13 ? 'CONTROLE'
+                : 'PROGRESSO';
             const progressText = goal
-                ? `${(completed ? goal : progress).toLocaleString('pt-BR')} / ${goal.toLocaleString('pt-BR')}`
-                : (done ? 'OBJETIVO CUMPRIDO' : 'TELEMETRIA EM ACOMPANHAMENTO');
+                ? `${(completed ? goal : progress).toLocaleString('pt-BR')} / ${goal.toLocaleString('pt-BR')}${hasLivePercent && !done ? ` • ${liveLabel}` : ''}`
+                : (done ? 'OBJETIVO CUMPRIDO' : hasLivePercent ? liveLabel : 'TELEMETRIA EM ACOMPANHAMENTO');
 
             const meta = factionName || planet || type;
             const status = done
@@ -776,12 +840,12 @@
                 ? 'FINALIZADO'
                 : state !== 'active' ? 'ÚLTIMO REGISTRO'
                 : rate != null
-                    ? `${rate >= 0 ? '+' : ''}${Math.round(rate).toLocaleString('pt-BR')}/h`
+                    ? (hasLivePercent ? formatRate(rate) : `${rate >= 0 ? '+' : ''}${Math.round(rate).toLocaleString('pt-BR')}/h`)
                     : 'COLETANDO';
             const etaText = done
                 ? 'CONCLUÍDO'
                 : state !== 'active' ? '—'
-                : (eta || ((goal && goal <= 1) ? 'ACOMPANHANDO' : 'CALCULANDO'));
+                : (eta || (hasLivePercent || (goal && goal <= 1) ? 'ACOMPANHANDO' : 'CALCULANDO'));
 
             return `
                 <article class="guerra-mo-task ${factionClassName}${done ? ' is-complete' : ''}">
@@ -789,11 +853,11 @@
                         <span>OBJETIVO ${String(index+1).padStart(2,'0')} // ${escapeHTML(type)}</span>
                         <strong>${escapeHTML(meta)}</strong>
                     </div>
-                    <h4>${escapeHTML(title)}</h4>
-                    <div class="guerra-mo-progress"><i style="width:${percent.toFixed(2)}%"></i></div>
+                    <h4>${FACTION_LOGOS[factionClassName]?`<img class="order-task-faction-logo" src="${escapeHTML(FACTION_LOGOS[factionClassName])}" alt="" decoding="async" onerror="this.hidden=true">`:''}${escapeHTML(title)}</h4>
+                    <div class="guerra-mo-progress"><i style="width:${percent > 0 ? `max(${percent.toFixed(2)}%, 2px)` : '0%'}"></i></div>
                     <div class="guerra-mo-progress-label">
                         <span>${escapeHTML(progressText)}</span>
-                        <strong>${goal ? percent.toFixed(1)+'%' : '—'}</strong>
+                        <strong>${goal || hasLivePercent ? majorOrderPercentLabel(percent) : '—'}</strong>
                     </div>
                     <div class="guerra-mo-meta">
                         <div><small>Ritmo observado</small><strong>${escapeHTML(rateText)}</strong></div>
@@ -1400,14 +1464,24 @@
 
     async function updateAll(force=false) {
         if (document.body.hasAttribute('data-order-only')) {
+            // A página exclusiva da Ordem também precisa das campanhas: objetivos
+            // de libertação/defesa são 0/1 na assignment, mas o avanço visual
+            // vem da campanha ativa do planeta.
+            await fetchWithFallback(`${V1}/campaigns`, 'campaigns', data=>{
+                if (!Array.isArray(data)) return;
+                campaigns = data;
+                recordPlanetSnapshots(data);
+            }, Array.isArray);
+            await new Promise(r=>setTimeout(r,220));
             await fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d));
             return;
         }
         setText('stat-updated','ATUALIZANDO');
-        // Sequencial de propósito: respeita o limite atual de 5 req/10s e evita rajadas.
+        // Sequencial de propósito: campanhas vêm primeiro para a Ordem Maior já
+        // nascer com a porcentagem planetária correta na primeira renderização.
         const tasks = [
-            () => fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d)),
             () => fetchWithFallback(`${V1}/campaigns`, 'campaigns', (d,e)=>d?renderCampaigns(d):$('frentes').innerHTML=errorHTML(e?.message||'Falha ao carregar campanhas.'), Array.isArray),
+            () => fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d)),
             () => fetchWithFallback(`${V1}/dispatches`, 'dispatches', renderDispatches, Array.isArray),
             () => fetchWithFallback(`${V2}/space-stations`, 'dss', renderDSS, Array.isArray),
             () => fetchWithFallback(`${V1}/steam`, 'steam', renderSteam, Array.isArray)

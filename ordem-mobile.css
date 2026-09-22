@@ -1,0 +1,61 @@
+/* Exclusivo da pagina Ordem, somente em telas de celular. */
+@media(max-width:768px){
+ body[data-order-only] .guerra-main{padding:14px 12px 30px}
+ body[data-order-only] .guerra-topbar{display:none}
+ body[data-order-only] .guerra-panel{border:0;background:transparent;overflow:visible}
+ body[data-order-only] .guerra-panel-head{padding:0 2px 12px;background:none;border:0}
+ body[data-order-only] .guerra-panel-head h1{font:700 18px 'Oswald',Arial,sans-serif!important}
+ body[data-order-only] .guerra-panel-head small{font-size:9px;color:#aaa;text-align:right}
+ body[data-order-only] #ordem-maior{padding:0}
+ body[data-order-only] .guerra-order{padding:0 14px 16px;min-height:0;overflow:hidden;background:#0d1013;border-color:#414449}
+ body[data-order-only] .guerra-order::before{position:relative;display:block;inset:auto;width:calc(100% + 28px);height:auto;aspect-ratio:3/2;margin:0 -14px 16px;z-index:0;opacity:1;mask-image:none!important;-webkit-mask-image:none!important;background-size:contain!important;background-position:center!important;background-color:#101418;border-bottom:2px solid var(--order-accent)}
+ body[data-order-only] .guerra-order::after{display:none}
+ body[data-order-only] .guerra-order.order-pending::before,body[data-order-only] .guerra-order.order-unknown::before{display:none}
+ body[data-order-only] .guerra-order.order-pending,body[data-order-only] .guerra-order.order-unknown{padding-top:16px}
+ body[data-order-only] .guerra-order-kicker{max-width:100%;font-size:11px;line-height:1.6;letter-spacing:.7px;margin-bottom:8px}
+ body[data-order-only] .guerra-order h3{font-size:26px;line-height:1.15;margin:0;overflow-wrap:anywhere}
+ body[data-order-only] .guerra-order p{font:14px/1.6 Arial,sans-serif;color:#d0d3d6;margin:10px 0 0}
+ body[data-order-only] .guerra-mo-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:18px}
+ body[data-order-only] .guerra-order-stat{padding:10px;background:#161a1e}
+ body[data-order-only] .guerra-order-stat:last-child{grid-column:1/-1}
+ body[data-order-only] .guerra-order-stat small{font:10px/1.4 Arial,sans-serif;color:#aab0b5;letter-spacing:.4px}
+ body[data-order-only] .guerra-order-stat strong{font-size:17px;line-height:1.4}
+ body[data-order-only] .guerra-mo-head{margin:20px 0 10px;padding:10px;gap:7px;font-size:12px;line-height:1.4}
+ body[data-order-only] .guerra-mo-head small{font-size:9px;line-height:1.4;color:#b2b7bb}
+ body[data-order-only] .guerra-mo-grid{grid-template-columns:1fr;gap:10px}
+ body[data-order-only] .guerra-mo-task{padding:12px;min-height:0}
+ body[data-order-only] .guerra-mo-task-kicker{font-size:9px;line-height:1.5;letter-spacing:.2px;flex-wrap:wrap}
+ body[data-order-only] .guerra-mo-task-kicker strong{max-width:100%;white-space:normal}
+ body[data-order-only] .guerra-mo-task h4{min-height:0;font-size:17px;line-height:1.35;margin:6px 0 12px}
+ body[data-order-only] .guerra-mo-progress{height:8px}
+ body[data-order-only] .guerra-mo-progress-label{font:10px/1.5 Arial,sans-serif;gap:6px;margin-top:6px;flex-wrap:wrap}
+ body[data-order-only] .guerra-mo-progress-label span{white-space:normal;overflow-wrap:anywhere}
+ body[data-order-only] .guerra-mo-progress-label strong{font-size:13px}
+ body[data-order-only] .guerra-mo-status{font-size:10px;line-height:1.4;margin-top:9px}
+ body[data-order-only] .order-task-details{margin-top:8px;border-top:1px solid #ffffff1c}
+ body[data-order-only] .order-task-details summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;color:#bac0c5;font:12px Arial,sans-serif;list-style:none}
+ body[data-order-only] .order-task-details summary::-webkit-details-marker{display:none}
+ body[data-order-only] .order-task-details summary::after{content:'+';font-size:20px;color:var(--mo)}
+ body[data-order-only] .order-task-details[open] summary::after{content:'−'}
+ body[data-order-only] .order-task-details summary:focus-visible{outline:2px solid var(--hd-yellow);outline-offset:2px}
+ body[data-order-only] .guerra-mo-meta{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 8px}
+ body[data-order-only] .guerra-mo-meta small{font:9px/1.5 Arial,sans-serif;color:#aab0b5}
+ body[data-order-only] .guerra-mo-meta strong{font-size:12px;white-space:normal;overflow-wrap:anywhere}
+ body[data-order-only] .guerra-order-foot{font-size:9px;line-height:1.6;letter-spacing:.3px}
+}
+/* Arte e resumo compoem um unico cabecalho; resultado vem logo abaixo. */
+@media(max-width:768px){
+ body[data-order-only] .guerra-order::before{display:none}
+ body[data-order-only] .guerra-order.order-pending,body[data-order-only] .guerra-order.order-unknown{padding-top:0}
+ body[data-order-only] .order-mobile-hero{margin:0 -14px 14px;padding:180px 16px 16px;min-height:325px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;background-image:linear-gradient(180deg,transparent 15%,rgba(9,12,15,.3) 40%,#0d1013 75%),var(--major-order-image);background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:#0d1013;border-bottom:1px solid #ffffff20}
+ body[data-order-only] .order-mobile-hero h3{font-size:28px;line-height:1.2;text-shadow:0 2px 5px #000}
+ body[data-order-only] .order-mobile-hero .guerra-mo-summary{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px}
+ body[data-order-only] .order-mobile-hero .guerra-order-stat{padding:0;background:none;border:0}
+ body[data-order-only] .order-mobile-hero .guerra-order-stat small{font-size:9px;color:#b8bec4}
+ body[data-order-only] .order-mobile-hero .guerra-order-stat strong{font-size:18px;margin-top:2px;color:#fff}
+ body[data-order-only] .order-mobile-hero .guerra-order-stat:last-child{grid-column:1/-1;border-top:1px solid #ffffff20;padding-top:8px}
+ body[data-order-only] .order-mobile-hero .guerra-order-stat:last-child small{display:none}
+ body[data-order-only] .order-mobile-hero .order-reward{color:#ffe34d}
+ body[data-order-only] .guerra-order-kicker{padding:10px 12px;border-left:3px solid var(--order-accent);background:#ffffff06;margin:0 0 12px;font-size:12px}
+ body[data-order-only] .order-pending .order-mobile-hero,body[data-order-only] .order-unknown .order-mobile-hero{background-image:none;padding-top:20px;min-height:0}
+}

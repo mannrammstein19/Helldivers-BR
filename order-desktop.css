@@ -1,0 +1,45 @@
+@media(min-width:769px){
+ .order-desktop-summary{min-height:var(--order-original-height)!important}
+ .order-desktop-summary>.hd-mo-objectives-grid,.order-desktop-summary>.guerra-mo-grid,.order-desktop-summary>.hd-mo-objectives-head,.order-desktop-summary>.guerra-mo-head{display:none}
+ .order-desktop-summary>.hd-mo-summary,.order-desktop-summary>.guerra-mo-summary{width:62%;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .order-desktop-summary>.hd-ov-brief,.order-desktop-summary>.guerra-order-brief,.order-desktop-summary>.hd-ov-title,.order-desktop-summary>h3,.order-desktop-summary>.hd-ov-kicker,.order-desktop-summary>.guerra-order-kicker{max-width:62%}
+ .order-desktop-summary .order-show-objectives{position:relative;z-index:3;display:block;margin:22px 0 18px;padding:12px 18px;min-height:44px;color:#ffe34d;background:#101316e8;border:1px solid #ffe34d;cursor:pointer;font:700 14px Arial,sans-serif;text-align:left}
+ .order-show-objectives:hover{background:#29291c}
+ .order-show-objectives:focus-visible,.order-objectives-panel button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+ .guerra-order.order-desktop-summary::after{background:linear-gradient(90deg,#090909 0%,#090909ee 35%,#09090966 65%,transparent 100%)!important}
+ .hd-ov-order-main.order-desktop-summary::before{background:linear-gradient(90deg,#090909 0%,#090909ee 35%,#09090966 65%,transparent 100%)}
+}
+.order-objectives-panel .hd-mo-objectives-grid,.order-objectives-panel .guerra-mo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px}
+.order-objectives-panel .hd-mo-task h4,.order-objectives-panel .guerra-mo-task h4{font-size:18px;line-height:1.4}
+.order-objectives-panel .hd-mo-task-kicker,.order-objectives-panel .guerra-mo-task-kicker{font-size:10px;line-height:1.4}
+.order-objectives-panel .hd-mo-task-progress-label,.order-objectives-panel .guerra-mo-progress-label{font-size:11px}
+.order-objectives-panel .hd-mo-task-meta small,.order-objectives-panel .guerra-mo-meta small{font-size:10px;color:#aaa}
+.order-objectives-panel .hd-mo-task-meta strong,.order-objectives-panel .guerra-mo-meta strong{font-size:13px}
+@media(min-width:769px){
+ .order-desktop-summary{padding-bottom:110px!important}
+ .order-desktop-summary>.order-objectives-popover{position:absolute;z-index:12;left:22px;right:22px;bottom:48px}
+ .order-desktop-summary .order-show-objectives{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px;margin:0;font-size:13px;background:#0b0e10ed;min-height:48px}
+ .order-desktop-summary .order-show-objectives span{color:#ccc;font:12px Arial,sans-serif}
+ .order-desktop-summary>.hd-ov-order-foot,.order-desktop-summary>.guerra-order-foot{position:absolute;left:22px;right:22px;bottom:15px;max-width:none}
+ .order-objectives-panel{position:absolute;bottom:calc(100% + 7px);left:0;right:0;max-height:min(430px,70vh,calc(var(--order-original-height) - 115px));overflow:auto;padding:18px;background:#080b0ef5;border:1px solid #ffe34daa;box-shadow:0 -12px 36px #0009;color:#eee;box-sizing:border-box}
+ .order-objectives-panel[hidden]{display:none!important}
+ .order-objectives-panel>header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:15px}
+ .order-objectives-panel h2{font:700 18px 'Oswald',Arial,sans-serif;color:#ffe34d;margin:0}
+ .order-objectives-panel button{min-height:44px;min-width:44px;background:#20252a;color:#fff;border:1px solid #777;cursor:pointer}
+}
+/* Ajustes apenas nos objetivos da janelinha do desktop. */
+.order-objectives-panel{border-radius:14px;scrollbar-width:thin;scrollbar-color:#73734b #111518}
+.order-objectives-panel>header{gap:12px;margin-bottom:14px}
+.order-objectives-panel>header h2{font-size:18px;line-height:1.35}
+.order-objectives-panel>header button{border-radius:9px}
+.order-objectives-panel .hd-mo-task,.order-objectives-panel .guerra-mo-task{border-radius:10px;padding:12px;overflow:hidden}
+.order-objectives-panel .hd-mo-task h4,.order-objectives-panel .guerra-mo-task h4{font-size:15px;line-height:1.4;min-height:42px;overflow-wrap:anywhere}
+.order-objectives-panel .hd-mo-task-kicker,.order-objectives-panel .guerra-mo-task-kicker{display:flex;flex-wrap:wrap;align-items:flex-start;gap:5px 10px;font:700 9px/1.5 Arial,sans-serif;letter-spacing:.35px}
+.order-objectives-panel .hd-mo-task-kicker strong,.order-objectives-panel .guerra-mo-task-kicker strong{max-width:none;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;flex-shrink:0}
+.order-objectives-panel .hd-mo-task-meta small,.order-objectives-panel .guerra-mo-meta small{font:10px/1.4 Arial,sans-serif;letter-spacing:.2px}
+.order-objectives-panel .hd-mo-task-meta strong,.order-objectives-panel .guerra-mo-meta strong{font-size:12px;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+.order-objectives-panel .order-labeled-progress{position:relative;display:grid;align-items:center;height:auto;min-height:34px;border-radius:6px;isolation:isolate;overflow:hidden;background:#1c2023}
+.order-objectives-panel .order-labeled-progress>i{position:absolute;left:0;top:0;bottom:0;height:100%;z-index:0;opacity:.8}
+.order-objectives-panel .order-labeled-progress>.hd-mo-task-progress-label,.order-objectives-panel .order-labeled-progress>.guerra-mo-progress-label{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:3px 8px;margin:0;padding:7px 8px;color:#fff;background:#0007;text-shadow:0 1px 2px #000,0 0 3px #000;font:700 10px/1.4 Arial,sans-serif}
+.order-objectives-panel .order-labeled-progress span{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;min-width:0}
+.order-objectives-panel .order-labeled-progress strong{font:700 11px/1.4 Arial,sans-serif;color:#fff;flex-shrink:0}

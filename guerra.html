@@ -20,6 +20,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <script src="pwa.js" defer></script>
+<link rel="stylesheet" href="order-desktop.css">
+<script src="order-desktop.js" defer></script>
 </head>
 <body class="fundo-guerra">
 
@@ -178,5 +180,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(btn && side) btn.addEventListener('click',()=>{ side.classList.toggle('active'); btn.textContent=side.classList.contains('active')?'✕ Fechar Menu':'☰ MENU DE NAVEGAÇÃO'; });
 });
 </script>
+<link rel="stylesheet" href="mobile-finish.css">
+<script src="mobile-finish.js"></script>
 </body>
 </html>

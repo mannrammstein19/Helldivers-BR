@@ -1077,3 +1077,23 @@ body.theme-meridian .guerra-panel-head{background:linear-gradient(90deg,rgba(156
 .guerra-mo-task h4{display:flex;align-items:center;gap:9px;}
 .order-task-faction-logo{width:28px;height:28px;object-fit:contain;flex:0 0 28px;}
 .order-task-faction-logo[hidden]{display:none;}
+
+/* V4.4 — acabamento da Central, sem alterar conteúdo ou comportamento. */
+body.central-rounded :is(.guerra-hero,.guerra-panel,.guerra-order,.frente-card,.guerra-topbar,.mapa-cta,.tactical-modal-card){border-radius:18px;}
+body.central-rounded .guerra-hero{clip-path:none;}
+body.central-rounded :is(.guerra-stat,.tatico-metrica,.guerra-order-stat,.guerra-mo-task,.guerra-mo-meta>div,.tactical-modal-metrics>div,.tactical-hazard,.order-show-objectives,.guerra-filter,.guerra-search,.mapa-cta-btn){border-radius:11px;}
+body.central-rounded :is(.tactical-modal-close,.order-tag,.frente-hazard-chip,.tactical-modal-meta span){border-radius:8px;}
+body.central-rounded .order-tag{clip-path:none;}
+body.central-rounded :is(.progress,.guerra-mo-progress){border-radius:999px;}
+body.central-rounded .guerra-panel-head{border-radius:17px 17px 0 0;}
+body.central-rounded :is(.tatico-metrica small,.guerra-stat .detail){color:#a3adb5;line-height:1.5;}
+body.central-rounded .metric-eta strong{white-space:normal;overflow-wrap:anywhere;}
+body.central-rounded .guerra-filter{min-height:44px;}
+@media(max-width:768px){body.central-rounded :is(.guerra-hero,.guerra-panel,.guerra-order,.frente-card,.tactical-modal-card){border-radius:14px;}}
+
+/* V4.5 — clima possível é distinto do informado pela API. */
+.effect-source{display:block;margin:4px 0;color:#b5bec7;font:10px/1.45 Arial,sans-serif;}
+.frente-hazard-chip.effect-possible,.intel-effect.effect-possible{border-style:dashed;border-color:#c3ad65;}
+.frente-hazard-chip.effect-possible::after,.intel-effect.effect-possible::after{content:'?';position:absolute;right:-3px;top:-5px;border-radius:50%;background:#d7c477;color:#101010;width:12px;height:12px;text-align:center;font:bold 10px/12px Arial;}
+.frente-hazard-chip{position:relative;}
+.frente-hazard-chip:focus-visible{outline:2px solid #fff;outline-offset:2px;}

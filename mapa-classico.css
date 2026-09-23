@@ -875,3 +875,38 @@ body.tactical-modal-open { overflow:hidden; }
  .mapa-main .mapa-viewport-wrap{aspect-ratio:auto;height:66svh;min-height:400px;max-height:620px;}
 }
 #planet-dossier-source{margin:10px 0;color:#91a0ae;font:11px/1.5 Arial,sans-serif;}
+
+/* V4.5 — clima possível é distinto do informado pela API. */
+.effect-source{display:block;margin:4px 0;color:#b5bec7;font:10px/1.45 Arial,sans-serif;}
+.frente-hazard-chip.effect-possible,.intel-effect.effect-possible{border-style:dashed;border-color:#c3ad65;}
+.frente-hazard-chip.effect-possible::after,.intel-effect.effect-possible::after{content:'?';position:absolute;right:-3px;top:-5px;border-radius:50%;background:#d7c477;color:#101010;width:12px;height:12px;text-align:center;font:bold 10px/12px Arial;}
+.frente-hazard-chip{position:relative;}
+.frente-hazard-chip:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+/* v47 — buracos negros e destroços: marcadores estáticos. */
+#mapa-viewport .special-location .mapa-planet-dot,
+#mapa-viewport .special-location .mapa-planet-halo,
+#mapa-viewport .special-location .mapa-planet-faction-icon,
+#mapa-viewport .special-location .mapa-player-label {display:none!important;}
+.mapa-special-icon,.mapa-special-fallback {pointer-events:none;}
+#mapa-intel-card.special-location .mapa-intel-photo {object-fit:contain;}
+#mapa-intel-card.special-location .mapa-intel-grid,
+#mapa-intel-card.special-location .mapa-intel-effects,
+#mapa-intel-card.special-location .mapa-intel-environment {display:none!important;}
+
+/* v48 — hierarquia dos nomes por proprietário, inclusive seleção e busca. */
+#mapa-viewport .mapa-planet-group[data-faction="human"]:not(.super-earth):not(.special-location) .mapa-planet-label {
+    font-size:3.6px;
+    letter-spacing:.12px;
+    stroke-width:1px;
+}
+#mapa-viewport .mapa-planet-group[data-faction="human"]:not(.super-earth):not(.special-location) .mapa-player-label {
+    font-size:3px;
+    letter-spacing:.12px;
+    stroke-width:.9px;
+}
+
+/* v52 — preenchimento suave e bordas por presença inimiga. */
+.mapa-sector-border {stroke:var(--sector-color,#454b52);stroke-width:1;stroke-opacity:.55;}
+.mapa-sector-border.sector-enemy {stroke-width:2;stroke-opacity:.9;}
+.mapa-sector-fill {stroke:none;}

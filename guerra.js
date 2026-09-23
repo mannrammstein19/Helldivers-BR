@@ -139,8 +139,10 @@
         '269': 'Brilliance_Planet_Landscape_Header.jpg'
     };
     const PLANET_IMAGES_BY_NAME = {
-        'k': 'Magma_Base_Landscape.png',
-        'brilliance': 'Brilliance_Planet_Landscape_Header.jpg'
+		'k': 'Magma_Base_Landscape.png',
+		'brilliance': 'Brilliance_Planet_Landscape_Header.jpg',
+		'luxuriant': 'Luxuriant_Planet_Landscape_Header.png',
+		'fronteria': 'Tropical_Oasis_Biome_Header.png'
     };
     const PLANET_CATALOG_URL = 'https://raw.githubusercontent.com/helldivers-2/json/master/planets/planets.json';
     let planetCatalog = {};
@@ -148,7 +150,7 @@
 
     async function loadPlanetCatalog() {
         if (planetCatalogPromise) return planetCatalogPromise;
-        planetCatalogPromise = fetch(PLANET_CATALOG_URL, { cache:'force-cache' })
+        planetCatalogPromise = fetch(PLANET_CATALOG_URL, { cache:'force-cache',signal:AbortSignal.timeout(8000) })
             .then(r => r.ok ? r.json() : {})
             .then(data => { planetCatalog = data && typeof data === 'object' ? data : {}; if (campaigns.length) renderFrontCards(); return planetCatalog; })
             .catch(() => (planetCatalog = {}));
@@ -173,6 +175,7 @@
     }
 
     const HAZARD_INFO = {
+        'normal temp': { name:'Temperatura Normal', icon:'♨', file:'Normal Temp.png', localOnly:true, description:'Condição térmica normal.', recommendation:'Confira os demais efeitos ambientais antes da missão.' },
         'extreme cold': { name:'Frio Extremo', icon:'❄', file:'Extreme Cold.png', wikiFile:'Extreme Cold Environmental Condition Icon.svg', description:'Temperaturas extremamente baixas alteram as condições térmicas do combate.', recommendation:'Armas que dependem de calor podem se beneficiar de um resfriamento mais rápido.' },
         'blizzards': { name:'Tempestades de Neve', icon:'❄', file:'Blizzards.png', wikiFile:'Blizzards Environmental Condition Icon.svg', description:'Tempestades de neve reduzem a visibilidade e tornam a operação mais difícil.', recommendation:'Avance com atenção e mantenha a equipe próxima quando a visibilidade cair.' },
         'meteor storms': { name:'Tempestades de Meteoros', icon:'☄', file:'Meteor Storms.png', wikiFile:'Meteor Storms Environmental Condition Icon.svg', description:'Impactos de meteoros podem atingir a superfície durante a operação.', recommendation:'Evite permanecer parado em áreas abertas e observe o terreno durante a tempestade.' },
@@ -193,11 +196,13 @@
     function hazardIconSources(info) {
         if (!info || !info.file) return [];
         const local = HAZARD_ICON_PATH + info.file;
+        if (info.localOnly) return [local];
         const wikiName = info.wikiFile || `${info.name} Environmental Condition Icon.svg`;
         return [local, WIKI_FILE(wikiName)];
     }
 
     function iconHTML(info, cls='hazard-img') {
+        if (info?.localOnly) return `<img src="${escapeHTML(HAZARD_ICON_PATH + info.file)}" alt="" class="${cls}" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="hazard-fallback" style="display:none;color:#fff" aria-label="Temperatura Normal">♨</span>`;
         const sources = hazardIconSources(info);
         if (!sources.length) return `<span class=\"hazard-fallback\">${info?.icon || '⚠'}</span>`;
         const encoded = sources.map(s => escapeHTML(s.replace(/\\/g, '\\')));
@@ -217,8 +222,8 @@
     function hazardIcon(name) { return hazardInfo(name).icon; }
 
     const EXTRA_EFFECT_INFO = {
-        'normal temp': { name:'Temperatura Normal', icon:'◉', file:'', description:'Condição térmica estável para operações regulares.', recommendation:'Nenhuma adaptação térmica especial necessária.' },
-        'normal_temp': { name:'Temperatura Normal', icon:'◉', file:'', description:'Condição térmica estável para operações regulares.', recommendation:'Nenhuma adaptação térmica especial necessária.' },
+        'normal temp': { name:'Temperatura Normal', icon:'◉', file:'Normal Temp.png', localOnly:true, description:'Condição térmica estável para operações regulares.', recommendation:'Nenhuma adaptação térmica especial necessária.' },
+        'normal_temp': { name:'Temperatura Normal', icon:'◉', file:'Normal Temp.png', localOnly:true, description:'Condição térmica estável para operações regulares.', recommendation:'Nenhuma adaptação térmica especial necessária.' },
         'none': { name:'Sem efeitos ambientais adicionais', icon:'○', file:'', description:'Nenhuma condição ambiental adicional foi registrada.', recommendation:'Equipamento padrão recomendado.' }
     };
 
@@ -279,15 +284,6 @@
         const liveHazards = Array.isArray(p?.hazards) ? p.hazards : [];
         liveHazards.forEach(h => add(h?.name || h));
 
-        // O catálogo contém também "weather_effects" de ciclo/variação (por
-        // exemplo, calor de dia e frio à noite). Eles não devem ser exibidos
-        // como se fossem condições simultâneas. Só usamos "environmentals"
-        // como fallback quando a telemetria atual não trouxe hazards.
-        if (!names.length) {
-            const cat = catalogPlanet(p);
-            add(cat.environmentals);
-        }
-
         // Compatibilidade com campos de efeitos atuais da API, sem juntar
         // weather_effects do catálogo.
         ['effects','activeEffects','planetEffects','galacticEffects','modifiers'].forEach(k => add(p?.[k]));
@@ -303,19 +299,21 @@
         });
     }
 
-    function effectDetails(p, enemy, defense) {
-        const resolved = uniqueEffectNames(p, enemy, defense).map(effectInfo);
-        // A mesma condição pode chegar da API com grafias diferentes (ex.: "Fire
-        // Tornados" vindo dos hazards e "fire tornadoes" vindo do catálogo local).
-        // O dedup acima é feito no texto bruto; aqui removemos duplicatas que só
-        // se revelam DEPOIS de resolver para o efeito final (mesmo nome/ícone).
-        const seen = new Set();
-        return resolved.filter(effect => {
-            const dedupeKey = (effect.key || effect.name || '').toLowerCase();
-            if (seen.has(dedupeKey)) return false;
-            seen.add(dedupeKey);
-            return true;
-        });
+    function effectDetails(p) {
+        const result=[],seen=new Set();
+        const add=(value,possible)=>{
+            if(Array.isArray(value)){value.forEach(v=>add(v,possible));return;}
+            const raw=typeof value==='string'?value:value?.name||value?.title;
+            if(!raw||['none','null'].includes(raw.toLowerCase()))return;
+            const info=effectInfo(raw),key=(info.key||info.name).toLowerCase().replace(/[_-]+/g,' ');
+            if(seen.has(key))return;
+            seen.add(key);result.push({...info,possible});
+        };
+        uniqueEffectNames(p).forEach(v=>add(v,false));
+        const catalog=catalogPlanet(p);
+        add(catalog.environmentals,true);
+        add(catalog.weather_effects,true);
+        return result;
     }
 
     const DISPATCH_EXACT_PTBR = {
@@ -990,9 +988,10 @@
     }
 
     function formatEtaFromRate(progress, rate) {
-        if (rate == null || !Number.isFinite(rate) || rate <= 0 || progress >= 99.99) return null;
+        if (rate == null || !Number.isFinite(rate) || rate <= 0 || progress >= 100) return null;
         const hours = (100 - progress) / rate;
-        if (!Number.isFinite(hours) || hours <= 0 || hours > 24 * 30) return null;
+        if (!Number.isFinite(hours) || hours <= 0) return null;
+        if (hours > 24 * 365) return ">1 ano no ritmo atual";
         const totalMinutes = Math.max(1, Math.round(hours * 60));
         const days = Math.floor(totalMinutes / 1440);
         const h = Math.floor((totalMinutes % 1440) / 60);
@@ -1086,7 +1085,7 @@
             const eta = defense ? defenseLoseEta : formatEtaFromRate(pct, rate);
             const etaLabel = defense
                 ? `⏱ ${eta || 'prazo indisponível'}`
-                : eta ? `🏁 ${eta}` : (rate == null ? '⏳ calculando ritmo' : '🏁 sem ETA confiável');
+                : eta ? `🏁 ${eta}` : (rate == null ? '⏳ aguardando amostras' : rate <= 0 ? '🏁 sem avanço líquido' : '🏁 sem prazo confiável');
             const defenseAlertClass = defense && defenseState?.cls === 'status-down' ? ' defesa-perdendo' : '';
             const rateClass = rate == null ? '' : rate >= 0 ? 'rate-positive' : 'rate-negative';
             const trend = defense
@@ -1114,7 +1113,7 @@
                 </div>
                 <div class="frente-photo" style="background-image:url('${bgImg}')">
                     ${dssHere ? `<div class="frente-dss-badge" title="Estação Democracia (DSS) atualmente neste planeta"><img src="${DSS_ICON}" alt="DSS"><span>DSS</span></div>` : ''}
-                    ${hazards.length ? `<div class="frente-hazards-overlay" aria-label="Condições planetárias">${hazardDetails.map(h=>`<span class="frente-hazard-chip" title="${escapeHTML(h.name)}">${iconHTML(h)}<span class="hazard-fallback">${h.icon}</span></span>`).join('')}</div>` : ''}
+                    ${hazards.length ? `<div class="frente-hazards-overlay" aria-label="Condições planetárias">${hazardDetails.map(h=>`<span class="frente-hazard-chip${h.possible?' effect-possible':''}" tabindex="0" aria-label="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; catálogo':'Informado pela API'}" title="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; não confirmado na leitura atual':'Informado pela API'}">${iconHTML(h)}<span class="hazard-fallback">${h.icon}</span></span>`).join('')}</div>` : ''}
                 </div>
                 <div class="frente-content">
                     ${defense ? `
@@ -1136,12 +1135,12 @@
                         <div class="tatico-metrica metric-impacto">
                             <span class="metric-label">🟦 Impacto Helldiver / hora</span>
                             <strong class="${defense ? 'rate-positive' : rateClass}">${defense ? formatRate(rate) : formatRate(rate)}</strong>
-                            <small>${defense ? 'variação observada' : 'variação observada'}</small>
+                            <small>${defense ? 'variação observada' : 'avanço líquido observado'}</small>
                         </div>
                         <div class="tatico-metrica metric-faccao">
                             <span class="metric-label">${escapeHTML(factionLabel)}</span>
                             ${factionPressureHtml}
-                            <small>${defense ? 'ritmo do relógio da invasão' : 'estimativa pela tendência'}</small>
+                            <small>${defense ? 'ritmo do relógio da invasão' : 'regeneração registrada na API'}</small>
                         </div>
                         <div class="tatico-metrica metric-eta ${defense && defenseState?.cls === 'status-down' ? 'metric-eta-alert' : ''}">
                             <span class="metric-label">🏁 ${defense ? 'Tempo da Defesa' : 'Vitória estimada'}</span>
@@ -1152,7 +1151,7 @@
                                 <small>tempo até perder o planeta</small>
                             ` : `
                                 <strong>${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}</strong>
-                                <small>a partir do ritmo atual</small>
+                                <small>projeção no ritmo atual; pode mudar</small>
                             `}
                         </div>
                     </div>
@@ -1408,8 +1407,8 @@
             </div>`;
         modal.querySelector('.tactical-modal-hazards').innerHTML = hazards.length ? hazards.map(h=>`<div class="tactical-hazard">
             <div class="tactical-hazard-head">${iconHTML(h,'hazard-detail-img')}<strong>${escapeHTML(h.name)}</strong></div>
-            <p>${escapeHTML(h.description)}</p>
-            <small><b>RECOMENDAÇÃO:</b> ${escapeHTML(h.recommendation)}</small>
+            <small class="effect-source">${h.possible?'POSSÍVEL NO PLANETA · CATÁLOGO':'INFORMADO PELA API'}</small><p>${escapeHTML(h.description)}</p>
+            <small><b>SUGESTÃO DO PORTAL${h.possible?' · SE O EFEITO ESTIVER ATIVO':''}:</b> ${escapeHTML(h.recommendation)}</small>
         </div>`).join('') : '<div class="empty-state">Nenhuma condição ou efeito planetário registrado para este planeta.</div>';
         modal.classList.add('open');
         modal.setAttribute('aria-hidden','false');

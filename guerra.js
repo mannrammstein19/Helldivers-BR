@@ -10,7 +10,7 @@
     const API = 'https://api.helldivers2.dev/api';
     const V1 = `${API}/v1`;
     const V2 = `${API}/v2`;
-    const REFRESH = 30 * 1000;
+    const REFRESH = 60 * 1000;
     const CACHE_KEY = 'hdbr_guerra_cache_v2';
     const ORDER_SNAPSHOT_LOCAL = 'dados/major-order.json';
     const ORDER_SNAPSHOT_RAW = 'https://raw.githubusercontent.com/mannrammstein19/Helldivers-BR/main/dados/major-order.json';
@@ -432,22 +432,8 @@
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch {}
     }
 
-    async function fetchJSON(url, cacheName, force = false) {
-        const cache = readCache();
-        const now = Date.now();
-        const saved = cache[cacheName];
-        if (!force && saved && (now - saved.time) < CACHE_TTL[cacheName]) return saved.data;
-
-        const response = await fetch(url, { headers: HEADERS, cache: 'no-store' });
-        if (response.status === 429) {
-            const wait = Number(response.headers.get('Retry-After') || 10);
-            throw new Error(`Limite da API atingido. Aguarde ${wait}s.`);
-        }
-        if (!response.ok) throw new Error(`API respondeu HTTP ${response.status}`);
-        const data = await response.json();
-        cache[cacheName] = { time: now, data };
-        writeCache(cache);
-        return data;
+    async function fetchJSON(url, cacheName) {
+        return window.HDBRWarData.get(url,cacheName,CACHE_TTL[cacheName],HEADERS,readCache()[cacheName]);
     }
 
     async function fetchWithFallback(url, cacheName, renderer, validator = () => true) {
@@ -845,7 +831,7 @@
             const etaText = done
                 ? 'CONCLUÍDO'
                 : state !== 'active' ? '—'
-                : (eta || (hasLivePercent || (goal && goal <= 1) ? 'ACOMPANHANDO' : 'CALCULANDO'));
+                : (eta || (rate==null?'AGUARDANDO AMOSTRAS':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'));
 
             return `
                 <article class="guerra-mo-task ${factionClassName}${done ? ' is-complete' : ''}">
@@ -928,7 +914,7 @@
     function recordPlanetSnapshots(data) {
         if (!Array.isArray(data)) return;
         const history = readPlanetHistory();
-        const now = Date.now();
+        const now = window.HDBRWarData?.meta(`${V1}/campaigns`)?.time || Date.now();
 
         data.forEach(campaign => {
             const p = campaign?.planet;
@@ -937,7 +923,10 @@
             const mode = p.event ? 'defense' : 'attack';
             const key = `${p.index ?? clean(p.name)}:${mode}`;
             const progress = planetProgress(p);
-            const previous = history[key];
+            const signature=JSON.stringify([p.event?.id,p.event?.startTime,p.currentOwner,p.maxHealth,p.event?.maxHealth]);
+            let previous = history[key];
+            if(previous&&(previous.signature!==signature||now-previous.time>1800000))previous=null;
+            if(previous&&now-previous.time<30000)return;
 
             if (previous && now > previous.time && now - previous.time >= 30 * 1000) {
                 const hours = (now - previous.time) / 3600000;
@@ -947,7 +936,7 @@
 
             // O snapshot atual substitui o anterior somente aqui, durante a coleta.
             history[key] = {
-                time: now,
+                signature, time: now,
                 progress,
                 rate: previous?.rate ?? null,
                 rateTime: previous?.rateTime ?? null,
@@ -965,11 +954,11 @@
     function getPlanetRate(index, mode) {
         const history = readPlanetHistory();
         const item = history[`${index}:${mode}`];
-        return item && Number.isFinite(item.rate) ? item.rate : null;
+        return item && Date.now()-item.time<=180000 && Number.isFinite(item.rate) ? item.rate : null;
     }
 
     function formatRate(rate) {
-        if (rate == null || !Number.isFinite(rate) || Math.abs(rate) < 0.005) return '—';
+        if (rate == null || !Number.isFinite(rate)) return '—';
         const sign = rate > 0 ? '+' : '';
         return `${sign}${rate.toFixed(2)}%/h`;
     }
@@ -1162,7 +1151,7 @@
                                 <strong class="defesa-eta-inimigo">${escapeHTML(defenseLoseEta || 'prazo indisponível')}</strong>
                                 <small>tempo até perder o planeta</small>
                             ` : `
-                                <strong>${escapeHTML(eta || 'coletando dados')}</strong>
+                                <strong>${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}</strong>
                                 <small>a partir do ritmo atual</small>
                             `}
                         </div>
@@ -1402,12 +1391,12 @@
             <div><small>HELldivers OPERANDO</small><strong>${players.toLocaleString('pt-BR')}</strong><span>${((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
             <div><small>IMPACTO HELLDIVER / HORA</small><strong class="${rate == null ? '' : rate >= 0 ? 'rate-positive' : 'rate-negative'}">${formatRate(rate)}</strong><span>variação observada</span></div>
             <div><small>PRESSÃO ${escapeHTML(factionName(enemy))} / HORA</small><strong class="enemy-rate" style="color:${factionColor(enemy, false)} !important">${liberationPressure == null ? '—' : liberationPressure.toFixed(2)+'%/h'}</strong><span>regeneração planetária registrada</span></div>
-            <div><small>VITÓRIA ESTIMADA</small><strong>${escapeHTML(eta || 'coletando dados')}</strong><span>${escapeHTML(trend)}</span></div>`;
+            <div><small>VITÓRIA ESTIMADA</small><strong>${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}</strong><span>${escapeHTML(trend)}</span></div>`;
         const climateRaw = clean(p.weather?.name || p.weather?.description || p.climate || p.weatherName || p.weather) || 'não informado pela telemetria';
         const ownerLabel = defense ? 'Super Terra (em defesa)' : factionName(enemy);
         const intelEta = defense
             ? `${escapeHTML(defenseState.label)} · vitória estimada ${escapeHTML(formatEtaFromRate(pct, rate) || 'calculando')} · perda em ${escapeHTML(eta || 'prazo indisponível')}`
-            : `${escapeHTML(trend)} · vitória estimada ${escapeHTML(eta || 'coletando dados')}`;
+            : `${escapeHTML(trend)} · vitória estimada ${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}`;
         modal.querySelector('.tactical-modal-intel').innerHTML = `
             <div class="tactical-intel-grid">
                 <div><small>SETOR</small><strong>${escapeHTML(sector)}</strong></div>
@@ -1462,7 +1451,10 @@
         document.addEventListener('keydown', event => { if (event.key === 'Escape') closeTacticalModal(); });
     }
 
+    let updateBusy=false;
     async function updateAll(force=false) {
+        if(updateBusy||document.hidden)return;updateBusy=true;
+        try {
         if (document.body.hasAttribute('data-order-only')) {
             // A página exclusiva da Ordem também precisa das campanhas: objetivos
             // de libertação/defesa são 0/1 na assignment, mas o avanço visual
@@ -1490,7 +1482,8 @@
             await task();
             await new Promise(r=>setTimeout(r,220));
         }
-        setText('stat-updated','AGORA');
+        setText('stat-updated',window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA':'AGORA');
+        } finally {updateBusy=false;}
     }
 
     document.addEventListener('DOMContentLoaded',()=>{

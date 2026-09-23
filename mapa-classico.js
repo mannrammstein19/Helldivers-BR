@@ -119,9 +119,67 @@
             'thick fog':'Com visibilidade limitada, use marcações e confirme o alvo antes de disparar.',
             'rainstorms':'Planeje a navegação e a comunicação da equipe para períodos de visibilidade reduzida.'
         };
-        return [...new Set((Array.isArray(p.hazards)?p.hazards:[]).map(h=>advice[hazardInfo(h?.name||h).key]).filter(Boolean))];
+        return [...new Set(planetEffects(p).map(h=>advice[h.key]).filter(Boolean))];
     }
 
+    let effectCatalog={};
+    async function loadEffectCatalog() {
+        try {
+            const response=await fetch('https://raw.githubusercontent.com/helldivers-2/json/master/planets/planets.json',{cache:'force-cache',signal:AbortSignal.timeout(8000)});
+            if(!response.ok)return;
+            effectCatalog=await response.json();
+            if(!effectCatalog||typeof effectCatalog!=='object')effectCatalog={};
+            if(quickIntelPlanet)showQuickIntel(quickIntelPlanet,{sticky:true});
+        } catch { /* Dados atuais continuam disponíveis sem o catálogo opcional. */ }
+    }
+    function uniqueEffectNames(p) {
+        const names = [];
+        const add = value => {
+            if (Array.isArray(value)) value.forEach(add);
+            else if (typeof value === 'string' && clean(value) && !names.some(n => n.toLowerCase() === clean(value).toLowerCase())) names.push(clean(value));
+            else if (value && typeof value === 'object') {
+                const candidate = value.name || value.title || value.effect || value.displayName;
+                if (candidate) add(candidate);
+            }
+        };
+        const liveHazards = Array.isArray(p?.hazards) ? p.hazards : [];
+        liveHazards.forEach(h => add(h?.name || h));
+
+        // O catálogo contém também "weather_effects" de ciclo/variação (por
+        // exemplo, calor de dia e frio à noite). Eles não devem ser exibidos
+        // como se fossem condições simultâneas. Só usamos "environmentals"
+        // como fallback quando a telemetria atual não trouxe hazards.
+        if (!names.length) {
+            const cat = (effectCatalog[String(p?.index)]||{});
+            add(cat.environmentals);
+        }
+
+        // Compatibilidade com campos de efeitos atuais da API, sem juntar
+        // weather_effects do catálogo.
+        ['effects','activeEffects','planetEffects','galacticEffects','modifiers'].forEach(k => add(p?.[k]));
+
+        // NÃO adicionar a facção do planeta como "efeito".
+        // Ex.: estar sob controle Automaton não significa "Presença de Autômatos"
+        // como condição ambiental. A facção já aparece no cabeçalho do card.
+        return names.filter(n => {
+            const k = n.toLowerCase();
+            return k !== 'none'
+                && !['automaton','automatons','terminid','terminids','illuminate','illuminates',
+                     'human','humans','super earth','superterra'].includes(k);
+        });
+    }
+
+    function planetEffects(p) {
+        const seen=new Set();
+        return uniqueEffectNames(p).map(hazardInfo).filter(info=>{const key=info.key||info.name.toLowerCase();if(seen.has(key))return false;seen.add(key);return true;});
+    }
+    function renderPlanetEffects(p) {
+        const effects=planetEffects(p);
+        const box=$('mapa-intel-effects');
+        box.hidden=!effects.length;
+        box.innerHTML=effects.map(info=>`<span class="intel-effect" tabindex="0" role="img" aria-label="${escapeHTML(info.name)}" title="${escapeHTML(info.name)}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)}</span></span>`).join('');
+        $('planet-dossier-effects').innerHTML=effects.length?effects.map(info=>`<div class="dossier-effect">${hazardIconHTML(info)}<span>${escapeHTML(info.name)}</span></div>`).join(''):'<p>Nenhum efeito adicional informado.</p>';
+    }
     function planetClimateLabel(p) {
         const direct = clean(p?.weather?.name || p?.weather?.description || p?.climate || p?.weatherName || (typeof p?.weather === 'string' ? p.weather : ''));
         if (direct && !['none','null','unknown'].includes(direct.toLowerCase())) return direct;
@@ -152,7 +210,7 @@
     const WIKI_FILE = name => `https://helldivers.wiki.gg/wiki/Special:Redirect/file/${encodeURIComponent(name)}`;
 
     function hazardInfo(raw) {
-        const n = clean(raw).toLowerCase();
+        const n = clean(raw).toLowerCase().replace(/[_-]+/g,' ');
         const key = Object.keys(HAZARD_INFO).find(k => n.includes(k));
         return key ? { ...HAZARD_INFO[key], key } : {
             name: clean(raw) || 'Efeito desconhecido', icon:'⚠', file:'', wikiFile:'', key:''
@@ -174,17 +232,7 @@
     function writeCache(cache) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch {} }
 
     async function fetchJSON(url, cacheName) {
-        const cache = readCache();
-        const now = Date.now();
-        const saved = cache[cacheName];
-        if (saved && (now - saved.time) < CACHE_TTL[cacheName]) return saved.data;
-        const response = await fetch(url, { headers: HEADERS, cache: 'no-store', signal:AbortSignal.timeout(12000) });
-        if (!response.ok) throw new Error(`API respondeu HTTP ${response.status}`);
-        const data = await response.json();
-        const latestCache=readCache();
-        latestCache[cacheName] = { time: now, data };
-        writeCache(latestCache);
-        return data;
+        return window.HDBRWarData.get(url,cacheName,CACHE_TTL[cacheName],HEADERS,readCache()[cacheName]);
     }
 
     // Tenta várias formas conhecidas de a API expor a posição do planeta.
@@ -272,7 +320,7 @@
         return `${percent.toFixed(digits).replace('.',',')}%`;
     }
 
-    const offensiveSamples = new Map();
+    const offensiveSamples = new Map((()=>{try{return JSON.parse(localStorage.getItem('hdbr_offensiveSamples_v1')||'[]')}catch{return []}})());
     function recordOffensiveSamples(list,now=Date.now()) {
         const active=new Set();
         (Array.isArray(list)?list:[]).forEach(campaign=>{
@@ -284,13 +332,16 @@
             if(progress==null) return;
             const key=String(p.index ?? clean(p.name));
             active.add(key);
-            let record=offensiveSamples.get(key) || {values:[]};
+            const signature=JSON.stringify([p.currentOwner,p.maxHealth]);
+            let record=offensiveSamples.get(key);
+            if(!record||record.signature!==signature)record={signature,values:[]};
             record.values=record.values.filter(v=>now-v.time<=45*60*1000);
             const last=record.values.at(-1);
             if(!last||now-last.time>=45000) record.values.push({time:now,progress});
             offensiveSamples.set(key,record);
         });
         for(const key of offensiveSamples.keys()) if(!active.has(key)) offensiveSamples.delete(key);
+        try{localStorage.setItem('hdbr_offensiveSamples_v1',JSON.stringify([...offensiveSamples]))}catch{}
     }
 
     function offensiveForecast(p,now=Date.now()) {
@@ -328,7 +379,7 @@
         return pos;
     }
 
-    const defenseSamples = new Map();
+    const defenseSamples = new Map((()=>{try{return JSON.parse(localStorage.getItem('hdbr_defenseSamples_v1')||'[]')}catch{return []}})());
     function eventDates(event) {
         return {start:Date.parse(event?.startTime || ''),end:Date.parse(event?.endTime || '')};
     }
@@ -348,6 +399,7 @@
             defenseSamples.set(key,record);
         });
         for(const key of defenseSamples.keys()) if(!active.has(key)) defenseSamples.delete(key);
+        try{localStorage.setItem('hdbr_defenseSamples_v1',JSON.stringify([...defenseSamples]))}catch{}
     }
     function defenseForecast(p,now=Date.now()) {
         const progress=campaignProgress(p),dates=eventDates(p?.event);
@@ -564,7 +616,7 @@
             const players=Number(p.statistics?.playerCount||0),regen=regenPercentPerHour(p);
             const forecast=offensiveForecast(p);
             const rateText=forecast.rate==null?'COLETANDO':`${forecast.rate>=0?'+':''}${forecast.rate.toFixed(2).replace('.',',')}%/h`;
-            const etaText=forecast.eta||'ACOMPANHANDO';
+            const etaText=forecast.eta||(forecast.rate==null?'AGUARDANDO AMOSTRAS':forecast.rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL');
             const photo=planetImageUrl(p),iconInfo=factionIconInfo(owner),icon=iconInfo.primary,iconFallback=iconInfo.fallback||'';
             return `<article class="mapa-offensive-card ${escapeHTML(enemyKey)}" style="--accent:${escapeHTML(accent)}" data-search="${escapeHTML([planetName(p),clean(p.sector),enemyName].join(" "))}" data-planet-index="${escapeHTML(String(p.index))}" tabindex="0" role="button" aria-label="Abrir ${escapeHTML(planetName(p))} no mapa">
                 <div class="mapa-offensive-visual">
@@ -767,6 +819,7 @@
             : offensive
                 ? `OFENSIVA DA SUPER TERRA · ALVO: ${ownerName}`
                 : `CONTROLADO POR · ${ownerName}`;
+        renderPlanetEffects(p);
         $('mapa-intel-biome').textContent = biomeLabel(p);
         $('mapa-intel-climate').textContent = climate;
         $('mapa-intel-faction-name').textContent = ownerName.toUpperCase();
@@ -1528,13 +1581,16 @@
         modal.querySelector('.tactical-modal-card').style.setProperty('--accent',factionColor(p.event?.faction||owner));
         $('planet-modal-title').textContent=planetName(p);
         modal.querySelector('.tactical-modal-sector').textContent='ANÁLISE COMPLEMENTAR';
+        const reading=window.HDBRWarData?.meta(`${V1}/planets`);
+        $('planet-dossier-source').textContent='Bioma, estatísticas e regiões: registro do planeta na API comunitária.'+(reading?.time?' Leitura: '+new Date(reading.time).toLocaleString('pt-BR')+(reading.stale?' (dados salvos).':'.'):'')+' Efeitos: telemetria disponível; catálogo comunitário quando não há hazards informados.';
+
         const notes=preparationNotes(p);
         $('planet-dossier-advice').innerHTML=notes.length
             ? '<ul>'+notes.map(note=>`<li>${escapeHTML(note)}</li>`).join('')+'</ul>'
             : '<p>A API não informou um efeito com orientação específica disponível. Escolha o equipamento conforme a facção, o objetivo e os modificadores exibidos na missão.</p>';
         const stats=p.statistics||{};
-        const statValue=value=>value==null||!Number.isFinite(Number(value))||Number(value)<0?'—':Number(value).toLocaleString('pt-BR');
-        const rows=[['MISSÕES VENCIDAS',stats.missionsWon],['MISSÕES PERDIDAS',stats.missionsLost],['BAIXAS DE HELLDIVERS',stats.deaths],['ELIMINAÇÕES DE TERMINÍDEOS',stats.terminidKills],['ELIMINAÇÕES DE AUTÔMATOS',stats.automatonKills],['ELIMINAÇÕES DE ILUMINADOS',stats.illuminateKills]];
+        const statValue=value=>value==null||value===''||typeof value==='boolean'||!Number.isFinite(Number(value))||Number(value)<0?'—':Number(value).toLocaleString('pt-BR');
+        const rows=[['MISSÕES VENCIDAS',stats.missionsWon],['MISSÕES PERDIDAS',stats.missionsLost],['BAIXAS DE HELLDIVERS',stats.deaths]];
         $('planet-dossier-history').innerHTML=rows.map(([label,value])=>`<div><small>${label}</small><strong>${statValue(value)}</strong></div>`).join('');
         const regions=Array.isArray(p.regions)?p.regions:[];
         $('planet-dossier-regions').innerHTML=regions.length?'<ul>'+regions.map(r=>`<li><strong>${escapeHTML(clean(r.name)||'Região sem nome')}</strong><span>${r.isAvailable===true?'Disponível':r.isAvailable===false?'Indisponível':'Disponibilidade não informada'}${r.players!=null?' · '+statValue(r.players)+' Helldivers':''}</span></li>`).join('')+'</ul>':'<p>A API não informou regiões para este planeta.</p>';
@@ -1575,7 +1631,6 @@
         if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('planet-modal')?.getAttribute('aria-hidden') === 'false'))) return;
         loadingPlanets = true;
         try {
-            if (force) { const c=readCache(); delete c.planets; delete c.campaigns; delete c.assignments; writeCache(c); }
             const [planetResult, campaignResult, assignmentResult] = await Promise.allSettled([
                 fetchJSON(`${V1}/planets`, 'planets'),
                 fetchJSON(`${V1}/campaigns`, 'campaigns'),
@@ -1586,7 +1641,7 @@
             const nextPlanets=Array.isArray(data)?data:data?.planets;
             if (!Array.isArray(nextPlanets) || !nextPlanets.length) throw new Error('Dados de planetas vazios ou inválidos.');
             allPlanets=nextPlanets;
-            recordDefenseSamples(allPlanets);
+            recordDefenseSamples(allPlanets,window.HDBRWarData.meta(`${V1}/planets`)?.time||Date.now());
             if(campaignResult.status==='fulfilled') {
                 const data=campaignResult.value;
                 const list=Array.isArray(data)?data:data?.campaigns;
@@ -1596,7 +1651,7 @@
                     campaigns=list.map(c=>({...c,planet:byIndex.get(String(c.planet?.index))||c.planet}));
                     campaignIndexes=new Set(list.map(c=>c.planet?.index).filter(i=>i!=null).map(String));
                     campaignsKnown=true;
-                    recordOffensiveSamples(campaigns);
+                    recordOffensiveSamples(campaigns,window.HDBRWarData.meta(`${V1}/planets`)?.time||Date.now());
                 }
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
@@ -1621,7 +1676,7 @@
             }
             $('mapa-loading')?.classList.add('hidden');
             const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');
-            if(status) status.textContent=campaignResult.status==='rejected'?'CAMPANHAS INDISPONÍVEIS':'ATUALIZADO · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+            if(status) status.textContent=window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA · SEM ATUALIZAÇÃO':campaignResult.status==='rejected'?'CAMPANHAS INDISPONÍVEIS':'ATUALIZADO · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
         } catch(err) {
             console.error('[Helldivers-BR/Mapa]',err);
             const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');
@@ -1719,6 +1774,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         bindUI();
+        loadEffectCatalog();
         loadPlanets();
         setInterval(() => loadPlanets(true), REFRESH);
     });

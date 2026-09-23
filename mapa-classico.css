@@ -843,3 +843,35 @@ body.tactical-modal-open { overflow:hidden; }
 #planet-dossier-history strong{font-size:16px;overflow-wrap:anywhere;}
 #planet-dossier-regions span{display:block;font-size:12px;color:#9aabba;}
 @media(max-width:600px){.mapa-intel-visual{height:130px;}.mapa-intel-environment{display:grid;}.mapa-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* V4.0 — resumo compacto; ambiente detalhado no dossiê. */
+.mapa-intel-photo{object-fit:contain;background:#080b0e;}
+.mapa-intel-body{padding:10px 12px;}
+.mapa-intel-grid>div{padding:8px 10px;}
+.mapa-intel-grid strong{font-size:17px;}
+.mapa-intel-forecast{margin:8px 0;padding:8px 10px;}
+.mapa-intel-effects{display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px 0;}
+.mapa-intel-effects[hidden]{display:none;}
+.intel-effect{position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #647482;border-radius:8px;background:#111923;cursor:help;}
+.intel-effect img,.dossier-effect img{width:24px;height:24px;object-fit:contain;}
+.intel-effect-label{display:none;position:absolute;top:calc(100% + 5px);left:0;z-index:10;max-width:220px;width:max-content;padding:6px 8px;border:1px solid #647482;border-radius:7px;background:#111923;color:#fff;font:12px/1.4 Arial,sans-serif;}
+.intel-effect:hover .intel-effect-label,.intel-effect:focus .intel-effect-label{display:block;}
+.intel-effect:focus-visible{outline:2px solid #d7d52c;}
+.dossier-effect{display:flex;align-items:center;gap:8px;margin-top:8px;color:#d9e2eb;font:12px/1.4 Arial,sans-serif;}
+#planet-modal .mapa-intel-environment{display:grid;}
+#planet-modal .mapa-intel-route:not([hidden]){display:block;}
+
+/* V4.2 — quadro horizontal, alinhado à área após a navegação. */
+.main-content.mapa-main{width:auto;min-width:0;box-sizing:border-box;padding:0 24px 32px;}
+.mapa-main .mapa-shell{width:100%;max-width:1800px;margin:0;}
+@media(min-width:769px){
+ .mapa-main .mapa-viewport-wrap{width:100%;height:auto;aspect-ratio:16 / 9;min-height:0;max-height:760px;}
+}
+/* Preenche a moldura existente; só o enquadramento muda. */
+.mapa-intel-visual .mapa-intel-photo{object-fit:cover;object-position:center;transform:none;}
+@media(max-width:768px){
+ .main-content.mapa-main{margin-left:0;padding:0 12px 24px;}
+ .mapa-main .mapa-shell{max-width:none;}
+ .mapa-main .mapa-viewport-wrap{aspect-ratio:auto;height:66svh;min-height:400px;max-height:620px;}
+}
+#planet-dossier-source{margin:10px 0;color:#91a0ae;font:11px/1.5 Arial,sans-serif;}

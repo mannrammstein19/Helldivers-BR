@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=20260923-39">
+<link rel="stylesheet" href="mapa-classico.css?v=42">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -137,6 +137,7 @@
                         <span id="mapa-intel-faction-name">SUPER TERRA</span>
                     </div>
                 </div>
+                <div id="mapa-intel-effects" class="mapa-intel-effects" aria-label="Efeitos do planeta" hidden></div>
                 <div class="mapa-intel-body">
                     <div class="mapa-intel-kicker">INTEL RÁPIDA // PLANETA</div>
                     <div class="mapa-intel-title" id="mapa-intel-title">PLANETA</div>
@@ -153,11 +154,6 @@
                         <div><small>REGIÕES</small><strong id="mapa-intel-regions">0</strong></div>
                         <div><small>OFENSIVAS</small><strong id="mapa-intel-attacking">0</strong></div>
                     </div>
-                    <div class="mapa-intel-environment">
-                        <div><small>BIOMA</small><span id="mapa-intel-biome">—</span></div>
-                        <div><small>CLIMA / EFEITOS</small><span id="mapa-intel-climate">—</span></div>
-                    </div>
-                    <div class="mapa-intel-route" id="mapa-intel-route" hidden></div>
                     <button class="mapa-intel-details" id="mapa-intel-details" type="button">ABRIR DOSSIÊ COMPLETO</button>
                     <div class="mapa-intel-mobile-tip">Use o botão acima para consultar o dossiê completo.</div>
                 </div>
@@ -169,8 +165,15 @@
         <div class="tactical-modal-kicker">DOSSIÊ TÁTICO · INTELIGÊNCIA PLANETÁRIA</div>
         <h2 class="tactical-modal-title" id="planet-modal-title">Planeta</h2>
         <div class="tactical-modal-sector"></div>
-        <section class="dossier-section"><h3>Preparação para a missão</h3><div id="planet-dossier-advice"></div><p class="dossier-note">Sugestões do portal conforme os efeitos informados. Confirme os modificadores antes de embarcar.</p></section>
-        <section class="dossier-section"><h3>Histórico do planeta</h3><p class="dossier-note">Totais acumulados retornados pela API; não são resultados da campanha atual.</p><div id="planet-dossier-history" class="tactical-modal-metrics"></div></section>
+        <p id="planet-dossier-source" class="dossier-note"></p>
+        <section class="dossier-section"><h3>Ambiente e conexões</h3>                    <div class="mapa-intel-environment">
+                        <div><small>BIOMA</small><span id="mapa-intel-biome">—</span></div>
+                        <div><small>CLIMA / EFEITOS</small><span id="mapa-intel-climate">—</span></div>
+                    </div>
+                    <div class="mapa-intel-route" id="mapa-intel-route" hidden></div>
+<div id="planet-dossier-effects"></div></section>
+        <section class="dossier-section"><h3>Preparação · sugestões do portal</h3><div id="planet-dossier-advice"></div><p class="dossier-note">Orientações editoriais, não instruções oficiais da API. Confirme os modificadores antes de embarcar.</p></section>
+        <section class="dossier-section"><h3>Histórico do planeta</h3><p class="dossier-note">Estatísticas associadas a este planeta pela API. Totais acumulados, sem recorte da campanha atual.</p><div id="planet-dossier-history" class="tactical-modal-metrics"></div></section>
         <section class="dossier-section"><h3>Regiões registradas</h3><div id="planet-dossier-regions"></div></section>
 
     </div>
@@ -217,7 +220,8 @@
 </main>
 
 
-<script src="mapa-classico.js?v=20260923-39"></script>
+<script src="war-data.js?v=41"></script>
+<script src="mapa-classico.js?v=42"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

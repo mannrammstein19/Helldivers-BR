@@ -1,0 +1,35 @@
+/* HELLDIVERS-BR — acabamento da página inicial. Escopo restrito à Home. */
+body.fundo-principal{--home-radius:18px;--home-radius-inner:11px;}
+body.fundo-principal :is(.home-hero,.hd-overview-card,.hd-lower-card,.command-card,.video-card,.channels-card,.feature,.mission-card,.mobile-order,.mobile-community){border-radius:var(--home-radius);}
+body.fundo-principal :is(.home-hero,.hero-stamp,.mission-card){clip-path:none;}
+body.fundo-principal :is(.home-hero,.hd-overview-card,.hd-lower-card,.command-card,.mission-card)::before,
+body.fundo-principal :is(.home-hero,.hd-overview-card,.hd-lower-card,.mission-card)::after{border-radius:inherit;}
+body.fundo-principal :is(.hero-stamp,.hero-corner,.hd-button,.channel,.channel-badge,.video-frame,.hd-war-number,.hd-ov-statbox,.hd-front-row,.hd-ov-campaign,.hd-mo-summary>div,.hd-mo-task-meta>div,.mobile-order-meta>div,.discord-join,.order-show-objectives){border-radius:var(--home-radius-inner);}
+body.fundo-principal :is(.hd-mo-task,.order-objectives-panel){border-radius:16px;}
+body.fundo-principal :is(.hd-ov-progress,.hd-mo-task-progress,.hd-faction-line .bar){border-radius:999px;}
+body.fundo-principal .hd-ov-order-main{border-radius:var(--home-radius) var(--home-radius) 0 0;}
+body.fundo-principal .hd-ov-order-about{border-radius:0 0 var(--home-radius) var(--home-radius);}
+body.fundo-principal :is(.video-card,.channels-card,.feature,.channel){border-color:#42474b;}
+body.fundo-principal :is(.command-card p,.feature p,.section-head p,.command-code){color:#abb3bb;}
+body.fundo-principal :is(.hd-ov-statbox small,.hd-war-number small,.hd-mo-task-meta small){color:#adb7c0;}
+body.fundo-principal :is(.command-card p,.feature p,.channel-info small){line-height:1.6;}
+body.fundo-principal :is(.hd-overview-grid,.hd-overview-lower,.command-grid,.feature-grid){gap:16px;}
+body.fundo-principal .section-head{row-gap:8px;flex-wrap:wrap;}
+body.fundo-principal .channel-info strong{overflow-wrap:anywhere;}
+body.fundo-principal .hero-actions{gap:12px;}
+body.fundo-principal :is(.hd-button,.order-show-objectives,.discord-join){min-height:44px;}
+body.fundo-principal :is(.home-shell a,.home-shell button,.home-shell input,.order-objectives-panel button):focus-visible{outline:2px solid var(--hd-yellow,#d7d52c);outline-offset:3px;}
+/* A busca mantém a área externa livre para exibir os resultados. */
+body.fundo-principal :is(#wiki-search,.search-dropdown,.site-search-results,.site-search-input-row,#hd-global-search-input){border-radius:var(--home-radius-inner);}
+@media(max-width:768px){
+ body.fundo-principal{--home-radius:15px;--home-radius-inner:10px;}
+ body.fundo-principal :is(.hd-overview-grid,.hd-overview-lower,.command-grid,.feature-grid){gap:12px;}
+ body.fundo-principal :is(.command-card,.feature,.video-card,.channels-card){padding:16px;}
+ body.fundo-principal .hero-actions .hd-button{flex:1 1 180px;text-align:center;padding:10px 14px;}
+ body.fundo-principal .section-head p{line-height:1.5;}
+ body.fundo-principal :is(.home-shell input[type=search],#wiki-search){font-size:16px;min-height:44px;}
+}
+@media(prefers-reduced-motion:reduce){
+ body.fundo-principal :is(.hd-button,.command-card,.channel){transition:none;}
+ body.fundo-principal :is(.hd-button,.command-card):hover{transform:none;}
+}

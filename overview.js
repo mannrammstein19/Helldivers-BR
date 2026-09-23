@@ -23,7 +23,7 @@ const clean=v=>(typeof v==='object'&&v?v['pt-BR']||v['pt-PT']||v['en-US']||Objec
 const fmt=n=>Number(n||0).toLocaleString('pt-BR');
 function set(id,v){const e=$(id);if(e)e.textContent=v} function store(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch{return d}} function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 function arr(d){return Array.isArray(d)?d:(Array.isArray(d?.data)?d.data:[])}
-async function get(ep,key,ttl){const s=store(CACHE,{}),now=Date.now();if(s[key]&&now-s[key].time<ttl)return s[key].data;const r=await fetch(`${API}/${ep}`,{headers:HEAD,cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.status===429)throw Error('RATE LIMIT');if(!r.ok)throw Error(`HTTP ${r.status}`);const d=await r.json();const latest=store(CACHE,{});latest[key]={time:now,data:d};save(CACHE,latest);return d}
+async function get(ep,key,ttl){return window.HDBRWarData.get(`${API}/${ep}`,key,ttl,HEAD,store(CACHE,{})[key])}
 function remain(iso){if(!iso)return'prazo indisponível';const x=Math.floor((new Date(iso)-Date.now())/1000);if(x<=0)return'prazo esgotado';const d=Math.floor(x/86400),h=Math.floor(x%86400/3600),m=Math.floor(x%3600/60);return d?`${d}d ${h}h`:h?`${h}h ${m}min`:`${m}min`}
 function fName(n){const m={1:'Super Terra',2:'Terminídeos',3:'Autômatos',4:'Iluminados'};if(Number(n) in m)return m[Number(n)];const x=String(n||'').toLowerCase();return x.includes('terminid')?'Terminídeos':x.includes('automaton')?'Autômatos':x.includes('illuminate')?'Iluminados':'Super Terra'}
 function fClass(n){const m={2:'term',3:'auto',4:'illum',1:'human'};if(Number(n) in m)return m[Number(n)];const x=String(n||'').toLowerCase();return x.includes('terminid')?'term':x.includes('automaton')?'auto':x.includes('illuminate')?'illum':'human'}
@@ -168,7 +168,7 @@ function orderExpiration(o){
  return Number.isFinite(sec)&&sec>0?new Date(Date.now()+sec*1000).toISOString():null;
 }
 let liveCampaigns=[];
-const liveSamples=new Map();
+const liveSamples=new Map(store('hdbr_home_samples_v1',[]));
 const taskLogos={term:'imagens/guerra/faccoes/logo terminids.png',auto:'imagens/guerra/faccoes/logo automatons.png',illum:'imagens/guerra/faccoes/logo illuminats.png',human:'imagens/ui/icons/logo super terra.svg'};
 function taskLiveView(o,t,i,state){
  const goal=taskGoal(t),progress=taskProgress(o,t,i),assignedDone=taskIsDone(progress,goal,state);
@@ -182,7 +182,7 @@ function taskLiveView(o,t,i,state){
  return {goal,progress,planet,live,percent,fc,done:assignedDone||(live&&percent>=99.999)};
 }
 function sampleCampaigns(list){
- const now=Date.now();
+ const now=window.HDBRWarData?.meta(`${API}/campaigns`)?.time||Date.now();
  const active=new Set();
  for(const c of list){
   const p=c?.planet,d=p?.event||p;if(!p||d.health==null||!Number(d.maxHealth))continue;
@@ -194,10 +194,12 @@ function sampleCampaigns(list){
   liveSamples.set(key,old);
  }
  for(const key of liveSamples.keys())if(!active.has(key))liveSamples.delete(key);
+ save('hdbr_home_samples_v1',[...liveSamples]);
 }
 function orderTaskCard(o,t,i,state){
  const v=taskLiveView(o,t,i,state),g=v.goal,p=v.progress,pc=v.percent,done=v.done,fc=v.fc;
- const rate=state==='active'&&!done?(v.live?liveSamples.get(String(v.planet.index))?.rate??null:taskRate(o,i,p,g)):null;
+ const currentSample=v.planet?liveSamples.get(String(v.planet.index)):null;
+ const rate=state==='active'&&!done?(v.live?(currentSample&&Date.now()-currentSample.time<=180000?currentSample.rate:null):taskRate(o,i,p,g)):null;
  const estimate=state==='active'&&!done?eta(v.live?pc:p,v.live?100:g,rate):null;
  const title=taskTitle(t,i),type=taskTypeName(t),meta=taskTargetMeta(t);
  const progressText=v.live?`${type} · CAMPANHA ATIVA`:g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:'TELEMETRIA EM ACOMPANHAMENTO';
@@ -209,7 +211,7 @@ function orderTaskCard(o,t,i,state){
  <h4>${logo?`<img class="order-task-faction-logo" src="${esc(logo)}" alt="" decoding="async" onerror="this.hidden=true">`:''}${esc(title)}</h4>
  <div class="hd-mo-task-progress"><i style="width:${pc}%"></i></div>
  <div class="hd-mo-task-progress-label"><span>${esc(progressText)}</span><strong>${g||v.live?pc.toFixed(2).replace('.',',')+'%':'—'}</strong></div>
- <div class="hd-mo-task-meta"><div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div><div><small>Conclusão estimada</small><strong>${esc(done?'CONCLUÍDO':state!=='active'?'—':estimate||'ACOMPANHANDO')}</strong></div></div>
+ <div class="hd-mo-task-meta"><div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div><div><small>Conclusão estimada</small><strong>${esc(done?'CONCLUÍDO':state!=='active'?'—':estimate||(rate==null?'AGUARDANDO AMOSTRAS':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'))}</strong></div></div>
  <div class="hd-mo-task-status">${done?'✓ ':''}${status}</div></article>`;
 }
 
@@ -319,11 +321,12 @@ async function update(){
   const results=await Promise.allSettled([get('assignments','assignments',60000),get('campaigns','campaigns',60000),loadOrderSnapshot()]);
   const [orders,camp,snapshot]=results;
   if(camp.status==='fulfilled'){liveCampaigns=arr(camp.value);sampleCampaigns(liveCampaigns);renderWar(camp.value);}
-  else liveCampaigns=[]; // Nunca tratar campanha antiga como progresso ao vivo.
+  else if(!liveCampaigns.length){for(const id of ['hd-ov-front-list','hd-ov-campaign'])if($(id))$(id).textContent='Sem comunicação e sem leitura anterior. Nova tentativa automática.';}
+  // Mantém a última renderização se não houver resposta nem cache utilizável.
   const snap=snapshot.status==='fulfilled'?snapshot.value:null;
   const resolved=window.HDBROrderState.resolve(orders.status==='fulfilled'?order(orders.value):null,snap);
   renderOrder(null,resolved);
-  if(st){st.textContent=orders.status==='fulfilled'&&camp.status==='fulfilled'?'DADOS ATUALIZADOS':'TELEMETRIA PARCIAL / ÚLTIMO REGISTRO';st.classList.toggle('live',orders.status==='fulfilled'&&camp.status==='fulfilled');}
+  if(st){st.textContent=orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale()?'DADOS ATUALIZADOS':'TELEMETRIA PARCIAL / ÚLTIMO REGISTRO';st.classList.toggle('live',orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale());}
   try{renderDispatch(await get('dispatches','dispatches',300000));}catch(e){console.warn('[Home/despachos]',e);}
  }catch(e){console.error('[Home]',e);if(st)st.textContent='TELEMETRIA INDISPONÍVEL';}
  finally{updating=false;}

@@ -921,3 +921,9 @@ body.tactical-modal-open { overflow:hidden; }
  .mapa-intel-visual{height:100px;}
  .mapa-intel-close,.mapa-intel-faction-badge{backdrop-filter:none;}
 }
+
+/* v55 — duas camadas estáticas, sem filtros ou animação de fundo. */
+.mapa-main .mapa-viewport-wrap{background:#060911 url('imagens/mapa/plano-fundo.jpg') center / cover no-repeat;}
+#mapa-svg{background:transparent;}
+.mapa-galaxy-background{opacity:.72;pointer-events:none;}
+.mapa-cyberstan-radial{pointer-events:none;}

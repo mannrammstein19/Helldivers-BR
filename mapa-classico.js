@@ -404,6 +404,15 @@
         if(p.disabled === true || !pos || !Number.isFinite(pos.x) || !Number.isFinite(pos.y)) return null;
         // Coordenadas zeradas de planetas não localizados não são a capital.
         if(Math.abs(pos.x)<1e-7 && Math.abs(pos.y)<1e-7) return null;
+        // Deslocamento cartográfico local; não modifica coordenadas da API.
+        const name=clean(p.name).toLowerCase();
+        if(name==='meridia' || name==='ivis') {
+            const peer=allPlanets.find(other=>clean(other.name).toLowerCase()===(name==='meridia'?'ivis':'meridia'));
+            const other=peer && getPosition(peer);
+            if(other && Math.hypot(pos.x-other.x,pos.y-other.y)<.09) {
+                return {x:(pos.x+other.x)/2+(name==='meridia'?-.045:.045),y:pos.y};
+            }
+        }
         return pos;
     }
 
@@ -1248,7 +1257,16 @@
         viewport.appendChild(linesGroup);
         viewport.appendChild(invasionGroup);
         viewport.appendChild(dotsGroup);
-        svg.appendChild(buildDefs());
+        const defs=buildDefs();
+        const clip=svgEl('clipPath',{id:'mapa-galaxy-clip'});
+        clip.appendChild(svgEl('circle',{cx:0,cy:0,r:500}));defs.appendChild(clip);
+        const radial=svgEl('radialGradient',{id:'mapa-cyberstan-radial'});
+        [[0,.32],[.45,.16],[1,0]].forEach(([offset,opacity])=>radial.appendChild(svgEl('stop',{offset, 'stop-color':'#ff5555','stop-opacity':opacity})));
+        defs.appendChild(radial);
+        // Esta imagem pertence ao mesmo grupo transformado dos planetas.
+        const background=svgEl('image',{class:'mapa-galaxy-background',href:'imagens/mapa/plano-planeta.jpg',x:-500,y:-500,width:1000,height:1000,preserveAspectRatio:'xMidYMid slice','clip-path':'url(#mapa-galaxy-clip)','pointer-events':'none'});
+        cartographyGroup.appendChild(background);
+        svg.appendChild(defs);
         svg.appendChild(viewport);
 
         drawSectors(withPos, territoryGroup, borderGroup);
@@ -1315,6 +1333,12 @@
                 tabindex:'0', role:'button', 'aria-label':`${displayName}, ${sectorName}. Abrir informações táticas.`
             });
 
+            if(clean(raw.name).toLowerCase()==='cyberstan') {
+                const radial=svgEl('g',{class:'mapa-cyberstan-radial','pointer-events':'none'});
+                radial.appendChild(svgEl('circle',{cx:x,cy:y,r:baseRadius*4,fill:'url(#mapa-cyberstan-radial)'}));
+                radial.appendChild(svgEl('circle',{cx:x,cy:y,r:baseRadius*1.85,fill:'none',stroke:'#ff7777','stroke-width':baseRadius*.18,'stroke-opacity':.8}));
+                const title=svgEl('title');title.textContent='Destaque visual de Cyberstan';radial.appendChild(title);group.appendChild(radial);
+            }
             if(capital) {
                 [4,3,2.2].forEach((r,i)=>group.appendChild(svgEl('circle',{
                     class:'mapa-earth-glory',cx:x,cy:y,r:baseRadius*r,fill:'#ffe68a','fill-opacity':.025+i*.015,'pointer-events':'none'

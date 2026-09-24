@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=63">
+<link rel="stylesheet" href="mapa-classico.css?v=64">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -89,7 +89,6 @@
             <button class="mapa-filter" data-faction="automaton">Autômatos</button>
             <button class="mapa-filter" data-faction="illuminate">Iluminados</button>
         </div>
-        <button class="mapa-filter mapa-optimized-toggle" id="mapa-optimized-toggle" type="button" aria-pressed="false" disabled title="Alternar a movimentação do mapa sem sair da página">Versão otimizada: desligada</button>
         <div class="mapa-layer-controls" id="mapa-layer-controls" aria-label="Camadas táticas">
             <button class="mapa-layer active" type="button" data-layer="routes">ROTAS</button>
             <button class="mapa-layer active" type="button" data-layer="invasions">INVASÕES</button>
@@ -112,6 +111,7 @@
                     <div><small>SETORES</small><strong id="mapa-hud-sectors">—</strong></div>
                     <div><small>ROTAS</small><strong id="mapa-hud-routes">—</strong></div>
                 </div>
+                <button class="mapa-optimized-toggle" id="mapa-optimized-toggle" type="button" aria-pressed="false" disabled title="Alternar a movimentação do mapa sem sair da página">Versão otimizada · OFF</button>
             </div>
             <div class="mapa-zoom-controls" aria-hidden="false">
                 <button type="button" id="mapa-zoom-in" title="Aproximar">+</button>
@@ -227,7 +227,7 @@
 
 
 <script src="war-data.js?v=41"></script>
-<script src="mapa-classico.js?v=63"></script>
+<script src="mapa-classico.js?v=64"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

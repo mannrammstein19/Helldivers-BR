@@ -964,3 +964,15 @@ body.tactical-modal-open { overflow:hidden; }
 
 /* v63 — setas discretas, sem alterar as bordas dos setores. */
 .mapa-invasion-arrow{stroke-width:var(--mapa-arrow-width,1.4);filter:none;stroke-linecap:round;opacity:.94;}
+
+/* v64 — comando compacto no HUD, bordas com escala controlada. */
+#mapa-tactical-hud .mapa-optimized-toggle{display:inline-flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:manipulation;min-height:32px;margin-top:8px;padding:5px 9px;border:1px solid #45545f;border-radius:9px;background:#101820;color:#bcc9d3;font:600 10px/1.3 Arial,sans-serif;cursor:pointer;letter-spacing:.2px;}
+#mapa-tactical-hud .mapa-optimized-toggle.active{background:#143527;color:#b6efce;border-color:#498967;}
+#mapa-tactical-hud .mapa-optimized-toggle:focus-visible{outline:2px solid #d7d52c;outline-offset:3px;}
+@media(pointer:coarse){#mapa-tactical-hud .mapa-optimized-toggle{min-height:40px;}}
+#mapa-viewport .mapa-sector-border{stroke-width:var(--mapa-border-width,1);}
+#mapa-viewport .mapa-sector-border.sector-enemy{stroke-width:var(--mapa-enemy-border-width,2);}
+/* Evitar transições de opacidade concorrentes durante navegação SVG. */
+#mapa-viewport .mapa-planet-group,#mapa-viewport .mapa-planet-dot,
+#mapa-viewport .mapa-planet-halo,#mapa-viewport .mapa-lines,
+#mapa-viewport .mapa-territories,#mapa-viewport .mapa-sectors{transition:none;}

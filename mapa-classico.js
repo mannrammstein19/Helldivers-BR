@@ -1590,7 +1590,7 @@
 
         state = {
             viewport,
-            optimized:false,
+            optimized:false, zoomBusy:false, zoomTimer:0,
             scale:1, tx:0, ty:0,
             isPanning:false, lastX:0, lastY:0, moved:false,
             pinchStartDist:null, pinchStartScale:1,
@@ -1628,13 +1628,16 @@
                 for(const key of ['human','automaton','terminid','illuminate']) {
                     const marker=svg.querySelector('#invasion-arrow-'+key);
                     if(marker) {
-                        marker.setAttribute('markerWidth',String(7/arrowScale));
-                        marker.setAttribute('markerHeight',String(7/arrowScale));
+                        marker.setAttribute('markerWidth',String(8.5/arrowScale));
+                        marker.setAttribute('markerHeight',String(8.5/arrowScale));
                     }
                 }
             }
+            // Bordas finas apenas no modo otimizado; compensa a escala CSS.
+            vp.style.setProperty('--mapa-border-width',state.optimized?String(.7/state.scale):'1');
+            vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.1/state.scale):'2');
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
-            if(!state.activePointers.size && vp.dataset.detailKey!==detailKey) {
+            if(!state.activePointers.size && !state.zoomBusy && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
             vp.classList.toggle('mapa-labels-on', state.scale >= LABEL_ZOOM_THRESHOLD);
             vp.classList.toggle('mapa-human-details-on', state.scale >= 5);
@@ -1672,6 +1675,9 @@
             state.tx = before.x - (before.x - state.tx) * (newScale / state.scale);
             state.ty = before.y - (before.y - state.ty) * (newScale / state.scale);
             state.scale = newScale;
+            state.zoomBusy=true;
+            clearTimeout(state.zoomTimer);
+            state.zoomTimer=setTimeout(()=>{state.zoomBusy=false;state.requestApply();},160);
             state.requestApply();
         };
 
@@ -1774,7 +1780,7 @@
             modeButton.disabled=false;
             modeButton.classList.toggle('active',state.optimized);
             modeButton.setAttribute('aria-pressed',String(state.optimized));
-            modeButton.textContent='Versão otimizada: '+(state.optimized?'ligada':'desligada');
+            modeButton.textContent='Versão otimizada · '+(state.optimized?'ON':'OFF');
         };
         modeButton.addEventListener('click',()=>{
             // Mesmo estado de navegação e mesmo DOM; sem consulta extra à API.
@@ -1852,7 +1858,7 @@
     }
 
     async function loadPlanets(force = false) {
-        if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('planet-modal')?.getAttribute('aria-hidden') === 'false'))) return;
+        if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('mapa-svg')?._mapaPanZoomState?.zoomBusy || $('planet-modal')?.getAttribute('aria-hidden') === 'false'))) return;
         loadingPlanets = true;
         try {
             const [planetResult, campaignResult, assignmentResult] = await Promise.allSettled([
@@ -1883,7 +1889,7 @@
             await loadDSS();
             // Une requête déjà lancée peut terminer pendant un geste.
             // Conserver le DOM affiché jusqu'au relâchement du dernier doigt.
-            while($('mapa-svg')?._mapaPanZoomState?.activePointers.size) {
+            while($('mapa-svg')?._mapaPanZoomState?.activePointers.size || $('mapa-svg')?._mapaPanZoomState?.zoomBusy) {
                 await new Promise(resolve=>setTimeout(resolve,100));
             }
             const selected=selectedIndex;

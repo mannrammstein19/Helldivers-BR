@@ -497,8 +497,10 @@ body.tactical-modal-open { overflow:hidden; }
 .mapa-sector-label { font-size:7px;letter-spacing:.6px;opacity:.36; }
 .mapa-sector-count { display:none; }
 .mapa-supply-line-base { display:none; }
-#mapa-viewport.mapa-is-moving .mapa-player-label,
-#mapa-viewport.mapa-is-moving .mapa-event-label { display:none; }
+@media (hover:none) and (pointer:coarse) {
+ #mapa-viewport.mapa-is-moving .mapa-player-label,
+ #mapa-viewport.mapa-is-moving .mapa-event-label { display:none; }
+}
 @media(max-width:600px) {
  .mapa-viewport-wrap {height:74svh;min-height:460px;}
  .mapa-tactical-hud {max-width:140px;}
@@ -939,4 +941,17 @@ body.tactical-modal-open { overflow:hidden; }
 .mapa-event-icon{display:none;pointer-events:none;}
 #mapa-viewport.mapa-detail-on .mapa-event-icon,
 .mapa-dots .mapa-planet-group.selected .mapa-event-icon{display:block;}
-#mapa-viewport.mapa-is-moving .mapa-event-icon{display:none;}
+@media (hover:none) and (pointer:coarse) {
+ #mapa-viewport.mapa-is-moving .mapa-event-icon{display:none;}
+}
+
+/* v60 — simplificações só em dispositivos de toque, durante o gesto. */
+@media (hover:none) and (pointer:coarse) {
+ #mapa-viewport .mapa-lines,
+ #mapa-viewport .mapa-supply-line,
+ #mapa-viewport .mapa-planet-group,
+ #mapa-viewport .mapa-planet-dot{transition:none;}
+ #mapa-viewport.mapa-is-moving .mapa-planet-halo{display:none;}
+ #mapa-viewport.mapa-is-moving .mapa-special-icon,
+ #mapa-viewport.mapa-is-moving .mapa-planet-label{filter:none;}
+}

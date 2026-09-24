@@ -1059,6 +1059,11 @@
             if(!owners.has(name)) owners.set(name,new Set());
             const key=factionKey(raw.currentOwner||raw.owner);
             if(key!=='human' && key!=='unknown') owners.get(name).add(key);
+            // Durante defesa, a posse ainda é humana; a invasão também colore o setor.
+            if(raw.event) {
+                const invading=factionKey(raw.event.faction);
+                if(invading!=='human' && invading!=='unknown') owners.get(name).add(invading);
+            }
         });
         buildSectorGeometry(points).forEach(sector=>{
             const enemies=[...(owners.get(sector.name)||[])].sort();
@@ -1121,9 +1126,9 @@
             const a = String(rec.a), b = String(rec.b);
             const connected = selectedIndex != null && (a === selectedIndex || b === selectedIndex);
             if (connected) neighbors.add(a === selectedIndex ? b : a);
-            rec.base.classList.toggle('route-connected', connected);
+            rec.base?.classList.toggle('route-connected', connected);
             rec.line.classList.toggle('route-connected', connected);
-            rec.base.classList.toggle('route-muted', selectedIndex != null && !connected);
+            rec.base?.classList.toggle('route-muted', selectedIndex != null && !connected);
             rec.line.classList.toggle('route-muted', selectedIndex != null && !connected);
         });
         nodeByIndex.forEach(({ group }, key) => {
@@ -1340,9 +1345,9 @@
                 const isFront = fA !== fB;
                 const activeRoute = campaignIndexes.has(String(raw.index)) || campaignIndexes.has(String(targetIndex));
                 const common = { x1:x, y1:y, x2:target.x, y2:target.y, 'data-a':raw.index, 'data-b':targetIndex, 'vector-effect':'non-scaling-stroke' };
-                const base = svgEl('line', { ...common, class:`mapa-supply-line-base${isFront ? ' mapa-front-line-base' : ''}${activeRoute ? ' active-front-route' : ''}` });
+                const base = isCoarseInput() ? null : svgEl('line', { ...common, class:`mapa-supply-line-base${isFront ? ' mapa-front-line-base' : ''}${activeRoute ? ' active-front-route' : ''}` });
                 const line = svgEl('line', { ...common, class:`mapa-supply-line${isFront ? ' mapa-front-line' : ''}${activeRoute ? ' active-front-route' : ''}` });
-                linesGroup.appendChild(base);
+                if(base) linesGroup.appendChild(base);
                 linesGroup.appendChild(line);
                 lineRecords.push({ a:raw.index, b:targetIndex, base, line, isFront });
             });

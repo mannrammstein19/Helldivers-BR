@@ -874,6 +874,14 @@
             : offensive
                 ? `OFENSIVA DA SUPER TERRA · ALVO: ${ownerName}`
                 : `CONTROLADO POR · ${ownerName}`;
+        const bosses=MAP_BOSS_MARKERS[clean(p.name).toLowerCase()] || [];
+        let bossNote=$('mapa-intel-boss-note');
+        if(!bossNote) {
+            bossNote=document.createElement('div');bossNote.id='mapa-intel-boss-note';
+            $('mapa-intel-status').after(bossNote);
+        }
+        bossNote.hidden=!bosses.length;
+        bossNote.textContent=bosses.length ? bosses.map(b=>b.name).join(' · ')+' — marcações do portal, sem confirmação ao vivo da API.' : '';
         renderPlanetEffects(p);
         $('mapa-intel-biome').textContent = biomeLabel(p);
         $('mapa-intel-climate').textContent = climate;
@@ -1211,6 +1219,32 @@
         return halos;
     }
 
+    // Marcações editoriais, independentes dos efeitos ao vivo da API.
+    const MAP_BOSS_MARKERS = {
+        omicron: [
+            {name:'Hive Lord',file:'hive-lord.svg'},
+            {name:'Draco Barata',file:'draco-barata.svg'}
+        ]
+    };
+    function drawOuterFactionNames(viewport, defs) {
+        const group=svgEl('g',{class:'mapa-outer-factions','pointer-events':'none','aria-label':'Frentes das facções'});
+        // Arcos fora do raio 500; margem do viewBox já comporta raio 535.
+        const labels=[
+            {key:'automaton',name:'AUTÔMATOS',a:215,b:260},
+            {key:'terminid',name:'TERMINÍDEOS',a:280,b:325},
+            {key:'illuminate',name:'ILUMINADOS',a:113,b:67}
+        ];
+        labels.forEach(({key,name,a,b})=>{
+            const point=angle=>[535*Math.cos(angle*Math.PI/180),535*Math.sin(angle*Math.PI/180)];
+            const start=point(a),end=point(b),id='mapa-faction-arc-'+key;
+            defs.appendChild(svgEl('path',{id,d:`M ${start.join(' ')} A 535 535 0 0 ${b>a?1:0} ${end.join(' ')}`}));
+            const label=svgEl('text',{fill:FACTION_COLORS[key],'text-anchor':'middle'});
+            const text=svgEl('textPath',{href:'#'+id,startOffset:'50%'});text.textContent=name;
+            label.appendChild(text);group.appendChild(label);
+        });
+        viewport.appendChild(group);
+    }
+
     function buildMap(planets) {
         const svg = $('mapa-svg');
         if (!svg) return;
@@ -1268,6 +1302,7 @@
         cartographyGroup.appendChild(background);
         svg.appendChild(defs);
         svg.appendChild(viewport);
+        drawOuterFactionNames(viewport,defs);
 
         drawSectors(withPos, territoryGroup, borderGroup);
 
@@ -1335,10 +1370,23 @@
 
             if(clean(raw.name).toLowerCase()==='cyberstan') {
                 const radial=svgEl('g',{class:'mapa-cyberstan-radial','pointer-events':'none'});
-                radial.appendChild(svgEl('circle',{cx:x,cy:y,r:baseRadius*4,fill:'url(#mapa-cyberstan-radial)'}));
-                radial.appendChild(svgEl('circle',{cx:x,cy:y,r:baseRadius*1.85,fill:'none',stroke:'#ff7777','stroke-width':baseRadius*.18,'stroke-opacity':.8}));
-                const title=svgEl('title');title.textContent='Destaque visual de Cyberstan';radial.appendChild(title);group.appendChild(radial);
+                // Névoa estática decorativa: sem aro, filtros SVG ou animação.
+                [[-1.9,.4,3.5,2.0,-22],[1.5,-.6,3.3,1.8,18],[0,0,2.5,2.2,0]].forEach(([dx,dy,rx,ry,angle])=>{
+                    const cx=x+dx*baseRadius,cy=y+dy*baseRadius;
+                    radial.appendChild(svgEl('ellipse',{cx,cy,rx:rx*baseRadius,ry:ry*baseRadius,
+                        fill:'url(#mapa-cyberstan-radial)',transform:`rotate(${angle} ${cx} ${cy})`}));
+                });
+                const title=svgEl('title');title.textContent='Névoa decorativa de Cyberstan — não indica efeito ativo da API';radial.appendChild(title);group.appendChild(radial);
             }
+            const bosses=MAP_BOSS_MARKERS[clean(raw.name).toLowerCase()] || [];
+            bosses.forEach((boss,index)=>{
+                const size=baseRadius*2.5;
+                const marker=svgEl('image',{class:'mapa-boss-marker',href:'imagens/ui/icons/'+boss.file,
+                    x:x+baseRadius*(3.4+index*.7),y:y+baseRadius*(-4.5+index*3),width:size,height:size,
+                    preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':boss.name+' — marcação editorial'});
+                const title=svgEl('title');title.textContent=boss.name+' · Marcação do portal, não confirmação ao vivo da API';
+                marker.appendChild(title);group.appendChild(marker);
+            });
             if(capital) {
                 [4,3,2.2].forEach((r,i)=>group.appendChild(svgEl('circle',{
                     class:'mapa-earth-glory',cx:x,cy:y,r:baseRadius*r,fill:'#ffe68a','fill-opacity':.025+i*.015,'pointer-events':'none'
@@ -1454,6 +1502,13 @@
             playerLabel.textContent = `${formatCompactNumber(players)} HD`;
             group.appendChild(playerLabel);
 
+            if(underAttack || offensive) {
+                const status=underAttack?'Defesa':'Libertação';
+                const icon=svgEl('image',{class:'mapa-event-icon',href:'imagens/ui/icons/'+(underAttack?'defesa.png':'libertacao-v2.png'),
+                    x:x-baseRadius*4.2,y:y-baseRadius*5,width:baseRadius*2.2,height:baseRadius*2.2,
+                    preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':status});
+                const title=svgEl('title');title.textContent=status;icon.appendChild(title);group.appendChild(icon);
+            }
             if (underAttack) {
                 const attacker=factionKey(raw.event?.faction);
                 if(attacker!=='human'&&attacker!=='unknown') {
@@ -1463,14 +1518,17 @@
                     const title=svgEl('title');title.textContent='Atacante: '+factionName(raw.event.faction);badge.appendChild(title);group.appendChild(badge);
                 }
                 const eventLabel = svgEl('text', { class:'mapa-event-label', x, y:y-baseRadius*3.45, 'text-anchor':'middle', fill:factionColor(raw.event?.faction || owner) });
-                eventLabel.textContent = progress == null ? 'DEFENDENDO' : `DEFENDENDO ${formatPercentDetailed(progress)}`;
+                eventLabel.textContent = formatPercentDetailed(progress);
+                eventLabel.setAttribute('fill','#4da6ff');
+                eventLabel.setAttribute('aria-label','Defesa: '+formatPercentDetailed(progress));
                 group.appendChild(eventLabel);
-                const enemyLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*4.8,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
+                const enemyLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*6.2,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
                 enemyLabel.textContent=`INVASÃO ${formatPercentDetailed(invasionProgress(raw))}`;
                 group.appendChild(enemyLabel);
             } else if(offensive) {
                 const eventLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*3.45,'text-anchor':'middle',fill:FACTION_COLORS.human});
-                eventLabel.textContent=progress==null?'LIBERTAÇÃO':`LIBERTAÇÃO ${formatPercentDetailed(progress)}`;
+                eventLabel.textContent=formatPercentDetailed(progress);
+                eventLabel.setAttribute('aria-label','Libertação: '+formatPercentDetailed(progress));
                 group.appendChild(eventLabel);
             }
 

@@ -927,3 +927,16 @@ body.tactical-modal-open { overflow:hidden; }
 #mapa-svg{background:transparent;}
 .mapa-galaxy-background{opacity:.72;pointer-events:none;}
 .mapa-cyberstan-radial{pointer-events:none;}
+
+/* v57 — títulos externos e distintivos originais de Omicron. */
+.mapa-outer-factions text{font:700 18px Arial,sans-serif;letter-spacing:1.4px;paint-order:stroke;stroke:#03070d;stroke-width:2px;stroke-linejoin:round;}
+.mapa-boss-marker{cursor:pointer;}
+#mapa-intel-boss-note{font:11px/1.5 Arial,sans-serif;color:#e6c75c;margin:8px 0;}
+#mapa-intel-boss-note[hidden]{display:none;}
+
+/* v59 — facções maiores sobre os arcos e status por ícone. */
+.mapa-outer-factions text{font-size:26px;letter-spacing:1.8px;stroke-width:2.5px;}
+.mapa-event-icon{display:none;pointer-events:none;}
+#mapa-viewport.mapa-detail-on .mapa-event-icon,
+.mapa-dots .mapa-planet-group.selected .mapa-event-icon{display:block;}
+#mapa-viewport.mapa-is-moving .mapa-event-icon{display:none;}

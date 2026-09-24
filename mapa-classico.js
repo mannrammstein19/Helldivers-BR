@@ -1612,6 +1612,7 @@
             const originY=(height-vb.height*fit)/2-vb.y*fit;
             const tx=(1-state.scale)*originX+fit*state.tx;
             const ty=(1-state.scale)*originY+fit*state.ty;
+<<<<<<< HEAD
             if(state.optimized) {
                 vp.removeAttribute('transform');
                 surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
@@ -1619,6 +1620,10 @@
                 surface.style.transform='none';
                 vp.setAttribute('transform',`translate(${state.tx},${state.ty}) scale(${state.scale})`);
             }
+=======
+            vp.removeAttribute('transform');
+            surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
+>>>>>>> dcea2dd498c112f4295855811c6cca951e1a2c08
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
             if(!state.activePointers.size && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
@@ -1754,6 +1759,7 @@
             state.scale=1; state.tx=0; state.ty=0; state.requestApply(true);
         });
 
+<<<<<<< HEAD
         const modeButton=$('mapa-optimized-toggle');
         const updateModeButton=()=>{
             host.classList.toggle('optimized-mode',state.optimized);
@@ -1769,6 +1775,8 @@
             state.requestApply(true);
         });
         updateModeButton();
+=======
+>>>>>>> dcea2dd498c112f4295855811c6cca951e1a2c08
         new ResizeObserver(()=>state.requestApply()).observe(host);
         state.requestApply(true);
     }

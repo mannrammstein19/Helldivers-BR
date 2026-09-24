@@ -805,8 +805,8 @@
         invasionLinks=getInvasionLinks(planets);
         const defs=$('mapa-svg').querySelector('defs');
         ['human','automaton','terminid','illuminate'].forEach(key=>{
-            const marker=svgEl('marker',{id:'invasion-arrow-'+key,viewBox:'0 0 10 10',refX:8.7,refY:5,markerWidth:5.6,markerHeight:5.6,orient:'auto',markerUnits:'strokeWidth'});
-            marker.appendChild(svgEl('path',{d:'M 0 0 L 10 5 L 0 10 L 2.5 5 Z',fill:FACTION_COLORS[key]}));
+            const marker=svgEl('marker',{id:'invasion-arrow-'+key,viewBox:'0 0 10 10',refX:10,refY:5,markerWidth:7,markerHeight:7,orient:'auto',markerUnits:'userSpaceOnUse'});
+            marker.appendChild(svgEl('path',{d:'M 0 1 L 10 5 L 0 9 L 2.5 5 Z',fill:FACTION_COLORS[key]}));
             defs.appendChild(marker);
         });
         invasionLinks.forEach(({source,target,faction})=>{
@@ -816,7 +816,7 @@
             const startPad=mapSize/260*1.7,endPad=mapSize/260*(isSuperEarth(target)?4.8:2.8);
             if(distance<=startPad+endPad) return;
             const ux=(x2-x1)/distance,uy=(y2-y1)/distance;
-            const path=svgEl('path',{class:'mapa-invasion-arrow',d:`M ${x1+ux*startPad} ${y1+uy*startPad} L ${x2-ux*endPad} ${y2-uy*endPad}`,stroke:FACTION_COLORS[faction],'marker-end':`url(#invasion-arrow-${faction})`,'vector-effect':'non-scaling-stroke','data-source':source.index,'data-target':target.index});
+            const path=svgEl('path',{class:'mapa-invasion-arrow',d:`M ${x1+ux*startPad} ${y1+uy*startPad} L ${x2-ux*endPad} ${y2-uy*endPad}`,stroke:FACTION_COLORS[faction],'marker-end':`url(#invasion-arrow-${faction})`,'data-source':source.index,'data-target':target.index});
             const title=svgEl('title');title.textContent=`${planetName(source)} → ${planetName(target)} · ${faction==='human'?'Libertação':'Invasão'}`;path.appendChild(title);group.appendChild(path);
         });
     }
@@ -1612,7 +1612,6 @@
             const originY=(height-vb.height*fit)/2-vb.y*fit;
             const tx=(1-state.scale)*originX+fit*state.tx;
             const ty=(1-state.scale)*originY+fit*state.ty;
-<<<<<<< HEAD
             if(state.optimized) {
                 vp.removeAttribute('transform');
                 surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
@@ -1620,10 +1619,20 @@
                 surface.style.transform='none';
                 vp.setAttribute('transform',`translate(${state.tx},${state.ty}) scale(${state.scale})`);
             }
-=======
-            vp.removeAttribute('transform');
-            surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
->>>>>>> dcea2dd498c112f4295855811c6cca951e1a2c08
+            // Tamanho final das setas independente do motor SVG/CSS.
+            const arrowScale=fit*state.scale;
+            const arrowKey=String(arrowScale);
+            if(vp.dataset.arrowScale!==arrowKey && arrowScale>0) {
+                vp.dataset.arrowScale=arrowKey;
+                vp.style.setProperty('--mapa-arrow-width',String(1.4/arrowScale));
+                for(const key of ['human','automaton','terminid','illuminate']) {
+                    const marker=svg.querySelector('#invasion-arrow-'+key);
+                    if(marker) {
+                        marker.setAttribute('markerWidth',String(7/arrowScale));
+                        marker.setAttribute('markerHeight',String(7/arrowScale));
+                    }
+                }
+            }
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
             if(!state.activePointers.size && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
@@ -1759,7 +1768,6 @@
             state.scale=1; state.tx=0; state.ty=0; state.requestApply(true);
         });
 
-<<<<<<< HEAD
         const modeButton=$('mapa-optimized-toggle');
         const updateModeButton=()=>{
             host.classList.toggle('optimized-mode',state.optimized);
@@ -1775,8 +1783,6 @@
             state.requestApply(true);
         });
         updateModeButton();
-=======
->>>>>>> dcea2dd498c112f4295855811c6cca951e1a2c08
         new ResizeObserver(()=>state.requestApply()).observe(host);
         state.requestApply(true);
     }

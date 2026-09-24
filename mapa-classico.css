@@ -953,7 +953,6 @@ body.tactical-modal-open { overflow:hidden; }
 
 /* v61 — surface HTML transformée; overlays hors de la surface. */
 #mapa-pan-host{position:absolute;inset:0;z-index:1;overflow:hidden;touch-action:none;cursor:grab;}
-<<<<<<< HEAD
 #mapa-pan-surface{position:absolute;inset:0;transform-origin:0 0;}
 #mapa-pan-surface .mapa-svg{width:100%;height:100%;overflow:visible;touch-action:none;}
 #mapa-pan-host:active{cursor:grabbing;}
@@ -962,8 +961,6 @@ body.tactical-modal-open { overflow:hidden; }
 #mapa-pan-host.optimized-mode #mapa-pan-surface{will-change:transform;}
 .mapa-optimized-toggle{white-space:nowrap;--faction:#b8e8cc;--faction-fill:#17372a;}
 .mapa-optimized-toggle:disabled{opacity:.55;cursor:wait;}
-=======
-#mapa-pan-surface{position:absolute;inset:0;transform-origin:0 0;will-change:transform;}
-#mapa-pan-surface .mapa-svg{width:100%;height:100%;overflow:visible;touch-action:none;}
-#mapa-pan-host:active{cursor:grabbing;}
->>>>>>> dcea2dd498c112f4295855811c6cca951e1a2c08
+
+/* v63 — setas discretas, sem alterar as bordas dos setores. */
+.mapa-invasion-arrow{stroke-width:var(--mapa-arrow-width,1.4);filter:none;stroke-linecap:round;opacity:.94;}

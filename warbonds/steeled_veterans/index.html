@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Veteranos de Aço (Steeled Veterans) | Helldivers BR</title>
-<meta name="description" content="Steeled Veterans: informações, custos e recompensas das três páginas do Warbond Premium no HELLDIVERS-BR.">
-<meta name="theme-color" content="#ffe800">
+<meta content="Steeled Veterans: informações, custos e recompensas das três páginas do Warbond Premium no HELLDIVERS-BR." name="description"/>
+<meta content="#ffe800" name="theme-color"/>
 <script src="../../theme.js"></script>
-<link rel="stylesheet" href="../../style.css">
+<link href="../../style.css" rel="stylesheet"/>
 <style>
 /* ==========================================================================
-   HELLDIVERS-BR // STEELED VETERANS // PADRÃO V61
+   HELLDIVERS-BR // STEELED VETERANS // PADRÃO V62
    Mantém dados e mosaicos originais; atualiza apenas apresentação e integração.
    ========================================================================== */
 body.fundo-warbonds {
@@ -95,81 +96,222 @@ body.fundo-warbonds {
   .mobile-swipe-hint { display:block; padding:8px 11px 0; color:#777; font:700 8px/1 'Oswald',Arial,sans-serif; letter-spacing:1px; text-transform:uppercase; }
 }
 html[data-hd-theme="meridian"] .warbond-hero, body.theme-meridian .warbond-hero { border-color:color-mix(in srgb,var(--hd-yellow) 45%,#303030); }
+
+
+/* ==========================================================================
+   V62 // QUADRO DE RECOMPENSAS EM PROPORÇÃO DE REFERÊNCIA
+   O mosaico deixa de crescer para preencher a página: mantém células quase
+   quadradas, fica ancorado à esquerda e usa a sobra para um destaque editorial.
+   ========================================================================== */
+.warbond-detail-shell { max-width:1420px; }
+.warbond-page-card { overflow:hidden; }
+.warbond-page-head { min-height:68px; padding:13px 16px; }
+.page-index { width:46px; height:46px; flex-basis:46px; font-size:20px; }
+.page-id small { margin-bottom:4px; color:#8c8c8c; font-size:10px; letter-spacing:1.25px; }
+.page-id h2 { font-size:26px; }
+.page-stats { font-size:10px; }
+.warbond-page-body {
+  display:grid;
+  grid-template-columns:max-content minmax(250px,1fr);
+  gap:14px;
+  align-items:stretch;
+  padding:12px;
+}
+.warbond-page-body .grid-wrapper {
+  width:auto;
+  max-width:100%;
+  padding:0 0 7px;
+  margin:0;
+  overflow-x:auto;
+  justify-self:start;
+}
+.warbond-grid {
+  --wb-cell:194px;
+  grid-template-columns:repeat(5,var(--wb-cell));
+  grid-template-rows:repeat(3,var(--wb-cell));
+  width:max-content;
+  min-width:0;
+  margin:0;
+}
+.wb-card { border-radius:8px; }
+.wb-item-img { max-width:78%; max-height:78%; }
+.wb-cost { top:7px; right:7px; }
+.page-feature {
+  min-width:0;
+  border:1px solid rgba(215,213,44,.22);
+  border-radius:11px;
+  background:linear-gradient(180deg,rgba(215,213,44,.055),rgba(6,6,6,.93));
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.page-feature-head {
+  padding:11px 12px 9px;
+  border-bottom:1px solid rgba(215,213,44,.16);
+  color:var(--hd-yellow);
+  font:700 10px/1 'Oswald',Arial,sans-serif;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+.page-feature-visual {
+  min-height:205px;
+  display:grid;
+  place-items:center;
+  padding:14px;
+  background:radial-gradient(circle at 50% 42%,rgba(10,79,103,.26),transparent 56%);
+}
+.page-feature-visual img {
+  display:block;
+  width:auto;
+  max-width:90%;
+  max-height:220px;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 15px rgba(0,0,0,.48));
+}
+.page-feature-copy { padding:13px 14px 15px; }
+.page-feature-copy h3 {
+  margin:0 0 7px;
+  color:#fff;
+  font:700 20px/1.05 'Oswald',Arial,sans-serif;
+  text-transform:uppercase;
+}
+.page-feature-cost {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-bottom:9px;
+  padding:5px 7px;
+  border:1px solid rgba(215,213,44,.55);
+  border-radius:6px;
+  background:rgba(0,0,0,.5);
+  color:var(--hd-yellow);
+  font:700 11px/1 'Oswald',Arial,sans-serif;
+}
+.page-feature-cost img { width:14px; height:14px; object-fit:contain; }
+.page-feature-copy p { margin:0; color:#aaa; font-size:12px; line-height:1.55; }
+.page-feature-link {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:auto;
+  padding:11px 14px;
+  border-top:1px solid rgba(215,213,44,.14);
+  color:#d0d0d0;
+  font:700 10px/1 'Oswald',Arial,sans-serif;
+  letter-spacing:.65px;
+  text-transform:uppercase;
+  text-decoration:none;
+}
+.page-feature-link:hover,.page-feature-link:focus-visible { color:var(--hd-yellow); outline:none; }
+.page-feature-link span:last-child { color:var(--hd-yellow); font-size:16px; }
+
+@media (max-width:1390px) {
+  .warbond-page-body { grid-template-columns:1fr; }
+  .page-feature { max-width:1002px; display:grid; grid-template-columns:230px minmax(0,1fr); grid-template-rows:auto 1fr auto; }
+  .page-feature-head { grid-column:1/-1; }
+  .page-feature-visual { grid-column:1; grid-row:2/4; min-height:190px; }
+  .page-feature-copy { grid-column:2; grid-row:2; align-self:center; }
+  .page-feature-link { grid-column:2; grid-row:3; }
+}
+@media (max-width:1180px) {
+  .warbond-grid { --wb-cell:166px; }
+  .page-feature { max-width:862px; }
+}
+@media (max-width:920px) {
+  .warbond-grid { --wb-cell:150px; }
+  .page-feature { max-width:782px; }
+}
+@media (max-width:600px) {
+  .warbond-page-head { min-height:0; }
+  .page-index { width:43px; height:43px; flex-basis:43px; font-size:19px; }
+  .page-id small { font-size:9px; letter-spacing:1px; }
+  .page-id h2 { font-size:24px; }
+  .page-stats { padding-left:55px; }
+  .warbond-page-body { padding:10px; gap:10px; }
+  .warbond-page-body .grid-wrapper { width:100%; }
+  .warbond-grid { --wb-cell:136px; }
+  .page-feature { display:block; max-width:none; }
+  .page-feature-visual { min-height:170px; }
+  .page-feature-visual img { max-height:160px; }
+  .page-feature-copy h3 { font-size:19px; }
+  .mobile-swipe-hint { padding:8px 11px 0; }
+}
 </style>
-<script defer src="../../pwa.js"></script>
-</head>
+<script defer="" src="../../pwa.js"></script>
+
+<!-- HELLDIVERS-BR // Steeled Veterans V62 --></head>
 <body class="fundo-warbonds">
 <div class="mobile-header">
-  <button class="mobile-menu-btn" id="menu-btn" type="button" aria-controls="sidebar" aria-expanded="false">☰ MENU DE NAVEGAÇÃO</button>
+<button aria-controls="sidebar" aria-expanded="false" class="mobile-menu-btn" id="menu-btn" type="button">☰ MENU DE NAVEGAÇÃO</button>
 </div>
-<nav class="sidebar" id="sidebar" aria-label="Navegação principal">
-  <div class="logo-container"><img src="../../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR"></div>
-  <div class="menu-section"><div class="section-header">Comunidade</div><ul class="menu-list">
-    <li><a href="../../index.html">Página Principal</a></li>
-    <li><a href="https://discord.gg/helldiversbr" target="_blank" rel="noopener">Nosso Servidor Discord</a></li>
-  </ul></div>
-  <div class="menu-section"><div class="section-header">Aquisições</div><ul class="menu-list">
-    <li><a href="../warbonds-wiki.html" class="active">Passes de Guerra</a></li>
-    <li><a href="#">Superloja</a></li>
-  </ul></div>
-  <div class="menu-section"><div class="section-header">Equipamento</div><ul class="menu-list">
-    <li><a href="../../estratagemas.html">Estratagemas</a></li>
-    <li><a href="../../armas/primarias/index.html">Armas Primárias</a></li>
-    <li><a href="../../armas/secundarias/index.html">Armas Secundárias</a></li>
-    <li><a href="#">Granadas</a></li>
-  </ul></div>
+<nav aria-label="Navegação principal" class="sidebar" id="sidebar">
+<div class="logo-container"><img alt="Logo Helldivers BR" src="../../imagens/fundos/site/logo.jpg"/></div>
+<div class="menu-section"><div class="section-header">Comunidade</div><ul class="menu-list">
+<li><a href="../../index.html">Página Principal</a></li>
+<li><a href="https://discord.gg/helldiversbr" rel="noopener" target="_blank">Nosso Servidor Discord</a></li>
+</ul></div>
+<div class="menu-section"><div class="section-header">Aquisições</div><ul class="menu-list">
+<li><a class="active" href="../warbonds-wiki.html">Passes de Guerra</a></li>
+<li><a href="#">Superloja</a></li>
+</ul></div>
+<div class="menu-section"><div class="section-header">Equipamento</div><ul class="menu-list">
+<li><a href="../../estratagemas.html">Estratagemas</a></li>
+<li><a href="../../armas/primarias/index.html">Armas Primárias</a></li>
+<li><a href="../../armas/secundarias/index.html">Armas Secundárias</a></li>
+<li><a href="#">Granadas</a></li>
+</ul></div>
 </nav>
 <main class="main-content">
 <div class="warbond-detail-shell">
-  <a class="warbond-back" href="../warbonds-wiki.html">‹ VOLTAR AOS TÍTULOS DE GUERRA</a>
-  <section class="warbond-hero" aria-labelledby="warbond-title">
-    <div class="warbond-kicker"><i></i> SUPER TERRA // ARQUIVO DE AQUISIÇÃO</div>
-    <div class="warbond-hero-main">
-      <div>
-        <h1 id="warbond-title">Veteranos de Aço <span>/ Steeled Veterans</span></h1>
-        <p>Warbond Premium com três páginas de recompensas, organizado no padrão visual atual do HELLDIVERS-BR.</p>
-      </div>
-      <div class="warbond-badges"><span class="warbond-badge badge-premium">PREMIUM</span><span class="warbond-badge ">3 PÁGINAS</span><span class="warbond-badge ">8 FEV 2024</span></div>
-    </div>
-  </section>
-  <section class="warbond-overview" aria-label="Visão geral do Warbond">
-    <article class="overview-copy">
-      <h2>Visão geral</h2>
-      <p><strong>Veteranos de Aço</strong> (<em>Steeled Veterans</em>) é um Passe de Guerra Premium (Premium Warbond) no Helldivers 2. Foi lançado junto com o jogo no dia 8 de fevereiro de 2024.</p>
+<a class="warbond-back" href="../warbonds-wiki.html">‹ VOLTAR AOS TÍTULOS DE GUERRA</a>
+<section aria-labelledby="warbond-title" class="warbond-hero">
+<div class="warbond-kicker"><i></i> SUPER TERRA // ARQUIVO DE AQUISIÇÃO</div>
+<div class="warbond-hero-main">
+<div>
+<h1 id="warbond-title">Veteranos de Aço <span>/ Steeled Veterans</span></h1>
+<p>Warbond Premium com três páginas de recompensas, organizado no padrão visual atual do HELLDIVERS-BR.</p>
+</div>
+<div class="warbond-badges"><span class="warbond-badge badge-premium">PREMIUM</span><span class="warbond-badge">3 PÁGINAS</span><span class="warbond-badge">8 FEV 2024</span></div>
+</div>
+</section>
+<section aria-label="Visão geral do Warbond" class="warbond-overview">
+<article class="overview-copy">
+<h2>Visão geral</h2>
+<p><strong>Veteranos de Aço</strong> (<em>Steeled Veterans</em>) é um Passe de Guerra Premium (Premium Warbond) no Helldivers 2. Foi lançado junto com o jogo no dia 8 de fevereiro de 2024.</p>
 <p>Este passe foca em equipamentos táticos para Helldivers feridos em combate que receberam próteses cibernéticas. Ele introduz armas com munição incendiária, armaduras com a passiva "Kit de Servomotor" (que aumenta a distância de arremesso de granadas e saúde dos membros), e novas opções estéticas.</p>
 <p>Para desbloquear todas as três páginas de conteúdo e obter todos os equipamentos, capas, e recursos, os jogadores precisarão acumular um total de <strong>686 Medalhas</strong>.</p>
-    </article>
-    <aside class="warbond-infobox">
-      <div class="warbond-infobox-head"><small>PASSE DE GUERRA</small><h2>Veteranos de Aço</h2></div>
-      <div class="warbond-cover"><img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Steeled_Veterans_Premium_Warbond_Cover.png" alt="Capa do Warbond Steeled Veterans" decoding="async"></div>
-      <table class="warbond-infobox-table"><tbody><tr><th>Tipo</th><td>Premium</td></tr>
-<tr><th>Custo</th><td><img alt="SC" class="icon-inline" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg"/>1000 Super Créditos</td></tr>
-<tr><th>Super Créditos Disponiveis</th><td><img alt="SC" class="icon-inline" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg"/>300 Super Créditos</td></tr>
-<tr><th>Todas as Paginas Desbloqueadas</th><td><img src="../../imagens/ui/icons/medals.png" alt="Medalhas" class="icon-inline"> 200 Medalhas</td></tr>
-<tr><th>Tudo Desbloqueado</th><td><img src="../../imagens/ui/icons/medals.png" alt="Medalhas" class="icon-inline"> 686 Medalhas</td></tr>
+</article>
+<aside class="warbond-infobox">
+<div class="warbond-infobox-head"><small>PASSE DE GUERRA</small><h2>Veteranos de Aço</h2></div>
+<div class="warbond-cover"><img alt="Capa do Warbond Steeled Veterans" decoding="async" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Steeled_Veterans_Premium_Warbond_Cover.png"/></div>
+<table class="warbond-infobox-table"><tbody><tr><th>Tipo</th><td>Premium</td></tr>
+<tr><th>Custo</th><td><img alt="SC" class="icon-inline" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg">1000 Super Créditos</img></td></tr>
+<tr><th>Super Créditos Disponiveis</th><td><img alt="SC" class="icon-inline" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/icones/Super_Credits.svg">300 Super Créditos</img></td></tr>
+<tr><th>Todas as Paginas Desbloqueadas</th><td><img alt="Medalhas" class="icon-inline" src="../../imagens/ui/icons/medals.png"/> 200 Medalhas</td></tr>
+<tr><th>Tudo Desbloqueado</th><td><img alt="Medalhas" class="icon-inline" src="../../imagens/ui/icons/medals.png"/> 686 Medalhas</td></tr>
 <tr><th>Data de Lançamento</th><td>8 de Fevereiro de 2024</td></tr></tbody></table>
-    </aside>
-  </section>
-  <h2 class="warbond-pages-title">Páginas de recompensas</h2>
-  
-<section class="warbond-page-card" aria-labelledby="wb-page-1">
-  <header class="warbond-page-head">
-    <div class="page-id">
-      <span class="page-index">01</span>
-      <div>
-        <small>STEeled Veterans // SETOR DE RECOMPENSAS</small>
-        <h2 id="wb-page-1">Página 1</h2>
-      </div>
-    </div>
-    <div class="page-stats">
-                    Custo total da página: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"/> 90
-                </div>
-  </header>
-  <div class="mobile-swipe-hint" aria-hidden="true">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
-  <div class="grid-wrapper">
+</aside>
+</section>
+<h2 class="warbond-pages-title">Páginas de recompensas</h2>
+<section aria-labelledby="wb-page-1" class="warbond-page-card">
+<header class="warbond-page-head">
+<div class="page-id">
+<span class="page-index">01</span>
+<div>
+<small>STEELED VETERANS // SETOR DE RECOMPENSAS</small>
+<h2 id="wb-page-1">Página 1</h2>
+</div>
+</div>
+<div class="page-stats">
+                    Custo total da página: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"> 90
+                </img></div>
+</header>
+<div aria-hidden="true" class="mobile-swipe-hint">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
+<div class="warbond-page-body"><div class="grid-wrapper">
 <div class="warbond-grid">
 <a class="wb-card" href="#" style="grid-column: span 1; grid-row: span 2;">
-<div class="wb-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 2</div>
+<div class="wb-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"> 2</img></div>
 <img alt="Player Card" class="wb-item-img" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/Tyrant_Hunter_Player_Card_Icon.png"/>
 </a>
 <a class="wb-card" href="images/itens/Sanador.html" style="grid-column: span 1; grid-row: span 2;">
@@ -201,24 +343,24 @@ html[data-hd-theme="meridian"] .warbond-hero, body.theme-meridian .warbond-hero 
 <img alt="Cape" class="wb-item-img" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/Tyrant_Hunter_Cape_Armory.png"/>
 </a>
 </div>
-</div>
+</div><aside aria-label="Destaque da Página 1" class="page-feature"><div class="page-feature-head">Destaque da Página 1</div><div class="page-feature-visual"><img alt="P-4 Senator" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/P-4_Senator_Secondary_Render.png"/></div><div class="page-feature-copy"><h3>P-4 Senator</h3><div class="page-feature-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 15 Medalhas</div><p>Arma secundária da Página 1. É um bom destaque do setor por representar um dos desbloqueios de equipamento em meio aos cosméticos, armadura e Super Créditos.</p></div><a class="page-feature-link" href="images/itens/Sanador.html"><span>Ver item</span><span>→</span></a></aside></div>
 </section>
-<section class="warbond-page-card" aria-labelledby="wb-page-2">
-  <header class="warbond-page-head">
-    <div class="page-id">
-      <span class="page-index">02</span>
-      <div>
-        <small>STEeled Veterans // SETOR DE RECOMPENSAS</small>
-        <h2 id="wb-page-2">Página 2</h2>
-      </div>
-    </div>
-    <div class="page-stats">
+<section aria-labelledby="wb-page-2" class="warbond-page-card">
+<header class="warbond-page-head">
+<div class="page-id">
+<span class="page-index">02</span>
+<div>
+<small>STEELED VETERANS // SETOR DE RECOMPENSAS</small>
+<h2 id="wb-page-2">Página 2</h2>
+</div>
+</div>
+<div class="page-stats">
                     Medalhas gastas para desbloquear: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"/> 60 <br/>
                     Custo total da página: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"/> 229
                 </div>
-  </header>
-  <div class="mobile-swipe-hint" aria-hidden="true">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
-  <div class="grid-wrapper">
+</header>
+<div aria-hidden="true" class="mobile-swipe-hint">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
+<div class="warbond-page-body"><div class="grid-wrapper">
 <div class="warbond-grid">
 <a class="wb-card" href="#" style="grid-column: span 1; grid-column: span 1;">
 <div class="wb-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 5</div>
@@ -258,24 +400,24 @@ html[data-hd-theme="meridian"] .warbond-hero, body.theme-meridian .warbond-hero 
 </a>
 <div style="grid-column: span 1; grid-row: span 1;"></div>
 </div>
-</div>
+</div><aside aria-label="Destaque da Página 2" class="page-feature"><div class="page-feature-head">Destaque da Página 2</div><div class="page-feature-visual"><img alt="SG-225IE Breaker Incendiary" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-2/SG-225IE_Breaker_Incendiary_Primary_Render.png"/></div><div class="page-feature-copy"><h3>SG-225IE Breaker Incendiary</h3><div class="page-feature-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 12 Medalhas</div><p>Arma primária da Página 2. O quadro também reúne granada, armadura, capacete, capas, pose e Super Créditos, então ela funciona bem como referência rápida desta página.</p></div><a class="page-feature-link" href="images/itens/SG-225IE Breaker Incendiary.html"><span>Ver item</span><span>→</span></a></aside></div>
 </section>
-<section class="warbond-page-card" aria-labelledby="wb-page-3">
-  <header class="warbond-page-head">
-    <div class="page-id">
-      <span class="page-index">03</span>
-      <div>
-        <small>STEeled Veterans // SETOR DE RECOMPENSAS</small>
-        <h2 id="wb-page-3">Página 3</h2>
-      </div>
-    </div>
-    <div class="page-stats">
+<section aria-labelledby="wb-page-3" class="warbond-page-card">
+<header class="warbond-page-head">
+<div class="page-id">
+<span class="page-index">03</span>
+<div>
+<small>STEELED VETERANS // SETOR DE RECOMPENSAS</small>
+<h2 id="wb-page-3">Página 3</h2>
+</div>
+</div>
+<div class="page-stats">
                     Medalhas gastas para desbloquear: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"/> 200 <br/>
                     Custo total da página: <img src="../../imagens/ui/icons/medals.png" style="width: 14px;"/> 369
                 </div>
-  </header>
-  <div class="mobile-swipe-hint" aria-hidden="true">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
-  <div class="grid-wrapper">
+</header>
+<div aria-hidden="true" class="mobile-swipe-hint">↔ DESLIZE PARA EXPLORAR O QUADRO</div>
+<div class="warbond-page-body"><div class="grid-wrapper">
 <div class="warbond-grid">
 <a class="wb-card" href="#" style="grid-column: span 1; grid-row: span 2;">
 <div class="wb-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 16</div>
@@ -310,9 +452,9 @@ html[data-hd-theme="meridian"] .warbond-hero, body.theme-meridian .warbond-hero 
 <img alt="Capa" class="wb-item-img" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/Bastion_of_Integrity_Cape_Render.png"/>
 </a>
 </div>
-</div>
+</div><aside aria-label="Destaque da Página 3" class="page-feature"><div class="page-feature-head">Destaque da Página 3</div><div class="page-feature-visual"><img alt="JAR-5 Dominator" decoding="async" loading="lazy" src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/steeled_veterans/images/pagina-3/JAR-5_Dominator_Primary_Render.png"/></div><div class="page-feature-copy"><h3>JAR-5 Dominator</h3><div class="page-feature-cost"><img alt="Medalhas" src="../../imagens/ui/icons/medals.png"/> 80 Medalhas</div><p>Arma primária da Página 3 e um dos maiores custos individuais exibidos neste setor de recompensas: 80 Medalhas.</p></div><a class="page-feature-link" href="images/itens/JAR-5 Dominator.html"><span>Ver item</span><span>→</span></a></aside></div>
 </section>
-  <div class="warbond-footer-note">HELLDIVERS-BR // A disposição das recompensas, custos, imagens e destinos de link deste arquivo foram preservados. Links ainda marcados com “#” continuam como conteúdo sem página própria.</div>
+<div class="warbond-footer-note">HELLDIVERS-BR // A disposição das recompensas, custos, imagens e destinos de link deste arquivo foram preservados. Links ainda marcados com “#” continuam como conteúdo sem página própria.</div>
 </div>
 </main>
 <script>

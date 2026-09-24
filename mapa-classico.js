@@ -1178,7 +1178,7 @@
 
         // Quatro símbolos compartilhados; cada planeta cria só um <use> leve.
         const iconBoxes = {
-            human:{x:10,y:10,w:80,h:80},
+            human:{x:0,y:0,w:100,h:100},
             automaton:{x:2,y:14,w:96,h:72},
             terminid:{x:9,y:8,w:82,h:84},
             illuminate:{x:10,y:10,w:80,h:80}
@@ -1458,7 +1458,7 @@
 
             // Símbolo do proprietário dentro da bolinha. O anel externo continua
             // mostrando o atacante quando houver defesa/invasão.
-            const iconSize = baseRadius * ((underAttack || offensive) ? 2.05 : 1.55);
+            const iconSize = baseRadius * (fKey==='human' ? ((underAttack || offensive) ? 2.76 : 2) : ((underAttack || offensive) ? 2.05 : 1.55));
             const symbol = svgEl('use', {
                 class:'mapa-planet-faction-icon',href:`#faction-icon-${fKey === 'unknown' ? 'human' : fKey}`,
                 x:x-iconSize/2,y:y-iconSize/2,width:iconSize,height:iconSize,'aria-hidden':'true'
@@ -1580,6 +1580,7 @@
         const DETAIL_ZOOM_THRESHOLD = 3.0;
         const LOW_DETAIL_THRESHOLD = 1.18;
 
+        const host=$('mapa-pan-host'),surface=$('mapa-pan-surface');
         let state = svg._mapaPanZoomState;
         if (state) {
             state.viewport = viewport;
@@ -1589,6 +1590,7 @@
 
         state = {
             viewport,
+            optimized:false,
             scale:1, tx:0, ty:0,
             isPanning:false, lastX:0, lastY:0, moved:false,
             pinchStartDist:null, pinchStartScale:1,
@@ -1604,9 +1606,21 @@
             state.rafId = 0;
             const vp = state.viewport;
             if (!vp) return;
-            vp.setAttribute('transform', `translate(${state.tx},${state.ty}) scale(${state.scale})`);
+            const width=host.clientWidth,height=host.clientHeight,vb=svg.viewBox.baseVal;
+            const fit=Math.min(width/vb.width,height/vb.height);
+            const originX=(width-vb.width*fit)/2-vb.x*fit;
+            const originY=(height-vb.height*fit)/2-vb.y*fit;
+            const tx=(1-state.scale)*originX+fit*state.tx;
+            const ty=(1-state.scale)*originY+fit*state.ty;
+            if(state.optimized) {
+                vp.removeAttribute('transform');
+                surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
+            } else {
+                surface.style.transform='none';
+                vp.setAttribute('transform',`translate(${state.tx},${state.ty}) scale(${state.scale})`);
+            }
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
-            if(vp.dataset.detailKey!==detailKey) {
+            if(!state.activePointers.size && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
             vp.classList.toggle('mapa-labels-on', state.scale >= LABEL_ZOOM_THRESHOLD);
             vp.classList.toggle('mapa-human-details-on', state.scale >= 5);
@@ -1629,9 +1643,12 @@
         };
 
         const clientToSvgPoint = (clientX, clientY) => {
-            const pt = svg.createSVGPoint();
-            pt.x = clientX; pt.y = clientY;
-            return pt.matrixTransform(svg.getScreenCTM().inverse());
+            const rect=host.getBoundingClientRect(),vb=svg.viewBox.baseVal;
+            const x=(clientX-rect.left)*host.clientWidth/rect.width;
+            const y=(clientY-rect.top)*host.clientHeight/rect.height;
+            const fit=Math.min(host.clientWidth/vb.width,host.clientHeight/vb.height);
+            return {x:(x-(host.clientWidth-vb.width*fit)/2)/fit+vb.x,
+                    y:(y-(host.clientHeight-vb.height*fit)/2)/fit+vb.y};
         };
 
         state.zoomAt = (clientX, clientY, factor) => {
@@ -1644,20 +1661,20 @@
             state.requestApply();
         };
 
-        svg.addEventListener('wheel', event => {
+        host.addEventListener('wheel', event => {
             event.preventDefault();
             state.zoomAt(event.clientX, event.clientY, event.deltaY < 0 ? 1.18 : 1 / 1.18);
         }, { passive:false });
 
-        svg.addEventListener('pointerdown', event => {
+        host.addEventListener('pointerdown', event => {
             state.activePointers.set(event.pointerId, event);
             state.viewport?.classList.add('mapa-is-moving');
-            state.dragRect = svg.getBoundingClientRect();
+            state.dragRect = host.getBoundingClientRect();
             const vb = svg.viewBox.baseVal;
             state.dragViewBox = { width:vb.width, height:vb.height };
             if (event.pointerType === 'touch' && state.activePointers.size > 1) {
                 state.moved=true;
-                for(const id of state.activePointers.keys()) {try{svg.setPointerCapture(id);}catch{}}
+                for(const id of state.activePointers.keys()) {try{host.setPointerCapture(id);}catch{}}
                 return;
             }
             state.isPanning = true; state.moved = false;
@@ -1665,7 +1682,7 @@
             // Captura só ao arrastar; o toque simples continua chegando ao planeta.
         });
 
-        svg.addEventListener('pointermove', event => {
+        host.addEventListener('pointermove', event => {
             if (!state.activePointers.has(event.pointerId)) return;
             state.activePointers.set(event.pointerId, event);
             if (state.activePointers.size === 2) {
@@ -1685,8 +1702,8 @@
             if (!state.isPanning) return;
             const dx = event.clientX-state.lastX, dy = event.clientY-state.lastY;
             if (Math.abs(dx)>2 || Math.abs(dy)>2) state.moved = true;
-            if (state.moved) { try { svg.setPointerCapture(event.pointerId); } catch {} }
-            const rect = state.dragRect || svg.getBoundingClientRect();
+            if (state.moved) { try { host.setPointerCapture(event.pointerId); } catch {} }
+            const rect = state.dragRect || host.getBoundingClientRect();
             const vb = state.dragViewBox || svg.viewBox.baseVal;
             const units = Math.max(vb.width/rect.width, vb.height/rect.height);
             state.tx += dx*units;
@@ -1707,16 +1724,17 @@
                 state.dragRect = null;
                 state.dragViewBox = null;
                 state.viewport?.classList.remove('mapa-is-moving');
+                state.requestApply();
             }
-            try { svg.releasePointerCapture(event.pointerId); } catch {}
+            try { host.releasePointerCapture(event.pointerId); } catch {}
         };
-        svg.addEventListener('pointerup', clearPointer);
-        svg.addEventListener('pointercancel', clearPointer);
-        svg.addEventListener('pointerleave', event => {
+        host.addEventListener('pointerup', clearPointer);
+        host.addEventListener('pointercancel', clearPointer);
+        host.addEventListener('pointerleave', event => {
             if (event.pointerType !== 'touch') clearPointer(event);
         });
 
-        svg.addEventListener('click', event => {
+        host.addEventListener('click', event => {
             if (state.moved) { event.stopPropagation(); state.moved = false; }
         }, true);
 
@@ -1727,15 +1745,31 @@
             btn.addEventListener('click', fn);
         };
         bindZoomButton('mapa-zoom-in', () => {
-            const r=svg.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1.35);
+            const r=host.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1.35);
         });
         bindZoomButton('mapa-zoom-out', () => {
-            const r=svg.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.35);
+            const r=host.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.35);
         });
         bindZoomButton('mapa-zoom-reset', () => {
             state.scale=1; state.tx=0; state.ty=0; state.requestApply(true);
         });
 
+        const modeButton=$('mapa-optimized-toggle');
+        const updateModeButton=()=>{
+            host.classList.toggle('optimized-mode',state.optimized);
+            modeButton.disabled=false;
+            modeButton.classList.toggle('active',state.optimized);
+            modeButton.setAttribute('aria-pressed',String(state.optimized));
+            modeButton.textContent='Versão otimizada: '+(state.optimized?'ligada':'desligada');
+        };
+        modeButton.addEventListener('click',()=>{
+            // Mesmo estado de navegação e mesmo DOM; sem consulta extra à API.
+            state.optimized=!state.optimized;
+            updateModeButton();
+            state.requestApply(true);
+        });
+        updateModeButton();
+        new ResizeObserver(()=>state.requestApply()).observe(host);
         state.requestApply(true);
     }
 
@@ -1832,10 +1866,15 @@
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
 
+            await loadDSS();
+            // Une requête déjà lancée peut terminer pendant un geste.
+            // Conserver le DOM affiché jusqu'au relâchement du dernier doigt.
+            while($('mapa-svg')?._mapaPanZoomState?.activePointers.size) {
+                await new Promise(resolve=>setTimeout(resolve,100));
+            }
             const selected=selectedIndex;
             const inspector=quickIntelIndex;
             const sticky=$('mapa-intel-card')?.dataset.sticky==='1';
-            await loadDSS();
             buildMap(allPlanets);
             if(campaignResult.status==='fulfilled' || campaigns.length) renderOffensiveCampaigns();
             else {

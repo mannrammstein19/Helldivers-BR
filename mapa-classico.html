@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=60">
+<link rel="stylesheet" href="mapa-classico.css?v=62">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -89,6 +89,7 @@
             <button class="mapa-filter" data-faction="automaton">Autômatos</button>
             <button class="mapa-filter" data-faction="illuminate">Iluminados</button>
         </div>
+        <button class="mapa-filter mapa-optimized-toggle" id="mapa-optimized-toggle" type="button" aria-pressed="false" disabled title="Alternar a movimentação do mapa sem sair da página">Versão otimizada: desligada</button>
         <div class="mapa-layer-controls" id="mapa-layer-controls" aria-label="Camadas táticas">
             <button class="mapa-layer active" type="button" data-layer="routes">ROTAS</button>
             <button class="mapa-layer active" type="button" data-layer="invasions">INVASÕES</button>
@@ -185,7 +186,7 @@
 </div>
 
             <svg id="mapa-intel-leader" class="mapa-intel-leader" aria-hidden="true" hidden><path /></svg>
-            <svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div id="mapa-pan-host"><div id="mapa-pan-surface"><svg id="mapa-svg" class="mapa-svg" xmlns="http://www.w3.org/2000/svg"></svg></div></div>
         </div>
         <div class="mapa-hint">Clique ou toque no planeta para fixar o painel · Dossiê completo no botão do painel · Arraste/pince para navegar</div>
     </section>
@@ -226,7 +227,7 @@
 
 
 <script src="war-data.js?v=41"></script>
-<script src="mapa-classico.js?v=60"></script>
+<script src="mapa-classico.js?v=62"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

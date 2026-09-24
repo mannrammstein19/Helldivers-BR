@@ -768,6 +768,72 @@
     .strat-title-legend{flex-wrap:wrap}
 }
 
+
+
+/* ========================================================================
+   HDBR // PADRÃO DE BORDAS ARREDONDADAS — CATÁLOGO DE ESTRATAGEMAS
+   Segue o acabamento atual do portal sem suavizar demais a identidade HUD.
+   ======================================================================== */
+body.fundo-estrategema{
+    --strat-radius-lg:14px;
+    --strat-radius-md:11px;
+    --strat-radius-sm:8px;
+}
+
+/* Cabeçalho principal e contador */
+.stratagemas-command-title{
+    border-radius:var(--strat-radius-lg);
+}
+.strat-title-total{
+    border-radius:var(--strat-radius-sm);
+}
+
+/* Cards/acordeões de cada categoria */
+.stratagem-group .accordion-category{
+    border-radius:var(--strat-radius-md);
+}
+.stratagem-group .accordion-category::before{
+    border-radius:var(--strat-radius-md) 0 0 var(--strat-radius-md);
+}
+.stratagem-group .accordion-header{
+    border-radius:calc(var(--strat-radius-md) - 1px) calc(var(--strat-radius-md) - 1px) 0 0;
+}
+.accordion-category:not(:has(.accordion-header.active)) .accordion-header{
+    border-radius:calc(var(--strat-radius-md) - 1px);
+}
+.stratagem-group .accordion-content-inner{
+    border-radius:0 0 calc(var(--strat-radius-md) - 1px) calc(var(--strat-radius-md) - 1px);
+}
+
+/* Contadores, marcadores e elementos compactos */
+.category-count,
+.future-strat-label,
+.strat-icon-placeholder{
+    border-radius:var(--strat-radius-sm);
+}
+
+/* Tabelas: arredonda o quadro externo sem alterar a estrutura das colunas */
+.stratagem-group .accordion-content .table-responsive{
+    border-radius:var(--strat-radius-md);
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+.stratagem-group .hd-table{
+    border-radius:calc(var(--strat-radius-md) - 2px);
+}
+
+/* Foco acompanha o novo formato */
+.accordion-header:focus-visible{
+    border-radius:calc(var(--strat-radius-md) - 1px);
+}
+
+@media(max-width:700px){
+    body.fundo-estrategema{
+        --strat-radius-lg:12px;
+        --strat-radius-md:10px;
+        --strat-radius-sm:7px;
+    }
+}
 </style>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>

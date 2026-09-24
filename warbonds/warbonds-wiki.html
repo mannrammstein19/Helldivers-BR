@@ -2,432 +2,856 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passes de Guerra - Helldivers BR</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Warbonds | Helldivers BR</title>
+<meta name="description" content="Catálogo de Warbonds do HELLDIVERS-BR, com títulos Standard e Premium.">
+<meta name="theme-color" content="#ffe800">
 
-<!-- 1. CHAMAMOS O SEU STYLE.CSS AQUI -->
+<script src="../theme.js"></script>
 <link rel="stylesheet" href="../style.css">
 
 <style>
 /* ==========================================================================
-   VARIÁVEIS E BASE DO SITE
+   HELLDIVERS-BR // CATÁLOGO DE WARBONDS
+   Página alinhada ao padrão visual atual do portal.
    ========================================================================== */
-:root {
-    --hd-yellow: #d7d52c;
-    --hd-orange: #ff7b00;
-    --hd-bg: #141414;
-    --hd-card: rgba(31, 31, 31, 0.85); 
-    --hd-text: #ffffff;
-    --sidebar-width: 250px;
+body.fundo-warbonds {
+    --wb-radius-lg: 14px;
+    --wb-radius-md: 11px;
+    --wb-radius-sm: 8px;
 }
 
-* {
-    box-sizing: border-box;
+.warbonds-shell {
+    width: 100%;
+    max-width: 1380px;
+    margin: 0 auto;
+}
+
+.warbonds-command-title {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 22px;
+    padding: 24px 26px 21px;
+    border: 1px solid rgba(215,213,44,.34);
+    border-left: 4px solid var(--hd-yellow);
+    border-radius: var(--wb-radius-lg);
+    background:
+        linear-gradient(118deg, rgba(215,213,44,.10), rgba(215,213,44,0) 42%),
+        linear-gradient(180deg, rgba(23,23,23,.94), rgba(8,8,8,.94));
+    box-shadow: 0 14px 34px rgba(0,0,0,.24);
+}
+
+.warbonds-command-title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .10;
+    background-image:
+        linear-gradient(rgba(255,255,255,.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.11) 1px, transparent 1px);
+    background-size: 34px 34px;
+}
+
+.warbond-kicker,
+.warbond-title-main {
+    position: relative;
+    z-index: 1;
+}
+
+.warbond-kicker {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: var(--hd-yellow);
+    font: 700 11px/1 'Oswald', Arial, sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.warbond-kicker i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--hd-yellow);
+    box-shadow: 0 0 10px rgba(215,213,44,.55);
+}
+
+.warbond-title-main {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 24px;
+    align-items: end;
+}
+
+.warbond-title-copy h1 {
     margin: 0;
-    padding: 0;
+    color: #fff;
+    font: 700 clamp(32px,4.8vw,58px)/.96 'Oswald', Arial, sans-serif;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    text-shadow: 0 3px 18px rgba(0,0,0,.5);
 }
 
-/* 2. LIMPAMOS O FUNDO ANTIGO DAQUI PARA NÃO DAR CONFLITO */
-body {
-    color: var(--hd-text);
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    min-height: 100vh;
+.warbond-title-copy h1 span {
+    color: var(--hd-yellow);
 }
 
-a { text-decoration: none; }
-
-/* ==========================================================================
-   BARRA LATERAL E MOBILE
-   ========================================================================== */
-.sidebar {
-    width: var(--sidebar-width);
-    background: rgba(15, 15, 15, 0.95);
-    border-right: 2px solid var(--hd-yellow);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0; bottom: 0; left: 0;
-    z-index: 100;
-    overflow-y: auto; 
-    padding: 15px;
+.warbond-title-copy p {
+    max-width: 760px;
+    margin: 11px 0 0;
+    color: #bdbdbd;
+    font-size: 14px;
+    line-height: 1.62;
 }
 
-.logo-container {
+.warbond-total {
+    min-width: 150px;
+    padding: 12px 15px;
+    border: 1px solid rgba(215,213,44,.32);
+    border-radius: var(--wb-radius-sm);
+    background: rgba(0,0,0,.38);
     text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.3);
-    margin-bottom: 15px;
 }
 
-.logo-container img { max-width: 100%; height: auto; }
-
-.menu-section { margin-bottom: 20px; }
-
-.section-header {
-    color: var(--hd-yellow);
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    padding-bottom: 3px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.2);
-}
-
-.menu-list { list-style: none; }
-
-.menu-list li a {
+.warbond-total small,
+.warbond-total span {
     display: block;
-    color: #ccc;
-    font-size: 13px;
-    padding: 6px 10px;
-    margin-bottom: 4px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(215, 213, 44, 0.15);
-    border-left: 3px solid rgba(215, 213, 44, 0.4);
-    transition: all 0.15s ease;
-}
-
-.menu-list li a:hover, .menu-list li a.active {
-    color: var(--hd-yellow);
-    background: rgba(215, 213, 44, 0.08);
-    border-color: var(--hd-yellow);
-    border-left: 3px solid var(--hd-yellow);
-    padding-left: 14px;
-}
-
-.main-content {
-    margin-left: var(--sidebar-width);
-    flex: 1;
-    padding: 40px;
-    background: rgba(10, 10, 10, 0.7); 
-}
-
-.wiki-title-block {
-    border-bottom: 2px solid var(--hd-yellow);
-    padding-bottom: 10px;
-    margin-bottom: 30px;
-}
-
-.wiki-title-block h1 {
-    color: var(--hd-yellow);
-    font-size: 32px;
+    color: #858585;
+    font: 700 9px/1.2 'Oswald', Arial, sans-serif;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
 }
 
-/* ==========================================================================
-   GRID DOS BANNERS DOS WARBONDS
-   ========================================================================== */
-.category-title {
+.warbond-total strong {
+    display: block;
+    margin: 4px 0;
     color: var(--hd-yellow);
-    font-size: 22px;
-    margin-top: 30px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(215, 213, 44, 0.3);
-    padding-bottom: 5px;
+    font: 700 30px/1 'Oswald', Arial, sans-serif;
+}
+
+.warbonds-info-grid {
+    display: grid;
+    grid-template-columns: minmax(0,1.55fr) minmax(280px,.75fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.warbond-info-card {
+    padding: 20px 22px;
+    border: 1px solid #343434;
+    border-radius: var(--wb-radius-md);
+    background: linear-gradient(180deg, rgba(22,22,22,.91), rgba(10,10,10,.91));
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+
+.warbond-info-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 12px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid rgba(215,213,44,.24);
+    color: #fff;
+    font: 700 20px/1 'Oswald', Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.warbond-info-card h2::before {
+    content: "//";
+    color: var(--hd-yellow);
+}
+
+.warbond-info-card p {
+    margin: 0 0 10px;
+    color: #c7c7c7;
+    font-size: 14px;
+    line-height: 1.67;
+}
+
+.warbond-info-card p:last-child {
+    margin-bottom: 0;
+}
+
+.warbond-facts {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.warbond-fact {
+    display: grid;
+    grid-template-columns: 7px minmax(0,1fr);
+    gap: 9px;
+    align-items: start;
+    color: #a9a9a9;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.warbond-fact i {
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    border-radius: 2px;
+    background: var(--hd-yellow);
+}
+
+.warbond-category {
+    margin: 0 0 32px;
+}
+
+.warbond-section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 13px;
+    padding: 0 2px 9px;
+    border-bottom: 1px solid rgba(215,213,44,.27);
+}
+
+.warbond-section-head h2 {
+    margin: 0;
+    color: #fff;
+    font: 700 24px/1 'Oswald', Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.warbond-section-head h2::before {
+    content: "// ";
+    color: var(--hd-yellow);
+}
+
+.warbond-section-count {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border: 1px solid rgba(215,213,44,.28);
+    border-radius: var(--wb-radius-sm);
+    background: rgba(0,0,0,.32);
+    color: var(--hd-yellow);
+    font: 700 10px/1 'Oswald', Arial, sans-serif;
+    letter-spacing: .8px;
+    text-transform: uppercase;
 }
 
 .warbonds-list-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 15px;
 }
 
-.warbond-banner-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
+.warbond-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #383838;
+    border-radius: var(--wb-radius-md);
+    background: linear-gradient(180deg, rgba(24,24,24,.96), rgba(9,9,9,.96));
+    color: inherit;
+    box-shadow: 0 8px 22px rgba(0,0,0,.20);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
 
-.warbond-banner-card img {
-    width: 100%;
-    border-radius: 6px;
-    border: 2px solid rgba(215, 213, 44, 0.2);
-    transition: all 0.3s ease;
-    background: #000; 
-}
-
-.warbond-banner-card span {
-    color: var(--hd-yellow);
-    font-weight: bold;
-    font-size: 15px;
-    margin-top: 12px;
-    text-align: center;
-    transition: color 0.3s ease;
-}
-
-.warbond-banner-card:hover img {
+.warbond-card:hover,
+.warbond-card:focus-visible {
+    transform: translateY(-3px);
     border-color: var(--hd-yellow);
-    box-shadow: 0 0 20px rgba(215, 213, 44, 0.3);
-    transform: scale(1.03); 
+    box-shadow: 0 0 18px rgba(215,213,44,.12), 0 12px 26px rgba(0,0,0,.30);
+    outline: none;
 }
 
-.warbond-banner-card:hover span {
-    color: #fff;
-    text-shadow: 0 0 8px rgba(215, 213, 44, 0.8);
+.warbond-cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #050505;
+    border-bottom: 1px solid #2b2b2b;
 }
 
-/* ==========================================================================
-   RESPONSIVIDADE MOBILE
-   ========================================================================== */
-.mobile-header { display: none; }
+.warbond-cover img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform .25s ease, filter .25s ease;
+}
 
-@media (max-width: 768px) {
-    body { flex-direction: column; padding-top: 60px !important; }
-    .mobile-header {
-        display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 47px;
-        background: var(--hd-yellow); border-bottom: 2px solid #000; z-index: 1000;
-        align-items: center; justify-content: center;
+.warbond-card:hover .warbond-cover img {
+    transform: scale(1.025);
+    filter: brightness(1.05);
+}
+
+.warbond-type {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 8px;
+    border: 1px solid rgba(215,213,44,.42);
+    border-radius: 6px;
+    background: rgba(5,5,5,.82);
+    color: var(--hd-yellow);
+    font: 700 9px/1 'Oswald', Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
+}
+
+.warbond-card-body {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 15px 15px;
+}
+
+.warbond-card-body small {
+    display: block;
+    margin-bottom: 4px;
+    color: #707070;
+    font: 700 9px/1.2 'Oswald', Arial, sans-serif;
+    letter-spacing: .9px;
+    text-transform: uppercase;
+}
+
+.warbond-card h3 {
+    margin: 0;
+    color: #f0f0f0;
+    font: 700 17px/1.15 'Oswald', Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.warbond-card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex: 0 0 auto;
+    color: var(--hd-yellow);
+    font: 700 9px/1 'Oswald', Arial, sans-serif;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+}
+
+.warbond-card-action b {
+    font-size: 18px;
+    line-height: .8;
+}
+
+.warbond-card.is-placeholder {
+    cursor: default;
+}
+
+.warbond-card.is-placeholder .warbond-card-action {
+    color: #777;
+}
+
+.warbonds-footer-note {
+    margin-top: 4px;
+    padding: 15px 17px;
+    border: 1px solid rgba(215,213,44,.20);
+    border-left: 3px solid var(--hd-yellow);
+    border-radius: var(--wb-radius-sm);
+    background: rgba(10,10,10,.76);
+    color: #8c8c8c;
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+@media (max-width: 1120px) {
+    .warbonds-list-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 820px) {
+    .warbond-title-main {
+        grid-template-columns: 1fr;
+        align-items: start;
     }
-    .mobile-menu-btn {
-        width: 100%; height: 100%; background: transparent; border: none;
-        color: #000; font-size: 18px; font-weight: 700; text-transform: uppercase; cursor: pointer;
+    .warbond-total {
+        width: 100%;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
     }
-    .sidebar {
-        display: flex !important; flex-direction: column; position: fixed;
-        top: 60px !important; left: -100%; width: 250px !important; height: calc(100vh - 60px);
-        background: rgba(15,15,15,0.98); border-right: 2px solid var(--hd-yellow);
-        box-shadow: 2px 0 15px rgba(0,0,0,0.8); padding: 20px; overflow-y: auto;
-        transition: left 0.3s ease; z-index: 999;
+    .warbond-total strong { margin: 0; }
+    .warbond-total span { text-align: right; }
+    .warbonds-info-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    body.fundo-warbonds {
+        --wb-radius-lg: 12px;
+        --wb-radius-md: 10px;
+        --wb-radius-sm: 7px;
     }
-    .sidebar.active { left: 0; }
-    .main-content { margin-left: 0; padding: 20px; }
-    .warbonds-list-grid { grid-template-columns: 1fr; }
+    .warbonds-command-title {
+        padding: 19px 16px 17px;
+        margin-bottom: 17px;
+    }
+    .warbond-title-copy h1 {
+        font-size: 37px;
+    }
+    .warbond-title-copy p {
+        font-size: 13px;
+    }
+    .warbond-info-card {
+        padding: 17px 16px;
+    }
+    .warbond-section-head {
+        align-items: center;
+    }
+    .warbond-section-head h2 {
+        font-size: 21px;
+    }
+    .warbonds-list-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .warbond-card-body {
+        padding: 13px 13px 14px;
+    }
+}
+
+/* Tema Meridian herda --hd-yellow do style.css; estes glows acompanham a variável. */
+html[data-hd-theme="meridian"] .warbonds-command-title,
+body.theme-meridian .warbonds-command-title {
+    border-color: color-mix(in srgb, var(--hd-yellow) 45%, #303030);
 }
 </style>
-</head>
 
-<!-- 3. CHAMAMOS A CLASSE NOVA AQUI -->
+<script defer src="../pwa.js"></script>
+</head>
 <body class="fundo-warbonds">
 
-    <div class="mobile-header">
-        <button id="menu-toggle" class="mobile-menu-btn">☰ MENU DE NAVEGAÇÃO</button>
+<div class="mobile-header">
+    <button class="mobile-menu-btn" id="menu-btn" type="button" aria-expanded="false">☰ MENU DE NAVEGAÇÃO</button>
+</div>
+
+<nav class="sidebar" id="sidebar" aria-label="Navegação principal">
+    <div class="logo-container">
+        <img src="../imagens/fundos/site/logo.jpg" alt="Logo Helldivers BR">
     </div>
 
-    <!-- BARRA LATERAL (Atualizada com caminhos ../) -->
-    <nav class="sidebar">
-        <div class="logo-container">
-            <img src="../imagens/0-banners/logo.jpg" alt="Logo Helldivers BR">
+    <div class="menu-section">
+        <div class="section-header">Comunidade</div>
+        <ul class="menu-list">
+            <li><a href="../index.html">Página Principal</a></li>
+            <li><a href="https://discord.gg/helldiversbr" target="_blank" rel="noopener">Nosso Servidor Discord</a></li>
+        </ul>
+    </div>
+
+    <div class="menu-section">
+        <div class="section-header">Aquisições</div>
+        <ul class="menu-list">
+            <li><a href="warbonds-wiki.html" class="active" aria-current="page">Passes de Guerra</a></li>
+            <li><a href="#">Superloja</a></li>
+        </ul>
+    </div>
+
+    <div class="menu-section">
+        <div class="section-header">Equipamento</div>
+        <ul class="menu-list">
+            <li><a href="../estratagemas.html">Estratagemas</a></li>
+            <li><a href="../armas/primarias/index.html">Armas Primárias</a></li>
+            <li><a href="../armas/secundarias/index.html">Armas Secundárias</a></li>
+            <li><a href="#">Granadas</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div class="warbonds-shell">
+        <section class="warbonds-command-title" aria-labelledby="warbonds-main-title">
+            <div class="warbond-kicker"><i></i> SUPER TERRA // CATÁLOGO DE AQUISIÇÕES</div>
+            <div class="warbond-title-main">
+                <div class="warbond-title-copy">
+                    <h1 id="warbonds-main-title">TÍTULOS DE <span>GUERRA</span></h1>
+                    <p>Catálogo de Warbonds para consulta de equipamentos, armaduras, estratagemas, reforços e itens cosméticos disponíveis aos Helldivers.</p>
+                </div>
+                <div class="warbond-total" aria-label="Total de Warbonds cadastrados">
+                    <small>REGISTROS</small>
+                    <strong id="warbond-total-count">21</strong>
+                    <span>CATALOGADOS</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="warbonds-info-grid" aria-label="Informações sobre Warbonds">
+            <article class="warbond-info-card">
+                <h2>Como funcionam</h2>
+                <p>Os Títulos de Guerra permitem que os Helldivers gastem Medalhas para desbloquear novos equipamentos, como armas, armaduras, estratagemas, reforços e itens cosméticos.</p>
+                <p>Eles são estruturados em páginas desbloqueáveis, com progressão baseada no gasto de Medalhas dentro do próprio Warbond.</p>
+                <div class="warbond-facts">
+                    <div class="warbond-fact"><i></i><span>O Warbond padrão é gratuito.</span></div>
+                    <div class="warbond-fact"><i></i><span>Warbonds Premium e Lendários são desbloqueados com Super Créditos.</span></div>
+                    <div class="warbond-fact"><i></i><span>Os Títulos de Guerra não expiram, permitindo progresso no ritmo desejado.</span></div>
+                </div>
+            </article>
+
+            <article class="warbond-info-card">
+                <h2>História</h2>
+                <p>Os Títulos de Guerra são concebidos e implementados principalmente pelo Ministério da Defesa, com cooperação ocasional de outros Ministérios da Super Terra quando necessário.</p>
+            </article>
+        </section>
+
+        <section class="warbond-category" data-warbond-section="Standard">
+            <div class="warbond-section-head">
+                <h2>Standard</h2>
+                <span class="warbond-section-count" data-section-count>1 DISPONÍVEL</span>
+            </div>
+            <div class="warbonds-list-grid">
+                <a class="warbond-card is-placeholder" href="#" data-warbond-card data-category="Standard" aria-disabled="true">
+        <div class="warbond-cover">
+            <img src="Helldivers_Mobilize_Warbond_Cover.png" alt="Helldivers Mobilize!" loading="lazy" decoding="async">
+            <span class="warbond-type">STANDARD</span>
         </div>
-
-        <div class="menu-section">
-            <div class="section-header">Comunidade</div>
-            <ul class="menu-list">
-                <li><a href="../home.html">Página Principal</a></li>
-                <li><a href="#">Portal da Comunidade</a></li>
-                <li><a href="https://mannrammstein19.github.io/Helldivers-BR/discord/" target="_blank">Nosso Servidor Discord</a></li>
-            </ul>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Helldivers Mobilize!</h3>
+            </div>
+            <span class="warbond-card-action">Página em preparação<b aria-hidden="true">›</b></span>
         </div>
+    </a>
+            </div>
+        </section>
 
-        <div class="menu-section">
-            <div class="section-header">Aquisições</div>
-            <ul class="menu-list">
-                <!-- Marcação de link ATIVO na própria página -->
-                <li><a href="#" class="active">Passes de Guerra</a></li>
-                <li><a href="#">Superloja</a></li>
-            </ul>
+        <section class="warbond-category" data-warbond-section="Premium">
+            <div class="warbond-section-head">
+                <h2>Premium</h2>
+                <span class="warbond-section-count" data-section-count>20 DISPONÍVEIS</span>
+            </div>
+            <div class="warbonds-list-grid">
+                <a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="Steeled_Veterans_Premium_Warbond_Cover.png" alt="Steeled Veterans" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
         </div>
-
-        <div class="menu-section">
-            <div class="section-header">Equipamento</div>
-            <ul class="menu-list">
-                <li><a href="../estratagemas.html">Estratagemas</a></li>
-                <li><a href="../armas/primarias/index.html">Armas Primárias</a></li>
-                <li><a href="../armas/secundarias/index.html">Armas Secundárias</a></li>
-            </ul>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Steeled Veterans</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
         </div>
-    </nav>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="main-content">
-        <div class="wiki-title-block">
-            <h1>Lista de Passes de Guerra</h1>
+    </a>
+<a class="warbond-card" href="Cutting Edge/Cutting_Edge.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting_Edge_Premium_Warbond_Cover.png" alt="Cutting Edge" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
         </div>
-        <p style="margin-bottom: 20px; line-height: 1.6;">
-						Os Títulos de Guerra permitem que os Helldivers gastem Medalhas para desbloquear novos equipamentos, como Armas , Armaduras , Estratagemas , Reforços e Itens Cosméticos . Medalha.svg
-
-			Elas são estruturadas em páginas desbloqueáveis, exigindo que um certo número de Medalhas seja gasto no Warbond para progredir em cada página.
-
-			O Warbond padrão é gratuito, enquanto todos os outros Warbonds Premium e Lendários devem ser desbloqueados com Super Créditos . Super Crédito.svg
-
-			Os Títulos de Guerra não expiram, permitindo que os Helldivers progridam em um ou vários títulos no ritmo que desejarem.
-        </p>
-		<p style="margin-bottom: 20px; line-height: 1.6;">
-		História
-			Os títulos de guerra são concebidos e implementados principalmente pelo Ministério da Defesa , com alguma cooperação ocasional de outros Ministérios da Super Terra quando necessário.
-		</p>
-
-        <!-- CATEGORIA STANDARD -->
-        <h3 class="category-title">Standard</h3>
-        <div class="warbonds-list-grid">
-            
-            <!-- Link Temporário (Placeholder) -->
-            <a href="#" class="warbond-banner-card">
-                <!-- Imagem genérica para testes enquanto não temos a oficial -->
-                <img src="Helldivers_Mobilize_Warbond_Cover.png" alt="Helldivers Mobilize!" style="height: 150px; object-fit: cover;">
-                <span>Helldivers Mobilize!</span>
-            </a>
-
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Cutting Edge</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
         </div>
-
-        <!-- CATEGORIA PREMIUM -->
-        <h3 class="category-title">Premium</h3>
-        <div class="warbonds-list-grid">
-            
-            <!-- AQUI ESTÁ O LINK PARA A PÁGINA QUE VOCÊ ACABOU DE CRIAR -->
-            <a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="Steeled_Veterans_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Steeled Veterans</span>
-            </a>
-			
-			
-			<a href="Cutting Edge/Cutting_Edge.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting_Edge_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Cutting Edge</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Democratic_Detonation_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Democratic Detonation</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Polar_Patriots_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Polar Patriots</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Viper_Commandos_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Viper Commandos</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Freedom's_Flame_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Freedom's Flame</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Chemical_Agents_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Chemical Agents</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Truth_Enforcers_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Truth Enforcers</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Urban_Legends_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Urban Legends</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Servants_of_Freedom_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Servants of Freedom</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Borderline_Justice_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Borderline Justice</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting_Edge_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Masters of Ceremony</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Force_of_Law_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Force of Law</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Control_Group_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Control Group</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Dust_Devils_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Dust Devils</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Python_Commandos_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Python Commandos</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Redacted_Regiment_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Redacted Regiment</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Siege_Breakers_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Siege Breakers</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Entrenched_Division_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Entrenched Division</span>
-            </a>
-			
-			<a href="steeled_veterans/index.html" class="warbond-banner-card">
-                <!-- Aqui você aponta para a capa que você me mandou -->
-                <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Exo_Experts_Premium_Warbond_Cover.png" alt="Steeled Veterans">
-                <span>Exo Experts</span>
-            </a>
-
-            <!-- Exemplo de como adicionar o próximo passe no futuro -->
-            <!-- 
-            <a href="cutting_edge/index.html" class="warbond-banner-card">
-                <img src="Cutting_Edge_Premium_Warbond_Cover.jpg" alt="Cutting Edge">
-                <span>Cutting Edge</span>
-            </a> 
-            -->
-
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Democratic_Detonation_Premium_Warbond_Cover.png" alt="Democratic Detonation" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
         </div>
-    </main>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Democratic Detonation</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Polar_Patriots_Premium_Warbond_Cover.png" alt="Polar Patriots" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Polar Patriots</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Viper_Commandos_Premium_Warbond_Cover.png" alt="Viper Commandos" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Viper Commandos</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Freedom&#x27;s_Flame_Premium_Warbond_Cover.png" alt="Freedom&#x27;s Flame" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Freedom&#x27;s Flame</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Chemical_Agents_Premium_Warbond_Cover.png" alt="Chemical Agents" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Chemical Agents</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Truth_Enforcers_Premium_Warbond_Cover.png" alt="Truth Enforcers" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Truth Enforcers</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Urban_Legends_Premium_Warbond_Cover.png" alt="Urban Legends" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Urban Legends</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Servants_of_Freedom_Premium_Warbond_Cover.png" alt="Servants of Freedom" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Servants of Freedom</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Borderline_Justice_Premium_Warbond_Cover.png" alt="Borderline Justice" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Borderline Justice</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Cutting_Edge_Premium_Warbond_Cover.png" alt="Masters of Ceremony" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Masters of Ceremony</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Force_of_Law_Premium_Warbond_Cover.png" alt="Force of Law" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Force of Law</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Control_Group_Premium_Warbond_Cover.png" alt="Control Group" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Control Group</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Dust_Devils_Premium_Warbond_Cover.png" alt="Dust Devils" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Dust Devils</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Python_Commandos_Premium_Warbond_Cover.png" alt="Python Commandos" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Python Commandos</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Redacted_Regiment_Premium_Warbond_Cover.png" alt="Redacted Regiment" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Redacted Regiment</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Siege_Breakers_Premium_Warbond_Cover.png" alt="Siege Breakers" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Siege Breakers</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Entrenched_Division_Premium_Warbond_Cover.png" alt="Entrenched Division" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Entrenched Division</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+<a class="warbond-card" href="steeled_veterans/index.html" data-warbond-card data-category="Premium">
+        <div class="warbond-cover">
+            <img src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/warbonds/Exo_Experts_Premium_Warbond_Cover.png" alt="Exo Experts" loading="lazy" decoding="async">
+            <span class="warbond-type">PREMIUM</span>
+        </div>
+        <div class="warbond-card-body">
+            <div>
+                <small>ARQUIVO DE AQUISIÇÃO</small>
+                <h3>Exo Experts</h3>
+            </div>
+            <span class="warbond-card-action">Abrir arquivo<b aria-hidden="true">›</b></span>
+        </div>
+    </a>
+            </div>
+        </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const menuBtn = document.getElementById("menu-toggle");
-            const sidebar = document.querySelector(".sidebar");
+        <div class="warbonds-footer-note">
+            HELLDIVERS-BR // Os links e imagens de Warbonds já existentes neste arquivo foram preservados. Páginas que ainda usam destinos provisórios devem receber o caminho definitivo quando o respectivo conteúdo for criado.
+        </div>
+    </div>
+</main>
 
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener("click", function() {
-                    sidebar.classList.toggle("active");
-                    if (sidebar.classList.contains("active")) {
-                        menuBtn.innerHTML = "✕ Fechar Menu";
-                    } else {
-                        menuBtn.innerHTML = "☰ MENU DE NAVEGAÇÃO";
-                    }
-                });
+<script>
+(() => {
+    'use strict';
+
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    const syncMenu = () => {
+        if (!menuBtn || !sidebar) return;
+        const open = sidebar.classList.contains('active');
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menuBtn.textContent = open ? '✕ FECHAR MENU' : '☰ MENU DE NAVEGAÇÃO';
+    };
+
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            syncMenu();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                syncMenu();
+                menuBtn.focus();
             }
         });
-    </script>
+
+        document.addEventListener('click', (event) => {
+            if (
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                !menuBtn.contains(event.target)
+            ) {
+                sidebar.classList.remove('active');
+                syncMenu();
+            }
+        });
+
+        syncMenu();
+    }
+
+    const cards = [...document.querySelectorAll('[data-warbond-card]')];
+    const total = document.getElementById('warbond-total-count');
+    if (total) total.textContent = String(cards.length);
+
+    document.querySelectorAll('[data-warbond-section]').forEach(section => {
+        const count = section.querySelectorAll('[data-warbond-card]').length;
+        const badge = section.querySelector('[data-section-count]');
+        if (badge) badge.textContent = `${count} ${count === 1 ? 'DISPONÍVEL' : 'DISPONÍVEIS'}`;
+    });
+
+    document.querySelectorAll('.warbond-card.is-placeholder').forEach(card => {
+        card.addEventListener('click', event => event.preventDefault());
+    });
+})();
+</script>
 
 </body>
 </html>

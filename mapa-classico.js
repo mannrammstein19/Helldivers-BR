@@ -411,6 +411,12 @@
     function eventDates(event) {
         return {start:Date.parse(event?.startTime || ''),end:Date.parse(event?.endTime || '')};
     }
+    // Avanço do relógio da invasão, não dano/baixas inimigas.
+    function invasionProgress(p, now=Date.now()) {
+        const {start,end}=eventDates(p?.event);
+        if(!p?.event || !Number.isFinite(start) || !Number.isFinite(end) || end<=start) return null;
+        return Math.max(0,Math.min(100,(now-start)/(end-start)*100));
+    }
     function recordDefenseSamples(planets,now=Date.now()) {
         const active=new Set();
         planets.forEach(p=>{
@@ -683,6 +689,9 @@
     function positionDossier() {
         const dossier=$('planet-modal'),card=$('mapa-intel-card');
         if(!dossier?.classList.contains('open')||!card)return;
+        if(window.matchMedia('(max-width: 600px)').matches) {
+            dossier.style.visibility='visible';dossier.style.left='8px';dossier.style.top='8px';dossier.style.maxHeight='calc(100% - 16px)';return;
+        }
         dossier.style.visibility=card.style.visibility;
         const wrap=card.parentElement,w=wrap.clientWidth,h=wrap.clientHeight,margin=8;
         dossier.style.maxHeight=Math.max(80,h-margin*2)+'px';
@@ -697,6 +706,11 @@
     function positionQuickIntel() {
         const card=$('mapa-intel-card'),svg=$('mapa-svg');
         if(!card?.classList.contains('open')||!quickIntelPlanet) return;
+        if(window.matchMedia('(max-width: 600px)').matches) {
+            card.style.visibility='visible';card.style.left='8px';card.style.top='auto';
+            card.style.maxHeight='58%';$('mapa-intel-leader')?.setAttribute('hidden','');
+            positionDossier();return;
+        }
         const node=nodeByIndex.get(String(quickIntelPlanet.index));
         if(!node) return;
         const wrap=card.parentElement,wr=wrap.getBoundingClientRect();
@@ -763,7 +777,8 @@
                 const target=indexed.get(index);
                 if(!target||specialLocation(target)||!visiblePosition(target)||index===Number(source.index)) return;
                 if(attacker==='human') {
-                    if(!isOffensiveCampaignPlanet(target)) return;
+                    // Defesa tem prioridade: não desenhar ofensiva saindo de planeta invadido.
+                    if(source.event || !isOffensiveCampaignPlanet(target)) return;
                 } else {
                     if(!target.event||factionKey(target.currentOwner||target.owner)!=='human') return;
                     const invading=factionKey(target.event.faction);
@@ -798,7 +813,7 @@
     }
 
     function getAttackTargetNames(p, limit = 2) {
-        const ids = getAttackingIndexes(p);
+        const ids = invasionLinks.filter(link=>String(link.source.index)===String(p.index)).map(link=>Number(link.target.index));
         const names = ids.map(id => allPlanets.find(pl => Number(pl.index) === id))
             .filter(Boolean).map(pl => clean(pl.name) || `Planeta ${pl.index}`);
         if (!names.length) return '';
@@ -831,7 +846,7 @@
         const progress = warProgress(p);
         const players = Number(p.statistics?.playerCount || 0);
         const regions = Array.isArray(p.regions) ? p.regions.length : 0;
-        const attacks = getAttackingIndexes(p).length;
+        const attacks = invasionLinks.filter(link=>String(link.source.index)===String(p.index)).length;
         const regen = regenPercentPerHour(p);
         const targets = getAttackTargetNames(p);
         const biome = planetBiome(p);
@@ -887,9 +902,20 @@
             if(label) label.textContent=event?'PROGRESSO DA DEFESA':'PROGRESSO DA LIBERTAÇÃO';
             $('mapa-intel-progress-value').textContent = formatPercentDetailed(progress);
             $('mapa-intel-progress-bar').style.width = `${progress}%`;
-            $('mapa-intel-progress-bar').style.background = accent;
+            $('mapa-intel-progress-bar').style.background = event ? '#4da6ff' : accent;
         } else {
             progressBox.hidden = true;
+        }
+
+        const enemyBox=$('mapa-intel-enemy-progress');
+        enemyBox.hidden=!event;
+        if(event) {
+            const enemyProgress=invasionProgress(p);
+            $('mapa-intel-enemy-value').textContent=formatPercentDetailed(enemyProgress);
+            $('mapa-intel-enemy-bar').style.width=`${enemyProgress ?? 0}%`;
+            $('mapa-intel-enemy-bar').style.background=factionColor(event.faction);
+            $('mapa-intel-enemy-note').textContent=enemyProgress==null
+                ? 'Horários da invasão indisponíveis.' : 'Avanço pelo relógio da invasão.';
         }
 
         const route = $('mapa-intel-route');
@@ -1310,7 +1336,7 @@
             group.appendChild(halo);
 
             if (underAttack || offensive) {
-                const ringColor=underAttack?factionColor(raw.event?.faction):FACTION_COLORS.human;
+                const ringColor=underAttack?'#4da6ff':FACTION_COLORS.human;
                 const ringRadius=baseRadius*2.08;
                 const ringWidth=baseRadius*.48;
                 // Defesa e libertação usam o mesmo indicador circular. A cor diferencia
@@ -1334,6 +1360,15 @@
                 }
             }
 
+            if(underAttack) {
+                const enemyProgress=invasionProgress(raw),r=baseRadius*2.72,c=2*Math.PI*r;
+                group.appendChild(svgEl('circle',{class:'mapa-enemy-track',cx:x,cy:y,r,fill:'none',stroke:'#303845','stroke-width':baseRadius*.32}));
+                if(enemyProgress!=null) group.appendChild(svgEl('circle',{
+                    class:'mapa-enemy-fill',cx:x,cy:y,r,fill:'none',stroke:factionColor(raw.event.faction),
+                    'stroke-width':baseRadius*.32,'stroke-dasharray':`${c*enemyProgress/100} ${c*(1-enemyProgress/100)}`,
+                    transform:`rotate(-90 ${x} ${y})`,role:'img','aria-label':`Invasão inimiga: ${formatPercentDetailed(enemyProgress)}`
+                }));
+            }
             const circle = svgEl('circle', {
                 class:'mapa-planet-dot', cx:x, cy:y,
                 r:(underAttack || offensive) ? baseRadius * 1.38 : baseRadius,
@@ -1406,6 +1441,9 @@
                 const eventLabel = svgEl('text', { class:'mapa-event-label', x, y:y-baseRadius*3.45, 'text-anchor':'middle', fill:factionColor(raw.event?.faction || owner) });
                 eventLabel.textContent = progress == null ? 'DEFENDENDO' : `DEFENDENDO ${formatPercentDetailed(progress)}`;
                 group.appendChild(eventLabel);
+                const enemyLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*4.8,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
+                enemyLabel.textContent=`INVASÃO ${formatPercentDetailed(invasionProgress(raw))}`;
+                group.appendChild(enemyLabel);
             } else if(offensive) {
                 const eventLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*3.45,'text-anchor':'middle',fill:FACTION_COLORS.human});
                 eventLabel.textContent=progress==null?'LIBERTAÇÃO':`LIBERTAÇÃO ${formatPercentDetailed(progress)}`;
@@ -1480,12 +1518,15 @@
             const vp = state.viewport;
             if (!vp) return;
             vp.setAttribute('transform', `translate(${state.tx},${state.ty}) scale(${state.scale})`);
+            const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
+            if(vp.dataset.detailKey!==detailKey) {
+            vp.dataset.detailKey=detailKey;
             vp.classList.toggle('mapa-labels-on', state.scale >= LABEL_ZOOM_THRESHOLD);
             vp.classList.toggle('mapa-human-details-on', state.scale >= 5);
             vp.classList.toggle('mapa-detail-on', state.scale >= DETAIL_ZOOM_THRESHOLD);
             vp.classList.toggle('mapa-low-detail', state.scale < LOW_DETAIL_THRESHOLD);
             vp.classList.toggle('mapa-sector-fade', state.scale >= 4.2);
-            applyLayerVisibility();
+            }
             positionQuickIntel();
         };
 
@@ -1527,14 +1568,19 @@
             state.dragRect = svg.getBoundingClientRect();
             const vb = svg.viewBox.baseVal;
             state.dragViewBox = { width:vb.width, height:vb.height };
-            if (event.pointerType === 'touch' && state.activePointers.size > 1) return;
+            if (event.pointerType === 'touch' && state.activePointers.size > 1) {
+                state.moved=true;
+                for(const id of state.activePointers.keys()) {try{svg.setPointerCapture(id);}catch{}}
+                return;
+            }
             state.isPanning = true; state.moved = false;
             state.lastX = event.clientX; state.lastY = event.clientY;
             // Captura só ao arrastar; o toque simples continua chegando ao planeta.
         });
 
         svg.addEventListener('pointermove', event => {
-            if (state.activePointers.has(event.pointerId)) state.activePointers.set(event.pointerId, event);
+            if (!state.activePointers.has(event.pointerId)) return;
+            state.activePointers.set(event.pointerId, event);
             if (state.activePointers.size === 2) {
                 state.moved = true;
                 const pts = [...state.activePointers.values()];

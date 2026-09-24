@@ -910,3 +910,14 @@ body.tactical-modal-open { overflow:hidden; }
 .mapa-sector-border {stroke:var(--sector-color,#454b52);stroke-width:1;stroke-opacity:.55;}
 .mapa-sector-border.sector-enemy {stroke-width:2;stroke-opacity:.9;}
 .mapa-sector-fill {stroke:none;}
+
+/* v54 — defesa dupla e interação mobile. */
+.mapa-enemy-track,.mapa-enemy-fill{pointer-events:none;animation:none;transition:none;}
+#mapa-intel-enemy-note{display:block;font:10px/1.4 Arial,sans-serif;color:#aebac5;margin-top:5px;}
+@media(max-width:600px){
+ .mapa-intel-card,.mapa-intel-card.open{left:8px;right:8px;bottom:8px;top:auto;width:auto;max-height:58%;overscroll-behavior:contain;touch-action:pan-y;}
+ #planet-modal{left:8px;right:8px;top:8px;bottom:auto;width:auto;max-height:calc(100% - 16px);touch-action:pan-y;}
+ .mapa-intel-close,.mapa-zoom-controls button{min-width:44px;min-height:44px;}
+ .mapa-intel-visual{height:100px;}
+ .mapa-intel-close,.mapa-intel-faction-badge{backdrop-filter:none;}
+}

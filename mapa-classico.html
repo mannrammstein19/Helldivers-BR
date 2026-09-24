@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=45">
+<link rel="stylesheet" href="mapa-classico.css?v=54">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -147,6 +147,11 @@
                         <div><span id="mapa-intel-progress-label">PROGRESSO DA DEFESA</span><strong id="mapa-intel-progress-value">0%</strong></div>
                         <div class="mapa-intel-progress-track"><i id="mapa-intel-progress-bar"></i></div>
                     </div>
+                    <div class="mapa-intel-progress" id="mapa-intel-enemy-progress" hidden>
+                        <div><span>INVASÃO INIMIGA</span><strong id="mapa-intel-enemy-value">—</strong></div>
+                        <div class="mapa-intel-progress-track"><i id="mapa-intel-enemy-bar"></i></div>
+                        <small id="mapa-intel-enemy-note"></small>
+                    </div>
                     <div class="mapa-intel-forecast" id="mapa-intel-forecast" hidden><strong></strong><p></p></div>
                     <div class="mapa-intel-grid">
                         <div><small>HELLDIVERS</small><strong id="mapa-intel-players">0</strong></div>
@@ -221,7 +226,7 @@
 
 
 <script src="war-data.js?v=41"></script>
-<script src="mapa-classico.js?v=45"></script>
+<script src="mapa-classico.js?v=54"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

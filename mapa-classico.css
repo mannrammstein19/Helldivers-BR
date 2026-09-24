@@ -976,3 +976,10 @@ body.tactical-modal-open { overflow:hidden; }
 #mapa-viewport .mapa-planet-group,#mapa-viewport .mapa-planet-dot,
 #mapa-viewport .mapa-planet-halo,#mapa-viewport .mapa-lines,
 #mapa-viewport .mapa-territories,#mapa-viewport .mapa-sectors{transition:none;}
+
+/* v65 — mesma espessura visual das rotas nos dois motores. */
+#mapa-viewport .mapa-supply-line{stroke-width:var(--route-normal,.72);}
+#mapa-viewport .mapa-front-line{stroke-width:var(--route-front,1.15);}
+#mapa-viewport .mapa-supply-line.route-connected{stroke-width:var(--route-selected,1.55);}
+.mapa-hero .mapa-subtitle{margin-bottom:6px;}
+.mapa-hero .mapa-author{margin-bottom:0;}

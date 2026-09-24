@@ -1584,13 +1584,14 @@
         let state = svg._mapaPanZoomState;
         if (state) {
             state.viewport = viewport;
+            state.hybrid=false;
             state.requestApply(true);
             return;
         }
 
         state = {
             viewport,
-            optimized:false, zoomBusy:false, zoomTimer:0,
+            optimized:false, zoomBusy:false, zoomTimer:0, committedScale:1, committedTx:0, committedTy:0, hybrid:false,
             scale:1, tx:0, ty:0,
             isPanning:false, lastX:0, lastY:0, moved:false,
             pinchStartDist:null, pinchStartScale:1,
@@ -1612,12 +1613,31 @@
             const originY=(height-vb.height*fit)/2-vb.y*fit;
             const tx=(1-state.scale)*originX+fit*state.tx;
             const ty=(1-state.scale)*originY+fit*state.ty;
+            const mobileGesture=!state.optimized && isCoarseInput() && (state.activePointers.size>0 || state.zoomBusy);
+            let cssScale=1;
             if(state.optimized) {
                 vp.removeAttribute('transform');
                 surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
+                cssScale=state.scale;
+                state.hybrid=false;
+            } else if(mobileGesture) {
+                // Reutiliza o desenho SVG já posicionado durante o gesto.
+                if(!state.hybrid) {
+                    vp.setAttribute('transform',`translate(${state.committedTx},${state.committedTy}) scale(${state.committedScale})`);
+                    state.hybrid=true;
+                }
+                cssScale=state.scale/state.committedScale;
+                const hx=(1-cssScale)*originX+fit*(state.tx-cssScale*state.committedTx);
+                const hy=(1-cssScale)*originY+fit*(state.ty-cssScale*state.committedTy);
+                surface.style.transform=`translate3d(${hx}px,${hy}px,0) scale(${cssScale})`;
             } else {
-                surface.style.transform='none';
                 vp.setAttribute('transform',`translate(${state.tx},${state.ty}) scale(${state.scale})`);
+                surface.style.transform='none';
+                state.committedScale=state.scale;state.committedTx=state.tx;state.committedTy=state.ty;
+                state.hybrid=false;
+            }
+            for(const [name,width] of [['normal',.72],['front',1.15],['selected',1.55]]) {
+                vp.style.setProperty('--route-'+name,String(width/cssScale));
             }
             // Tamanho final das setas independente do motor SVG/CSS.
             const arrowScale=fit*state.scale;
@@ -1634,8 +1654,8 @@
                 }
             }
             // Bordas finas apenas no modo otimizado; compensa a escala CSS.
-            vp.style.setProperty('--mapa-border-width',state.optimized?String(.7/state.scale):'1');
-            vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.1/state.scale):'2');
+            vp.style.setProperty('--mapa-border-width',state.optimized?String(.7/state.scale):String(1/cssScale));
+            vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.1/state.scale):String(2/cssScale));
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
             if(!state.activePointers.size && !state.zoomBusy && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;

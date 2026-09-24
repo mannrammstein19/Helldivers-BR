@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#FFE800" name="theme-color"/>
-<meta content="Guia em português, dados e demonstração de Canhão laser LAS-98 em Helldivers 2." name="description"/>
-<title>Canhão laser LAS-98 - Helldivers BR</title>
+<meta content="Guia em português, dados e demonstração do Canhão a Laser LAS-98 em Helldivers 2." name="description"/>
+<title>Canhão a Laser LAS-98 - Helldivers BR</title>
 <!-- Fonte técnica dos dados: https://helldivers.wiki.gg/wiki/LAS-98_Laser_Cannon -->
 <link class="styles" href="../../../style.css" rel="stylesheet"/>
 <style>
@@ -1131,6 +1131,166 @@
     .stats-box{flex:1 1 320px!important;width:auto!important;}
 }
 
+
+
+/* ==========================================================
+   V72 — LAS-98 CANHÃO A LASER NO PADRÃO SENATOR V65
+   - nome brasileiro visível
+   - bordas arredondadas
+   - Mostrar/Ocultar padrão Senator
+   - subtítulos internos discretos
+   - ícones técnicos em 18px
+   ========================================================== */
+
+/* BORDAS */
+.stratagem-infobox {
+    border-radius: 10px !important;
+}
+
+.infobox-kicker {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.infobox-title,
+.infobox-media,
+.infobox-section-label {
+    border-radius: 0 !important;
+}
+
+.infobox-expand-trigger {
+    border-radius: 0 0 10px 10px !important;
+}
+
+.infobox-collapsible {
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+.general-table,
+.stats-box,
+.detail-column,
+.video-section {
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+.video-wrapper video {
+    border-radius: 8px !important;
+}
+
+#imageModal .modal-content {
+    border-radius: 10px !important;
+}
+
+/* BOTÃO MOSTRAR / OCULTAR — PADRÃO SENATOR */
+.attack-toggle {
+    display: inline-block !important;
+    margin-left: 8px !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    transition: background .2s, color .2s, border-color .2s !important;
+    animation: piscar 4s ease-in-out infinite !important;
+    box-shadow: none !important;
+}
+
+.attack-toggle.is-visible {
+    color: #F44336 !important;
+    border: 1px solid #F44336 !important;
+    background: rgba(244,67,54,.15) !important;
+}
+
+.attack-toggle.is-visible:hover,
+.attack-toggle.is-visible:focus-visible {
+    background: #F44336 !important;
+    color: #000 !important;
+    border-color: #F44336 !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+.attack-toggle.is-hidden {
+    color: #4CAF50 !important;
+    border: 1px solid #4CAF50 !important;
+    background: rgba(76,175,80,.15) !important;
+}
+
+.attack-toggle.is-hidden:hover,
+.attack-toggle.is-hidden:focus-visible {
+    background: #4CAF50 !important;
+    color: #000 !important;
+    border-color: #4CAF50 !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+/* SUBTÍTULOS INTERNOS — PADRÃO SENATOR */
+.stats-table tr.table-sub-header th,
+.stats-table .table-sub-header th {
+    padding: 6px !important;
+    text-align: center !important;
+    background: color-mix(in srgb, var(--hd-yellow) 10%, transparent) !important;
+    color: var(--hd-yellow) !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: normal !important;
+    border-radius: 0 !important;
+}
+
+/* ÍCONES TÉCNICOS — 18px */
+.stat-value-with-icon img,
+.stats-table .stat-value-with-icon img,
+.stats-table .value-with-icon img,
+.stats-table .flex-td img,
+.flex-td img {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    flex: 0 0 18px !important;
+    object-fit: contain !important;
+}
+
+/* Requisições/medalhas continuam maiores na Aquisição */
+.value-with-icon img[src*="Requisition_Slip"],
+.value-with-icon img[src*="medals.png"] {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    flex: 0 0 22px !important;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .stratagem-infobox,
+    .general-table,
+    .stats-box,
+    .detail-column,
+    .video-section,
+    .infobox-collapsible {
+        border-radius: 8px !important;
+    }
+
+    .infobox-kicker {
+        border-radius: 8px 8px 0 0 !important;
+    }
+
+    .infobox-expand-trigger {
+        border-radius: 0 0 8px 8px !important;
+    }
+
+    .video-wrapper video,
+    #imageModal .modal-content {
+        border-radius: 8px !important;
+    }
+}
+
 </style>
 <script defer="" src="../../../theme.js"></script>
 </head>
@@ -1161,7 +1321,7 @@
 </div>
 </nav>
 <main class="main-content">
-<div class="wiki-title-block"><h1>Canhão laser LAS-98</h1></div>
+<div class="wiki-title-block"><h1>Canhão a Laser LAS-98</h1></div>
 <div class="wiki-overview-section">
 <div class="wiki-left-text">
 <div class="lore-quote">LAS-98 LASER CANNON — sistema de apoio autorizado para operações da Federação.</div>
@@ -1173,7 +1333,7 @@
 <div class="infobox-kicker"><span>SUPER EARTH // SUPPORT WEAPON</span><span class="status-dot">OPERACIONAL</span></div>
 <div class="infobox-title">LAS-98 LASER CANNON<span class="infobox-subtitle">CANHÃO LASER DE FEIXE CONTÍNUO</span></div>
 <div class="infobox-media" data-media-label="SUPPORT WEAPON // FIELD SYSTEM">
-<img alt="Canhão laser LAS-98" class="main-art" decoding="async" id="armaImg" loading="eager" src="../../../imagens/estratagemas/1-armas-de-apoio/Canhão a Laser.svg" title="Clique para ampliar"/>
+<img alt="Canhão a Laser LAS-98" class="main-art" decoding="async" id="armaImg" loading="eager" src="../../../imagens/estratagemas/1-armas-de-apoio/Canhão a Laser.svg" title="Clique para ampliar"/>
 </div>
 <div class="infobox-section-label"><span>Informações de Combate</span><small>FIELD DATA</small></div>
 <table class="infobox-table">
@@ -1189,9 +1349,9 @@
 </div></div></div></div>
 <h2 class="section-title">Estatísticas Detalhadas de Combate</h2>
 <div class="stats-grid">
-<div class="stats-box controller-box"><h3 class="stats-box-header">LAS-98 LASER CANNON</h3><table class="stats-table"><tr><td>Recuo</td><td>0</td></tr><tr><td>Recuo Horizontal</td><td>0</td></tr><tr><td>Recuo Vertical</td><td>0</td></tr><tr><td>Dispersão</td><td>↔[10.00] ↕[10.00]</td></tr><tr><td>Oscilação</td><td>1</td></tr><tr><td>Ergonomia</td><td>45</td></tr><tr><td>Carregadores Reserva</td><td>2</td></tr><tr><td>Carregadores Iniciais</td><td>2</td></tr><tr><td>Carregadores por Suprimento</td><td>6</td></tr><tr><td>Carregadores por Caixa de Munição</td><td>3</td></tr><tr class="table-sub-header"><th colspan="2">Dados Térmicos</th></tr><tr><td>Superaquece em</td><td>100 °C</td></tr><tr><td>Aquecimento</td><td>0.5 sec</td></tr><tr><td>Calor por Segundo</td><td>8 °C</td></tr><tr><td>Resfriamento por Segundo</td><td>7.5 - 5 - 3.8</td></tr><tr><td>Após Superaquecer</td><td>RECARGA NECESSÁRIA</td></tr><tr><td>Cadência do Feixe</td><td>60 rpm</td></tr><tr class="table-sub-header"><th colspan="2">Ataques</th></tr><tr><td>LAS-98 LASER CANNON B</td><td>Feixe <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-las-98-laser-cannon-b" role="button" tabindex="0">[Ocultar]</span></td></tr><tr><td>Fire</td><td>Status <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-fire" role="button" tabindex="0">[Ocultar]</span></td></tr></table></div>
-<div class="stats-box" id="componente-las-98-laser-cannon-b"><h3 class="stats-box-header">LAS-98 LASER CANNON B</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Feixe</th></tr><tr><td>Alcance do Feixe</td><td>1000 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Laser" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/laser-continue.png"/> 350 Laser</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Laser" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/laser-continue.png"/> 200 Laser</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Status</td><td>Fire</td></tr><tr><td>Força do Status</td><td>1.5</td></tr><tr><td>Força de Demolição</td><td>20</td></tr><tr><td>Força de Cambaleio</td><td>0</td></tr><tr><td>Força de Empurrão</td><td>0</td></tr></table></div>
-<div class="stats-box" id="componente-fire"><h3 class="stats-box-header">Fire</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Status</th></tr><tr><td>Duração do Status</td><td>3 sec</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Elemento</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> Fogo</span></td></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> 100 Fogo</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> 100 Fogo</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png"/> Sem Armadura</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Força de Demolição</td><td>0</td></tr><tr><td>Força de Cambaleio</td><td>0</td></tr><tr><td>Força de Empurrão</td><td>0</td></tr></table></div>
+<div class="stats-box controller-box"><h3 class="stats-box-header">LAS-98 LASER CANNON</h3><table class="stats-table"><tr><td>Recuo</td><td>0</td></tr><tr><td>Recuo Horizontal</td><td>0</td></tr><tr><td>Recuo Vertical</td><td>0</td></tr><tr><td>Dispersão</td><td>↔[10.00] ↕[10.00]</td></tr><tr><td>Oscilação</td><td>1</td></tr><tr><td>Ergonomia</td><td>45</td></tr><tr><td>Carregadores Reserva</td><td>2</td></tr><tr><td>Carregadores Iniciais</td><td>2</td></tr><tr><td>Carregadores por Suprimento</td><td>6</td></tr><tr><td>Carregadores por Caixa de Munição</td><td>3</td></tr><tr class="table-sub-header"><th colspan="2">Dados Térmicos</th></tr><tr><td>Superaquece em</td><td>100 °C</td></tr><tr><td>Aquecimento</td><td>0.5 sec</td></tr><tr><td>Calor por Segundo</td><td>8 °C</td></tr><tr><td>Resfriamento por Segundo</td><td>7.5 - 5 - 3.8</td></tr><tr><td>Após Superaquecer</td><td>RECARGA NECESSÁRIA</td></tr><tr><td>Cadência do Feixe</td><td>60 rpm</td></tr><tr class="table-sub-header"><th colspan="2">Ataques</th></tr><tr><td>LAS-98 LASER CANNON B</td><td>Feixe <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-las-98-laser-cannon-b" role="button" tabindex="0">[Ocultar]</span></td></tr><tr><td>Fogo</td><td>Status <span aria-expanded="true" class="attack-toggle is-visible" data-target="componente-fire" role="button" tabindex="0">[Ocultar]</span></td></tr></table></div>
+<div class="stats-box" id="componente-las-98-laser-cannon-b"><h3 class="stats-box-header">LAS-98 LASER CANNON B</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Feixe</th></tr><tr><td>Alcance do Feixe</td><td>1000 m</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Laser" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/laser-continue.png"/> 350 Laser</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Laser" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/laser-continue.png"/> 200 Laser</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Status</td><td>Fogo</td></tr><tr><td>Força do Status</td><td>1.5</td></tr><tr><td>Força de Demolição</td><td>20</td></tr><tr><td>Força de Cambaleio</td><td>0</td></tr><tr><td>Força de Empurrão</td><td>0</td></tr></table></div>
+<div class="stats-box" id="componente-fire"><h3 class="stats-box-header">Fogo</h3><table class="stats-table"><tr class="table-sub-header"><th colspan="2">Status</th></tr><tr><td>Duração do Status</td><td>3 sec</td></tr><tr class="table-sub-header"><th colspan="2">Dano</th></tr><tr><td>Elemento</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> Fogo</span></td></tr><tr><td>Padrão</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> 100 Fogo</span></td></tr><tr><td>contra Durável</td><td><span class="stat-value-with-icon"><img alt="Fogo" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/dano/dano-fogo.png"/> 100 Fogo</span></td></tr><tr class="table-sub-header"><th colspan="2">Penetração</th></tr><tr><td>Direta</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Leve</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Grande</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-heavy.png"/> Pesada</span></td></tr><tr><td>Ângulo Extremo</td><td><span class="stat-value-with-icon"><img alt="Penetração" loading="lazy" onerror="this.style.display='none'" src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png"/> Sem Armadura</span></td></tr><tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr><tr><td>Força de Demolição</td><td>0</td></tr><tr><td>Força de Cambaleio</td><td>0</td></tr><tr><td>Força de Empurrão</td><td>0</td></tr></table></div>
 </div>
 <section class="video-section" id="demonstracao-video"><h2 class="section-title" style="margin-top:0;">Demonstração em Vídeo</h2><div class="video-wrapper"><video autoplay="" controls="" loop="" muted="" playsinline="" preload="metadata"><source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/0-armas-de-apoio/Laser_Cannon_Preview_Video.mp4" type="video/mp4"/>Seu navegador atual não suporta a visualização de vídeos.</video></div></section>
 <div style="margin-top:26px;padding:10px 12px;border-left:2px solid var(--hd-yellow);background:rgba(0,0,0,.45);font-size:11px;color:#999;line-height:1.5;">Fonte técnica de referência: <a class="acquisition-source-link" href="https://helldivers.wiki.gg/wiki/LAS-98_Laser_Cannon" rel="noopener" target="_blank">Helldivers Wiki</a>. Dados apresentados em português e organizados no padrão Helldivers-BR.</div>
@@ -1201,24 +1361,6 @@
 <img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);">
 </img></div>
 <script>
-        function toggleJanelaLateral(idJanela, botao) {
-            const janela = document.getElementById(idJanela);
-            if (!janela) return;
-
-            const estaOculta = getComputedStyle(janela).display === 'none';
-
-            if (estaOculta) {
-                janela.style.display = 'block';
-                botao.textContent = '[Ocultar]';
-                botao.classList.remove('btn-mostrar');
-                botao.classList.add('btn-ocultar');
-            } else {
-                janela.style.display = 'none';
-                botao.textContent = '[Mostrar]';
-                botao.classList.remove('btn-ocultar');
-                botao.classList.add('btn-mostrar');
-            }
-        }
 
         document.addEventListener("DOMContentLoaded", function() {
             /* Menu lateral */

@@ -1131,6 +1131,194 @@
     .stats-box{flex:1 1 320px!important;width:auto!important;}
 }
 
+
+
+/* ==========================================================
+   V68 — ACABAMENTO FINAL
+   Somente bordas arredondadas + preservação total do layout atual
+   ========================================================== */
+
+.stratagem-infobox {
+    border-radius: 10px !important;
+}
+
+.infobox-kicker {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.infobox-title,
+.infobox-media,
+.infobox-section-label {
+    border-radius: 0 !important;
+}
+
+.infobox-expand-trigger {
+    border-radius: 0 0 10px 10px !important;
+}
+
+.infobox-collapsible {
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+.general-table,
+.stats-box,
+.detail-column,
+.video-section {
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+.stats-box .stats-box-header,
+.detail-header,
+.detail-subheader,
+.stats-table .table-sub-header th {
+    border-radius: 0 !important;
+}
+
+.video-wrapper video {
+    border-radius: 8px !important;
+}
+
+#imageModal .modal-content {
+    border-radius: 10px !important;
+}
+
+.attack-toggle,
+.detail-control-btn,
+.blink-toggle {
+    border-radius: 6px !important;
+}
+
+@media (max-width: 600px) {
+    .stratagem-infobox,
+    .general-table,
+    .stats-box,
+    .detail-column,
+    .video-section,
+    .infobox-collapsible {
+        border-radius: 8px !important;
+    }
+
+    .infobox-kicker {
+        border-radius: 8px 8px 0 0 !important;
+    }
+
+    .infobox-expand-trigger {
+        border-radius: 0 0 8px 8px !important;
+    }
+
+    .video-wrapper video,
+    #imageModal .modal-content {
+        border-radius: 8px !important;
+    }
+}
+
+
+
+/* ==========================================================
+   V69 — MG-43 ALINHADA AO PADRÃO SENATOR V65
+   Ajustes somente em:
+   1) Mostrar/Ocultar
+   2) Subtítulos internos das tabelas
+   3) Ícones técnicos de dano/penetração
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. MOSTRAR / OCULTAR — MESMO VISUAL DA SENATOR
+   Mantemos o JS attack-toggle da MG-43, mas com a aparência
+   exata do botão aprovado na Senator.
+   ---------------------------------------------------------- */
+.attack-toggle {
+    display: inline-block !important;
+    margin-left: 8px !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    transition: background .2s, color .2s, border-color .2s !important;
+    animation: piscar 4s ease-in-out infinite !important;
+    box-shadow: none !important;
+}
+
+.attack-toggle.is-visible {
+    color: #F44336 !important;
+    border: 1px solid #F44336 !important;
+    background: rgba(244, 67, 54, 0.15) !important;
+}
+
+.attack-toggle.is-visible:hover,
+.attack-toggle.is-visible:focus-visible {
+    background: #F44336 !important;
+    color: #000 !important;
+    border-color: #F44336 !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+.attack-toggle.is-hidden {
+    color: #4CAF50 !important;
+    border: 1px solid #4CAF50 !important;
+    background: rgba(76, 175, 80, 0.15) !important;
+}
+
+.attack-toggle.is-hidden:hover,
+.attack-toggle.is-hidden:focus-visible {
+    background: #4CAF50 !important;
+    color: #000 !important;
+    border-color: #4CAF50 !important;
+    animation: none !important;
+    outline: none !important;
+}
+
+/* ----------------------------------------------------------
+   2. SUBTÍTULOS INTERNOS — PADRÃO SENATOR
+   Não usar barra amarela sólida.
+   Projétil / Dano / Penetração / Efeitos Especiais ficam
+   com fundo escuro-amarelado discreto e texto amarelo.
+   ---------------------------------------------------------- */
+.stats-table tr.table-sub-header th,
+.stats-table .table-sub-header th {
+    padding: 6px !important;
+    text-align: center !important;
+    background: color-mix(in srgb, var(--hd-yellow) 10%, transparent) !important;
+    color: var(--hd-yellow) !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: normal !important;
+}
+
+/* ----------------------------------------------------------
+   3. ÍCONES TÉCNICOS — MESMO TAMANHO DA SENATOR
+   Antes a MG-43 forçava 21px.
+   Senator usa 18px.
+   ---------------------------------------------------------- */
+.stat-value-with-icon img,
+.stats-table .stat-value-with-icon img,
+.stats-table .value-with-icon img,
+.stats-table .flex-td img,
+.flex-td img {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    flex: 0 0 18px !important;
+    object-fit: contain !important;
+}
+
+/* Medalha continua com seu tamanho próprio na Aquisição. */
+.value-with-icon img[src*="medals.png"] {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    flex: 0 0 22px !important;
+}
+
 </style>
 <script defer="" src="../../../theme.js"></script>
 </head>
@@ -1200,24 +1388,6 @@
 <img alt="" class="modal-content" id="imgAmpliada" style="max-width:90%;max-height:90%;border:2px solid var(--hd-yellow);box-shadow:0 0 20px rgba(0,0,0,.8);">
 </img></div>
 <script>
-        function toggleJanelaLateral(idJanela, botao) {
-            const janela = document.getElementById(idJanela);
-            if (!janela) return;
-
-            const estaOculta = getComputedStyle(janela).display === 'none';
-
-            if (estaOculta) {
-                janela.style.display = 'block';
-                botao.textContent = '[Ocultar]';
-                botao.classList.remove('btn-mostrar');
-                botao.classList.add('btn-ocultar');
-            } else {
-                janela.style.display = 'none';
-                botao.textContent = '[Mostrar]';
-                botao.classList.remove('btn-ocultar');
-                botao.classList.add('btn-mostrar');
-            }
-        }
 
         document.addEventListener("DOMContentLoaded", function() {
             /* Menu lateral */

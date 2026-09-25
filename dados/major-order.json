@@ -3,8 +3,8 @@
   "state": "active",
   "key": "4174059175",
   "first_seen_at": "2026-09-22T14:10:30.578232Z",
-  "last_seen_at": "2026-09-25T17:27:44.643426Z",
-  "last_progress_update_at": "2026-09-25T17:27:44.643426Z",
+  "last_seen_at": "2026-09-25T23:37:37.156413Z",
+  "last_progress_update_at": "2026-09-25T23:37:37.156413Z",
   "final_percent": 50.0,
   "outcome_source": null,
   "order": {
@@ -54,7 +54,7 @@
         "amount": 50
       }
     ],
-    "expiration": "2026-09-26T12:11:51.1297126Z",
+    "expiration": "2026-09-26T12:12:02.0764625Z",
     "flags": 0
   }
 }

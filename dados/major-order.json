@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "state": "active",
+  "state": "completed",
   "key": "4174059175",
   "first_seen_at": "2026-09-22T14:10:30.578232Z",
   "last_seen_at": "2026-09-26T01:59:26.801990Z",
   "last_progress_update_at": "2026-09-26T01:59:26.801990Z",
-  "final_percent": 50.0,
-  "outcome_source": null,
+  "final_percent": 100.0,
+  "outcome_source": "dispatch",
   "order": {
     "id": 4174059175,
     "progress": [
@@ -56,5 +56,16 @@
     ],
     "expiration": "2026-09-26T12:12:31.7526791Z",
     "flags": 0
-  }
+  },
+  "target_planets": {
+    "198": "MARFARK",
+    "217": "PHACT BAY"
+  },
+  "ended_at": "2026-09-26T11:28:49Z",
+  "outcome_dispatch": {
+    "id": 3940,
+    "published": "2026-09-26T11:28:49Z",
+    "message": "MAJOR ORDER WON \n\nThe Helldivers liberated  PHACT BAY and MARFARK . AM Defense has already broken ground on massive factories for large-scale  Maelstrom  Tank fabrication. Pre-orders from qualifying citizens for home defense Tanks have already sold out, evidencing the eagerness of Super Earth citizens to exercise their natural-born freedoms."
+  },
+  "last_checked_at": "2026-09-26T12:26:36.928373Z"
 }

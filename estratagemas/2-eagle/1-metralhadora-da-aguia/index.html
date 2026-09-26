@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FFE800">
-    <meta name="description" content="Guia completo e status detalhados da Bomba de 500kg da Águia em Helldivers 2. Confira dano direto, poder de penetração, física de projétil e módulos de nave.">
-    <title>Bomba de 500kg da Águia - Helldivers BR</title>
+    <meta name="description" content="Guia completo e status detalhados da Metralhadora da Águia em Helldivers 2. Confira dano direto, poder de penetração, física de projétil e módulos de nave.">
+    <title>Metralhadora da Águia - Helldivers BR</title>
 
     <!-- O CSS geral -->
     <link class="styles" rel="stylesheet" href="../../../style.css">
@@ -58,7 +57,7 @@
 
         .stats-box {
             overflow: hidden;
-            width: 320px; 
+            width: 340px; 
             max-width: 100%; 
             background: rgba(20, 20, 20, 0.85);
             border: 1px solid #d7d52c;
@@ -139,7 +138,7 @@
         }
 
         /* ==========================================================
-           NOVO: ESTILO E ANIMAÇÃO DO BOTÃO PISCANDO
+           ESTILO E ANIMAÇÃO DO BOTÃO PISCANDO
            ========================================================== */
         .blink-toggle {
             font-size: 11px;
@@ -189,7 +188,6 @@
             50% { opacity: 0.4; }
         }
     </style>
-    <script src="../../../theme.js" defer></script>
 </head>
 <body class="fundo-estrategema">
 
@@ -223,27 +221,26 @@
     <main class="main-content">
 
         <div class="wiki-title-block">
-            <h1>Bomba de 500kg da Águia</h1>
+            <h1>Metralhadora da Águia</h1>
         </div>
 
         <div class="wiki-overview-section">
             <div class="wiki-left-text">
                 <div class="lore-quote">
-                    "Uma bomba enorme, capaz de aniquilar quase qualquer alvo próximo ao ponto de impacto. Afaste-se da área. Booms gigantes! — Terminal de Gestão da Nave."
+                    "Uma passagem de ataque rasante pelo campo de batalha para eliminar alvos pequenos, entregue quase instantaneamente. Quando acionado, o ataque começa a partir do sinalizador e segue na direção oposta à que você estava olhando ao lançá-lo — Terminal de Gestão da Nave."
                 </div>
                 
                 <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 15px;">
-                    A <strong>Bomba de 500kg da Águia</strong> <em>(Eagle 500kg Bomb)</em>, também conhecida como <strong>500kg</strong>, é um estratagema ofensivo que solta uma única bomba anti-tanque de altíssimo poder, que se crava no solo antes de detonar numa explosão massiva.
+                    A <strong>Metralhadora da Águia</strong> <em>(Eagle Strafing Run)</em> é um estratagema ofensivo que aciona o caça Águia para disparar uma rajada de projéteis explosivos de alto poder Anti-Tank, percorrendo o campo de batalha em linha reta e paralela à posição do Helldiver.
                 </p>
                 <p class="description-text" style="line-height: 1.6; font-size: 15px; margin-bottom: 25px;">
-                    É um dos estratagemas mais destrutivos do arsenal, capaz de eliminar Chargers, Hulks, Tanks e até Bile Titans com um único acionamento, além de destruir Fabricadoras, Buracos de Terminide, Torres de Detecção e outras estruturas inimigas à distância.
+                    É o estratagema Águia de ativação mais rápida do arsenal, ideal para eliminar alvos pequenos e médios em segundos e, com boa mira, capaz de danificar ou até abater inimigos Pesados quando a baliza é alinhada corretamente ao longo do corpo do alvo.
                 </p>
 
                 <h3 style="color: #d7d52c; font-size: 16px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(215, 213, 44, 0.4); padding-bottom: 5px;">Estatísticas Gerais</h3>
                 <table class="stats-table" style="background: rgba(20, 20, 20, 0.85); margin-bottom: 20px; border: 1px solid rgba(215, 213, 44, 0.2);">
                     <tr><td>Tempo de Recarga (Cooldown)</td><td>15 segundos</td></tr>
-                    <tr><td>Tempo de Ativação (Call-in)</td><td>3,45 segundos</td></tr>
-                    <tr><td>Usos por Reabastecimento</td><td>1 (Padrão) / 2 (Upgrado)</td></tr>
+                    <tr><td>Usos por Reabastecimento</td><td>4</td></tr>
                     <tr><td>Tempo de Reabastecimento (Rearm)</td><td>150 segundos</td></tr>
                 </table>
             </div>
@@ -251,7 +248,7 @@
             <div class="stratagem-infobox" style="width: 320px; background: rgba(20, 20, 20, 0.85); border: 2px solid #d7d52c; padding: 15px;">
                 <div class="infobox-title" style="background: rgba(215, 213, 44, 0.2); color: #d7d52c; text-align: center; font-weight: bold; padding: 8px; text-transform: uppercase; font-size: 16px; margin-bottom: 15px;">Detalhes da Estratagema</div>
                 <div class="infobox-media" style="text-align: center; margin-bottom: 15px;">
-                    <img id="armaImg" src="../../../imagens/estratagemas/3-eagle/Eagle_500kg_Bomb_Stratagem_Icon_Background.svg" alt="Bomba de 500kg da Águia" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar" onerror="this.src='https://via.placeholder.com/150x150/111/d7d52c?text=ÍCONE'">
+                    <img id="armaImg" src="../../../imagens/estratagemas/3-eagle/Eagle_Strafing_Run_Stratagem_Icon_Background.svg" alt="Metralhadora da Águia" class="main-art" style="cursor: pointer; transition: opacity 0.3s; width: 150px; height: 150px; border: 1px solid rgba(215, 213, 44, 0.3); background: #000; object-fit: contain;" title="Clique para ampliar" onerror="this.src='https://via.placeholder.com/150x150/111/d7d52c?text=ÍCONE'">
                 </div>
                 <table class="infobox-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <tr>
@@ -263,7 +260,7 @@
                     </tr>
                     <tr>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Características:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Águia • Anti-Tank • Explosivo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">Águia • Anti-Tank</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Código de Ativação:</td>
@@ -271,9 +268,7 @@
                             <div class="code-inline">
                                 <img src="../../../imagens/ui/icons/seta-cima.png" alt="Cima" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬆'">
                                 <img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=➔'">
-                                <img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬇'">
-                                <img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬇'">
-                                <img src="../../../imagens/ui/icons/seta-baixo.png" alt="Baixo" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=⬇'">
+                                <img src="../../../imagens/ui/icons/seta-direita.png" alt="Direita" onerror="this.src='https://via.placeholder.com/14x14/333/fff?text=➔'">
                             </div>
                         </td>
                     </tr>
@@ -283,11 +278,11 @@
                     </tr>
                     <tr>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Nível de Desbloqueio:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">15</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">1</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); color: #d7d52c; font-weight: bold;">Custo:</td>
-                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">10.000 Req.</td>
+                        <td style="padding: 8px; border-bottom: 1px solid rgba(215, 213, 44, 0.1); text-align: right;">1.500 Req.</td>
                     </tr>
                 </table>
             </div>
@@ -298,111 +293,79 @@
         
         <div class="stats-grid">
             
-            <!-- BLOCO 1: BOMBA DE 500KG DA ÁGUIA (GERAL) - AQUI FICA O CONTROLE DAS OUTRAS JANELAS -->
+            <!-- BLOCO 1: METRALHADORA DA ÁGUIA (GERAL) - AQUI FICA O CONTROLE DAS OUTRAS JANELAS -->
             <div class="stats-box">
-                <h3 class="stats-box-header">BOMBA DE 500KG DA ÁGUIA</h3>
+                <h3 class="stats-box-header">METRALHADORA DA ÁGUIA</h3>
                 <table class="stats-table">
                     <tr><td>Esfriar (Cooldown)</td><td>15 s</td></tr>
-                    <tr><td>Usos</td><td>1</td></tr>
-                    <tr><td>Vida Principal</td><td>100</td></tr>
-                    <tr><td>Armadura Principal</td><td class="flex-td"><img src="../../../imagens/ui/dano/armor-valor-unarmored-1.png" alt="Sem Armadura"> Sem Armadura</td></tr>
+                    <tr><td>Usos</td><td>4</td></tr>
+                    <tr><td>Taxa de Disparo</td><td>4000 rpm</td></tr>
+                    <tr><td>Capacidade</td><td>2000</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Ataques</th></tr>
-                    <!-- Botões de Mostrar/Ocultar Inseridos Aqui! -->
                     <tr>
-                        <td>BOMBA 500KG P</td>
-                        <td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-bomba-p', this)">[Ocultar]</span></td>
+                        <td>CANHÃO HE 23MM P</td>
+                        <td class="flex-td">Projétil <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-canhao-p', this)">[Ocultar]</span></td>
                     </tr>
                     <tr>
-                        <td>BOMBA 500KG P E</td>
-                        <td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-bomba-pe', this)">[Mostrar]</span></td>
-                    </tr>
-                    <tr>
-                        <td>BOMBA 500KG P IE</td>
-                        <td class="flex-td">Explosão <span class="blink-toggle btn-mostrar" onclick="toggleJanelaLateral('janela-bomba-pie', this)">[Mostrar]</span></td>
+                        <td>CANHÃO HE 23MM PE</td>
+                        <td class="flex-td">Explosão <span class="blink-toggle btn-ocultar" onclick="toggleJanelaLateral('janela-canhao-pe', this)">[Ocultar]</span></td>
                     </tr>
                 </table>
             </div>
 
-            <!-- BLOCO 2: BOMBA 500KG P (Inicia Oculto) -->
-            <div class="stats-box" id="janela-bomba-p" style="display: block;">
-                <h3 class="stats-box-header">BOMBA 500KG P</h3>
+            <!-- BLOCO 2: CANHÃO HE 23MM P (Inicia ABERTO) -->
+            <div class="stats-box" id="janela-canhao-p" style="display: block;">
+                <h3 class="stats-box-header">CANHÃO HE 23MM P</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Projétil</th></tr>
-                    <tr><td>Massa</td><td>500 g</td></tr>
-                    <tr><td>Velocidade Inicial</td><td>500 m/s</td></tr>
-                    <tr><td>Fator de Arrasto</td><td>50%</td></tr>
+                    <tr><td>Massa</td><td>400 g</td></tr>
+                    <tr><td>Velocidade Inicial</td><td>1050 m/s</td></tr>
+                    <tr><td>Fator de Arrasto</td><td>30%</td></tr>
                     <tr><td>Fator de Gravidade</td><td>100%</td></tr>
                     <tr><td>Desaceleração de Penetração</td><td>25%</td></tr>
-                    <tr><td>Explodir ao Impacto</td><td>BOMBA 500KG P IE</td></tr>
-                    <tr><td>Explodir Depois</td><td>Sim (BOMBA 500KG P E)</td></tr>
+                    <tr><td>Explodir Depois</td><td>Sim (CANHÃO HE 23MM PE)</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
-                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-balistico.png" alt="Balístico"> 2000 Dano</td></tr>
-                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-balistico.png" alt="Balístico"> 2000 Dano</td></tr>
+                    <tr><td>Padrão</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-balistico.png" alt="Balístico"> 350 Dano</td></tr>
+                    <tr><td>vs. Durável</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-balistico.png" alt="Balístico"> 200 Dano</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
-                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-3.png" alt="Penetração"> Antitanque III</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Ligeiro</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-1.png" alt="Penetração"> Anti-Tank I</td></tr>
+                    <tr><td>Ângulo Amplo</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-heavy.png" alt="Penetração"> Heavy</td></tr>
+                    <tr><td>Ângulo Extremo</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-unarmored-1.png" alt="Penetração"> Unarmored</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Efeitos Especiais</th></tr>
-                    <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Atordoamento (Stagger)</td><td>20</td></tr>
-                    <tr><td>Força de Empurrão (Push)</td><td>15</td></tr>
+                    <tr><td>Força de Demolição</td><td>30</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>35</td></tr>
+                    <tr><td>Força de Empurrão</td><td>3</td></tr>
                 </table>
             </div>
 
-            <!-- BLOCO 3: BOMBA 500KG P E (Inicia Oculto) -->
-            <div class="stats-box" id="janela-bomba-pe" style="display: none;">
-                <h3 class="stats-box-header">BOMBA 500KG P E</h3>
+            <!-- BLOCO 3: CANHÃO HE 23MM PE (Inicia ABERTO) -->
+            <div class="stats-box" id="janela-canhao-pe" style="display: block;">
+                <h3 class="stats-box-header">CANHÃO HE 23MM PE</h3>
                 <table class="stats-table">
                     <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
-                    <tr><td>Raio Interno</td><td>10 m</td></tr>
-                    <tr><td>Raio Externo</td><td>25 m</td></tr>
-                    <tr><td>Raio da Onda de Choque</td><td>35 m</td></tr>
+                    <tr><td>Raio Interno</td><td>2,5 m</td></tr>
+                    <tr><td>Raio Externo</td><td>5 m</td></tr>
+                    <tr><td>Raio da Onda de Choque</td><td>6,5 m</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
                     <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 1500 Explosão</td></tr>
-                    <tr><td>Raio Externo</td><td>1499 - 0</td></tr>
-                    <tr><td>Externo Durável</td><td>1499 - 0</td></tr>
+                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 350 Explosão</td></tr>
+                    <tr><td>Raio Externo</td><td>349 - 0</td></tr>
+                    <tr><td>Externo Durável</td><td>349 - 0</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-tank-2.png" alt="Penetração"> Antitanque II</td></tr>
+                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-medium.png" alt="Penetração"> Médio</td></tr>
 
                     <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
-                    <tr><td>Força de Demolição</td><td>50</td></tr>
-                    <tr><td>Força de Atordoamento (Stagger)</td><td>100</td></tr>
-                    <tr><td>Força de Empurrão (Push)</td><td>40</td></tr>
-                </table>
-            </div>
-
-            <!-- BLOCO 4: BOMBA 500KG P IE (Inicia Oculto) -->
-            <div class="stats-box" id="janela-bomba-pie" style="display: none;">
-                <h3 class="stats-box-header">BOMBA 500KG P IE</h3>
-                <table class="stats-table">
-                    <tr class="table-sub-header"><th colspan="2">Área de Efeito (AoE)</th></tr>
-                    <tr><td>Raio Interno</td><td>1 m</td></tr>
-                    <tr><td>Raio Externo</td><td>3 m</td></tr>
-                    <tr><td>Raio da Onda de Choque</td><td>6 m</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Dano</th></tr>
-                    <tr><td>Elemento de Dano</td><td>Nenhum</td></tr>
-                    <tr><td>Raio Interno</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 100 Explosão</td></tr>
-                    <tr><td>Interno Durável</td><td class="flex-td"><img src="../../../imagens/ui/dano/dano-explosao.png" alt="Explosão"> 100 Explosão</td></tr>
-                    <tr><td>Raio Externo</td><td>99 - 0</td></tr>
-                    <tr><td>Externo Durável</td><td>99 - 0</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Penetração</th></tr>
-                    <tr><td>Direto</td><td class="flex-td"><img src="../../../imagens/ui/penetracao/penetracao-medium.png" alt="Penetração"> Média</td></tr>
-
-                    <tr class="table-sub-header"><th colspan="2">Efeito AoE</th></tr>
-                    <tr><td>Força de Demolição</td><td>40</td></tr>
-                    <tr><td>Força de Atordoamento (Stagger)</td><td>10</td></tr>
-                    <tr><td>Força de Empurrão (Push)</td><td>40</td></tr>
+                    <tr><td>Força de Demolição</td><td>30</td></tr>
+                    <tr><td>Força de Atordoamento</td><td>35</td></tr>
+                    <tr><td>Força de Empurrão</td><td>5</td></tr>
                 </table>
             </div>
 
@@ -412,7 +375,7 @@
 			<h2 class="section-title" style="margin-top: 0;">Demonstração em Vídeo</h2>
 			<div class="video-wrapper" style="display: flex; justify-content: flex-start; margin-top: 15px;">
 				<video autoplay loop muted playsinline controls preload="metadata" style="max-width: 100%; width: 700px; border: 2px solid rgba(255, 123, 0, 0.4); background: #000;">
-					<source src="https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/videos/estratagemas/2-eagle/Eagle_500kg_Bomb_Preview_Video.mp4" type="video/mp4">
+					<source src="Eagle_Strafing_Run_Preview_Video.mp4" type="video/mp4">
 					Seu navegador atual não suporta a visualização de vídeos.
 				</video>
 			</div>
@@ -428,21 +391,21 @@
 
     <!-- SCRIPTS INTERNOS -->
     <script>
-        // Função atualizada para abrir/fechar as janelas específicas a partir da 1ª Coluna
+        // Função para abrir/fechar as janelas específicas a partir da 1ª Coluna
         function toggleJanelaLateral(idJanela, botao) {
             const janela = document.getElementById(idJanela);
             
             if (janela.style.display === 'none') {
                 janela.style.display = 'block'; // Mostra a caixa ao lado
                 botao.textContent = '[Ocultar]';
-
+                
                 // Remove a cor verde e adiciona a vermelha
                 botao.classList.remove('btn-mostrar');
                 botao.classList.add('btn-ocultar');
             } else {
                 janela.style.display = 'none'; // Esconde a caixa
                 botao.textContent = '[Mostrar]';
-
+                
                 // Remove a cor vermelha e volta para a verde
                 botao.classList.remove('btn-ocultar');
                 botao.classList.add('btn-mostrar');

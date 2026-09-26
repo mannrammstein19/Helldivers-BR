@@ -211,6 +211,7 @@ function orderTaskCard(o,t,i,state){
  <h4>${logo?`<img class="order-task-faction-logo" src="${esc(logo)}" alt="" decoding="async" onerror="this.hidden=true">`:''}${esc(title)}</h4>
  <div class="hd-mo-task-progress"><i style="width:${pc}%"></i></div>
  <div class="hd-mo-task-progress-label"><span>${esc(progressText)}</span><strong>${g||v.live?pc.toFixed(2).replace('.',',')+'%':'—'}</strong></div>
+ ${state==='active'?(window.HDBRRegions?.render(v.planet)||''):''}
  <div class="hd-mo-task-meta"><div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div><div><small>Conclusão estimada</small><strong>${esc(done?'CONCLUÍDO':state!=='active'?'—':estimate||(rate==null?'AGUARDANDO AMOSTRAS':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'))}</strong></div></div>
  <div class="hd-mo-task-status">${done?'✓ ':''}${status}</div></article>`;
 }

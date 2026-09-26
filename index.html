@@ -869,6 +869,13 @@
 .hd-mo-task-progress{border-radius:5px;overflow:hidden;}
 </style>
 <link rel="stylesheet" href="home-finish.css?v=43">
+<link rel="stylesheet" href="planet-regions.css?v=4">
+<style>
+/* A explicação acompanha o rodapé do cartão, mesmo com a coluna direita mais alta. */
+#hd-ov-order > .hd-ov-order-main{flex:1 0 auto}
+#hd-ov-order > .hd-mo-about-popover{flex:0 0 auto;margin-top:auto;border-radius:0 0 20px 20px}
+#hd-ov-order > .hd-mo-about-popover > .hd-mo-about-trigger{border-radius:inherit}
+</style>
 </head>
 
 <body class="fundo-principal">
@@ -1126,8 +1133,9 @@
 <link rel="stylesheet" href="order-rewards.css">
 <script src="order-rewards.js"></script>
 <script src="order-state.js"></script>
-<script src="war-data.js?v=41"></script>
-<script src="overview.js?v=41"></script>
+<script src="war-data.js?v=5"></script>
+<script src="planet-regions.js?v=5"></script>
+<script src="overview.js?v=regions1"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const menuBtn = document.getElementById("menu-toggle");

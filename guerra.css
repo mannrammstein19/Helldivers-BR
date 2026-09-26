@@ -1097,3 +1097,13 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .frente-hazard-chip.effect-possible::after,.intel-effect.effect-possible::after{content:'?';position:absolute;right:-3px;top:-5px;border-radius:50%;background:#d7c477;color:#101010;width:12px;height:12px;text-align:center;font:bold 10px/12px Arial;}
 .frente-hazard-chip{position:relative;}
 .frente-hazard-chip:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+/* Arte editorial da DSS: estados sem estação, sem localização ou sem comunicação. */
+.dss-unavailable-card{position:relative;isolation:isolate;display:flex;align-items:flex-end;min-height:380px;aspect-ratio:2/3;max-height:600px;width:100%;overflow:hidden;border:1px solid #485764;border-radius:18px;background:#080f18}
+.dss-unavailable-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.dss-unavailable-card::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(transparent 35%,#070d15aa 60%,#070d15 100%)}
+.dss-unavailable-copy{padding:22px;width:100%;box-sizing:border-box}
+.dss-unavailable-copy>small{font:700 11px/1.5 Arial,sans-serif;letter-spacing:.12em;color:#d7d52c}
+.dss-unavailable-copy>h3{font-size:clamp(20px,3vw,28px);line-height:1.15;margin:9px 0;color:#edf2f7;overflow-wrap:anywhere}
+.dss-unavailable-copy>p{font:13px/1.6 Arial,sans-serif;color:#bac7d4;margin:0}
+@media(max-width:600px){.dss-unavailable-card{min-height:340px;max-height:530px}.dss-unavailable-copy{padding:18px}}

@@ -1,0 +1,32 @@
+/* Estilos isolados: sem imagens, animações ou alterações nas barras planetárias. */
+.hd-region-list{display:block;min-width:0;margin:14px 0;text-align:left;white-space:normal;font:13px/1.45 Arial,sans-serif;color:#dce4eb}
+.hd-region-list .hd-region-heading{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:8px;color:#ced8e2}
+.hd-region-list .hd-region-heading>span{border:1px solid #455362;border-radius:20px;padding:1px 7px}
+.hd-region-list .hd-region-card{display:block;min-width:0;padding:10px;margin:7px 0;background:#101820;border:1px solid #354350;border-radius:12px}
+.hd-region-list .hd-region-title{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.hd-region-list .hd-region-title>strong{font:700 12px/1.4 Arial,sans-serif;overflow-wrap:anywhere;color:#edf4fa}
+.hd-region-list .hd-region-title>span{font-size:11px;color:#b6c4d1}
+.hd-region-list .hd-region-value{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:9px 0 5px;font-size:11px}
+.hd-region-list .hd-region-value>strong{font:700 12px/1.4 Arial,sans-serif;color:#70c8ff}
+.hd-region-list .hd-region-track{display:block;height:8px;background:#26323d;border-radius:8px;overflow:hidden}
+.hd-region-list .hd-region-track>span{display:block;height:100%;background:#4ebaff;border-radius:inherit}
+.hd-region-list .hd-region-players{margin-top:6px;font-size:11px;color:#b6c4d1}
+.hd-region-list .hd-region-note{margin:8px 0 4px;font:11px/1.45 Arial,sans-serif;color:#b6c4d1}
+.hd-region-list .hd-region-reading,.hd-region-list .hd-region-unknown{display:block;font:10px/1.45 Arial,sans-serif;color:#acb9c6}
+@media(max-width:600px){.hd-region-list .hd-region-card{padding:10px}.hd-region-list .hd-region-title>strong{font-size:13px}}
+
+.hd-region-trigger{display:inline-flex;align-items:center;gap:9px;margin:9px 0;padding:8px 12px;min-height:40px;border:1px solid #456174;border-radius:12px;background:#111d27;color:#c9e8ff;font:700 12px/1.3 Arial,sans-serif;cursor:pointer}
+.hd-region-trigger>span{border-radius:20px;background:#2a4254;padding:2px 7px}
+.hd-region-trigger:focus-visible{outline:2px solid #70c8ff;outline-offset:3px}
+.hd-region-dialog{box-sizing:border-box;width:min(560px,calc(100% - 24px));max-height:85vh;max-height:85dvh;margin:auto;padding:18px;border:1px solid #547085;border-radius:18px;background:#0c1219;color:#e5eff7;overflow:auto;overscroll-behavior:contain;box-shadow:0 18px 65px #0009}
+.hd-region-dialog::backdrop{background:#000b}
+.hd-region-dialog>header{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hd-region-dialog h2{margin:0;font:700 18px/1.4 Arial,sans-serif;overflow-wrap:anywhere}
+.hd-region-dialog [data-region-close]{flex:none;width:44px;height:44px;border:1px solid #607487;border-radius:12px;background:#1d2a35;color:#fff;cursor:pointer}
+@media(min-width:769px){.order-desktop-summary{min-height:0!important}}
+
+/* Controle humano e objetivo concluído: estado visual, sem alterar o planeta. */
+.hd-region-list .hd-region-controlled,.hd-region-list .hd-region-completed{border-color:#387d5b}
+.hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-title>span,
+.hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-value>strong{color:#70e3a2}
+.hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-track>span{background:#48cc85}

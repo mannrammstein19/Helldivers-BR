@@ -843,6 +843,7 @@
                         <span>${escapeHTML(progressText)}</span>
                         <strong>${goal || hasLivePercent ? majorOrderPercentLabel(percent) : '—'}</strong>
                     </div>
+                    ${state === 'active' ? (window.HDBRRegions?.render(livePlanet) || '') : ''}
                     <div class="guerra-mo-meta">
                         <div><small>Ritmo observado</small><strong>${escapeHTML(rateText)}</strong></div>
                         <div><small>Conclusão estimada</small><strong>${escapeHTML(etaText)}</strong></div>
@@ -1039,6 +1040,15 @@
         setText('stat-defense-detail', `${defenses} frentes em defesa`);
         setText('frentes-count', `${data.length} campanhas detectadas`);
         renderFrontCards();
+        const regionalModal = $('tactical-modal');
+        if (regionalModal?.classList.contains('open')) {
+            const current = data.find(c => String(c?.planet?.index) === regionalModal.dataset.regionPlanet);
+            if (current) renderTacticalModal(current, false);
+            else {
+                const panel = regionalModal.querySelector('[data-region-panel]');
+                if (panel) panel.innerHTML = '<p class="hd-region-note">Campanha ausente na última leitura. Reabra o planeta para conferir a situação atual.</p>';
+            }
+        }
     }
 
     function renderFrontCards() {
@@ -1126,6 +1136,7 @@
                     <div class="progress"><i style="width:${pct}%"></i></div>
                     `}
 
+                    ${window.HDBRRegions?.render(p) || ''}
                     <div class="tatico-metricas">
                         <div class="tatico-metrica metric-helldivers">
                             <span class="metric-label">👥 Helldivers operando</span>
@@ -1296,12 +1307,24 @@
         return { cls:'offline', label:'DESATIVADA', detail:'' };
     }
 
+    function dssUnavailableCard(kind) {
+        const copy = kind === 'connection'
+            ? ['SINAL DA DSS INDISPONÍVEL', 'Não foi possível obter uma leitura válida da estação. Nova tentativa automática.']
+            : kind === 'location'
+                ? ['LOCALIZAÇÃO NÃO INFORMADA', 'A leitura atual não informa o planeta da estação.']
+                : ['DSS TEMPORARIAMENTE INDISPONÍVEL', 'Nenhuma estação foi informada na última resposta da API. Aguardando novas informações.'];
+        return `<div class="dss-unavailable-card">
+            <img src="imagens/guerra/dss/dss-indisponivel.webp" alt="" loading="lazy" decoding="async" onerror="this.hidden=true">
+            <div class="dss-unavailable-copy"><small>ESTAÇÃO DEMOCRACIA</small><h3>${copy[0]}</h3><p>${copy[1]}</p></div>
+        </div>`;
+    }
+
     function renderDSS(data, err) {
         const box = $('dss');
         if (!box) return;
-        if (!data) { dssPlanetKey=''; dssPlanetName=''; box.innerHTML = errorHTML(err?.message || 'Falha ao carregar a DSS.'); if(campaigns.length) renderFrontCards(); return; }
+        if (!data) { dssPlanetKey=''; dssPlanetName=''; box.innerHTML = dssUnavailableCard('connection'); if(campaigns.length) renderFrontCards(); return; }
         const station = Array.isArray(data) ? data[0] : null;
-        if (!station) { dssPlanetKey=''; dssPlanetName=''; box.innerHTML = '<div class="empty-state">Nenhuma Estação Democracia ativa.</div>'; if(campaigns.length) renderFrontCards(); return; }
+        if (!station) { dssPlanetKey=''; dssPlanetName=''; box.innerHTML = dssUnavailableCard('absent'); if(campaigns.length) renderFrontCards(); return; }
         const stationPlanetIndex = String(station.planet?.index ?? station.planet?.planetIndex ?? station.planetIndex ?? '').trim();
         const resolvedDssPlanet = station.planet?.name
             ? station.planet
@@ -1313,7 +1336,7 @@
         const dssBg = Object.keys(resolvedDssPlanet).length ? planetImageUrl(resolvedDssPlanet) : '';
         const dssStyle = dssBg ? ` style="--dss-bg:url('${dssBg.replace(/'/g, '%27')}')"` : '';
         box.innerHTML = `<div class="dss-card">
-            <div class="dss-heading dss-planet-header-bg"${dssStyle}><img src="${DSS_ICON}" alt="DSS" class="dss-main-icon" data-fallback="${DSS_ICON_FALLBACK}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}"><div><div class="dss-planet">${escapeHTML(planet)}</div><small>ESTAÇÃO DEMOCRACIA</small></div></div>
+            ${planet === 'desconhecido' ? dssUnavailableCard('location') : `<div class="dss-heading dss-planet-header-bg"${dssStyle}><img src="${DSS_ICON}" alt="DSS" class="dss-main-icon" data-fallback="${DSS_ICON_FALLBACK}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}"><div><div class="dss-planet">${escapeHTML(planet)}</div><small>ESTAÇÃO DEMOCRACIA</small></div></div>`}
             ${actions.length ? actions.map(a=>{
                 const info=dssInfo(a.name);
                 const cost=(a.costs||[])[0];
@@ -1345,10 +1368,18 @@
         return campaigns.find(c => String(c?.planet?.index ?? clean(c?.planet?.name)) === String(key));
     }
 
-    function renderTacticalModal(campaign) {
+    function renderTacticalModal(campaign, focus = true) {
         const modal = $('tactical-modal');
         if (!modal || !campaign?.planet) return;
         const p = campaign.planet;
+        modal.dataset.regionPlanet = String(p.index);
+        let regionBox = modal.querySelector('[data-region-panel]');
+        if (!regionBox) {
+            regionBox = document.createElement('div');
+            regionBox.dataset.regionPanel = '';
+            modal.querySelector('.tactical-modal-metrics').before(regionBox);
+        }
+        regionBox.innerHTML = window.HDBRRegions?.render(p) || '';
         const event = p.event;
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';
@@ -1413,7 +1444,7 @@
         modal.classList.add('open');
         modal.setAttribute('aria-hidden','false');
         document.body.classList.add('tactical-modal-open');
-        modal.querySelector('.tactical-modal-close')?.focus();
+        if (focus) modal.querySelector('.tactical-modal-close')?.focus();
     }
 
     function closeTacticalModal() {

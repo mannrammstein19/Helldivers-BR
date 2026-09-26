@@ -21,6 +21,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <script src="pwa.js" defer></script>
+<link rel="stylesheet" href="planet-regions.css?v=4">
 </head>
 <body class="fundo-guerra">
 
@@ -152,6 +153,7 @@
                         <div class="mapa-intel-progress-track"><i id="mapa-intel-enemy-bar"></i></div>
                         <small id="mapa-intel-enemy-note"></small>
                     </div>
+                    <div id="mapa-intel-region-bars" hidden></div>
                     <div class="mapa-intel-forecast" id="mapa-intel-forecast" hidden><strong></strong><p></p></div>
                     <div class="mapa-intel-grid">
                         <div><small>HELLDIVERS</small><strong id="mapa-intel-players">0</strong></div>
@@ -225,8 +227,9 @@
 </main>
 
 
-<script src="war-data.js?v=41"></script>
-<script src="mapa-classico.js?v=65"></script>
+<script src="war-data.js?v=5"></script>
+<script src="planet-regions.js?v=5"></script>
+<script src="mapa-classico.js?v=regioes5"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const btn=document.getElementById('menu-toggle'); const side=document.querySelector('.sidebar');

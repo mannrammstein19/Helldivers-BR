@@ -618,6 +618,7 @@
                 <h3>${escapeHTML(title)}</h3>
                 <div class="mapa-mo-progress"><i style="width:${item.percent>0?`max(${item.percent.toFixed(2)}%, 2px)`:'0%'}"></i></div>
                 <div class="mapa-mo-progress-row"><span>${escapeHTML(counter)}</span><strong>${formatPercentDetailed(item.percent)}</strong></div>
+                ${window.HDBRRegions?.render(majorOrderTaskCampaign(item.task)?.planet, 'planets') || ''}
                 <div class="mapa-mo-task-status">${item.done?'✓ CUMPRIDO':'EM ANDAMENTO'}</div>
             </article>`;
         }).join('');
@@ -671,6 +672,7 @@
                 <div class="mapa-offensive-body">
                     <div class="mapa-offensive-progress-head"><span>PROGRESSO DA LIBERTAÇÃO</span><strong>${formatPercentDetailed(progress)}</strong></div>
                     <div class="mapa-offensive-progress"><i style="width:${progress>0?`max(${progress.toFixed(2)}%, 2px)`:'0%'}"></i></div>
+                    ${window.HDBRRegions?.render(p, 'planets') || ''}
                     <div class="mapa-offensive-metrics">
                         <div><small>HELLDIVERS</small><strong>${players.toLocaleString('pt-BR')}</strong></div>
                         <div><small>REGEN./H</small><strong>${formatRate(regen)}/h</strong></div>
@@ -910,6 +912,9 @@
         $('mapa-intel-players').textContent = players.toLocaleString('pt-BR');
         $('mapa-intel-regen').textContent = `${formatRate(regen)}/h`;
         $('mapa-intel-regions').textContent = regions.toLocaleString('pt-BR');
+        const regionBox = $('mapa-intel-region-bars');
+        regionBox.innerHTML = specialLocation(p) ? '' : (window.HDBRRegions?.render(p, 'planets') || '');
+        regionBox.hidden = !regionBox.innerHTML;
         $('mapa-intel-attacking').textContent = attacks.toLocaleString('pt-BR');
 
         const progressBox = $('mapa-intel-progress');
@@ -1816,7 +1821,7 @@
     // ================================================================
     // DOSSIÊ TÁTICO (modal ao clicar no planeta)
     // ================================================================
-    function openPlanetModal(p) {
+    function openPlanetModal(p, focus = true) {
         const modal = $('planet-modal');
         if (!modal) return;
         const owner=p.currentOwner||p.owner;
@@ -1834,8 +1839,7 @@
         const statValue=value=>value==null||value===''||typeof value==='boolean'||!Number.isFinite(Number(value))||Number(value)<0?'—':Number(value).toLocaleString('pt-BR');
         const rows=[['MISSÕES VENCIDAS',stats.missionsWon],['MISSÕES PERDIDAS',stats.missionsLost],['BAIXAS DE HELLDIVERS',stats.deaths]];
         $('planet-dossier-history').innerHTML=rows.map(([label,value])=>`<div><small>${label}</small><strong>${statValue(value)}</strong></div>`).join('');
-        const regions=Array.isArray(p.regions)?p.regions:[];
-        $('planet-dossier-regions').innerHTML=regions.length?'<ul>'+regions.map(r=>`<li><strong>${escapeHTML(clean(r.name)||'Região sem nome')}</strong><span>${r.isAvailable===true?'Disponível':r.isAvailable===false?'Indisponível':'Disponibilidade não informada'}${r.players!=null?' · '+statValue(r.players)+' Helldivers':''}</span></li>`).join('')+'</ul>':'<p>A API não informou regiões para este planeta.</p>';
+        $('planet-dossier-regions').innerHTML=window.HDBRRegions?.render(p, 'planets') || '<p>Nenhuma região disponível para operações nesta leitura.</p>';
 
         const special=specialLocation(p);
         if(special) {
@@ -1849,7 +1853,7 @@
         modal.setAttribute('aria-hidden', 'false');
         $('mapa-intel-details')?.setAttribute('aria-expanded','true');
         positionDossier();
-        modal.querySelector('[data-close-planet]')?.focus({preventScroll:true});
+        if (focus) modal.querySelector('[data-close-planet]')?.focus({preventScroll:true});
     }
     function closePlanetModal(restoreFocus = true) {
         const modal = $('planet-modal');
@@ -1878,7 +1882,7 @@
     }
 
     async function loadPlanets(force = false) {
-        if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('mapa-svg')?._mapaPanZoomState?.zoomBusy || $('planet-modal')?.getAttribute('aria-hidden') === 'false'))) return;
+        if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('mapa-svg')?._mapaPanZoomState?.zoomBusy))) return;
         loadingPlanets = true;
         try {
             const [planetResult, campaignResult, assignmentResult] = await Promise.allSettled([
@@ -1912,6 +1916,7 @@
             while($('mapa-svg')?._mapaPanZoomState?.activePointers.size || $('mapa-svg')?._mapaPanZoomState?.zoomBusy) {
                 await new Promise(resolve=>setTimeout(resolve,100));
             }
+            const dossierOpen = $('planet-modal')?.classList.contains('open');
             const selected=selectedIndex;
             const inspector=quickIntelIndex;
             const sticky=$('mapa-intel-card')?.dataset.sticky==='1';
@@ -1927,7 +1932,10 @@
             if(selected!=null) setSelectedPlanet(selected);
             if(inspector!=null) {
                 const p=allPlanets.find(p=>String(p.index)===inspector);
-                if(p) showQuickIntel(p,{sticky});
+                if(p) {
+                    showQuickIntel(p,{sticky});
+                    if (dossierOpen) openPlanetModal(p, false);
+                }
             }
             $('mapa-loading')?.classList.add('hidden');
             const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');

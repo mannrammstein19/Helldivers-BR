@@ -10,7 +10,11 @@
   const stale=[...metadata.values()].filter(m=>m.stale);
   if(!box){box=document.createElement('div');box.id='war-data-status';box.setAttribute('role','status');box.style.cssText='position:relative;margin:12px;padding:12px 16px;border:1px solid #887337;border-radius:12px;background:#201c10;color:#f2dda0;font:13px/1.5 Arial,sans-serif;';(document.querySelector('main')||document.body).prepend(box);}
   box.hidden=!stale.length;
-  if(stale.length){const oldest=Math.min(...stale.map(m=>m.time||Date.now()));box.textContent='Comunicação parcial · '+(stale.some(m=>m.time)?'exibindo a última leitura disponível ('+new Date(oldest).toLocaleString('pt-BR')+'). ':'nenhuma leitura anterior disponível. ')+'Nova tentativa automática, com intervalo de espera.';}
+  if(stale.length){
+   const labels={campaigns:'Planetas, jogadores e regiões',planets:'Catálogo de planetas e regiões',assignments:'Ordem Maior',dispatches:'Despachos',dss:'DSS',steam:'Jogadores na Steam'};
+   const items=stale.map(m=>(labels[m.name]||'Dados complementares')+': '+(m.time?'leitura salva de '+new Date(m.time).toLocaleString('pt-BR'):'sem leitura disponível'));
+   box.textContent='Comunicação parcial · '+items.join(' · ')+'. Os demais dados podem ter leituras mais recentes. Nova tentativa automática após o intervalo de espera.';
+  }
  }
  async function get(url,name,ttl,headers,legacy){
   const key=PREFIX+url;
@@ -19,7 +23,7 @@
    let saved=stored&&(!resident||stored.time>resident.time)?stored:resident||stored;
    if(!saved&&legacy&&valid(legacy.data,name)){saved=legacy;write(key,saved);}
    const now=Date.now(),usable=saved&&valid(saved.data,name)&&now-saved.time<=MAX_AGE;
-   const mark=stale=>{metadata.set(url,{time:saved?.time||0,stale});notice();};
+   const mark=stale=>{metadata.set(url,{time:saved?.time||0,stale,name});notice();};
    if(usable&&now-saved.time<Math.max(60000,ttl||0)){mark(false);return saved.data;}
    const backoff=read(key+':retry')||{};const blocked=read(PREFIX+'blocked')||0;
    if(now<Math.max(backoff.next||0,blocked)){mark(true);if(usable)return saved.data;throw Error('Aguardando intervalo para nova consulta.');}

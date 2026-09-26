@@ -898,12 +898,29 @@
         try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch {}
     }
 
+    // Ausência de telemetria nunca equivale a zero confirmado.
+    function telemetryNumber(value) {
+        return (typeof value === 'number' || (typeof value === 'string' && value.trim()))
+            && Number.isFinite(Number(value)) ? Number(value) : null;
+    }
+
     function planetProgress(planet) {
-        const event = planet?.event;
-        const value = event
-            ? (event.health != null && event.maxHealth ? (1 - event.health / event.maxHealth) * 100 : 0)
-            : (planet?.health != null && planet?.maxHealth ? (1 - planet.health / planet.maxHealth) * 100 : 0);
-        return Math.max(0, Math.min(100, Number(value) || 0));
+        const source = planet?.event || planet;
+        const health = telemetryNumber(source?.health), max = telemetryNumber(source?.maxHealth);
+        if (health == null || max == null || max <= 0 || health < 0 || health > max) return null;
+        return (1 - health / max) * 100;
+    }
+
+    function progressText(value) {
+        return value == null ? 'indisponível' : value.toFixed(2) + '%';
+    }
+
+    function planetProgressNote(planet) {
+        if (planetProgress(planet) !== 0 || planet?.event) return '';
+        const regional = (planet.regions || []).some(r => r?.isAvailable === true);
+        return `<p class="hd-region-note">0% planetário na leitura da API. ${regional
+            ? 'Há regiões em operação: consulte o progresso separado em Ver regiões.'
+            : 'Isso não permite medir o impacto bruto dos Helldivers.'}</p>`;
     }
 
     // Registra um snapshot SOMENTE quando chega uma nova coleta da API.
@@ -911,7 +928,9 @@
     function recordPlanetSnapshots(data) {
         if (!Array.isArray(data)) return;
         const history = readPlanetHistory();
-        const now = window.HDBRWarData?.meta(`${V1}/campaigns`)?.time || Date.now();
+        const reading = window.HDBRWarData?.meta(`${V1}/campaigns`);
+        if (reading?.stale) return;
+        const now = reading?.time || Date.now();
 
         data.forEach(campaign => {
             const p = campaign?.planet;
@@ -920,7 +939,8 @@
             const mode = p.event ? 'defense' : 'attack';
             const key = `${p.index ?? clean(p.name)}:${mode}`;
             const progress = planetProgress(p);
-            const signature=JSON.stringify([p.event?.id,p.event?.startTime,p.currentOwner,p.maxHealth,p.event?.maxHealth]);
+            if (progress == null) { delete history[key]; return; }
+            const signature=JSON.stringify([campaign.id,p.event?.id,p.event?.startTime,p.currentOwner,p.maxHealth,p.event?.maxHealth]);
             let previous = history[key];
             if(previous&&(previous.signature!==signature||now-previous.time>1800000))previous=null;
             if(previous&&now-previous.time<30000)return;
@@ -951,7 +971,8 @@
     function getPlanetRate(index, mode) {
         const history = readPlanetHistory();
         const item = history[`${index}:${mode}`];
-        return item && Date.now()-item.time<=180000 && Number.isFinite(item.rate) ? item.rate : null;
+        const age = Date.now() - (item?.rateTime || 0);
+        return !window.HDBRWarData?.meta(`${V1}/campaigns`)?.stale && item && age >= 0 && age <= 180000 && Number.isFinite(item.rate) ? item.rate : null;
     }
 
     function formatRate(rate) {
@@ -987,7 +1008,7 @@
     }
 
     function formatEtaFromRate(progress, rate) {
-        if (rate == null || !Number.isFinite(rate) || rate <= 0 || progress >= 100) return null;
+        if (progress == null || !Number.isFinite(progress) || rate == null || !Number.isFinite(rate) || rate <= 0 || progress >= 100) return null;
         const hours = (100 - progress) / rate;
         if (!Number.isFinite(hours) || hours <= 0) return null;
         if (hours > 24 * 365) return ">1 ano no ritmo atual";
@@ -1001,9 +1022,9 @@
     }
 
     function liberationEnemyPressure(planet) {
-        const regen = Number(planet?.regenPerSecond);
-        const maxHealth = Number(planet?.maxHealth);
-        if (!Number.isFinite(regen) || !Number.isFinite(maxHealth) || maxHealth <= 0 || regen < 0) return null;
+        const regen = telemetryNumber(planet?.regenPerSecond);
+        const maxHealth = telemetryNumber(planet?.maxHealth);
+        if (regen == null || maxHealth == null || maxHealth <= 0) return null;
         return (regen * 3600 / maxHealth) * 100;
     }
 
@@ -1076,9 +1097,10 @@
             const color = factionColor(enemy, defense);
             const name = clean(p.name) || 'Planeta desconhecido';
             const sector = clean(p.sector) || 'Setor desconhecido';
-            const players = Number(p.statistics?.playerCount || 0);
+            const rawPlayers = telemetryNumber(p.statistics?.playerCount);
+            const players = rawPlayers != null && rawPlayers >= 0 ? rawPlayers : null;
             let pct = planetProgress(p);
-            const playerShare = ((players / totalPlayers) * 100).toFixed(1);
+            const playerShare = players == null ? '—' : ((players / totalPlayers) * 100).toFixed(1);
             const hazardDetails = effectDetails(p, enemy, defense);
             const hazards = hazardDetails.map(h => h.name);
             const biome = clean(p.biome?.name) || 'Bioma desconhecido';
@@ -1125,31 +1147,32 @@
                 </div>
                 <div class="frente-content">
                     ${defense ? `
-                    <div class="frente-row defesa-bar-label"><span>Defesa Helldivers</span><strong>${pct.toFixed(2)}%</strong></div>
-                    <div class="progress defesa-progress-blue"><i style="width:${pct}%;--accent:#3d9dff"></i></div>
+                    <div class="frente-row defesa-bar-label"><span>Defesa Helldivers</span><strong>${progressText(pct)}</strong></div>
+                    <div class="progress defesa-progress-blue"><i style="width:${pct ?? 0}%;--accent:#3d9dff"></i></div>
                     <div class="frente-row defesa-bar-label"><span>Invasão inimiga</span><strong>${defenseRed == null ? '—' : defenseRed.toFixed(2) + '%'}</strong></div>
                     <div class="progress defesa-progress-red"><i style="width:${defenseRed == null ? 0 : defenseRed}%;--accent:#ff4242"></i></div>
                     ` : `
-                    <div class="frente-row"><span>Controle planetário</span><strong>${pct.toFixed(2)}%</strong></div>
-                    <div class="progress"><i style="width:${pct}%"></i></div>
+                    <div class="frente-row"><span>Controle planetário</span><strong>${progressText(pct)}</strong></div>
+                    <div class="progress"><i style="width:${pct ?? 0}%"></i></div>
                     `}
 
+                    ${planetProgressNote(p)}
                     ${window.HDBRRegions?.render(p) || ''}
                     <div class="tatico-metricas">
                         <div class="tatico-metrica metric-helldivers">
                             <span class="metric-label">👥 Helldivers operando</span>
-                            <strong>${players.toLocaleString('pt-BR')}</strong>
+                            <strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong>
                             <small>${playerShare}% do efetivo ativo</small>
                         </div>
                         <div class="tatico-metrica metric-impacto">
-                            <span class="metric-label">🟦 Impacto Helldiver / hora</span>
-                            <strong class="${defense ? 'rate-positive' : rateClass}">${defense ? formatRate(rate) : formatRate(rate)}</strong>
-                            <small>${defense ? 'variação observada' : 'avanço líquido observado'}</small>
+                            <span class="metric-label">🟦 ${defense ? 'Avanço da defesa / hora' : 'Avanço líquido / hora'}</span>
+                            <strong class="${defense ? 'rate-positive' : rateClass}">${formatRate(rate)}</strong>
+                            <small>${defense ? 'variação observada' : 'saldo planetário; não é impacto bruto'}</small>
                         </div>
                         <div class="tatico-metrica metric-faccao">
                             <span class="metric-label">${escapeHTML(factionLabel)}</span>
                             ${factionPressureHtml}
-                            <small>${defense ? 'ritmo do relógio da invasão' : 'regeneração registrada na API'}</small>
+                            <small>${defense ? 'ritmo do relógio da invasão' : enemyPressure < 0 ? 'valor negativo favorece a libertação' : 'regeneração registrada na API'}</small>
                         </div>
                         <div class="tatico-metrica metric-eta ${defense && defenseState?.cls === 'status-down' ? 'metric-eta-alert' : ''}">
                             <span class="metric-label">🏁 ${defense ? 'Tempo da Defesa' : 'Vitória estimada'}</span>
@@ -1377,7 +1400,7 @@
             regionBox.dataset.regionPanel = '';
             modal.querySelector('.tactical-modal-metrics').before(regionBox);
         }
-        regionBox.innerHTML = window.HDBRRegions?.render(p) || '';
+        regionBox.innerHTML = planetProgressNote(p) + (window.HDBRRegions?.render(p) || '');
         const event = p.event;
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';
@@ -1385,7 +1408,8 @@
         const name = clean(p.name) || 'Planeta desconhecido';
         const sector = clean(p.sector) || 'Setor desconhecido';
         const biome = clean(p.biome?.name) || 'Bioma desconhecido';
-        const players = Number(p.statistics?.playerCount || 0);
+        const rawPlayers = telemetryNumber(p.statistics?.playerCount);
+        const players = rawPlayers != null && rawPlayers >= 0 ? rawPlayers : null;
         const totalPlayers = campaigns.reduce((sum,c)=>sum+Number(c?.planet?.statistics?.playerCount||0),0) || 1;
         const pct = planetProgress(p);
         const hazards = effectDetails(p, enemy, defense);
@@ -1406,19 +1430,19 @@
             <span style="color:${color}">${escapeHTML(factionName(enemy))}</span>
             <span>${escapeHTML(biome)}</span>`;
         modal.querySelector('.tactical-modal-progress-label').innerHTML = defense
-            ? `<span>DEFESA HELLDIVERS</span><strong>${pct.toFixed(2)}%</strong>`
-            : `<span>CONTROLE PLANETÁRIO</span><strong>${pct.toFixed(2)}%</strong>`;
-        modal.querySelector('.tactical-modal-progress i').style.width = `${pct}%`;
+            ? `<span>DEFESA HELLDIVERS</span><strong>${progressText(pct)}</strong>`
+            : `<span>CONTROLE PLANETÁRIO</span><strong>${progressText(pct)}</strong>`;
+        modal.querySelector('.tactical-modal-progress i').style.width = `${pct ?? 0}%`;
         modal.querySelector('.tactical-modal-metrics').innerHTML = defense
             ? `
-            <div><small>HELldivers OPERANDO</small><strong>${players.toLocaleString('pt-BR')}</strong><span>${((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
-            <div><small>IMPACTO HELLDIVER / HORA</small><strong class="rate-positive">${formatRate(rate)}</strong><span>ritmo observado</span></div>
+            <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
+            <div><small>${defense ? 'AVANÇO DA DEFESA / HORA' : 'AVANÇO LÍQUIDO / HORA'}</small><strong class="rate-positive">${formatRate(rate)}</strong><span>ritmo observado</span></div>
             <div><small>IMPACTO INIMIGO / HORA</small><strong class="rate-negative">${formatRate(defenseRedRate)}</strong><span>ritmo do relógio da invasão</span></div>
             <div><small>INVASÃO / TEMPO</small><strong class="rate-negative">${defenseRed == null ? '—' : defenseRed.toFixed(2) + '%'}</strong><span>${escapeHTML(trend)} · ${escapeHTML(eta || 'prazo indisponível')}</span></div>`
             : `
-            <div><small>HELldivers OPERANDO</small><strong>${players.toLocaleString('pt-BR')}</strong><span>${((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
-            <div><small>IMPACTO HELLDIVER / HORA</small><strong class="${rate == null ? '' : rate >= 0 ? 'rate-positive' : 'rate-negative'}">${formatRate(rate)}</strong><span>variação observada</span></div>
-            <div><small>PRESSÃO ${escapeHTML(factionName(enemy))} / HORA</small><strong class="enemy-rate" style="color:${factionColor(enemy, false)} !important">${liberationPressure == null ? '—' : liberationPressure.toFixed(2)+'%/h'}</strong><span>regeneração planetária registrada</span></div>
+            <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
+            <div><small>${defense ? 'AVANÇO DA DEFESA / HORA' : 'AVANÇO LÍQUIDO / HORA'}</small><strong class="${rate == null ? '' : rate >= 0 ? 'rate-positive' : 'rate-negative'}">${formatRate(rate)}</strong><span>saldo planetário; não é impacto bruto</span></div>
+            <div><small>PRESSÃO ${escapeHTML(factionName(enemy))} / HORA</small><strong class="enemy-rate" style="color:${factionColor(enemy, false)} !important">${liberationPressure == null ? '—' : liberationPressure.toFixed(2)+'%/h'}</strong><span>${liberationPressure < 0 ? 'valor negativo favorece a libertação' : 'regeneração planetária registrada'}</span></div>
             <div><small>VITÓRIA ESTIMADA</small><strong>${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}</strong><span>${escapeHTML(trend)}</span></div>`;
         const climateRaw = clean(p.weather?.name || p.weather?.description || p.climate || p.weatherName || p.weather) || 'não informado pela telemetria';
         const ownerLabel = defense ? 'Super Terra (em defesa)' : factionName(enemy);
@@ -1431,7 +1455,7 @@
                 <div><small>CONTROLE / PROPRIETÁRIO</small><strong>${escapeHTML(ownerLabel)}</strong></div>
                 <div><small>BIOMA</small><strong>${escapeHTML(biome)}</strong></div>
                 <div><small>CLIMA / TELEMETRIA</small><strong>${escapeHTML(climateRaw)}</strong></div>
-                <div><small>HELldivers OPERANDO</small><strong>${players.toLocaleString('pt-BR')}</strong></div>
+                <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong></div>
                 <div><small>SITUAÇÃO</small><strong>${intelEta}</strong></div>
             </div>`;
         modal.querySelector('.tactical-modal-hazards').innerHTML = hazards.length ? hazards.map(h=>`<div class="tactical-hazard">

@@ -760,17 +760,20 @@
     }
 
     function regenPercentPerHour(p) {
-        const regen = Number(p?.regenPerSecond ?? p?.regen_per_second ?? 0);
-        const maxHealth = Number(p?.maxHealth ?? p?.max_health ?? 0);
-        if (!regen || !maxHealth) return 0;
-        return Math.max(0, (regen * 3600 / maxHealth) * 100);
+        const raw = p?.regenPerSecond ?? p?.regen_per_second;
+        const rawMax = p?.maxHealth ?? p?.max_health;
+        if (raw == null || rawMax == null || raw === '' || rawMax === '') return null;
+        const regen = Number(raw), maxHealth = Number(rawMax);
+        if (!Number.isFinite(regen) || !Number.isFinite(maxHealth) || maxHealth <= 0) return null;
+        return (regen * 3600 / maxHealth) * 100;
     }
 
     function formatRate(value) {
-        const n = Number(value || 0);
-        if (!n) return '0%';
-        if (n < .01) return '<0,01%';
-        return `${n.toFixed(n < 1 ? 2 : 1).replace('.', ',')}%`;
+        if (value == null || !Number.isFinite(value)) return '—';
+        const magnitude = Math.abs(value), sign = value < 0 ? '−' : '';
+        if (!magnitude) return '0%';
+        if (magnitude < .01) return `${sign}<0,01%`;
+        return `${sign}${magnitude.toFixed(magnitude < 1 ? 2 : 1).replace('.', ',')}%`;
     }
 
     function getAttackingIndexes(p) {

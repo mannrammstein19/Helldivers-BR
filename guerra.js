@@ -26,7 +26,7 @@
     const CACHE_TTL = {
         campaigns: 30 * 1000,
         assignments: 60 * 1000,
-        dispatches: 5 * 60 * 1000,
+        dispatches: 30 * 1000,
         dss: 2 * 60 * 1000,
         steam: 15 * 60 * 1000
     };
@@ -680,11 +680,11 @@
     async function loadMajorOrderSnapshot() {
         const now = Date.now();
         const cached = readMajorOrderStorage(ORDER_SNAPSHOT_CACHE, null);
-        if (cached?.data && now - Number(cached.time || 0) < 300000) return cached.data;
-        const stamp = Math.floor(now / 300000);
+        if (cached?.data && now - Number(cached.time || 0) < 30000) return cached.data;
+        const stamp = Math.floor(now / 30000);
         for (const base of [ORDER_SNAPSHOT_RAW, ORDER_SNAPSHOT_LOCAL]) {
             try {
-                const response = await fetch(`${base}?v=${stamp}`, {cache:'no-store'});
+                const response = await fetch(`${base}?v=${stamp}`, {cache:'no-store',signal:AbortSignal.timeout(6000)});
                 if (!response.ok) continue;
                 const data = await response.json();
                 if (data?.order) {
@@ -723,14 +723,12 @@
         article.style.setProperty('--major-order-image', `url("${ORDER_IMAGES[state] || ORDER_IMAGES.active}")`);
     }
 
-    async function renderOrder(assignments) {
+    async function renderOrder(assignments, dispatches=[]) {
         const box = $('ordem-maior');
         if (!box) return;
 
-        await loadPlanetCatalog();
-
-        const snapshot = await loadMajorOrderSnapshot();
-        const {order, state} = window.HDBROrderState.resolve(majorOrderPick(assignments), snapshot);
+        const [snapshot] = await Promise.all([loadMajorOrderSnapshot(),loadPlanetCatalog()]);
+        const {order, state, snapshot: resolvedSnapshot} = window.HDBROrderState.resolve(majorOrderPick(assignments), snapshot, Date.now(), {dispatches,catalog:planetCatalog});
 
         if (!order) {
             box.innerHTML = '<div class="empty-state">Nenhuma Ordem Maior registrada no momento.</div>';
@@ -769,7 +767,7 @@
                 ? `✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA`
                 : failed
                     ? `✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS`
-                    : state === 'unknown' ? 'ORDEM ENCERRADA // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
+                    : state === 'unknown' ? 'ORDEM SEM CONFIRMAÇÃO // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
                     : `◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO`;
 
         const statusMain = state === 'active'
@@ -859,7 +857,7 @@
                 <p class="guerra-order-brief">${escapeHTML(rawBriefing)}</p>
 
                 <div class="guerra-mo-summary">
-                    <div class="guerra-order-stat"><small>Tempo restante</small><strong>${escapeHTML(state === 'active' ? remaining(expiration).replace(' restantes','') : 'ENCERRADA')}</strong></div>
+                    <div class="guerra-order-stat"><small>Tempo restante</small><strong>${escapeHTML(completed || failed ? 'ENCERRADA' : state === 'active' ? remaining(expiration).replace(' restantes','') : 'AGUARDANDO')}</strong></div>
                     <div class="guerra-order-stat"><small>Objetivos concluídos</small><strong class="order-accent">${doneCount} / ${count}</strong></div>
                     <div class="guerra-order-stat"><small>Recompensa</small><strong class="order-accent">${reward}</strong></div>
                 </div>
@@ -872,7 +870,7 @@
                 <div class="guerra-mo-grid">${taskCards}</div>
 
                 <div class="guerra-order-foot">
-                    <span>${escapeHTML(state === 'active' ? 'ORDEM EM EXECUÇÃO' : completed ? 'ORDEM CONCLUÍDA' : failed ? 'ORDEM ENCERRADA' : state === 'unknown' ? 'AGUARDANDO NOVAS ORDENS' : 'AGUARDANDO RESULTADO')} // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'} REGISTRADOS</span>
+                    <span>${escapeHTML(state === 'active' ? 'ORDEM EM EXECUÇÃO' : completed ? 'ORDEM CONCLUÍDA' : failed ? 'ORDEM ENCERRADA' : state === 'unknown' ? 'AGUARDANDO NOVAS ORDENS' : 'AGUARDANDO RESULTADO')}${resolvedSnapshot?.outcome_source==='dispatch'?' // CONFIRMADO POR DESPACHO':''} // ${count} ${count === 1 ? 'OBJETIVO' : 'OBJETIVOS'} REGISTRADOS</span>
                     <span>ALTO COMANDO</span>
                 </div>
             </article>`;
@@ -1483,35 +1481,33 @@
 
     let updateBusy=false;
     async function updateAll(force=false) {
-        if(updateBusy||document.hidden)return;updateBusy=true;
+        if(updateBusy||document.hidden||(!force&&!window.HDBRWarData.due()))return;updateBusy=true;
         try {
+        const dispatchTask = fetchJSON(`${V1}/dispatches`, 'dispatches').then(data=>data,error=>{console.warn('[Ordem/despachos]',error);return [];});
         if (document.body.hasAttribute('data-order-only')) {
             // A página exclusiva da Ordem também precisa das campanhas: objetivos
             // de libertação/defesa são 0/1 na assignment, mas o avanço visual
             // vem da campanha ativa do planeta.
+            const orderRequest = fetchJSON(`${V1}/assignments`, 'assignments').then(data=>({data}),error=>({error}));
             await fetchWithFallback(`${V1}/campaigns`, 'campaigns', data=>{
                 if (!Array.isArray(data)) return;
                 campaigns = data;
                 recordPlanetSnapshots(data);
             }, Array.isArray);
-            await new Promise(r=>setTimeout(r,220));
-            await fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d));
+            const orderResult = await orderRequest;
+            await renderOrder(orderResult.data||null,await dispatchTask);
             return;
         }
         setText('stat-updated','ATUALIZANDO');
-        // Sequencial de propósito: campanhas vêm primeiro para a Ordem Maior já
-        // nascer com a porcentagem planetária correta na primeira renderização.
-        const tasks = [
-            () => fetchWithFallback(`${V1}/campaigns`, 'campaigns', (d,e)=>d?renderCampaigns(d):$('frentes').innerHTML=errorHTML(e?.message||'Falha ao carregar campanhas.'), Array.isArray),
-            () => fetchWithFallback(`${V1}/assignments`, 'assignments', d=>renderOrder(d)),
-            () => fetchWithFallback(`${V1}/dispatches`, 'dispatches', renderDispatches, Array.isArray),
-            () => fetchWithFallback(`${V2}/space-stations`, 'dss', renderDSS, Array.isArray),
-            () => fetchWithFallback(`${V1}/steam`, 'steam', renderSteam, Array.isArray)
-        ];
-        for (const task of tasks) {
-            await task();
-            await new Promise(r=>setTimeout(r,220));
-        }
+        // Consultas independentes em paralelo; Ordem renderizada após campanhas.
+        const campaignTask = fetchWithFallback(`${V1}/campaigns`, 'campaigns', (d,e)=>d?renderCampaigns(d):$('frentes').innerHTML=errorHTML(e?.message||'Falha ao carregar campanhas.'), Array.isArray);
+        const orderTask = fetchJSON(`${V1}/assignments`, 'assignments').then(d=>({data:d}),e=>({error:e}));
+        await Promise.allSettled([
+            (async()=>{await campaignTask;const result=await orderTask;await renderOrder(result.data||null,await dispatchTask);})(),
+            dispatchTask.then(renderDispatches),
+            fetchWithFallback(`${V2}/space-stations`, 'dss', renderDSS, Array.isArray),
+            fetchWithFallback(`${V1}/steam`, 'steam', renderSteam, Array.isArray)
+        ]);
         setText('stat-updated',window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA':'AGORA');
         } finally {updateBusy=false;}
     }
@@ -1520,6 +1516,7 @@
         bindFilters();
         loadPlanetCatalog();
         updateAll();
-        setInterval(()=>updateAll(),REFRESH);
+        setInterval(()=>updateAll(),10000);
+        window.addEventListener('hdbr-telemetry-retry',()=>updateAll(true));
     });
 })();

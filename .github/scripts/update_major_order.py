@@ -12,6 +12,7 @@ import json
 import re
 import sys
 import urllib.request
+import unicodedata
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -23,7 +24,7 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
     "User-Agent": "Helldivers-BR-Major-Order-Snapshot/1.0",
 }
-ACTIVE_REFRESH = timedelta(hours=1)  # evita dezenas de commits por dia
+ACTIVE_REFRESH = timedelta(hours=1)  # heartbeat; mudanças de progresso são salvas imediatamente
 MISSING_CONFIRM = timedelta(minutes=8)  # exige 2 leituras vazias no cron de 10 min
 
 
@@ -89,7 +90,7 @@ def as_list(value):
 
 def clean_text(value):
     if isinstance(value, str):
-        return re.sub(r"<[^>]*>", "", value).strip()
+        return re.sub(r"<[^>]*>", " ", value).strip()
     if isinstance(value, dict):
         for key in ("pt-BR", "pt-PT", "en-US", "en"):
             if value.get(key):
@@ -194,25 +195,63 @@ def published_time(dispatch):
     return None
 
 
-def dispatch_outcome(dispatches, since):
-    success_re = re.compile(r"\bMAJOR\s+ORDER\s+(?:COMPLETED|SUCCESS(?:FUL)?|VICTORY|WON)\b|\bORDER\s+(?:COMPLETED|SUCCESSFUL)\b", re.I)
-    fail_re = re.compile(r"\bMAJOR\s+ORDER\s+FAILED\b|\bORDER\s+FAILED\b", re.I)
+def normalized(value):
+    value = re.sub(r"<[^>]*>", " ", clean_text(value))
+    value = "".join(c for c in unicodedata.normalize("NFD", value) if not unicodedata.combining(c))
+    return re.sub(r"[^A-Z0-9]+", " ", value.upper()).strip()
+
+
+def target_ids(order):
+    result = []
+    for task in order.get("tasks") or []:
+        types, values = task.get("valueTypes") or [], task.get("values") or []
+        if 12 in types and types.index(12) < len(values):
+            value = str(values[types.index(12)])
+            if value and value != "0" and value not in result:
+                result.append(value)
+    return result
+
+
+def dispatch_outcome(dispatches, snapshot, now=None):
+    now = now or now_utc()
+    start = parse_date(snapshot.get("first_seen_at"))
+    if not start:
+        return None
+    order = snapshot["order"]
+    ids = target_ids(order)
+    names = [normalized(snapshot.get("target_planets", {}).get(i, "")) for i in ids]
+    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|ORDEM (?:MAIOR|PRINCIPAL) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
+    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|ORDEM (?:MAIOR|PRINCIPAL) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|DERROTA NA ORDEM MAIOR)\b")
     candidates = []
-    for d in as_list(dispatches)[:20]:
+    for d in as_list(dispatches):
         if not isinstance(d, dict):
             continue
         dt = published_time(d)
-        if not since or not dt or dt < since:
+        if dt and start <= dt <= now + timedelta(minutes=5):
+            candidates.append((dt, d))
+    for dt, d in sorted(candidates, key=lambda x: x[0], reverse=True):
+        title, body = normalized(d.get("title")), normalized(d.get("message"))
+        msg = f" {title} {body} "
+        success = bool(success_re.search(title) or success_re.search(body))
+        failure = bool(fail_re.search(title) or fail_re.search(body))
+        if success == failure:
             continue
-        msg = clean_text(d.get("message") or d.get("title") or "")
-        if msg:
-            candidates.append((dt, msg))
-    for _, msg in sorted(candidates, reverse=True):
-        if fail_re.search(msg):
-            return "failed", "dispatch"
-        if success_re.search(msg):
-            return "completed", "dispatch"
-    return None, None
+        linked = d.get("assignmentId", d.get("assignmentID", d.get("majorOrderId")))
+        if linked is not None and str(linked) != order_key(order):
+            continue
+        explicit = linked is not None and str(linked) == order_key(order)
+        planets = bool(ids) and all(name and f" {name} " in msg for name in names)
+        order_title = normalized(order.get("title"))
+        specific = len(order_title.split()) >= 3 and order_title not in {"MAJOR ORDER", "ORDEM MAIOR", "PEDIDO PRINCIPAL"} and f" {order_title} " in msg
+        if not explicit and not planets and not (not ids and specific):
+            continue
+        return {
+            "state": "completed" if success else "failed",
+            "outcome_source": "dispatch",
+            "ended_at": iso(dt),
+            "outcome_dispatch": {"id": d.get("id"), "published": iso(dt), "message": clean_text(d.get("message") or d.get("title"))},
+        }
+    return None
 
 
 def same_order(snapshot, order):
@@ -239,131 +278,86 @@ def build_active(order, previous=None):
 def main():
     previous = load_snapshot()
     now = now_utc()
-
+    assignments_ok = True
     try:
         assignments = fetch_json("assignments")
         if not isinstance(assignments, list) and not (isinstance(assignments, dict) and isinstance(assignments.get("data"), list)):
             raise ValueError("Resposta de assignments invalida")
     except Exception as exc:
-        print(f"[major-order] API indisponivel; snapshot preservado: {exc}")
-        return 0
+        print(f"[major-order] Assignments indisponivel; preservando leitura: {exc}")
+        assignments_ok, assignments = False, []
 
-    expired_live = False
     active = pick_order(assignments)
     if active:
-        expiration = parse_date(active.get("expiration") or active.get("expiresAt") or active.get("expireTime"))
-        if expiration and now >= expiration:
-            expired_live = True
-            if not (same_order(previous, active) and previous.get("state") in {"completed", "failed"}):
-                previous = build_active(active, previous)
-                previous.update(state="pending", missing_since=iso(now - MISSING_CONFIRM))
-            active = None
-    if active:
-        key = order_key(active)
-
-        # Nao reabre uma ordem terminal se a API devolver por alguns minutos o mesmo registro.
-        if previous and previous.get("state") in {"completed", "failed"} and previous.get("key") == key:
-            print("[major-order] A mesma ordem terminal ainda apareceu na API; mantendo resultado final.")
+        snapshot = build_active(active, previous)
+        if same_order(previous, active):
+            if previous.get("state") in {"completed", "failed"}:
+                print("[major-order] Resultado confirmado preservado.")
+                return 0
+            snapshot["target_planets"] = previous.get("target_planets", {})
+    elif previous and previous.get("order"):
+        snapshot = dict(previous)
+        if snapshot.get("state") in {"completed", "failed"}:
+            print("[major-order] Ultimo resultado confirmado preservado.")
             return 0
-
-        # Se reapareceu apos uma leitura vazia, volta para ativo imediatamente.
-        if previous and previous.get("state") == "pending" and previous.get("key") == key:
-            write_snapshot(build_active(active, previous))
-            print("[major-order] Ordem reapareceu; status restaurado para ACTIVE.")
-            return 0
-
-        # Nova ordem: salva imediatamente. Mesma ordem: no maximo 1 snapshot por hora.
-        if not same_order(previous, active):
-            write_snapshot(build_active(active, None))
-            print(f"[major-order] Nova ordem registrada: {key}")
-            return 0
-
-        last_update = parse_date(previous.get("last_progress_update_at")) if previous else None
-        if not last_update or now - last_update >= ACTIVE_REFRESH:
-            write_snapshot(build_active(active, previous))
-            print("[major-order] Snapshot horario da ordem ativa atualizado.")
-        else:
-            print("[major-order] Ordem ativa sem mudanca relevante; nenhum commit necessario.")
+    else:
+        print("[major-order] Sem ordem ou historico para analisar.")
         return 0
 
-    # Nenhuma ordem ativa na API.
-    if not previous or not previous.get("order"):
-        empty = {"schema": 1, "state": "none", "key": None, "order": None}
-        if previous != empty:
-            write_snapshot(empty)
-        print("[major-order] Nenhuma ordem ativa e nenhum historico anterior.")
-        return 0
-
-    if previous.get("state") in {"completed", "failed"}:
-        print("[major-order] Nenhuma nova ordem; mantendo o ultimo resultado na pagina.")
-        return 0
-
-    order = previous["order"]
-    metrics = completion_metrics(order)
-    expiration = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
-    first_seen = parse_date(previous.get("last_seen_at"))
-
-    # Primeira leitura vazia: nao conclui nada ainda, para evitar falso positivo por cache/API.
-    if previous.get("state") != "pending" and not (expiration and now >= expiration):
-        pending = dict(previous)
-        pending.update({"state": "pending", "missing_since": iso(now), "outcome_source": None})
-        if metrics["percent"] is not None:
-            pending["final_percent"] = round(metrics["percent"], 2)
-        write_snapshot(pending)
-        print("[major-order] Ordem sumiu da API; aguardando uma segunda confirmacao.")
-        return 0
-
-    missing_since = parse_date(previous.get("missing_since")) or now
-    if now - missing_since < MISSING_CONFIRM and not (expiration and now >= expiration):
-        print("[major-order] Ainda dentro da janela de confirmacao.")
-        return 0
-
-    # Apenas contadores de eliminacao sao irreversiveis; manter planetas exige resultado.
-    tasks = order.get("tasks") or []
-    counters = bool(tasks) and all(t.get("type") == 3 for t in tasks)
-    state = "completed" if counters and metrics["all_complete"] else None
-    source = "objective_progress" if state else None
-
-    # 2) despacho do Alto Comando posterior ao inicio da ordem
-    if not state:
+    # Nomes dos alvos vêm da API; não há planetas ou vitórias cadastrados à mão.
+    ids = target_ids(snapshot["order"])
+    names = dict(snapshot.get("target_planets", {}))
+    if any(not names.get(i) for i in ids):
         try:
-            dispatches = fetch_json("dispatches")
-            state, source = dispatch_outcome(dispatches, first_seen)
+            for planet in as_list(fetch_json("planets")):
+                index = str(planet.get("index"))
+                if index in ids and planet.get("name"):
+                    names[index] = clean_text(planet["name"])
         except Exception as exc:
-            print(f"[major-order] Dispatches indisponiveis: {exc}")
+            print(f"[major-order] Catalogo indisponivel: {exc}")
+    snapshot["target_planets"] = names
 
-    # Progresso antigo pode ter mudado antes do prazo; nao prova derrota.
-    # Uma coleta da propria ordem ja expirada com contador incompleto e conclusiva.
-    if not state and expired_live and counters and isinstance(order.get("progress"), list) and any(
-        i < len(order["progress"]) and num(order["progress"][i]) is not None
-        and task_goal(t) and num(order["progress"][i]) < task_goal(t)
-        for i, t in enumerate(tasks)
-    ):
-        state, source = "failed", "expired_live_progress"
-
-    # Ausencia antes do prazo nao prova vitoria nem derrota.
-
-    if not state:
-        pending = dict(previous)
-        pending.update(state="pending", missing_since=iso(missing_since))
-        if pending != load_snapshot():
-            write_snapshot(pending)
-        print("[major-order] Resultado ainda inconclusivo; mantendo AGUARDANDO.")
+    # Consulta o anúncio mesmo se a ordem ainda estiver na lista ou a API de ordens falhar.
+    evidence = None
+    try:
+        evidence = dispatch_outcome(fetch_json("dispatches"), snapshot, now)
+    except Exception as exc:
+        print(f"[major-order] Dispatches indisponiveis: {exc}")
+    if evidence:
+        snapshot.update(evidence)
+        snapshot["last_checked_at"] = iso(now)
+        if evidence["state"] == "completed":
+            snapshot["final_percent"] = 100.0
+        # order.progress continua sendo o último contador medido, não um valor inventado.
+        write_snapshot(snapshot)
+        print(f"[major-order] Resultado confirmado: {evidence['state'].upper()} (dispatch vinculado).")
         return 0
 
-    final = dict(previous)
-    final.update({
-        "state": state,
-        "ended_at": iso(now),
-        "outcome_source": source,
-        "missing_since": previous.get("missing_since"),
-    })
-    if state == "completed":
-        final["final_percent"] = 100.0
-    elif metrics["percent"] is not None:
-        final["final_percent"] = round(metrics["percent"], 2)
-    write_snapshot(final)
-    print(f"[major-order] Resultado confirmado: {state.upper()} ({source}).")
+    if not assignments_ok:
+        print("[major-order] Sem nova evidencia; snapshot anterior preservado.")
+        return 0
+
+    expiration = parse_date(snapshot["order"].get("expiration") or snapshot["order"].get("expiresAt") or snapshot["order"].get("expireTime"))
+    expired = bool(expiration and now >= expiration)
+    if not active or expired:
+        snapshot["state"] = "pending"
+        snapshot["missing_since"] = (previous or {}).get("missing_since") or iso(now)
+        metrics = completion_metrics(snapshot["order"])
+        tasks = snapshot["order"].get("tasks") or []
+        counters = bool(tasks) and all(t.get("type") == 3 for t in tasks)
+        waited = now - (parse_date(snapshot["missing_since"]) or now) >= MISSING_CONFIRM
+        if counters and metrics["all_complete"] and (expired or waited):
+            snapshot.update(state="completed", outcome_source="objective_progress", ended_at=iso(now), final_percent=100.0)
+        # Ausência, controle atual e percentual antigo nunca provam derrota.
+    snapshot["last_checked_at"] = iso(now)
+    ignored = {"last_checked_at", "last_seen_at", "last_progress_update_at"}
+    meaningful = lambda d: {k: v for k, v in (d or {}).items() if k not in ignored}
+    last = parse_date((previous or {}).get("last_progress_update_at"))
+    if meaningful(snapshot) != meaningful(previous) or not last or now-last >= ACTIVE_REFRESH:
+        write_snapshot(snapshot)
+        print(f"[major-order] Leitura salva: {snapshot['state']}.")
+    else:
+        print("[major-order] Consulta concluida; sem mudanca de progresso ou resultado.")
     return 0
 
 

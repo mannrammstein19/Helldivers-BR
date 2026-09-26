@@ -20,7 +20,7 @@
     const V2 = `${API}/v2`;
     const REFRESH = 60 * 1000;
     const CACHE_KEY = 'hdbr_mapa_cache_v1';
-    const CACHE_TTL = { planets: 3 * 60 * 1000, dss: 2 * 60 * 1000, campaigns: 60 * 1000, assignments: 60 * 1000 };
+    const CACHE_TTL = { planets: 30 * 1000, dss: 2 * 60 * 1000, campaigns: 60 * 1000, assignments: 60 * 1000 };
 
     const HEADERS = {
         'X-Super-Client': 'mannrammstein19.github.io/Helldivers-BR',
@@ -1881,10 +1881,13 @@
         }
     }
 
+    let lastTelemetryRender = null;
     async function loadPlanets(force = false) {
         if (loadingPlanets || (force && (document.hidden || $('mapa-svg')?._mapaPanZoomState?.isPanning || $('mapa-svg')?._mapaPanZoomState?.zoomBusy))) return;
+        if (!window.HDBRWarData.due()) return;
         loadingPlanets = true;
         try {
+            const dssTask = loadDSS();
             const [planetResult, campaignResult, assignmentResult] = await Promise.allSettled([
                 fetchJSON(`${V1}/planets`, 'planets'),
                 fetchJSON(`${V1}/campaigns`, 'campaigns'),
@@ -1910,7 +1913,13 @@
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
 
-            await loadDSS();
+            await dssTask;
+            const renderStamp = JSON.stringify(['planets','campaigns','assignments'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0));
+            if (lastTelemetryRender === renderStamp && nodeByIndex.size) {
+                const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');
+                if(status) status.textContent=window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA · TENTANDO ATUALIZAR':'DADOS ATUALIZADOS';
+                return;
+            }
             // Une requête déjà lancée peut terminer pendant un geste.
             // Conserver le DOM affiché jusqu'au relâchement du dernier doigt.
             while($('mapa-svg')?._mapaPanZoomState?.activePointers.size || $('mapa-svg')?._mapaPanZoomState?.zoomBusy) {
@@ -1921,13 +1930,14 @@
             const inspector=quickIntelIndex;
             const sticky=$('mapa-intel-card')?.dataset.sticky==='1';
             buildMap(allPlanets);
+            lastTelemetryRender = renderStamp;
             if(campaignResult.status==='fulfilled' || campaigns.length) renderOffensiveCampaigns();
             else {
                 if($('mapa-offensive-count')) $('mapa-offensive-count').textContent='—';
-                if($('mapa-offensive-grid')) $('mapa-offensive-grid').innerHTML='<div class="mapa-command-empty">Campanhas temporariamente indisponíveis. Nova tentativa automática em um minuto.</div>';
+                if($('mapa-offensive-grid')) $('mapa-offensive-grid').innerHTML='<div class="mapa-command-empty">Campanhas temporariamente indisponíveis. Nova tentativa automática em breve.</div>';
             }
             if(majorOrderData) renderMajorOrder(majorOrderData);
-            else if($('mapa-major-order')) $('mapa-major-order').innerHTML='<div class="mapa-command-empty">Ordem Maior temporariamente indisponível. Nova tentativa automática em um minuto.</div>';
+            else if($('mapa-major-order')) $('mapa-major-order').innerHTML='<div class="mapa-command-empty">Ordem Maior temporariamente indisponível. Nova tentativa automática em breve.</div>';
 
             if(selected!=null) setSelectedPlanet(selected);
             if(inspector!=null) {
@@ -1946,7 +1956,7 @@
             if(status) status.textContent='SEM ATUALIZAÇÃO · TENTANDO NOVAMENTE';
             const forecast=$('mapa-intel-forecast');
             if(forecast&&!forecast.hidden) {forecast.dataset.tone='neutral';forecast.querySelector('strong').textContent='DADOS DESATUALIZADOS';forecast.querySelector('p').textContent='Aguardando nova leitura da API para atualizar a projeção.';}
-            if(!nodeByIndex.size) $('mapa-loading').innerHTML=`<div class="error-state">⚠ ${escapeHTML(err.message)} Nova tentativa automática em um minuto.</div>`;
+            if(!nodeByIndex.size) $('mapa-loading').innerHTML=`<div class="error-state">⚠ ${escapeHTML(err.message)} Nova tentativa automática em breve.</div>`;
         } finally { loadingPlanets=false; }
     }
 
@@ -2039,6 +2049,7 @@
         bindUI();
         loadEffectCatalog();
         loadPlanets();
-        setInterval(() => loadPlanets(true), REFRESH);
+        setInterval(() => loadPlanets(true), 10000);
+        window.addEventListener('hdbr-telemetry-retry',()=>loadPlanets(true));
     });
 })();

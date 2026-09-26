@@ -27,14 +27,18 @@ jobs:
       - name: Salvar alteracoes no repositorio
         shell: bash
         run: |
-          if git diff --quiet -- dados/major-order.json; then
+          if [ ! -f dados/major-order.json ]; then
+            echo "Nenhum snapshot disponivel."
+            exit 0
+          fi
+          git add dados/major-order.json
+          if git diff --cached --quiet -- dados/major-order.json; then
             echo "Nenhuma mudanca na Ordem Maior."
             exit 0
           fi
 
           git config user.name "Super Earth Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dados/major-order.json
           git commit -m "chore: atualizar estado da Ordem Maior"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

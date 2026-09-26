@@ -42,7 +42,7 @@ const PLANET_IMG_PATH='imagens/planetas/';
 let planetCatalog={};
 function catalogBiome(p){const c=planetCatalog[String(p?.index??'')]||{};return clean(p?.biome?.name||p?.biome)||clean(c?.biome?.name||c?.biome)||''}
 function planetImageUrl(p){const index=String(p?.index??'').trim(),name=clean(p?.name).toLowerCase().trim();const specific=PLANET_IMAGES[index]||PLANET_IMAGES_BY_NAME[name];const biome=catalogBiome(p).toLowerCase().trim();return PLANET_IMG_PATH+(specific||BIOME_IMAGES[biome]||'Sandy_base_Landscape.png')}
-async function loadPlanetCatalog(){try{const r=await fetch('https://raw.githubusercontent.com/helldivers-2/json/master/planets/planets.json',{cache:'force-cache',signal:AbortSignal.timeout(8000)});if(r.ok){const d=await r.json();planetCatalog=d&&typeof d==='object'?d:{};return planetCatalog}}catch{}return planetCatalog}
+async function loadPlanetCatalog(){if(Object.keys(planetCatalog).length)return planetCatalog;try{const r=await fetch('https://raw.githubusercontent.com/helldivers-2/json/master/planets/planets.json',{cache:'force-cache',signal:AbortSignal.timeout(8000)});if(r.ok){const d=await r.json();planetCatalog=d&&typeof d==='object'?d:{};return planetCatalog}}catch{}return planetCatalog}
 function order(d){return arr(d).find(x=>x&&(x.title||x.briefing||x.tasks||x.progress||x.setting))||null}
 function assignmentTitle(o){return clean(o?.title||o?.setting?.overrideTitle)||'ORDEM MAIOR'}
 function assignmentBrief(o){return clean(o?.briefing||o?.setting?.overrideBrief||o?.description||o?.setting?.taskDescription)||'Objetivos do Alto Comando indisponíveis.'}
@@ -250,8 +250,8 @@ function applyOrderVisual(card,state){
 }
 async function loadOrderSnapshot(){
  const now=Date.now(),cached=store(ORDER_SNAPSHOT_CACHE,null);
- if(cached?.data&&now-Number(cached.time||0)<300000)return cached.data;
- const stamp=Math.floor(now/300000);
+ if(cached?.data&&now-Number(cached.time||0)<30000)return cached.data;
+ const stamp=Math.floor(now/30000);
  for(const base of [ORDER_SNAPSHOT_RAW,ORDER_SNAPSHOT_LOCAL]){
    try{
      const r=await fetch(`${base}?v=${stamp}`,{cache:'no-store',signal:AbortSignal.timeout(6000)});
@@ -281,7 +281,7 @@ function renderOrder(d,opt={}){
    ?`ORDEM MAIOR ATIVA // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'}${singleFaction?' // ALVO: '+singleFaction:''}`
    :completed?'✓ ORDEM MAIOR CONCLUÍDA // VITÓRIA DA SUPER TERRA'
    :failed?'✕ ORDEM MAIOR PERDIDA // AGUARDANDO NOVAS ORDENS'
-   :state==='unknown'?'ORDEM ENCERRADA // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
+   :state==='unknown'?'ORDEM SEM CONFIRMAÇÃO // RESULTADO INDISPONÍVEL — AGUARDANDO NOVAS ORDENS'
    :'◉ ORDEM SEM ATUALIZAÇÃO // AGUARDANDO CONFIRMAÇÃO DO RESULTADO';
 
  const statusMain=state==='active'?'EM ANDAMENTO':completed?'VITÓRIA':failed?'FALHA':state==='unknown'?'RESULTADO INDISPONÍVEL':'AGUARDANDO';
@@ -294,7 +294,7 @@ function renderOrder(d,opt={}){
    <p class="hd-ov-brief">${esc(brief)}</p>
 
    <div class="hd-mo-summary">
-     <div class="hd-ov-statbox"><small>Tempo restante</small><strong>${esc(state==='active'?remain(exp):'ENCERRADA')}</strong></div>
+     <div class="hd-ov-statbox"><small>Tempo restante</small><strong>${esc(completed||failed?'ENCERRADA':state==='active'?remain(exp):'AGUARDANDO')}</strong></div>
      <div class="hd-ov-statbox"><small>Objetivos concluídos</small><strong class="${statusClass}">${doneCount} / ${count}</strong></div>
      <div class="hd-ov-statbox"><small>Recompensa</small><strong class="yellow">${rw}</strong></div>
    </div>
@@ -306,7 +306,7 @@ function renderOrder(d,opt={}){
 
    <div class="hd-mo-objectives-grid">${taskHTML}</div>
 
-   <div class="hd-ov-order-foot"><span>${esc(footer)} // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'} REGISTRADOS</span><span>ALTO COMANDO</span></div>
+   <div class="hd-ov-order-foot"><span>${esc(footer)}${snap?.outcome_source==='dispatch'?' // CONFIRMADO POR DESPACHO':''} // ${count} ${count===1?'OBJETIVO':'OBJETIVOS'} REGISTRADOS</span><span>ALTO COMANDO</span></div>
  </div>${orderAboutHTML()}`;
  bindOrderAbout(b);
 }
@@ -315,21 +315,21 @@ function relative(iso){if(!iso)return'AGORA';const s=Math.max(0,Math.floor((Date
 function renderDispatch(d){const a=arr(d).slice(0,3),b=$('hd-ov-feed');if(!b)return;b.innerHTML=a.length?a.map(x=>`<div class="hd-feed-item"><div class="hd-feed-time">${esc(relative(x.published||x.publishedAt||x.date))}</div><div class="hd-feed-text">${esc(clean(x.message)||'Comunicação do Alto Comando.')}</div></div>`).join(''):'<div class="hd-ov-loading">NENHUM DESPACHO RECENTE.</div>'}
 let updating=false;
 async function update(){
- if(updating||document.hidden)return;updating=true;
+ if(updating||document.hidden||!window.HDBRWarData.due())return;updating=true;
  const st=$('hd-ov-status');
  try{
   if(st){st.textContent='SINCRONIZANDO';st.classList.remove('live');}
-  const results=await Promise.allSettled([get('assignments','assignments',60000),get('campaigns','campaigns',60000),loadOrderSnapshot()]);
-  const [orders,camp,snapshot]=results;
+  const results=await Promise.allSettled([get('assignments','assignments',60000),get('campaigns','campaigns',60000),loadOrderSnapshot(),get('dispatches','dispatches',30000),loadPlanetCatalog()]);
+  const [orders,camp,snapshot,dispatches]=results;
   if(camp.status==='fulfilled'){liveCampaigns=arr(camp.value);sampleCampaigns(liveCampaigns);renderWar(camp.value);}
   else if(!liveCampaigns.length){for(const id of ['hd-ov-front-list','hd-ov-campaign'])if($(id))$(id).textContent='Sem comunicação e sem leitura anterior. Nova tentativa automática.';}
   // Mantém a última renderização se não houver resposta nem cache utilizável.
   const snap=snapshot.status==='fulfilled'?snapshot.value:null;
-  const resolved=window.HDBROrderState.resolve(orders.status==='fulfilled'?order(orders.value):null,snap);
+  const resolved=window.HDBROrderState.resolve(orders.status==='fulfilled'?order(orders.value):null,snap,Date.now(),{dispatches:dispatches.status==='fulfilled'?dispatches.value:[],catalog:planetCatalog});
   renderOrder(null,resolved);
   if(st){st.textContent=orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale()?'DADOS ATUALIZADOS':'TELEMETRIA PARCIAL / ÚLTIMO REGISTRO';st.classList.toggle('live',orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale());}
-  try{renderDispatch(await get('dispatches','dispatches',300000));}catch(e){console.warn('[Home/despachos]',e);}
+  if(dispatches.status==='fulfilled')renderDispatch(dispatches.value);
  }catch(e){console.error('[Home]',e);if(st)st.textContent='TELEMETRIA INDISPONÍVEL';}
  finally{updating=false;}
 }
-document.addEventListener('DOMContentLoaded',()=>{if(!$('hd-ov-order'))return;loadPlanetCatalog().catch(()=>{});update();setInterval(update,REFRESH)})})();
+document.addEventListener('DOMContentLoaded',()=>{if(!$('hd-ov-order'))return;update();setInterval(update,10000);window.addEventListener('hdbr-telemetry-retry',update)})})();

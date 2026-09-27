@@ -1,44 +1,72 @@
 {
   "schema": 1,
-  "state": "completed",
-  "key": "4174059175",
-  "first_seen_at": "2026-09-22T14:10:30.578232Z",
-  "last_seen_at": "2026-09-26T01:59:26.801990Z",
-  "last_progress_update_at": "2026-09-26T01:59:26.801990Z",
-  "final_percent": 100.0,
-  "outcome_source": "dispatch",
+  "state": "active",
+  "key": "1715805482",
+  "first_seen_at": "2026-09-27T22:19:53.155623Z",
+  "last_seen_at": "2026-09-27T22:19:53.155623Z",
+  "last_progress_update_at": "2026-09-27T22:19:53.155623Z",
+  "final_percent": 3.33,
+  "outcome_source": null,
   "order": {
-    "id": 4174059175,
+    "id": 1715805482,
     "progress": [
-      0,
-      1
+      839091,
+      160797
     ],
     "title": "MAJOR ORDER",
-    "briefing": "Liberate the designated planets to secure territory for long-term construction of the TD-110 Maelstrom Tank.",
+    "briefing": "Kill the requisite enemies to ensure early investors in the TD-110 Maelstrom Tanks receive their promised deluxe features.",
     "description": null,
     "tasks": [
       {
-        "type": 11,
+        "type": 3,
         "values": [
-          1,
-          1,
-          198
+          2,
+          0,
+          25000000,
+          2651633799,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "valueTypes": [
+          1,
+          2,
           3,
+          4,
+          6,
+          5,
+          8,
+          9,
           11,
           12
         ]
       },
       {
-        "type": 11,
+        "type": 3,
         "values": [
-          1,
-          1,
-          217
+          3,
+          0,
+          5000000,
+          2664856027,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "valueTypes": [
+          1,
+          2,
           3,
+          4,
+          6,
+          5,
+          8,
+          9,
           11,
           12
         ]
@@ -46,26 +74,17 @@
     ],
     "reward": {
       "type": 1,
-      "amount": 50
+      "amount": 40
     },
     "rewards": [
       {
         "type": 1,
-        "amount": 50
+        "amount": 40
       }
     ],
-    "expiration": "2026-09-26T12:12:31.7526791Z",
+    "expiration": "2026-10-01T19:28:59.8031468Z",
     "flags": 0
   },
-  "target_planets": {
-    "198": "MARFARK",
-    "217": "PHACT BAY"
-  },
-  "ended_at": "2026-09-26T11:28:49Z",
-  "outcome_dispatch": {
-    "id": 3940,
-    "published": "2026-09-26T11:28:49Z",
-    "message": "MAJOR ORDER WON \n\nThe Helldivers liberated  PHACT BAY and MARFARK . AM Defense has already broken ground on massive factories for large-scale  Maelstrom  Tank fabrication. Pre-orders from qualifying citizens for home defense Tanks have already sold out, evidencing the eagerness of Super Earth citizens to exercise their natural-born freedoms."
-  },
-  "last_checked_at": "2026-09-26T12:26:36.928373Z"
+  "target_planets": {},
+  "last_checked_at": "2026-09-27T22:19:52.757159Z"
 }

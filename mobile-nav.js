@@ -30,11 +30,21 @@
    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sidebar.classList.contains('active')){toggle.click();toggle.focus();}});
    document.addEventListener('click',e=>{if(sidebar.classList.contains('active')&&!sidebar.contains(e.target)&&!toggle.contains(e.target)&&!menu.contains(e.target))toggle.click();});
   }
-  const current=()=>nav.querySelectorAll('a').forEach(a=>{
-   const url=new URL(a.href),path=location.pathname.endsWith('/')?location.pathname+'index.html':location.pathname;
-   const active=url.pathname===path&&(url.hash?url.hash===location.hash:location.hash!=='#ordem-maior');
-   if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
-  });
+  // Cloudflare Pages removes .html; also support GitHub Pages and directory indexes.
+  const normalize=path=>path.replace(/\/index\.html$/i,'/').replace(/\.html$/i,'').replace(/\/+$/,'')||'/';
+  const current=()=>{
+   let path=normalize(location.pathname);
+   const root=normalize(base.pathname);
+   const relative=path===root?'':path.slice(root==='/'?0:root.length);
+   // Both map views belong to Mapa; individual stratagems belong to Arsenal.
+   if(relative==='/mapa-classico')path=normalize(new URL('mapa-galatico.html',base).pathname);
+   if(relative.startsWith('/estratagemas/'))path=normalize(new URL('estratagemas.html',base).pathname);
+   if(relative==='/guerra'&&location.hash==='#ordem-maior')path=normalize(new URL('ordem.html',base).pathname);
+   nav.querySelectorAll('a').forEach(a=>{
+    const active=normalize(new URL(a.href).pathname)===path;
+    if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+   });
+  };
   current();window.addEventListener('hashchange',current);
   document.body.append(nav);document.body.classList.add('has-mobile-navigation');
  }

@@ -114,7 +114,7 @@ function taskTitle(t,i){
  const direct=clean(t?.title||t?.description||t?.name);
  if(direct)return direct;
  const type=Number(t?.type||0),g=taskGoal(t),fac=taskFactionName(t),planet=planetNameByIndex(taskPlanetIndex(t));
- if(type===3)return`Eliminar ${g?fmt(g)+' ':''}${fac||'inimigos'}`;
+ if(type===3)return`Eliminar ${g?fmt(g)+' ':''}${window.HDBROrderTargets.label(t,fac)}`;
  if(type===11)return planet?`Liberar ${planet}`:`Cumprir objetivo de libertação`;
  if(type===12){
    if(planet)return`Defender ${planet}`;

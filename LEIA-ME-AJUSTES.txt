@@ -1,0 +1,43 @@
+HELLDIVERS-BR — MENU E ALVOS — 28/09/2026
+
+Base exclusiva: Helldivers-BR.zip enviado em 28/09.
+
+COMO APLICAR
+Copie os arquivos deste ZIP para a raiz do projeto, substituindo os correspondentes.
+Inclua também o novo order-targets.js. Preserve todas as suas pastas de imagens,
+ícones, vídeos e páginas internas: elas não vieram neste ZIP de origem.
+Não exclua o conteúdo existente do site para fazer a substituição.
+
+ALTERAÇÕES
+1. Menu inferior reconhece URLs com .html e sem extensão (redirecionamento
+   observado no Cloudflare: /guerra.html -> /guerra), além de index e pastas.
+   Mapa fica ativo nas duas visualizações. Arsenal fica ativo também em
+   /estratagemas/... . O atalho legado /guerra#ordem-maior marca Ordem.
+   Ícone e texto da opção atual recebem destaque amarelo.
+2. Catálogo compartilhado order-targets.js, usado pelos títulos na página
+   inicial, Central de Guerra, página da Ordem e mapa clássico.
+   Catálogo inicial verificado: 2651633799 = Atropeladores (facção 2);
+   2664856027 = Tanques Autômatos (facção 3).
+   Evidência: assignment 1715805482 e comunicado 3941 consultados em 27/09/2026.
+   Tipo de valor 4 identifica unidade; tipo 1 identifica facção. O catálogo
+   procura esses tipos, sem depender da posição fixa nos arrays da API.
+   Código específico desconhecido: alvo específico não identificado.
+   Sem restrição de unidade: conserva a identificação geral da facção.
+   Não é um catálogo completo de todos os inimigos. Novos códigos podem ser
+   acrescentados no mesmo arquivo, após confirmação, servindo a futuras ordens.
+
+PRESERVAÇÃO
+Nos três scripts de conteúdo (guerra.js, overview.js e mapa-classico.js), mudou
+somente a linha que produz o título do objetivo de eliminação. Os cálculos,
+progresso, metas, cronômetros, contadores e regras das regiões foram preservados.
+As referências de versão dos scripts foram atualizadas para renovar o cache.
+Nenhuma publicação foi feita no site hospedado.
+
+VALIDAÇÃO
+Todos os JavaScripts passaram na verificação de sintaxe. Testes locais cobriram
+60 URLs, mudanças de âncora, códigos conhecidos/desconhecidos, facção geral,
+ordem variável dos campos da API e títulos nos três scripts de conteúdo.
+Também foi conferida a ordem de carregamento do novo catálogo nas quatro páginas.
+Para repetir: node verificacao/testar.cjs
+Os testes executam a lógica com DOM simulado; não constituem validação visual
+em um celular real nem uma auditoria completa de todas as páginas do site.

@@ -584,7 +584,7 @@
         const faction = majorOrderTaskFactionName(task);
         const planet = majorOrderPlanetName(majorOrderTaskPlanetIndex(task));
 
-        if (type === 3) return `Eliminar ${goal ? goal.toLocaleString('pt-BR') + ' ' : ''}${faction || 'inimigos'}`;
+        if (type === 3) return `Eliminar ${goal ? goal.toLocaleString('pt-BR') + ' ' : ''}${window.HDBROrderTargets.label(task, faction)}`;
         if (type === 11) return planet ? `Liberar ${planet}` : 'Cumprir objetivo de libertação';
         if (type === 12) {
             if (planet) return `Defender ${planet}`;

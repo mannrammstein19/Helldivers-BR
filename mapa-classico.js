@@ -550,7 +550,7 @@
         if(direct) return direct;
         const type=Number(task?.type||0),goal=majorOrderTaskGoal(task),planet=majorOrderPlanetName(majorOrderTaskPlanetIndex(task));
         const faction=({1:'Super Terra',2:'Terminídeos',3:'Autômatos',4:'Iluminados'})[majorOrderTaskFactionId(task)] || '';
-        if(type===3) return `Eliminar ${goal?goal.toLocaleString('pt-BR')+' ':''}${faction||'inimigos'}`;
+        if(type===3) return `Eliminar ${goal?goal.toLocaleString('pt-BR')+' ':''}${window.HDBROrderTargets.label(task,faction)}`;
         if(type===11) return planet?`Liberar ${planet}`:'Cumprir objetivo de libertação';
         if(type===12) return planet?`Defender ${planet}`:(faction?`Defender território contra ${faction}`:'Defender território da Super Terra');
         if(type===13) return planet?`Manter controle de ${planet}`:'Manter controle do objetivo designado';

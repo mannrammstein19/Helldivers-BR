@@ -1107,3 +1107,16 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .dss-unavailable-copy>h3{font-size:clamp(20px,3vw,28px);line-height:1.15;margin:9px 0;color:#edf2f7;overflow-wrap:anywhere}
 .dss-unavailable-copy>p{font:13px/1.6 Arial,sans-serif;color:#bac7d4;margin:0}
 @media(max-width:600px){.dss-unavailable-card{min-height:340px;max-height:530px}.dss-unavailable-copy{padding:18px}}
+
+/* Refinamento: altura natural por cartão e ajuda compacta junto à porcentagem. */
+.frentes-grid{align-items:start}
+.planet-progress-value{display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+.planet-progress-help{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:1px solid #77838a;border-radius:50%;background:#172027;color:#e3e9ed;font:bold 12px Arial;cursor:pointer}
+.planet-progress-help:hover{border-color:#d7d52c;color:#d7d52c}
+.planet-progress-help:focus-visible{outline:2px solid #d7d52c;outline-offset:2px}
+.planet-progress-help-dialog{box-sizing:border-box;width:min(380px,calc(100vw - 32px));max-height:80dvh;overflow:auto;padding:20px;border:1px solid #68767e;border-radius:14px;background:#11181e;color:#e5e9ec;font:14px/1.6 Arial;box-shadow:0 20px 60px #0009}
+.planet-progress-help-dialog::backdrop{background:#0009}
+.planet-progress-help-dialog h2{font:bold 18px/1.4 Arial;margin:0 0 10px;color:#d7d52c}
+.planet-progress-help-dialog p{margin:0 0 16px}
+.planet-progress-help-dialog form{margin:0;text-align:right}
+.planet-progress-help-dialog button{min-height:44px;padding:8px 18px;border:1px solid #d7d52c;border-radius:8px;background:#242914;color:#f1ef80;font:bold 13px Arial;cursor:pointer}

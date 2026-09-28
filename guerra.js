@@ -918,9 +918,24 @@
     function planetProgressNote(planet) {
         if (planetProgress(planet) !== 0 || planet?.event) return '';
         const regional = (planet.regions || []).some(r => r?.isAvailable === true);
-        return `<p class="hd-region-note">0% planetário na leitura da API. ${regional
-            ? 'Há regiões em operação: consulte o progresso separado em Ver regiões.'
-            : 'Isso não permite medir o impacto bruto dos Helldivers.'}</p>`;
+        const explanation = 'A última leitura informa 0% de libertação do planeta. Isso não significa que os Helldivers estejam sem agir.'
+            + (regional ? ' As regiões têm progresso separado: confira em Ver regiões.' : ' Essa porcentagem não mede todo o esforço dos jogadores.');
+        return `<button type="button" class="planet-progress-help" data-progress-help="${escapeHTML(explanation)}" aria-label="Por que a libertação está em zero?" aria-haspopup="dialog">?</button>`;
+    }
+
+    function showProgressHelp(button) {
+        let dialog = $('planet-progress-help-dialog');
+        if (!dialog) {
+            dialog = document.createElement('dialog');
+            dialog.id = 'planet-progress-help-dialog';
+            dialog.className = 'planet-progress-help-dialog';
+            dialog.setAttribute('aria-labelledby','planet-progress-help-title');
+            dialog.innerHTML = '<h2 id="planet-progress-help-title">Por que está em 0%?</h2><p></p><form method="dialog"><button type="submit" autofocus>Entendi</button></form>';
+            dialog.addEventListener('click', e => { if (e.target === dialog) { const b=dialog.getBoundingClientRect(); if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom) dialog.close(); } });
+            document.body.append(dialog);
+        }
+        dialog.querySelector('p').textContent = button.dataset.progressHelp;
+        dialog.showModal();
     }
 
     // Registra um snapshot SOMENTE quando chega uma nova coleta da API.
@@ -1152,11 +1167,10 @@
                     <div class="frente-row defesa-bar-label"><span>Invasão inimiga</span><strong>${defenseRed == null ? '—' : defenseRed.toFixed(2) + '%'}</strong></div>
                     <div class="progress defesa-progress-red"><i style="width:${defenseRed == null ? 0 : defenseRed}%;--accent:#ff4242"></i></div>
                     ` : `
-                    <div class="frente-row"><span>Controle planetário</span><strong>${progressText(pct)}</strong></div>
+                    <div class="frente-row"><span>Controle planetário</span><span class="planet-progress-value"><strong>${progressText(pct)}</strong>${planetProgressNote(p)}</span></div>
                     <div class="progress"><i style="width:${pct ?? 0}%"></i></div>
                     `}
 
-                    ${planetProgressNote(p)}
                     ${window.HDBRRegions?.render(p) || ''}
                     <div class="tatico-metricas">
                         <div class="tatico-metrica metric-helldivers">
@@ -1400,7 +1414,7 @@
             regionBox.dataset.regionPanel = '';
             modal.querySelector('.tactical-modal-metrics').before(regionBox);
         }
-        regionBox.innerHTML = planetProgressNote(p) + (window.HDBRRegions?.render(p) || '');
+        regionBox.innerHTML = window.HDBRRegions?.render(p) || '';
         const event = p.event;
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';
@@ -1431,7 +1445,7 @@
             <span>${escapeHTML(biome)}</span>`;
         modal.querySelector('.tactical-modal-progress-label').innerHTML = defense
             ? `<span>DEFESA HELLDIVERS</span><strong>${progressText(pct)}</strong>`
-            : `<span>CONTROLE PLANETÁRIO</span><strong>${progressText(pct)}</strong>`;
+            : `<span>CONTROLE PLANETÁRIO</span><span class="planet-progress-value"><strong>${progressText(pct)}</strong>${planetProgressNote(p)}</span>`;
         modal.querySelector('.tactical-modal-progress i').style.width = `${pct ?? 0}%`;
         modal.querySelector('.tactical-modal-metrics').innerHTML = defense
             ? `
@@ -1478,6 +1492,10 @@
     }
 
     function bindFilters() {
+        document.addEventListener('click', event => {
+            const button = event.target.closest('[data-progress-help]');
+            if (button) showProgressHelp(button);
+        });
         document.querySelectorAll('.guerra-filter').forEach(btn=>btn.addEventListener('click',()=>{
             document.querySelectorAll('.guerra-filter').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active'); activeFilter=btn.dataset.filter||'all'; renderFrontCards();
@@ -1486,11 +1504,13 @@
 
         // Cards permanecem compactos; os detalhes abrem em um dossiê modal sobre a mesma página.
         $('frentes')?.addEventListener('click', event => {
+            if (event.target.closest('[data-progress-help]')) return;
             const card = event.target.closest('.frente-card');
             if (!card || !$('frentes').contains(card)) return;
             renderTacticalModal(findCampaignByKey(card.dataset.planetKey));
         });
         $('frentes')?.addEventListener('keydown', event => {
+            if (event.target.closest('[data-progress-help]')) return;
             if (event.key !== 'Enter' && event.key !== ' ') return;
             const card = event.target.closest('.frente-card');
             if (!card) return;
@@ -1500,7 +1520,7 @@
         $('tactical-modal')?.addEventListener('click', event => {
             if (event.target.matches('[data-close-tactical]') || event.target.closest('[data-close-tactical]')) closeTacticalModal();
         });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape') closeTacticalModal(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('planet-progress-help-dialog')?.open) closeTacticalModal(); });
     }
 
     let updateBusy=false;

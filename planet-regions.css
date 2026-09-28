@@ -1,4 +1,4 @@
-/* Estilos isolados: sem imagens, animações ou alterações nas barras planetárias. */
+/* Estilos isolados: sem animações ou alterações nas barras planetárias. */
 .hd-region-list{display:block;min-width:0;margin:14px 0;text-align:left;white-space:normal;font:13px/1.45 Arial,sans-serif;color:#dce4eb}
 .hd-region-list .hd-region-heading{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:8px;color:#ced8e2}
 .hd-region-list .hd-region-heading>span{border:1px solid #455362;border-radius:20px;padding:1px 7px}
@@ -30,3 +30,7 @@
 .hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-title>span,
 .hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-value>strong{color:#70e3a2}
 .hd-region-list :is(.hd-region-controlled,.hd-region-completed) .hd-region-track>span{background:#48cc85}
+
+/* Tipo regional confirmado pelo catálogo; o progresso mantém sua cor original. */
+.hd-region-list .hd-region-kind{display:flex;align-items:center;gap:8px;margin-top:8px;font:700 12px/1.4 Arial,sans-serif;color:#dce4eb}
+.hd-region-list .hd-region-kind img{display:block;flex:none;width:30px;height:30px;object-fit:contain}

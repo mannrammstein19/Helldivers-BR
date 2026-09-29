@@ -674,7 +674,7 @@
                     <div class="mapa-offensive-progress"><i style="width:${progress>0?`max(${progress.toFixed(2)}%, 2px)`:'0%'}"></i></div>
                     ${window.HDBRRegions?.render(p, 'planets') || ''}
                     <div class="mapa-offensive-metrics">
-                        <div><small>HELLDIVERS</small><strong>${players.toLocaleString('pt-BR')}</strong></div>
+                        <div><small><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS</small><strong>${players.toLocaleString('pt-BR')}</strong></div>
                         <div><small>REGEN./H</small><strong>${formatRate(regen)}/h</strong></div>
                         <div><small>RITMO</small><strong>${escapeHTML(rateText)}</strong></div>
                         <div><small>ESTIMATIVA</small><strong>${escapeHTML(etaText)}</strong></div>

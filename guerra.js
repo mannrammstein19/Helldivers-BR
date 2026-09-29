@@ -1174,7 +1174,7 @@
                     ${window.HDBRRegions?.render(p) || ''}
                     <div class="tatico-metricas">
                         <div class="tatico-metrica metric-helldivers">
-                            <span class="metric-label">👥 Helldivers operando</span>
+                            <span class="metric-label"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">Helldivers operando</span>
                             <strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong>
                             <small>${playerShare}% do efetivo ativo</small>
                         </div>
@@ -1449,12 +1449,12 @@
         modal.querySelector('.tactical-modal-progress i').style.width = `${pct ?? 0}%`;
         modal.querySelector('.tactical-modal-metrics').innerHTML = defense
             ? `
-            <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
+            <div><small><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
             <div><small>${defense ? 'AVANÇO DA DEFESA / HORA' : 'AVANÇO LÍQUIDO / HORA'}</small><strong class="rate-positive">${formatRate(rate)}</strong><span>ritmo observado</span></div>
             <div><small>IMPACTO INIMIGO / HORA</small><strong class="rate-negative">${formatRate(defenseRedRate)}</strong><span>ritmo do relógio da invasão</span></div>
             <div><small>INVASÃO / TEMPO</small><strong class="rate-negative">${defenseRed == null ? '—' : defenseRed.toFixed(2) + '%'}</strong><span>${escapeHTML(trend)} · ${escapeHTML(eta || 'prazo indisponível')}</span></div>`
             : `
-            <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
+            <div><small><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong><span>${players == null ? '—' : ((players/totalPlayers)*100).toFixed(1)}% do efetivo ativo</span></div>
             <div><small>${defense ? 'AVANÇO DA DEFESA / HORA' : 'AVANÇO LÍQUIDO / HORA'}</small><strong class="${rate == null ? '' : rate >= 0 ? 'rate-positive' : 'rate-negative'}">${formatRate(rate)}</strong><span>saldo planetário; não é impacto bruto</span></div>
             <div><small>PRESSÃO ${escapeHTML(factionName(enemy))} / HORA</small><strong class="enemy-rate" style="color:${factionColor(enemy, false)} !important">${liberationPressure == null ? '—' : liberationPressure.toFixed(2)+'%/h'}</strong><span>${liberationPressure < 0 ? 'valor negativo favorece a libertação' : 'regeneração planetária registrada'}</span></div>
             <div><small>VITÓRIA ESTIMADA</small><strong>${escapeHTML(eta || (rate==null?'aguardando amostras':rate<=0?'sem avanço líquido':'sem prazo confiável'))}</strong><span>${escapeHTML(trend)}</span></div>`;
@@ -1469,7 +1469,7 @@
                 <div><small>CONTROLE / PROPRIETÁRIO</small><strong>${escapeHTML(ownerLabel)}</strong></div>
                 <div><small>BIOMA</small><strong>${escapeHTML(biome)}</strong></div>
                 <div><small>CLIMA / TELEMETRIA</small><strong>${escapeHTML(climateRaw)}</strong></div>
-                <div><small>HELldivers OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong></div>
+                <div><small><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS OPERANDO</small><strong>${players == null ? 'indisponível' : players.toLocaleString('pt-BR')}</strong></div>
                 <div><small>SITUAÇÃO</small><strong>${intelEta}</strong></div>
             </div>`;
         modal.querySelector('.tactical-modal-hazards').innerHTML = hazards.length ? hazards.map(h=>`<div class="tactical-hazard">

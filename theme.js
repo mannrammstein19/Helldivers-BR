@@ -470,3 +470,16 @@
  const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('mobile-nav.css?v=20260928',base);document.head.append(css);
  const script=document.createElement('script');script.src=new URL('mobile-nav.js?v=20260928',base);script.async=false;document.head.append(script);
 })();
+
+/* Aplicativos Android: entrada única no menu compartilhado. */
+(() => {
+ const base = new URL('.', document.currentScript.src);
+ const add = () => {
+  const list = document.querySelector('.sidebar .menu-list');
+  if (!list || [...list.querySelectorAll('a')].some(a => /\/aplicativos(?:\.html)?$/.test(new URL(a.href).pathname))) return;
+  const item = document.createElement('li'), link = document.createElement('a');
+  link.href = new URL('aplicativos.html', base).href; link.textContent = 'Aplicativos Android';
+  item.append(link); list.append(item);
+ };
+ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add, {once:true}); else add();
+})();

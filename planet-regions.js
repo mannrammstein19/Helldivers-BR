@@ -53,7 +53,7 @@
                 <div class="hd-region-value"><span>Progresso da região</span><strong>${label}</strong></div>
                 ${pct === null ? (r.note ? '' : '<div class="hd-region-unknown">Aguardando uma leitura válida da região.</div>') : `<div class="hd-region-track" role="progressbar" aria-label="${escape(r.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>`}
                 ${r.note ? `<div class="hd-region-note">${escape(r.note)}</div>` : ''}
-                ${r.players === null ? '' : `<div class="hd-region-players">${r.players.toLocaleString('pt-BR')} Helldivers na região</div>`}</div>`;
+                ${r.players === null ? '' : `<div class="hd-region-players"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">${r.players.toLocaleString('pt-BR')} Helldivers na região</div>`}</div>`;
             }).join('')}
             <p class="hd-region-note">Progresso independente. A barra do planeta acompanha as atualizações do jogo pela API.</p>
             <small class="hd-region-reading">${escape(stamp)}</small>

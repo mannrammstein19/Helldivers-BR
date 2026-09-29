@@ -939,3 +939,5 @@ html[data-hd-theme="meridian"] body .site-search-result:focus{
     .site-search-results{max-height:50vh}
 }
 
+
+.hd-active-icon{display:inline-block;width:16px;height:16px;object-fit:contain;vertical-align:-3px;margin-right:5px}

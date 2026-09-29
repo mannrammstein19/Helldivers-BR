@@ -1,10 +1,10 @@
 {
   "portal": {
-    "url": null,
+    "url": "https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/apps/helldivers-br-portal.apk",
     "version": null
   },
   "companion": {
-    "url": null,
+    "url": "https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/apps/helldivers-br-companion.apk",
     "version": null
   }
 }

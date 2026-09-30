@@ -3,15 +3,15 @@
   "state": "active",
   "key": "1715805482",
   "first_seen_at": "2026-09-27T22:19:53.155623Z",
-  "last_seen_at": "2026-09-30T14:08:08.072464Z",
-  "last_progress_update_at": "2026-09-30T14:08:08.072464Z",
-  "final_percent": 61.06,
+  "last_seen_at": "2026-09-30T19:18:21.994384Z",
+  "last_progress_update_at": "2026-09-30T19:18:21.994384Z",
+  "final_percent": 65.64,
   "outcome_source": null,
   "order": {
     "id": 1715805482,
     "progress": [
-      15761122,
-      2557974
+      16848972,
+      2842709
     ],
     "title": "MAJOR ORDER",
     "briefing": "Kill the requisite enemies to ensure early investors in the TD-110 Maelstrom Tanks receive their promised deluxe features.",
@@ -82,9 +82,9 @@
         "amount": 40
       }
     ],
-    "expiration": "2026-10-01T19:30:22.2185486Z",
+    "expiration": "2026-10-01T19:30:50.5299712Z",
     "flags": 0
   },
   "target_planets": {},
-  "last_checked_at": "2026-09-30T14:08:07.717667Z"
+  "last_checked_at": "2026-09-30T19:18:21.780553Z"
 }

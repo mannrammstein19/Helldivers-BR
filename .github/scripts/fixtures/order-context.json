@@ -1,0 +1,99 @@
+{
+  "snapshot": {
+    "schema": 1,
+    "state": "active",
+    "key": "1715805482",
+    "first_seen_at": "2026-09-27T22:19:53.155623Z",
+    "last_seen_at": "2026-10-01T16:07:31.796631Z",
+    "last_progress_update_at": "2026-10-01T16:07:31.796631Z",
+    "final_percent": 81.26,
+    "outcome_source": null,
+    "order": {
+      "id": 1715805482,
+      "progress": [
+        20500981,
+        3876936
+      ],
+      "title": "MAJOR ORDER",
+      "briefing": "Kill the requisite enemies to ensure early investors in the TD-110 Maelstrom Tanks receive their promised deluxe features.",
+      "description": null,
+      "tasks": [
+        {
+          "type": 3,
+          "values": [
+            2,
+            0,
+            25000000,
+            2651633799,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valueTypes": [
+            1,
+            2,
+            3,
+            4,
+            6,
+            5,
+            8,
+            9,
+            11,
+            12
+          ]
+        },
+        {
+          "type": 3,
+          "values": [
+            3,
+            0,
+            5000000,
+            2664856027,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valueTypes": [
+            1,
+            2,
+            3,
+            4,
+            6,
+            5,
+            8,
+            9,
+            11,
+            12
+          ]
+        }
+      ],
+      "reward": {
+        "type": 1,
+        "amount": 40
+      },
+      "rewards": [
+        {
+          "type": 1,
+          "amount": 40
+        }
+      ],
+      "expiration": "2026-10-01T19:31:10.34766Z",
+      "flags": 0
+    },
+    "target_planets": {},
+    "last_checked_at": "2026-10-01T16:07:31.557366Z"
+  },
+  "dispatch": {
+    "id": 3942,
+    "published": "2026-10-01T19:32:33Z",
+    "type": 0,
+    "message": "<i=3>MAJOR ORDER FAILED</i>\n\nInsufficient materials have been harvested by the Helldivers to fulfill production quotas for deluxe <i=1>Maelstrom</i> Tank features. This has caused significant distress amongst the early investors who were promised these features as incentives, resulting in a precipitous drop in pre-sales and a decrease in share value.\n\nAs a result, the <i=1>Maelstrom</i> Tank project is now at risk of termination."
+  },
+  "now": "2026-10-01T19:45:00Z"
+}

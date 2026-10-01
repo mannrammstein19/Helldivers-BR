@@ -11,6 +11,20 @@ window.HDBROrderState = (() => {
   function targetIds(order) {
     return [...new Set((order.tasks||[]).map(t=>{const i=(t.valueTypes||[]).indexOf(12);return i>=0?String(t.values?.[i]??''):''}).filter(v=>v&&v!=='0'))];
   }
+  const contextStop = new Set('THE AND FOR WITH FROM THAT THIS HAVE HAS WERE WAS ARE INTO THEIR THEM THEY YOUR YOU ITS OUR NOT NOW MUST BEEN WILL SHALL ORDER MAJOR PRINCIPAL ORDEM PEDIDO HELLDIVERS HELLDIVER SUPER EARTH TERRA ENEMIES ENEMY INIMIGOS INIMIGO KILL KILLS KILLED REQUIRED REQUISITE ENSURE RECEIVE RECEIVED PARA PELOS PELAS COMO MAIS ESTA ESTE ESSA ESSE TODOS TODAS SEUS SUAS SENDO DEVE DEVEM'.split(' '));
+  const contextWords = v => norm(v).split(' ').filter(w => /^[A-Z]+$/.test(w)&&w.length>=4&&!contextStop.has(w)).map(w=>w.endsWith('S')?w.slice(0,-1):w);
+  function contextualMatch(order,msg,time,candidates) {
+    const expiry=date(order.expiration??order.expiresAt??order.expireTime);
+    if(!Number.isFinite(expiry)||time<expiry-300000||time>expiry+86400000)return false;
+    const next=/^(?:NEW MAJOR ORDER|NOVA ORDEM (?:MAIOR|PRINCIPAL)|NOVO PEDIDO PRINCIPAL)\b/;
+    if(candidates.some(({d,time:t})=>t>=expiry-300000&&t<=time&&(next.test(norm(d.title))||next.test(norm(d.message)))))return false;
+    const words=contextWords([order.title,order.briefing,order.description].map(clean).join(' '));
+    const announcement=contextWords(msg),shared=new Set(announcement);
+    const common=new Set(words.filter(w=>shared.has(w)));
+    const pairs=w=>new Set(w.slice(1).map((word,i)=>w[i]+' '+word));
+    const a=pairs(words),b=pairs(announcement);
+    return common.size>=4&&[...a].filter(pair=>b.has(pair)).length>=2;
+  }
   function outcome(order, snapshot, dispatches, catalog={}, now=Date.now()) {
     const start=date(snapshot?.first_seen_at);
     if(!Number.isFinite(start))return null;
@@ -29,7 +43,8 @@ window.HDBROrderState = (() => {
       const planetMatch=ids.length>0&&targets.every(name=>name&&contains(msg,name));
       const orderTitle=norm(order.title);
       const specificTitle=orderTitle.split(' ').length>=3&&!['MAJOR ORDER','ORDEM MAIOR','PEDIDO PRINCIPAL'].includes(orderTitle)&&contains(msg,orderTitle);
-      if(!explicit&&!planetMatch&&!(ids.length===0&&specificTitle))continue;
+      const contextual=ids.length===0&&contextualMatch(order,msg,time,candidates);
+      if(!explicit&&!planetMatch&&!(ids.length===0&&specificTitle)&&!contextual)continue;
       return {state:success?'completed':'failed',outcome_source:'dispatch',outcome_dispatch:{id:d.id??null,published:new Date(time).toISOString(),message:clean(d.message||d.title)},ended_at:new Date(time).toISOString()};
     }
     return null;

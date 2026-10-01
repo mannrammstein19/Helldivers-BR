@@ -212,6 +212,33 @@ def target_ids(order):
     return result
 
 
+# Palavras genéricas não vinculam um comunicado a uma ordem específica.
+CONTEXT_STOP = set("THE AND FOR WITH FROM THAT THIS HAVE HAS WERE WAS ARE INTO THEIR THEM THEY YOUR YOU ITS OUR NOT NOW MUST BEEN WILL SHALL ORDER MAJOR PRINCIPAL ORDEM PEDIDO HELLDIVERS HELLDIVER SUPER EARTH TERRA ENEMIES ENEMY INIMIGOS INIMIGO KILL KILLS KILLED REQUIRED REQUISITE ENSURE RECEIVE RECEIVED PARA PELOS PELAS COMO MAIS ESTA ESTE ESSA ESSE TODOS TODAS SEUS SUAS SENDO DEVE DEVEM".split())
+
+def context_words(value):
+    return [word[:-1] if word.endswith("S") else word
+            for word in normalized(value).split()
+            if word.isalpha() and len(word) >= 4 and word not in CONTEXT_STOP]
+
+
+def contextual_dispatch_match(order, message, time, candidates):
+    """Título genérico exige prazo, contexto forte e ausência de novo anúncio."""
+    expiry = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
+    if not expiry or not expiry-timedelta(minutes=5) <= time <= expiry+timedelta(hours=24):
+        return False
+    new_order = re.compile(r"^(?:NEW MAJOR ORDER|NOVA ORDEM (?:MAIOR|PRINCIPAL)|NOVO PEDIDO PRINCIPAL)\b")
+    if any(expiry-timedelta(minutes=5) <= dt <= time and
+           (new_order.search(normalized(d.get("title"))) or new_order.search(normalized(d.get("message"))))
+           for dt, d in candidates):
+        return False
+    words = context_words(" ".join(clean_text(order.get(k)) for k in ("title", "briefing", "description")))
+    announcement = context_words(message)
+    common = set(words) & set(announcement)
+    pairs = set(zip(words, words[1:])) & set(zip(announcement, announcement[1:]))
+    # Ex.: EARLY INVESTORS + MAELSTROM TANKS. Não basta 'ordem', 'inimigos' ou o prazo.
+    return len(common) >= 4 and len(pairs) >= 2
+
+
 def dispatch_outcome(dispatches, snapshot, now=None):
     now = now or now_utc()
     start = parse_date(snapshot.get("first_seen_at"))
@@ -243,7 +270,8 @@ def dispatch_outcome(dispatches, snapshot, now=None):
         planets = bool(ids) and all(name and f" {name} " in msg for name in names)
         order_title = normalized(order.get("title"))
         specific = len(order_title.split()) >= 3 and order_title not in {"MAJOR ORDER", "ORDEM MAIOR", "PEDIDO PRINCIPAL"} and f" {order_title} " in msg
-        if not explicit and not planets and not (not ids and specific):
+        contextual = not ids and contextual_dispatch_match(order, msg, dt, candidates)
+        if not explicit and not planets and not (not ids and specific) and not contextual:
             continue
         return {
             "state": "completed" if success else "failed",

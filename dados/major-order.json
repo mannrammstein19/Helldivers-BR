@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "state": "active",
+  "state": "failed",
   "key": "1715805482",
   "first_seen_at": "2026-09-27T22:19:53.155623Z",
   "last_seen_at": "2026-10-01T16:07:31.796631Z",
   "last_progress_update_at": "2026-10-01T16:07:31.796631Z",
   "final_percent": 81.26,
-  "outcome_source": null,
+  "outcome_source": "dispatch",
   "order": {
     "id": 1715805482,
     "progress": [
@@ -86,5 +86,11 @@
     "flags": 0
   },
   "target_planets": {},
-  "last_checked_at": "2026-10-01T16:07:31.557366Z"
+  "last_checked_at": "2026-10-01T19:49:16.476443Z",
+  "ended_at": "2026-10-01T19:32:31Z",
+  "outcome_dispatch": {
+    "id": 3942,
+    "published": "2026-10-01T19:32:31Z",
+    "message": "MAJOR ORDER FAILED \n\nInsufficient materials have been harvested by the Helldivers to fulfill production quotas for deluxe  Maelstrom  Tank features. This has caused significant distress amongst the early investors who were promised these features as incentives, resulting in a precipitous drop in pre-sales and a decrease in share value.\n\nAs a result, the  Maelstrom  Tank project is now at risk of termination."
+  }
 }

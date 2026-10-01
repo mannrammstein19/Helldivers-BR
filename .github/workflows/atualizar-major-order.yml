@@ -21,6 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Testar confirmacao de resultado
+        run: |
+          python3 .github/scripts/test_major_order_result.py
+          node .github/scripts/test_order_state.cjs
+
       - name: Consultar a Ordem Maior
         run: python3 .github/scripts/update_major_order.py
 

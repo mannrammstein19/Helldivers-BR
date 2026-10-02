@@ -3,7 +3,7 @@ const GAME='https://api.live.prod.thehelldiversgame.com',COMMUNITY='https://api.
 export const routes=Object.freeze({'/api/v1/planets':'planets','/api/v1/campaigns':'campaigns','/api/v1/assignments':'assignments','/api/v1/dispatches':'dispatches','/api/v2/space-stations':'dss','/api/v1/steam':'steam'});
 const paths={planets:'/api/v1/planets',campaigns:'/api/v1/campaigns',assignments:'/api/v1/assignments',dispatches:'/api/v1/dispatches',dss:'/api/v2/space-stations',steam:'/api/v1/steam'};
 export class CentralStore{
- constructor(storage,{fetcher=fetch,now=Date.now,wait=ms=>new Promise(r=>setTimeout(r,ms)),contact='https://github.com/mannrammstein19/Helldivers-BR'}={}){this.storage=storage;this.fetcher=fetcher;this.now=now;this.wait=wait;this.contact=contact;this.memory=new Map();this.pending=new Map();this.queue=Promise.resolve();this.ready=this.load();}
+ constructor(storage,{fetcher=(...args)=>globalThis.fetch(...args),now=Date.now,wait=ms=>new Promise(r=>setTimeout(r,ms)),contact='https://github.com/mannrammstein19/Helldivers-BR'}={}){this.storage=storage;this.fetcher=fetcher;this.now=now;this.wait=wait;this.contact=contact;this.memory=new Map();this.pending=new Map();this.queue=Promise.resolve();this.ready=this.load();}
  async load(){const entries=await this.storage.list();for(const [key,value]of entries)this.memory.set(key,value);}
  async save(key,value){await this.storage.put(key,value);this.memory.set(key,value);return value;}
  ttl(name){return name==='steam'?900000:name==='dispatches'?120000:60000;}

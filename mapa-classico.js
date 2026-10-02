@@ -58,6 +58,9 @@
         return owner || 'Desconhecida';
     }
     const FACTION_COLORS = { unknown:'#6b7280', human:'#d7d52c', terminid:'#ff9900', automaton:'#ff4242', illuminate:'#8b3fd6' };
+    // Nas rotas, azul representa a Super Terra; os nomes mantêm sua paleta atual.
+    const ROUTE_COLORS = { ...FACTION_COLORS, human:'#66c9f1' };
+    const ROUTE_ENERGY_COLORS = { human:'#c1efff', automaton:'#ffb5b5', terminid:'#ffe1a6', illuminate:'#ddc2ff' };
     function factionColor(owner) { return FACTION_COLORS[factionKey(owner)] || FACTION_COLORS.human; }
 
     // Ícones de facção usados dentro dos planetas. Mantemos só 4 recursos e
@@ -852,12 +855,26 @@
         return links;
     }
 
+    function supplyRoutePaint(defs,key,a,b) {
+        const from=ROUTE_COLORS[factionKey(a.raw.currentOwner||a.raw.owner)];
+        const to=ROUTE_COLORS[factionKey(b.raw.currentOwner||b.raw.owner)];
+        if(from===to) return from;
+        const id='supply-gradient-'+key;
+        // Coordenadas reais também funcionam em linhas horizontais/verticais.
+        const gradient=svgEl('linearGradient',{id,gradientUnits:'userSpaceOnUse',x1:a.x,y1:a.y,x2:b.x,y2:b.y});
+        gradient.appendChild(svgEl('stop',{offset:'0%','stop-color':from}));
+        gradient.appendChild(svgEl('stop',{offset:'100%','stop-color':to}));
+        defs.appendChild(gradient);
+        return `url(#${id})`;
+    }
+
     function drawInvasions(planets,group,mapSize) {
         invasionLinks=getInvasionLinks(planets);
         const defs=$('mapa-svg').querySelector('defs');
+        const routes=new Map(lineRecords.map(record=>[[record.a,record.b].sort((a,b)=>a-b).join('-'),record]));
         ['human','automaton','terminid','illuminate'].forEach(key=>{
             const marker=svgEl('marker',{id:'invasion-arrow-'+key,viewBox:'0 0 10 10',refX:10,refY:5,markerWidth:7,markerHeight:7,orient:'auto',markerUnits:'userSpaceOnUse'});
-            marker.appendChild(svgEl('path',{d:'M 0 1 L 10 5 L 0 9 L 2.5 5 Z',fill:FACTION_COLORS[key]}));
+            marker.appendChild(svgEl('path',{d:'M 0 1 L 10 5 L 0 9 L 2.5 5 Z',fill:ROUTE_COLORS[key]}));
             defs.appendChild(marker);
         });
         invasionLinks.forEach(({source,target,faction})=>{
@@ -867,8 +884,17 @@
             const startPad=mapSize/260*1.7,endPad=mapSize/260*(isSuperEarth(target)?4.8:2.8);
             if(distance<=startPad+endPad) return;
             const ux=(x2-x1)/distance,uy=(y2-y1)/distance;
-            const path=svgEl('path',{class:'mapa-invasion-arrow',d:`M ${x1+ux*startPad} ${y1+uy*startPad} L ${x2-ux*endPad} ${y2-uy*endPad}`,stroke:FACTION_COLORS[faction],'marker-end':`url(#invasion-arrow-${faction})`,'data-source':source.index,'data-target':target.index});
+            const d=`M ${x1+ux*startPad} ${y1+uy*startPad} L ${x2-ux*endPad} ${y2-uy*endPad}`;
+            const direction={'data-source':source.index,'data-target':target.index};
+            const route=routes.get([source.index,target.index].sort((a,b)=>a-b).join('-'));
+            if(route) {
+                route.line.classList.add('attack-route');
+                route.line.style.setProperty('--route-attack-color',ROUTE_COLORS[faction]);
+            }
+            const path=svgEl('path',{class:'mapa-invasion-arrow',d,stroke:ROUTE_COLORS[faction],'marker-end':`url(#invasion-arrow-${faction})`,...direction});
             const title=svgEl('title');title.textContent=`${planetName(source)} → ${planetName(target)} · ${faction==='human'?'Libertação':'Invasão'}`;path.appendChild(title);group.appendChild(path);
+            // Caminho sempre nasce no atacante: dashoffset decrescente leva o pulso ao alvo.
+            group.appendChild(svgEl('path',{class:'mapa-route-energy',d,pathLength:100,stroke:ROUTE_ENERGY_COLORS[faction],...direction,'aria-hidden':'true'}));
         });
     }
 
@@ -1434,8 +1460,9 @@
                 const isFront = fA !== fB;
                 const activeRoute = campaignIndexes.has(String(raw.index)) || campaignIndexes.has(String(targetIndex));
                 const common = { x1:x, y1:y, x2:target.x, y2:target.y, 'data-a':raw.index, 'data-b':targetIndex, 'vector-effect':'non-scaling-stroke' };
-                const base = isCoarseInput() ? null : svgEl('line', { ...common, class:`mapa-supply-line-base${isFront ? ' mapa-front-line-base' : ''}${activeRoute ? ' active-front-route' : ''}` });
+                const base = null;
                 const line = svgEl('line', { ...common, class:`mapa-supply-line${isFront ? ' mapa-front-line' : ''}${activeRoute ? ' active-front-route' : ''}` });
+                line.style.setProperty('--route-paint',supplyRoutePaint(defs,key,{raw,x,y},target));
                 if(base) linesGroup.appendChild(base);
                 linesGroup.appendChild(line);
                 lineRecords.push({ a:raw.index, b:targetIndex, base, line, isFront });
@@ -1671,7 +1698,7 @@
             line.classList.toggle('search-route-hidden',hidden);base?.classList.toggle('search-route-hidden',hidden);
             line.classList.toggle('search-route-match',!!q&&!hidden);base?.classList.toggle('search-route-match',!!q&&!hidden);
         });
-        $('mapa-viewport')?.querySelectorAll?.('.mapa-invasion-arrow').forEach(path=>path.classList.toggle('search-route-hidden',!!q&&!matching.has(path.getAttribute('data-source'))&&!matching.has(path.getAttribute('data-target'))));
+        $('mapa-viewport')?.querySelectorAll?.('.mapa-invasion-arrow,.mapa-route-energy').forEach(path=>path.classList.toggle('search-route-hidden',!!q&&!matching.has(path.getAttribute('data-source'))&&!matching.has(path.getAttribute('data-target'))));
     }
 
     // ================================================================
@@ -1738,7 +1765,7 @@
                 state.committedScale=state.scale;state.committedTx=state.tx;state.committedTy=state.ty;
                 state.hybrid=false;
             }
-            for(const [name,width] of [['normal',.72],['front',1.15],['selected',1.55]]) {
+            for(const [name,width] of [['normal',2],['front',2.6],['selected',3.2]]) {
                 vp.style.setProperty('--route-'+name,String(width/cssScale));
             }
             // Tamanho final das setas independente do motor SVG/CSS.
@@ -1746,7 +1773,7 @@
             const arrowKey=String(arrowScale);
             if(vp.dataset.arrowScale!==arrowKey && arrowScale>0) {
                 vp.dataset.arrowScale=arrowKey;
-                vp.style.setProperty('--mapa-arrow-width',String(1.4/arrowScale));
+                vp.style.setProperty('--mapa-arrow-width',String(3/arrowScale));
                 for(const key of ['human','automaton','terminid','illuminate']) {
                     const marker=svg.querySelector('#invasion-arrow-'+key);
                     if(marker) {

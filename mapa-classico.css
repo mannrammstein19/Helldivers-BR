@@ -1216,3 +1216,23 @@ html:has(body.mapa-immersive){zoom:1!important;}
  .mapa-front-expanded{max-height:220px;overflow:auto;overscroll-behavior:contain;}
 }
 @media(prefers-reduced-motion:reduce){#mapa-top-fronts>.mapa-top-front{transition:none;}}
+
+/* Rotas táticas: cor de cada ponta, fluxo apenas em ataques identificados. */
+#mapa-viewport .mapa-supply-line,
+#mapa-viewport .mapa-supply-line.route-connected{
+ stroke:var(--route-paint,#6b7280);stroke-linecap:round;
+ stroke-width:var(--route-normal,2);opacity:.7;
+}
+#mapa-viewport .mapa-front-line{stroke-width:var(--route-front,2.6);opacity:.88;}
+#mapa-viewport .mapa-supply-line.route-connected{stroke-width:var(--route-selected,3.2);opacity:1;}
+#mapa-viewport .mapa-supply-line.route-muted{opacity:.13;}
+#mapa-viewport:not(.hide-invasions) .mapa-supply-line.attack-route{stroke:var(--route-attack-color);}
+.mapa-route-energy{
+ fill:none;stroke-width:var(--mapa-arrow-width,3);stroke-linecap:round;
+ stroke-dasharray:12 88;animation:mapa-route-energy-flow 2.6s linear infinite;
+ pointer-events:none;opacity:.9;
+}
+@keyframes mapa-route-energy-flow{from{stroke-dashoffset:100;}to{stroke-dashoffset:0;}}
+#mapa-viewport.mapa-is-moving .mapa-route-energy{animation-play-state:paused;}
+#mapa-pan-host.optimized-mode #mapa-viewport.mapa-is-moving .mapa-route-energy{display:none;}
+@media (prefers-reduced-motion:reduce){.mapa-route-energy{display:none;animation:none;}}

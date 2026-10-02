@@ -618,7 +618,6 @@
                 <h3>${escapeHTML(title)}</h3>
                 <div class="mapa-mo-progress"><i style="width:${item.percent>0?`max(${item.percent.toFixed(2)}%, 2px)`:'0%'}"></i></div>
                 <div class="mapa-mo-progress-row"><span>${escapeHTML(counter)}</span><strong>${formatPercentDetailed(item.percent)}</strong></div>
-                ${window.HDBRRegions?.render(majorOrderTaskCampaign(item.task)?.planet, 'planets') || ''}
                 <div class="mapa-mo-task-status">${item.done?'✓ CUMPRIDO':'EM ANDAMENTO'}</div>
             </article>`;
         }).join('');
@@ -657,7 +656,12 @@
     function renderTopFronts() {
         const host=$('mapa-top-fronts');if(!host)return;
         const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
-        host.innerHTML=top.length?top.map(p=>`<button type="button" class="mapa-top-front" data-planet-index="${Number(p.index)}" style="--accent:${factionColor(p.event?.faction||p.currentOwner)}"><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Em operação'} · ${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</small></span></button>`).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
+        host.innerHTML=top.length?top.map(p=>{
+            const progress=warProgress(p),forecast=p.event?null:offensiveForecast(p);
+            const end=eventDates(p.event).end;
+            const time=p.event?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000)+' restantes':'Prazo indisponível'):(forecast?.eta?'Estimativa: '+forecast.eta:'Coletando estimativa');
+            return `<button type="button" class="mapa-top-front" data-planet-index="${Number(p.index)}" style="--accent:${factionColor(p.event?.faction||p.currentOwner)}"><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Libertação'} <b>${formatPercentDetailed(progress)}</b></small>${progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,progress))}%"></i></span>`}<span class="mapa-front-meta"><span>${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(time)}</span></span></span></button>`;
+        }).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
     }
 
     function renderOffensiveCampaigns() {
@@ -721,9 +725,9 @@
         const wrap=panel.parentElement, mobile=window.matchMedia('(max-width: 700px)').matches;
         panel.style.visibility='visible';
         panel.style.left=mobile?'8px':Math.max(8,wrap.clientWidth-panel.offsetWidth-16)+'px';
-        panel.style.top=mobile?'auto':'16px';
+        panel.style.top=mobile?'auto':'72px';
         panel.style.bottom=mobile?'8px':'auto';
-        panel.style.maxHeight=mobile?'62%':Math.max(80,wrap.clientHeight-32)+'px';
+        panel.style.maxHeight=mobile?'62%':Math.max(80,wrap.clientHeight-88)+'px';
     }
     function positionDossier() { positionInspector($('planet-modal')); }
     function positionQuickIntel() {
@@ -821,8 +825,8 @@
         const card = $('mapa-intel-card');
         if (!card || !p) return;
         cancelQuickIntelHide();
-        card.inert=false;
         if(quickIntelIndex!==String(p.index)) closePlanetModal(false);
+        card.inert=false;
         quickIntelPlanet = p;
         quickIntelIndex = String(p.index);
         const special=specialLocation(p);
@@ -1823,7 +1827,7 @@
         const statValue=value=>value==null||value===''||typeof value==='boolean'||!Number.isFinite(Number(value))||Number(value)<0?'—':Number(value).toLocaleString('pt-BR');
         const rows=[['MISSÕES VENCIDAS',stats.missionsWon],['MISSÕES PERDIDAS',stats.missionsLost],['BAIXAS DE HELLDIVERS',stats.deaths]];
         $('planet-dossier-history').innerHTML=rows.map(([label,value])=>`<div><small>${label}</small><strong>${statValue(value)}</strong></div>`).join('');
-        $('planet-dossier-regions').innerHTML=window.HDBRRegions?.render(p, 'planets') || '<p>Nenhuma região disponível para operações nesta leitura.</p>';
+        $('planet-dossier-regions').innerHTML=window.HDBRRegions?.render(p, 'planets') || '<p>Nenhuma região informada nesta leitura.</p>';
 
         const special=specialLocation(p);
         if(special) {

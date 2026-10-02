@@ -1062,3 +1062,71 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-tools .mapa-optimized-toggle{width:100%;min-height:42px;color:#d7d52c;background:#18212b;border:1px solid #46515e;border-radius:8px;cursor:pointer;}
 .mapa-tools .mapa-optimized-toggle.active{border-color:#498967;background:#143527;color:#b6efce;}
 .mapa-immersive .mapa-intel-photo{opacity:1;}
+
+/* Revisão 02: controles sobre a cartografia, sem reservar altura. */
+.mapa-immersive .mapa-screen-header{position:absolute;inset:12px 14px auto;z-index:20;padding:0;border:0;background:none;pointer-events:none;gap:8px;}
+.mapa-screen-header>*{pointer-events:auto;}
+.mapa-immersive .mapa-screen-header h1{display:none;}
+.mapa-immersive .mapa-screen-header .mapa-search{max-width:280px;flex:1 1 180px;background:#101820ed;}
+.mapa-tools .mapa-toolbar{right:0;}
+.mapa-immersive .mapa-panel{position:absolute;inset:0;width:100%;height:100%;}
+.mapa-immersive .mapa-main .mapa-viewport-wrap{width:100%;height:100%;max-height:none;min-height:0;aspect-ratio:auto;}
+.mapa-immersive .mapa-tactical-hud{display:none;}
+.mapa-top-fronts{top:76px;left:14px;width:280px;max-height:calc(100dvh - 150px);overflow:auto;scrollbar-width:thin;}
+.mapa-top-front{padding:0;overflow:hidden;gap:0;display:grid;grid-template-columns:66px minmax(0,1fr);min-height:104px;}
+.mapa-top-front img{width:66px;height:100%;min-height:104px;border-radius:0;object-fit:cover;}
+.mapa-front-content{display:block;padding:10px;}
+.mapa-top-front strong{font-size:17px;}
+.mapa-top-front small{font-size:11px;display:flex;justify-content:space-between;gap:5px;}
+.mapa-front-track{display:block;height:5px;margin:8px 0;background:#39414a;border-radius:4px;overflow:hidden;}
+.mapa-front-track i{display:block;height:100%;background:var(--accent);}
+.mapa-front-meta{display:grid;gap:3px;color:#c8d0d9;font:11px/1.3 Arial,sans-serif;font-variant-numeric:tabular-nums;}
+.mapa-operations{left:auto;right:14px;top:76px;bottom:auto;z-index:9;}
+.mapa-operations-content{left:auto;right:0;top:calc(100% + 8px);bottom:auto;width:min(320px,calc(100vw - 28px));max-height:calc(100dvh - 145px);padding:12px;}
+.mapa-operations .mapa-command-head{margin-bottom:8px;}
+.mapa-operations .mapa-command-head h2{font-size:18px;}
+.mapa-operations .mapa-command-head p,.mapa-operations .mapa-command-kicker{display:none;}
+.mapa-operations .mapa-major-order{font-size:12px;}
+.mapa-immersive #mapa-intel-card{width:min(330px,calc(100% - 32px));}
+.mapa-immersive #planet-modal{width:min(360px,calc(100% - 32px));}
+.mapa-immersive:has(#mapa-intel-card.open) .mapa-operations{display:none;}
+.mapa-immersive .mapa-zoom-controls{display:flex;flex-direction:row;right:14px;bottom:14px;gap:5px;}
+.mapa-telemetry{position:absolute;left:14px;bottom:14px;z-index:25;color:#ccd4df;}
+.mapa-telemetry>summary{display:grid;place-items:center;width:34px;height:34px;border:1px solid #66717d;border-radius:50%;background:#101820ed;list-style:none;cursor:pointer;font:bold 18px Arial,sans-serif;}
+.mapa-telemetry>summary::-webkit-details-marker{display:none;}
+.mapa-telemetry.is-stale>summary{color:#f2c66d;border-color:#aa853f;}
+.mapa-telemetry-content{position:absolute;left:0;bottom:44px;width:min(330px,calc(100vw - 28px));max-height:60dvh;overflow:auto;padding:14px;box-sizing:border-box;border:1px solid #46515e;border-radius:12px;background:#101820;font:12px/1.5 Arial,sans-serif;box-shadow:0 8px 30px #0009;overflow-wrap:anywhere;}
+.mapa-telemetry-content button{border:1px solid #66717d;border-radius:7px;padding:8px;background:#23313f;color:#fff;cursor:pointer;}
+@media(max-width:700px){
+ .mapa-immersive .mapa-screen-header{inset:max(8px,env(safe-area-inset-top)) 8px auto;gap:5px;}
+ .mapa-tools>summary{padding:12px 8px;font-size:10px;}
+ .mapa-home{width:38px;height:40px;}
+ .mapa-top-fronts{top:64px;left:8px;right:8px;width:auto;max-height:200px;}
+ .mapa-top-front{display:block;min-height:0;padding:0;}
+ .mapa-top-front img{display:none;}
+ .mapa-front-content{padding:7px;}
+ .mapa-top-front strong{font-size:13px;}
+ .mapa-top-front small{font-size:9px;display:block;}
+ .mapa-top-front small b{margin-left:4px;}
+ .mapa-front-meta{font-size:9px;}
+ .mapa-operations{top:auto;right:8px;left:auto;bottom:64px;}
+ .mapa-operations-content{top:auto;bottom:calc(100% + 8px);max-height:60dvh;width:min(320px,calc(100vw - 16px));}
+ .mapa-telemetry{left:8px;bottom:max(14px,env(safe-area-inset-bottom));}
+ .mapa-immersive .mapa-zoom-controls{right:8px;bottom:max(14px,env(safe-area-inset-bottom));}
+}
+@media(max-height:600px) and (min-width:701px){.mapa-top-fronts{width:240px;}.mapa-top-front{min-height:80px;}.mapa-top-front img{min-height:80px;}.mapa-front-content{padding:7px;}}
+.mapa-top-fronts>summary{width:fit-content;margin:0 0 8px;padding:8px 11px;border:1px solid #46515e;border-radius:8px;background:#101820ed;color:#ffe800;cursor:pointer;font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px;}
+.mapa-top-fronts:not([open]){width:auto;}
+.mapa-top-fronts>summary:focus-visible{outline:2px solid #ffe800;outline-offset:2px;}
+.mapa-operations .mapa-major-order-section{padding:0;}
+.mapa-operations .mapa-mo-summary{grid-template-columns:1fr 1fr;gap:6px;}
+.mapa-operations .mapa-mo-summary>div:first-child{grid-column:1/-1;}
+.mapa-operations .mapa-mo-summary>div{padding:7px 9px;}
+.mapa-operations .mapa-mo-summary strong{font-size:14px;}
+.mapa-operations .mapa-mo-summary small{font-size:9px;}
+.mapa-operations .mapa-mo-grid{grid-template-columns:1fr;gap:8px;}
+.mapa-operations .mapa-mo-task{padding:10px;}
+.mapa-operations .mapa-mo-task h3{font-size:16px;margin:7px 0;}
+.mapa-operations .mapa-mo-task-top,.mapa-operations .mapa-mo-task-status{font-size:9px;}
+.mapa-operations .mapa-mo-progress-row{font-size:10px;flex-wrap:wrap;}
+.mapa-operations .mapa-mo-progress-row strong{font-size:14px;}

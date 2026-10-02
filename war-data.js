@@ -13,6 +13,18 @@
   const all=[...metadata.values()],stale=all.filter(m=>m.stale),sources=new Set(all.filter(m=>!m.stale).map(m=>m.source));
   const live=document.querySelector('.guerra-live');
   if(live){live.textContent=!all.length?'CONECTANDO':stale.length===all.length?'ÚLTIMA LEITURA':stale.length?'TELEMETRIA PARCIAL':sources.size>1?'TELEMETRIA MISTA':sources.has('direct')?'TELEMETRIA DIRETA':'TELEMETRIA ONLINE';live.style.color=stale.length?'#f2c66d':'';}
+  if(document.body.classList.contains('mapa-immersive')){
+   let box=document.getElementById('war-data-status');
+   if(!box){box=document.createElement('details');box.id='war-data-status';box.className='mapa-telemetry';(document.querySelector('main')||document.body).append(box);}
+   box.classList.toggle('is-stale',stale.length>0);
+   const summary=document.createElement('summary');summary.textContent='?';summary.setAttribute('aria-label',stale.length?'Telemetria: atualização pendente. Ver leituras':'Ver horário e fonte das leituras');
+   const panel=document.createElement('div');panel.className='mapa-telemetry-content';
+   const title=document.createElement('strong');title.textContent=stale.length?'Atualização pendente · dados preservados':'Leituras da telemetria';panel.append(title);
+   const names={planets:'Planetas',campaigns:'Planetas e regiões',assignments:'Ordem Maior',dispatches:'Despachos',dss:'DSS',steam:'Steam'},origins={direct:'API direta',community:'Community API',steam:'Steam'};
+   for(const m of all){const line=document.createElement('p');line.textContent=(names[m.name]||m.name)+' · '+(m.time?new Date(m.time).toLocaleString('pt-BR'):'sem leitura válida')+' · '+(origins[m.source]||m.source||'fonte pendente')+(m.stale?' · última leitura salva':'')+(m.error?' · '+m.error:'');panel.append(line);}
+   const button=document.createElement('button');button.type='button';button.textContent='Tentar atualizar';button.disabled=inflight.size>0;button.addEventListener('click',refresh);panel.append(button);
+   box.replaceChildren(summary,panel);return;
+  }
   let box=document.getElementById('war-data-status');
   if(!box){box=document.createElement('div');box.id='war-data-status';box.setAttribute('role','status');box.style.cssText='position:relative;margin:12px;padding:10px 14px;border:1px solid #887337;border-radius:10px;background:#201c10;color:#f2dda0;font:13px/1.5 Arial,sans-serif;';(document.querySelector('main')||document.body).prepend(box);}
   box.hidden=!stale.length;if(!stale.length)return;

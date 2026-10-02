@@ -27,19 +27,19 @@
             const human = ['1', 'human', 'humans'].includes(owner);
             const enemy = ['2', '3', '4', 'terminids', 'automatons', 'illuminate'].includes(owner);
             const validHealth = health !== null && max !== null && max > 0 && health >= 0 && health <= max;
-            const completed = !human && validHealth && health === 0;
-            const state = human ? 'controlled' : completed ? 'completed' : r.isAvailable === false ? 'unavailable' : 'active';
+            const completed = human && r.isAvailable === false;
+            const state = r.isAvailable === true ? 'active' : completed ? 'controlled' : enemy && r.isAvailable === false ? 'unavailable' : 'unknown';
             // Indisponibilidade sem controle confirmado não prova conquista.
-            const percent = human || completed ? 100 : state === 'unavailable' ? null : validHealth ? (1 - health / max) * 100 : null;
+            const percent = state === 'controlled' ? 100 : state === 'active' && enemy && validHealth ? (1 - health / max) * 100 : null;
             return {readAt: number(r.telemetryReadAtMillis), stale: r.telemetryStale === true, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
                 players: state === 'active' && players !== null && players >= 0 ? Math.floor(players) : null,
-                status: human ? '✓ Sob controle da Super Terra' : completed ? '✓ Objetivo regional concluído' : state === 'unavailable' ? 'Indisponível para operações' : r.isAvailable === true ? 'Em operação' : 'Disponibilidade não informada',
-                note: human ? 'Região sob controle humano. Libertação regional: 100%.' : completed ? 'A vida da região chegou a zero nesta leitura.' : state === 'unavailable' ? (enemy ? 'A região não está aberta para operações. A indisponibilidade não confirma uma conquista.' : 'A leitura atual não permite confirmar a conquista desta região.') : ''};
+                status: state === 'controlled' ? 'Limpo / Recuperado' : state === 'active' ? 'Disponível para operações' : state === 'unavailable' ? 'Bloqueado para operações' : 'Aguardando confirmação',
+                note: state === 'controlled' ? 'Controle humano confirmado pela API regional.' : state === 'unavailable' ? 'A região ainda não está disponível para operações.' : state === 'unknown' ? 'A leitura não confirma a disponibilidade ou recuperação.' : ''};
         });
     }
     const activeRegions = planet => normalize(planet).filter(r => r.available && r.state === 'active');
     function details(planet, source = 'campaigns') {
-        const rows = activeRegions(planet);
+        const rows = document.body.classList.contains('mapa-immersive') ? normalize(planet) : activeRegions(planet);
         if (!rows.length) return '';
         const reading = window.HDBRWarData?.meta(`https://api.helldivers2.dev/api/v1/${source}`);
         const regionTimes = rows.map(r => r.readAt).filter(t => t > 0);
@@ -50,12 +50,15 @@
             ${rows.map(r => {
                 const pct = r.percent === null ? null : Math.floor(r.percent * 100 + 1e-8) / 100;
                 const label = pct === null ? 'Progresso indisponível' : pct.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '%';
-                return `<div class="hd-region-card hd-region-${r.state}"><div class="hd-region-title"><strong>${escape(r.name)}</strong><span>${escape(r.status)}</span></div>
-                ${r.identity ? `<div class="hd-region-kind"><img src="${escape(r.identity.icon)}" width="30" height="30" alt="" loading="lazy"><span>${escape(r.identity.label)}</span></div>` : ''}
+                const mapMode=document.body.classList.contains('mapa-immersive'),tag=mapMode?'details':'div';
+                const art = {active:'region_operacao',unavailable:'region_bloqueado',controlled:'region_recuperado'}[r.state];
+                const banner = art && document.body.classList.contains('mapa-immersive') ? `<img class="hd-region-banner" src="${escape(new URL('imagens/regioes/'+art+'.webp',assetBase).href)}" alt="" loading="lazy">` : '';
+                return `<${tag} class="hd-region-card hd-region-${r.state}">${mapMode?'<summary>':''}${banner}<div class="hd-region-title"><strong>${escape(r.name)}</strong><span>${escape(r.status)}</span></div>
+                ${mapMode?'</summary>':''}${r.identity ? `<div class="hd-region-kind"><img src="${escape(r.identity.icon)}" width="30" height="30" alt="" loading="lazy"><span>${escape(r.identity.label)}</span></div>` : ''}
                 <div class="hd-region-value"><span>Progresso da região</span><strong>${label}</strong></div>
                 ${pct === null ? (r.note ? '' : '<div class="hd-region-unknown">Aguardando uma leitura válida da região.</div>') : `<div class="hd-region-track" role="progressbar" aria-label="${escape(r.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>`}
                 ${r.note ? `<div class="hd-region-note">${escape(r.note)}</div>` : ''}
-                ${r.players === null ? '' : `<div class="hd-region-players"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">${r.players.toLocaleString('pt-BR')} Helldivers na região</div>`}</div>`;
+                ${r.players === null ? '' : `<div class="hd-region-players"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">${r.players.toLocaleString('pt-BR')} Helldivers na região</div>`}</${tag}>`;
             }).join('')}
             <p class="hd-region-note">Progresso independente. A barra do planeta acompanha as atualizações do jogo pela API.</p>
             <small class="hd-region-reading">${escape(stamp)}</small>
@@ -92,7 +95,8 @@
         dialog.querySelector('[data-region-close]').focus({preventScroll:true});
     }
     function render(planet, source = 'campaigns') {
-        const rows = activeRegions(planet);
+        if(document.body.classList.contains('mapa-immersive')) return details(planet,source);
+        const rows = document.body.classList.contains('mapa-immersive') ? normalize(planet) : activeRegions(planet);
         const key = source + ':' + String(planet?.index ?? name(planet?.name));
         records.set(key, {planet, source});
         if (activeKey === key) paint();

@@ -14,14 +14,14 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=tela1">
+<link rel="stylesheet" href="mapa-classico.css?v=tela2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <script src="pwa.js" defer></script>
-<link rel="stylesheet" href="planet-regions.css?v=20260928-icons">
+<link rel="stylesheet" href="planet-regions.css?v=mapa2">
 </head>
 <body class="fundo-guerra mapa-immersive">
 
@@ -56,9 +56,9 @@
 
     <section class="mapa-panel">
         <div class="mapa-viewport-wrap">
-            <aside class="mapa-top-fronts" aria-label="Três planetas com mais Helldivers em atividade">
-                <h2>Frentes em destaque</h2><div id="mapa-top-fronts" aria-live="polite"><p>Aguardando telemetria…</p></div>
-            </aside>
+            <details open class="mapa-top-fronts" aria-label="Três planetas com mais Helldivers em atividade">
+                <summary>Frentes em destaque</summary><div id="mapa-top-fronts" aria-live="polite"><p>Aguardando telemetria…</p></div>
+            </details>
             <div class="mapa-loading" id="mapa-loading">
                 <div class="loading">Carregando cartografia galáctica...</div>
             </div>
@@ -150,7 +150,7 @@
         <div class="mapa-hint">Clique ou toque no planeta para fixar o painel · Dossiê completo no botão do painel · Arraste/pince para navegar</div>
     </section>
 
-    <details class="mapa-operations" id="mapa-operations"><summary>Ordem e operações</summary><div class="mapa-operations-content">
+    <details class="mapa-operations" id="mapa-operations"><summary>Ordem Maior</summary><div class="mapa-operations-content">
     <section class="mapa-command-section mapa-major-order-section" aria-labelledby="mapa-major-order-title">
         <div class="mapa-command-head">
             <div>
@@ -165,22 +165,6 @@
         </div>
     </section>
 
-    <section class="mapa-command-section mapa-offensive-section" aria-labelledby="mapa-offensive-title">
-        <div class="mapa-command-head">
-            <div>
-                <div class="mapa-command-kicker mapa-command-kicker-blue">OPERAÇÕES DE LIBERTAÇÃO</div>
-                <h2 id="mapa-offensive-title">Ofensiva da Super Terra</h2>
-                <p>Todos os planetas inimigos com campanha ativa de libertação pelos Helldivers.</p>
-            </div>
-            <div class="mapa-command-counter"><strong id="mapa-offensive-count">—</strong><span>FRENTES ATIVAS</span></div>
-        </div>
-        <div class="mapa-offensive-search"><label for="mapa-offensive-search">Filtrar planetas</label><input id="mapa-offensive-search" type="search" placeholder="Nome, setor ou facção…" autocomplete="off" aria-controls="mapa-offensive-grid"><span id="mapa-offensive-results" role="status"></span></div>
-        <div id="mapa-offensive-grid" class="mapa-offensive-grid" aria-live="polite">
-            <div class="mapa-command-loading">Carregando frentes ofensivas...</div>
-        </div>
-        <p id="mapa-offensive-no-results" class="mapa-command-empty" hidden>Nenhum planeta encontrado. Tente outro nome, setor ou facção.</p>
-    </section>
-
     </div></details>
     <div class="mapa-footer">HELLDIVERS-BR // Mapa desenvolvido por Daryl Dixon_19 · Dados de guerra fornecidos pela API comunitária de Helldivers 2 · <a href="https://github.com/helldivers-2/api" target="_blank" rel="noopener">fonte da API</a></div>
 </div>
@@ -188,10 +172,10 @@
 
 
 <script src="telemetry-config.js?v=central1"></script>
-<script src="war-data.js?v=central1"></script>
-<script src="planet-regions.js?v=central1"></script>
+<script src="war-data.js?v=mapa2"></script>
+<script src="planet-regions.js?v=mapa2"></script>
 <script src="order-targets.js?v=20260928"></script>
-<script src="mapa-classico.js?v=tela1"></script>
+<script src="mapa-classico.js?v=tela2"></script>
 
 </body>
 </html>

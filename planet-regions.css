@@ -34,3 +34,17 @@
 /* Tipo regional confirmado pelo catálogo; o progresso mantém sua cor original. */
 .hd-region-list .hd-region-kind{display:flex;align-items:center;gap:8px;margin-top:8px;font:700 12px/1.4 Arial,sans-serif;color:#dce4eb}
 .hd-region-list .hd-region-kind img{display:block;flex:none;width:30px;height:30px;object-fit:contain}
+/* Regiões do mapa: faixas de estado reutilizadas do app e expansão por clique. */
+.mapa-immersive .hd-region-card{padding:0;overflow:hidden;margin:8px 0;border-radius:9px;}
+.mapa-immersive .hd-region-card>summary{position:relative;list-style:none;cursor:pointer;min-height:72px;padding:12px;box-sizing:border-box;display:flex;align-items:center;background:#1d252b;}
+.mapa-immersive .hd-region-card>summary::-webkit-details-marker{display:none;}
+.mapa-immersive .hd-region-card>summary::after{content:'⌄';margin-left:auto;position:relative;color:#fff;}
+.mapa-immersive .hd-region-card[open]>summary::after{content:'⌃';}
+.mapa-immersive .hd-region-banner{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45;pointer-events:none;}
+.mapa-immersive .hd-region-title{position:relative;display:grid;gap:5px;color:#fff;}
+.mapa-immersive .hd-region-title strong{font-size:14px;}
+.mapa-immersive .hd-region-title span{font-size:11px;}
+.mapa-immersive .hd-region-card>div{margin:10px 12px;}
+.mapa-immersive .hd-region-card summary:focus-visible{outline:2px solid #ffe800;outline-offset:-3px;}
+.mapa-immersive .hd-region-list{cursor:default;touch-action:pan-y;}
+.hd-region-card>summary{cursor:pointer;}

@@ -1,72 +1,48 @@
 {
   "schema": 1,
-  "state": "failed",
-  "key": "1715805482",
-  "first_seen_at": "2026-09-27T22:19:53.155623Z",
-  "last_seen_at": "2026-10-01T16:07:31.796631Z",
-  "last_progress_update_at": "2026-10-01T16:07:31.796631Z",
-  "final_percent": 81.26,
-  "outcome_source": "dispatch",
+  "state": "active",
+  "key": "2991945293",
+  "first_seen_at": "2026-10-02T22:21:03.063590Z",
+  "last_seen_at": "2026-10-02T22:21:03.063590Z",
+  "last_progress_update_at": "2026-10-02T22:21:03.063590Z",
+  "final_percent": 0.0,
+  "outcome_source": null,
   "order": {
-    "id": 1715805482,
+    "id": 2991945293,
     "progress": [
-      20500981,
-      3876936
+      0,
+      0
     ],
     "title": "MAJOR ORDER",
-    "briefing": "Kill the requisite enemies to ensure early investors in the TD-110 Maelstrom Tanks receive their promised deluxe features.",
+    "briefing": "Defend the designated planets, wielding the TD-110 Maelstrom Tank to support a public awareness sales campaign.",
     "description": null,
     "tasks": [
       {
-        "type": 3,
+        "type": 12,
         "values": [
-          2,
-          0,
-          25000000,
-          2651633799,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "valueTypes": [
           1,
           2,
+          1,
+          173
+        ],
+        "valueTypes": [
           3,
-          4,
-          6,
-          5,
-          8,
-          9,
+          1,
           11,
           12
         ]
       },
       {
-        "type": 3,
+        "type": 12,
         "values": [
+          1,
           3,
-          0,
-          5000000,
-          2664856027,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
+          1,
+          245
         ],
         "valueTypes": [
-          1,
-          2,
           3,
-          4,
-          6,
-          5,
-          8,
-          9,
+          1,
           11,
           12
         ]
@@ -74,23 +50,20 @@
     ],
     "reward": {
       "type": 1,
-      "amount": 40
+      "amount": 30
     },
     "rewards": [
       {
         "type": 1,
-        "amount": 40
+        "amount": 30
       }
     ],
-    "expiration": "2026-10-01T19:31:10.34766Z",
+    "expiration": "2026-10-04T19:24:06.5250427Z",
     "flags": 0
   },
-  "target_planets": {},
-  "last_checked_at": "2026-10-01T19:49:16.476443Z",
-  "ended_at": "2026-10-01T19:32:31Z",
-  "outcome_dispatch": {
-    "id": 3942,
-    "published": "2026-10-01T19:32:31Z",
-    "message": "MAJOR ORDER FAILED \n\nInsufficient materials have been harvested by the Helldivers to fulfill production quotas for deluxe  Maelstrom  Tank features. This has caused significant distress amongst the early investors who were promised these features as incentives, resulting in a precipitous drop in pre-sales and a decrease in share value.\n\nAs a result, the  Maelstrom  Tank project is now at risk of termination."
-  }
+  "target_planets": {
+    "173": "GATRIA",
+    "245": "WASAT"
+  },
+  "last_checked_at": "2026-10-02T22:21:02.835390Z"
 }

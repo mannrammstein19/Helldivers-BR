@@ -1286,3 +1286,12 @@ html:has(body.mapa-immersive){zoom:1!important;}
 @media(prefers-reduced-motion:reduce){.mapa-floating-panel.open{animation:none;}}
 
 @media(min-width:701px) and (max-width:1000px){.mapa-viewport-wrap:has(#mapa-regions-panel.open) #mapa-front-panel,.mapa-viewport-wrap:has(#planet-modal.open) #mapa-front-panel{visibility:hidden;}}
+
+/* Patch 11 — arte no fundo dos resumos e capacete com tamanho explícito. */
+.mapa-floating-panel img.mapa-front-helmet,.mapa-top-front img.mapa-front-helmet{display:inline-block;width:14px;height:14px;min-width:14px;min-height:0;max-width:14px;max-height:14px;object-fit:contain;border-radius:0;margin:0 5px 0 0;vertical-align:middle;flex:none;}
+@media(min-width:701px){.mapa-top-fronts[open]{width:319px;}}
+.mapa-top-front>summary{position:relative;display:block;min-height:132px;overflow:hidden;border-radius:inherit;isolation:isolate;}
+.mapa-top-front>summary img.mapa-front-background{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;max-height:none;object-fit:cover;object-position:center;border-radius:inherit;z-index:0;opacity:1;pointer-events:none;}
+.mapa-top-front>summary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#071018d9,#071018a6 60%,#07101873);z-index:1;pointer-events:none;border-radius:inherit;}
+.mapa-top-front>summary .mapa-front-content{position:relative;z-index:2;box-sizing:border-box;min-height:132px;padding:11px 13px;text-shadow:0 1px 3px #000;}
+@media(max-width:700px){.mapa-top-front>summary .mapa-front-content{padding:9px;min-height:115px;}.mapa-top-front>summary{min-height:115px;}}

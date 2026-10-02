@@ -736,6 +736,7 @@
     }
 
     function offensiveForecast(p,now=Date.now()) {
+        if(window.HDBRCampaignMetrics)return sharedFrontForecast(p,now);
         const progress=liberationProgress(p);
         const unknown={tone:'neutral',title:'COLETANDO RITMO',detail:'Aguardando nova leitura da API para calcular a tendência.',rate:null,eta:null};
         if(progress==null) return unknown;
@@ -802,7 +803,7 @@
             const progress=campaignProgress(p);
             if(progress==null) return;
             const key=String(p.index),e=p.event;
-            const signature=JSON.stringify([e.id,e.startTime,e.endTime,e.maxHealth]);
+            const signature=window.HDBRCampaignMetrics?.identity(p)||JSON.stringify([e.id,e.maxHealth]);
             active.add(key);
             let record=defenseSamples.get(key);
             if(!record||record.signature!==signature) record={signature,values:[]};
@@ -815,6 +816,7 @@
         try{localStorage.setItem('hdbr_defenseSamples_v1',JSON.stringify([...defenseSamples]))}catch{}
     }
     function defenseForecast(p,now=Date.now()) {
+        if(window.HDBRCampaignMetrics)return sharedFrontForecast(p,now);
         const progress=campaignProgress(p),dates=eventDates(p?.event);
         const unknown={tone:'neutral',title:'SEM PROJEÇÃO',detail:'Aguardando dados válidos de progresso e prazo.'};
         if(progress==null) return unknown;
@@ -1038,6 +1040,19 @@
         }
         front.open?expandedFronts.add(front.dataset.planetIndex):expandedFronts.delete(front.dataset.planetIndex);
     }
+    function formatFrontRate(rate){return Number.isFinite(rate)?(rate>0?'+':'')+rate.toFixed(2).replace('.',',')+'%/h':'—';}
+    function frontMetrics(p,now=Date.now()) {
+        return window.HDBRCampaignMetrics.metrics(p,window.HDBRWarData?.meta(`${V1}/planets`),now);
+    }
+    function sharedFrontForecast(p,now=Date.now()) {
+        const m=frontMetrics(p,now),defending=!!p.event;
+        const eta=m.etaHours!=null?durationLabel(m.etaHours):null;
+        if(m.progress>=100)return {rate:m.rate,rateLabel:m.source,tone:'good',title:defending?'OBJETIVO DE DEFESA ATINGIDO':'LIBERTAÇÃO CONCLUÍDA',detail:'Aguardando confirmação da guerra galáctica.',eta:'CONCLUÍDO'};
+        if(defending&&m.remainingHours===0)return {rate:null,tone:'neutral',title:'PRAZO ENCERRADO',detail:'Aguardando confirmação do resultado.',eta:null};
+        const needed=defending&&m.remainingHours>0?(100-m.progress)/m.remainingHours:0;
+        const tone=m.rate==null?'neutral':m.rate>needed?'good':m.rate<needed?'bad':'neutral';
+        return {rate:m.rate,rateLabel:m.source,tone,title:m.rate==null?'COLETANDO RITMO':defending?(tone==='good'?'TENDÊNCIA DE VITÓRIA':'DEFESA EM RISCO'):'RITMO DA LIBERTAÇÃO',detail:m.rate==null?'Aguardando uma nova leitura válida para calcular a tendência.':m.source+': '+formatFrontRate(m.rate)+(eta?' · conclusão estimada em '+eta:'')+'. O resultado pode mudar.',eta};
+    }
     function renderTopFronts() {
         const host=$('mapa-top-fronts');if(!host)return;
         const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
@@ -1045,10 +1060,17 @@
         if(window.matchMedia('(max-width:700px)').matches&&expandedFronts.size>1){const keep=[...expandedFronts].at(-1);expandedFronts.clear();expandedFronts.add(keep);}
         for(const key of expandedFronts)if(!active.has(key))expandedFronts.delete(key);
         host.innerHTML=top.length?top.map(p=>{
-            const progress=warProgress(p),forecast=p.event?null:offensiveForecast(p);
-            const end=eventDates(p.event).end;
-            const time=p.event?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000)+' restantes':'Prazo indisponível'):(forecast?.eta?'Estimativa: '+forecast.eta:'Coletando estimativa');
-            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${factionColor(p.event?.faction||p.currentOwner)};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Libertação'} <b>${formatPercentDetailed(progress)}</b></small>${progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(time)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(p.event?.faction||p.currentOwner))}</span></div>${forecastMetrics(p)}<p>Pressão inimiga: ${formatRate(regenPercentPerHour(p))}/h</p></div></details>`;
+            const defending=!!p.event,c=campaigns.find(c=>c.planet?.index===p.index);
+            const kind=window.HDBRCampaignMetrics?.classify(p,c)||{label:defending?'Defesa':'Libertação',symbol:defending?'🛡':'⚑'};
+            const m=window.HDBRCampaignMetrics?frontMetrics(p):{progress:warProgress(p),rate:null,enemyProgress:invasionProgress(p),enemyRate:null,source:'Aguardando nova leitura'};
+            const enemy=p.event?.faction||p.currentOwner,color=factionColor(enemy);
+            const deadline=m.remainingHours!=null?durationLabel(m.remainingHours):'Prazo indisponível';
+            const eta=m.etaHours!=null?durationLabel(m.etaHours):m.rate==null?'Coletando ritmo':m.rate<=0?'Sem avanço líquido':'Concluído';
+            const status=defending&&m.progress!=null&&m.enemyProgress!=null?(m.progress>m.enemyProgress?'Vencendo':'Perdendo'):m.rate==null?'Coletando':m.rate>0?'Avançando':m.rate<0?'Recuando':'Estável';
+            const bar=(label,value,fill)=>`<div class="mapa-front-bar"><span>${escapeHTML(label)}<b>${formatPercentDetailed(value)}</b></span><div><i style="width:${value==null?0:Math.max(0,Math.min(100,value))}%;background:${fill}"></i></div></div>`;
+            const metric=(label,value,note,cls='')=>`<div class="${cls}"><small>${label}</small><strong>${value}</strong><span>${escapeHTML(note)}</span></div>`;
+            const pressure=defending?m.enemyRate:regenPercentPerHour(p);
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${kind.symbol} ${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><details class="mapa-front-regions"><summary>Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0}</summary>${window.HDBRRegions?.render(p,'planets')||'<small>Nenhuma região informada.</small>'}</details><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
         }).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
     }
 
@@ -2356,6 +2378,7 @@
             const nextPlanets=Array.isArray(data)?data:data?.planets;
             if (!Array.isArray(nextPlanets) || !nextPlanets.length) throw new Error('Dados de planetas vazios ou inválidos.');
             allPlanets=nextPlanets;
+            window.HDBRCampaignMetrics?.observe(allPlanets,window.HDBRWarData.meta(`${V1}/planets`));
             recordDefenseSamples(allPlanets,window.HDBRWarData.meta(`${V1}/planets`)?.time||Date.now());
             if(campaignResult.status==='fulfilled') {
                 const data=campaignResult.value;
@@ -2435,6 +2458,7 @@
             image.src=info.primary;button.prepend(image);
         });
         document.querySelectorAll('.mapa-layer').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('active'))));
+        $('mapa-top-fronts')?.addEventListener('click',event=>{const button=event.target.closest?.('[data-front-dossier]');if(!button)return;const p=allPlanets.find(p=>String(p.index)===button.dataset.frontDossier);if(p){hideQuickIntel();openPlanetModal(p,false);}});
         $('mapa-top-fronts')?.addEventListener('toggle',event=>handleFrontToggle(event.target),true);
         $('mapa-top-fronts')?.addEventListener('error',event=>{if(event.target.tagName==='IMG')event.target.hidden=true;},true);
         [$('mapa-tools'),$('mapa-operations')].forEach(panel=>panel?.addEventListener('toggle',()=>{if(panel.open){[$('mapa-tools'),$('mapa-operations')].forEach(other=>{if(other!==panel)other.open=false;});}}));

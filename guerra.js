@@ -946,6 +946,7 @@
         const reading = window.HDBRWarData?.meta(`${V1}/campaigns`);
         if (reading?.stale) return;
         const now = reading?.time || Date.now();
+        window.HDBRCampaignMetrics?.observe(data.map(c=>c.planet).filter(Boolean),reading);
 
         data.forEach(campaign => {
             const p = campaign?.planet;
@@ -955,7 +956,7 @@
             const key = `${p.index ?? clean(p.name)}:${mode}`;
             const progress = planetProgress(p);
             if (progress == null) { delete history[key]; return; }
-            const signature=JSON.stringify([campaign.id,p.event?.id,p.event?.startTime,p.currentOwner,p.maxHealth,p.event?.maxHealth]);
+            const signature=window.HDBRCampaignMetrics?.identity(p)||JSON.stringify([campaign.id,p.event?.id,p.currentOwner,p.maxHealth,p.event?.maxHealth]);
             let previous = history[key];
             if(previous&&(previous.signature!==signature||now-previous.time>1800000))previous=null;
             if(previous&&now-previous.time<30000)return;
@@ -984,6 +985,8 @@
     }
 
     function getPlanetRate(index, mode) {
+        const p=campaigns.find(c=>String(c.planet?.index)===String(index))?.planet;
+        if(p&&window.HDBRCampaignMetrics)return window.HDBRCampaignMetrics.metrics(p,window.HDBRWarData?.meta(`${V1}/campaigns`)).rate;
         const history = readPlanetHistory();
         const item = history[`${index}:${mode}`];
         const age = Date.now() - (item?.rateTime || 0);
@@ -1000,6 +1003,7 @@
     // Ela é o relógio da invasão: cresce de 0 a 100% entre o início e o fim
     // do evento. A barra azul é o progresso real obtido pelos Helldivers.
     function defenseEnemyProgress(event) {
+        if(window.HDBRCampaignMetrics)return window.HDBRCampaignMetrics.metrics({event},window.HDBRWarData?.meta(`${V1}/campaigns`)).enemyProgress;
         if (!event) return null;
         const start = Date.parse(event.startTime || event.start_time || event.startedAt || event.started_at || '');
         const end = Date.parse(event.endTime || event.end_time || event.expireTime || event.expire_time || event.expiresAt || event.expires_at || '');
@@ -1149,7 +1153,7 @@
             const factionLabel = defense ? 'Impacto inimigo / hora' : `Pressão ${factionName(enemy)}`;
             const dssHere = isDssPlanet(p);
             return `<article class="frente-card ${defense ? 'defesa' : ''}${defenseAlertClass}" style="--accent:${color}" data-planet-key="${escapeHTML(String(p.index ?? name))}" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
-                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/guerra/operacoes/defesa.png' : 'imagens/guerra/operacoes/libertacao.png'}" alt="">${defense ? 'DEFESA' : 'LIBERTAÇÃO'}</span><span class="frente-status-mini">${trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
+                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/guerra/operacoes/defesa.png' : 'imagens/guerra/operacoes/libertacao.png'}" alt="">${escapeHTML(window.HDBRCampaignMetrics?.classify(p,c).label|| (defense?'DEFESA':'LIBERTAÇÃO'))}</span><span class="frente-status-mini">${trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
                 <div class="frente-head">
                     <div class="frente-head-row">
                         <div class="frente-title-block"><div class="frente-title">${escapeHTML(name)}</div><div class="frente-sector">${escapeHTML(sector)}</div></div>
@@ -1181,7 +1185,7 @@
                         <div class="tatico-metrica metric-impacto">
                             <span class="metric-label">🟦 ${defense ? 'Avanço da defesa / hora' : 'Avanço líquido / hora'}</span>
                             <strong class="${defense ? 'rate-positive' : rateClass}">${formatRate(rate)}</strong>
-                            <small>${defense ? 'variação observada' : 'saldo planetário; não é impacto bruto'}</small>
+                            <small>${escapeHTML(window.HDBRCampaignMetrics?.metrics(p,window.HDBRWarData?.meta(`${V1}/campaigns`)).source||'Ritmo observado')}</small>
                         </div>
                         <div class="tatico-metrica metric-faccao">
                             <span class="metric-label">${escapeHTML(factionLabel)}</span>

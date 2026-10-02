@@ -1244,3 +1244,25 @@ html:has(body.mapa-immersive){zoom:1!important;}
 
 /* Todo avanço dos Helldivers é azul; a facção inimiga mantém sua cor própria. */
 .mapa-front-track i,.mapa-offensive-progress i,.tactical-modal-progress > i{background:#4da6ff;box-shadow:none;}
+
+/* Patch 09 — cartão tático compacto, mantendo a expansão local. */
+.mapa-top-fronts{width:290px;max-height:calc(100dvh - 160px);overflow:auto;overscroll-behavior:contain;}
+.mapa-front-expanded .mapa-front-landscape{display:block;width:100%;height:92px;min-height:0;object-fit:cover;border-radius:5px;margin:8px 0;opacity:1;filter:none;}
+.mapa-front-strip{display:flex;justify-content:space-between;gap:8px;font:700 10px Arial,sans-serif;color:#4da6ff;}
+.mapa-front-strip b{color:var(--accent);}
+.mapa-front-bar{margin:9px 0;font:11px Arial,sans-serif;}
+.mapa-front-bar>span{display:flex;justify-content:space-between;gap:6px;}
+.mapa-front-bar>span b{font-variant-numeric:tabular-nums;}
+.mapa-front-bar>div{height:5px;background:#303030;margin-top:5px;border-radius:4px;overflow:hidden;}
+.mapa-front-bar i{display:block;height:100%;min-width:0;}
+.mapa-front-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;}
+.mapa-front-metrics>div{padding:7px;border:1px solid #41464b;border-radius:7px;background:#121619;min-width:0;}
+.mapa-front-metrics small,.mapa-front-metrics span{display:block;font:9px/1.35 Arial,sans-serif;color:#b8bec5;}
+.mapa-front-metrics strong{display:block;font:700 16px/1.5 Arial,sans-serif;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
+.mapa-front-metrics .front-human-metric strong{color:#4da6ff;}.mapa-front-metrics .front-enemy-metric strong{color:var(--accent);}
+.mapa-front-regions{margin-top:9px;}.mapa-front-regions .hd-region-trigger{width:100%;}
+.mapa-front-dossier{width:100%;text-align:left;padding:9px 0 0;border:0;background:none;color:#d7d52c;font:700 10px Arial,sans-serif;cursor:pointer;}
+.mapa-front-dossier:focus-visible{outline:2px solid #ffe800;}
+@media(max-width:700px){.mapa-top-fronts{width:auto;max-height:55dvh;}.mapa-front-expanded{max-height:38dvh;}.mapa-front-expanded .mapa-front-landscape{height:74px;}.mapa-front-metrics strong{font-size:14px;}.mapa-front-metrics small{font-size:8px;}}
+
+.mapa-front-regions>summary{padding:8px;border:1px solid #46515e;border-radius:6px;color:#d7d52c;cursor:pointer;font:700 11px Arial,sans-serif;}.mapa-front-regions[open]>summary{margin-bottom:7px;}

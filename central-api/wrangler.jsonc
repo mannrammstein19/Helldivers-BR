@@ -1,0 +1,13 @@
+{
+  "name": "helldivers-br-central",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://helldivers-br.pages.dev,https://mannrammstein19.github.io,http://localhost:8000,http://127.0.0.1:8000",
+    "CONTACT": "https://github.com/mannrammstein19/Helldivers-BR"
+  },
+  "durable_objects": {"bindings": [{"name": "WAR_CENTRAL", "class_name": "WarCentral"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["WarCentral"]}],
+  "observability": {"enabled": true}
+}

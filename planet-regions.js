@@ -31,7 +31,7 @@
             const state = human ? 'controlled' : completed ? 'completed' : r.isAvailable === false ? 'unavailable' : 'active';
             // Indisponibilidade sem controle confirmado não prova conquista.
             const percent = human || completed ? 100 : state === 'unavailable' ? null : validHealth ? (1 - health / max) * 100 : null;
-            return {identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
+            return {readAt: number(r.telemetryReadAtMillis), stale: r.telemetryStale === true, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
                 players: state === 'active' && players !== null && players >= 0 ? Math.floor(players) : null,
                 status: human ? '✓ Sob controle da Super Terra' : completed ? '✓ Objetivo regional concluído' : state === 'unavailable' ? 'Indisponível para operações' : r.isAvailable === true ? 'Em operação' : 'Disponibilidade não informada',
                 note: human ? 'Região sob controle humano. Libertação regional: 100%.' : completed ? 'A vida da região chegou a zero nesta leitura.' : state === 'unavailable' ? (enemy ? 'A região não está aberta para operações. A indisponibilidade não confirma uma conquista.' : 'A leitura atual não permite confirmar a conquista desta região.') : ''};
@@ -42,7 +42,9 @@
         const rows = activeRegions(planet);
         if (!rows.length) return '';
         const reading = window.HDBRWarData?.meta(`https://api.helldivers2.dev/api/v1/${source}`);
-        const stamp = reading?.time ? `${reading.stale ? 'Última leitura salva' : 'Leitura'}: ${new Date(reading.time).toLocaleString('pt-BR')}` : 'Dados da região informados pela API';
+        const regionTimes = rows.map(r => r.readAt).filter(t => t > 0);
+        const stampTime = regionTimes.length ? Math.min(...regionTimes) : reading?.time;
+        const stamp = stampTime ? `${reading?.stale || rows.some(r => r.stale) ? 'Última leitura salva' : 'Leitura'}: ${new Date(stampTime).toLocaleString('pt-BR')}` : 'Dados da região informados pela API';
         return `<section class="hd-region-list" aria-label="Regiões do planeta">
             <div class="hd-region-heading">REGIÕES DO PLANETA <span>${rows.length}</span></div>
             ${rows.map(r => {

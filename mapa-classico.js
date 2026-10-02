@@ -1832,12 +1832,13 @@
         $('planet-modal-title').textContent=planetName(p);
         modal.querySelector('.tactical-modal-sector').textContent='ANÁLISE COMPLEMENTAR';
         const reading=window.HDBRWarData?.meta(`${V1}/planets`);
-        $('planet-dossier-source').textContent='Bioma, estatísticas e regiões: registro do planeta na API comunitária.'+(reading?.time?' Leitura: '+new Date(reading.time).toLocaleString('pt-BR')+(reading.stale?' (dados salvos).':'.'):'')+' Efeitos: API e catálogo comunitário. Os marcados como possíveis não estão confirmados nesta leitura; condições de calor e frio podem variar.';
+        $('planet-dossier-source').textContent='Estado planetário e regiões: '+(reading?.source==='direct'?'API do jogo pela central.':'API comunitária.')+(reading?.time?' Leitura: '+new Date(reading.time).toLocaleString('pt-BR')+(reading.stale?' (dados salvos).':'.'):'')+' Efeitos: API e catálogo comunitário. Os marcados como possíveis não estão confirmados nesta leitura; condições de calor e frio podem variar.';
 
         const notes=preparationNotes(p);
         $('planet-dossier-advice').innerHTML=notes.length
             ? '<ul>'+notes.map(note=>`<li>${escapeHTML(note)}</li>`).join('')+'</ul>'
             : '<p>A API não informou um efeito com orientação específica disponível. Escolha o equipamento conforme a facção, o objetivo e os modificadores exibidos na missão.</p>';
+        if (p.statisticsReadAtMillis) $('planet-dossier-source').textContent += ' Histórico estatístico: Community, leitura de '+new Date(p.statisticsReadAtMillis).toLocaleString('pt-BR')+'.';
         const stats=p.statistics||{};
         const statValue=value=>value==null||value===''||typeof value==='boolean'||!Number.isFinite(Number(value))||Number(value)<0?'—':Number(value).toLocaleString('pt-BR');
         const rows=[['MISSÕES VENCIDAS',stats.missionsWon],['MISSÕES PERDIDAS',stats.missionsLost],['BAIXAS DE HELLDIVERS',stats.deaths]];

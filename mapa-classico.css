@@ -1241,3 +1241,6 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-planet-artwork{opacity:1;filter:none;pointer-events:none;}
 .mapa-planet-artwork-border{opacity:0;filter:none;}
 .planet-artwork-ready .mapa-planet-artwork-border{opacity:1;}
+
+/* Todo avanço dos Helldivers é azul; a facção inimiga mantém sua cor própria. */
+.mapa-front-track i,.mapa-offensive-progress i,.tactical-modal-progress > i{background:#4da6ff;box-shadow:none;}

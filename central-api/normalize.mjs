@@ -5,6 +5,14 @@ export const rows=(obj,key)=>{const a=field(obj,key);return Array.isArray(a)?a:[
 export const faction=id=>({1:'Humans',2:'Terminids',3:'Automatons',4:'Illuminate'})[id]||'';
 export const epoch=value=>Number(value)>1e12?Number(value):Number(value)>1e9?Number(value)*1000:null;
 export const warDate=(info,seconds)=>epoch(field(info,'startDate'))!==null&&Number.isFinite(Number(seconds))?new Date(epoch(field(info,'startDate'))+Number(seconds)*1000).toISOString():null;
+// Os eventos e Status.time usam o mesmo relógio de jogo. Ele não equivale
+// necessariamente a startDate + segundos no relógio civil (pausas/deslocamentos).
+export function eventClockDate(status,seconds,readAt){
+ const current=field(status,'time');
+ if(current==null||seconds==null||![current,seconds,readAt].every(v=>typeof v==='number'&&Number.isFinite(v)&&v>=0))return null;
+ const value=readAt+(seconds-current)*1000;
+ return Number.isFinite(value)&&Math.abs(value)<=8.64e15?new Date(value).toISOString():null;
+}
 export function normalizeWar(status,info,catalog=[],readAt=Date.now(),catalogTime=0){
  status=root(status);info=root(info);
  if(!Array.isArray(field(status,'planetStatus'))||rows(status,'planetStatus').length<10||!Array.isArray(field(status,'campaigns'))||!Array.isArray(field(info,'planetInfos')))throw Error('Estado bruto incompleto');
@@ -30,7 +38,7 @@ export function normalizeWar(status,info,catalog=[],readAt=Date.now(),catalogTim
    regenPerSecond:field(s,'regenPerSecond')??null,disabled:field(i,'disabled')===true,waypoints:rows(i,'waypoints'),
    attacking:rows(status,'planetAttacks').filter(a=>Number(field(a,'source'))===index).map(a=>field(a,'target')),statistics,statisticsReadAtMillis:catalogTime,
    statisticsSource:'community',event:e?{id:field(e,'id'),eventType:field(e,'eventType'),faction:faction(field(e,'race')),health:field(e,'health'),maxHealth:field(e,'maxHealth'),
-    startTime:warDate(info,field(e,'startTime')),endTime:warDate(info,field(e,'expireTime'))}:null,
+    startTime:eventClockDate(status,field(e,'startTime'),readAt),endTime:eventClockDate(status,field(e,'expireTime'),readAt),clockSource:'game-status'}:null,
    activeEffects:rows(status,'planetActiveEffects').filter(a=>Number(field(a,'index'))===index).map(a=>({galacticEffectId:field(a,'galacticEffectId')})),regions};
  });
  const byId=new Map(planets.map(p=>[p.index,p]));

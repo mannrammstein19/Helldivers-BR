@@ -60,6 +60,7 @@
     const FACTION_COLORS = { unknown:'#6b7280', human:'#d7d52c', terminid:'#ff9900', automaton:'#ff4242', illuminate:'#8b3fd6' };
     // Nas rotas, azul representa a Super Terra; os nomes mantêm sua paleta atual.
     const ROUTE_COLORS = { ...FACTION_COLORS, human:'#66c9f1' };
+    const SUPER_EARTH_PROGRESS_COLOR = '#4da6ff';
     const ROUTE_ENERGY_COLORS = { human:'#c1efff', automaton:'#ffb5b5', terminid:'#ffe1a6', illuminate:'#ddc2ff' };
     function factionColor(owner) { return FACTION_COLORS[factionKey(owner)] || FACTION_COLORS.human; }
 
@@ -616,6 +617,46 @@
         return el;
     }
 
+    function drawPlanetProgressRings(group,p,x,y,baseRadius,offensive=false) {
+        if(specialLocation(p)) return;
+        const raw=p,underAttack=!!p.event;
+        const progress=underAttack?campaignProgress(p):offensive?liberationProgress(p):null;
+    if (underAttack || offensive) {
+        const ringColor=SUPER_EARTH_PROGRESS_COLOR;
+        const ringRadius=baseRadius*2.08;
+        const ringWidth=baseRadius*.48;
+        // Defesa e libertação usam o mesmo indicador circular. A cor diferencia
+        // a origem: atacante inimigo na defesa; Super Terra na ofensiva.
+        const track=svgEl('circle',{
+            class:underAttack?'mapa-defense-track':'mapa-offense-track',cx:x,cy:y,r:ringRadius,
+            fill:'none',stroke:'#303845','stroke-width':ringWidth
+        });
+        group.appendChild(track);
+        if(progress!=null && progress>0) {
+            const circumference=2*Math.PI*ringRadius;
+            const filled=circumference*Math.min(100,Math.max(0,progress))/100;
+            const progressRing=svgEl('circle',{
+                class:underAttack?'mapa-defense-fill':'mapa-offense-fill',cx:x,cy:y,r:ringRadius,
+                fill:'none',stroke:ringColor,'stroke-width':ringWidth,
+                'stroke-dasharray':`${filled} ${circumference-filled}`,
+                'stroke-linecap':'butt',transform:`rotate(-90 ${x} ${y})`,
+                role:'img','aria-label':`${underAttack?'Defesa':'Libertação'} concluída: ${progress.toFixed(1)}%`
+            });
+            group.appendChild(progressRing);
+        }
+    }
+
+    if(underAttack) {
+        const enemyProgress=invasionProgress(raw),r=baseRadius*2.72,c=2*Math.PI*r;
+        group.appendChild(svgEl('circle',{class:'mapa-enemy-track',cx:x,cy:y,r,fill:'none',stroke:'#303845','stroke-width':baseRadius*.32}));
+        if(enemyProgress!=null) group.appendChild(svgEl('circle',{
+            class:'mapa-enemy-fill',cx:x,cy:y,r,fill:'none',stroke:factionColor(raw.event.faction),
+            'stroke-width':baseRadius*.32,'stroke-dasharray':`${c*enemyProgress/100} ${c*(1-enemyProgress/100)}`,
+            transform:`rotate(-90 ${x} ${y})`,role:'img','aria-label':`Invasão inimiga: ${formatPercentDetailed(enemyProgress)}`
+        }));
+    }
+    }
+
     function appendInvasionPulses(group,planet,x,y,radius){
         if(!planet?.event||specialLocation(planet))return;
         [0,1].forEach(i=>group.appendChild(svgEl('circle',{
@@ -743,9 +784,16 @@
         return {start:Date.parse(event?.startTime || ''),end:Date.parse(event?.endTime || '')};
     }
     // Avanço do relógio da invasão, não dano/baixas inimigas.
-    function invasionProgress(p, now=Date.now()) {
+    function defenseClockNow() {
+        const reading=window.HDBRWarData?.meta(`${V1}/planets`);
+        return reading?.stale && Number.isFinite(reading.time) && reading.time>0 ? reading.time : Date.now();
+    }
+    function invasionProgress(p, now=defenseClockNow()) {
         const {start,end}=eventDates(p?.event);
         if(!p?.event || !Number.isFinite(start) || !Number.isFinite(end) || end<=start) return null;
+        // Um evento ainda presente com prazo vencido não confirma invasão concluída.
+        // Também protege o mapa de datas incorretas nas leituras anteriores da Central.
+        if(!Number.isFinite(now) || now>end) return null;
         return Math.max(0,Math.min(100,(now-start)/(end-start)*100));
     }
     function recordDefenseSamples(planets,now=Date.now()) {
@@ -1309,7 +1357,7 @@
             if(label) label.textContent=event?'PROGRESSO DA DEFESA':'PROGRESSO DA LIBERTAÇÃO';
             $('mapa-intel-progress-value').textContent = formatPercentDetailed(progress);
             $('mapa-intel-progress-bar').style.width = `${progress}%`;
-            $('mapa-intel-progress-bar').style.background = event ? '#4da6ff' : accent;
+            $('mapa-intel-progress-bar').style.background = SUPER_EARTH_PROGRESS_COLOR;
         } else {
             progressBox.hidden = true;
         }
@@ -1322,7 +1370,7 @@
             $('mapa-intel-enemy-bar').style.width=`${enemyProgress ?? 0}%`;
             $('mapa-intel-enemy-bar').style.background=factionColor(event.faction);
             $('mapa-intel-enemy-note').textContent=enemyProgress==null
-                ? 'Horários da invasão indisponíveis.' : 'Avanço pelo relógio da invasão.';
+                ? 'Aguardando um prazo válido da invasão.' : 'Avanço pelo relógio da invasão.';
         }
 
         const route = $('mapa-intel-route');
@@ -1838,40 +1886,7 @@
 
             appendInvasionPulses(group,raw,x,y,baseRadius);
 
-            if (underAttack || offensive) {
-                const ringColor=underAttack?'#4da6ff':FACTION_COLORS.human;
-                const ringRadius=baseRadius*2.08;
-                const ringWidth=baseRadius*.48;
-                // Defesa e libertação usam o mesmo indicador circular. A cor diferencia
-                // a origem: atacante inimigo na defesa; Super Terra na ofensiva.
-                const track=svgEl('circle',{
-                    class:underAttack?'mapa-defense-track':'mapa-offense-track',cx:x,cy:y,r:ringRadius,
-                    fill:'none',stroke:'#303845','stroke-width':ringWidth
-                });
-                group.appendChild(track);
-                if(progress!=null && progress>0) {
-                    const circumference=2*Math.PI*ringRadius;
-                    const filled=circumference*Math.min(100,Math.max(0,progress))/100;
-                    const progressRing=svgEl('circle',{
-                        class:underAttack?'mapa-defense-fill':'mapa-offense-fill',cx:x,cy:y,r:ringRadius,
-                        fill:'none',stroke:ringColor,'stroke-width':ringWidth,
-                        'stroke-dasharray':`${filled} ${circumference-filled}`,
-                        'stroke-linecap':'butt',transform:`rotate(-90 ${x} ${y})`,
-                        role:'img','aria-label':`${underAttack?'Defesa':'Libertação'} concluída: ${progress.toFixed(1)}%`
-                    });
-                    group.appendChild(progressRing);
-                }
-            }
-
-            if(underAttack) {
-                const enemyProgress=invasionProgress(raw),r=baseRadius*2.72,c=2*Math.PI*r;
-                group.appendChild(svgEl('circle',{class:'mapa-enemy-track',cx:x,cy:y,r,fill:'none',stroke:'#303845','stroke-width':baseRadius*.32}));
-                if(enemyProgress!=null) group.appendChild(svgEl('circle',{
-                    class:'mapa-enemy-fill',cx:x,cy:y,r,fill:'none',stroke:factionColor(raw.event.faction),
-                    'stroke-width':baseRadius*.32,'stroke-dasharray':`${c*enemyProgress/100} ${c*(1-enemyProgress/100)}`,
-                    transform:`rotate(-90 ${x} ${y})`,role:'img','aria-label':`Invasão inimiga: ${formatPercentDetailed(enemyProgress)}`
-                }));
-            }
+            drawPlanetProgressRings(group,raw,x,y,baseRadius,offensive);
             const circle = svgEl('circle', {
                 class:'mapa-planet-dot', cx:x, cy:y,
                 r:(underAttack || offensive) ? baseRadius * 1.38 : baseRadius,

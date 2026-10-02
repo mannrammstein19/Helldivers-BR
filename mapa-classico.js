@@ -602,6 +602,7 @@
     let selectedIndex = null;
     let lineRecords = [];
     let quickIntelIndex = null;
+    let frontPanelIndex=null,frontRegionsIndex=null,dossierPlanetIndex=null;
     let quickIntelPlanet = null;
     let quickIntelHideTimer = 0;
     const expandedFronts=new Set();
@@ -1034,11 +1035,11 @@
     }
     function handleFrontToggle(front){
         if(!front.matches?.('details[data-planet-index]')||!front.isConnected)return;
-        if(front.open&&window.matchMedia('(max-width:700px)').matches){
-            expandedFronts.clear();
+        if(front.open){
+            expandedFronts.clear();expandedFronts.add(front.dataset.planetIndex);
             $('mapa-top-fronts').querySelectorAll('details[data-planet-index]').forEach(other=>{if(other!==front)other.open=false;});
-        }
-        front.open?expandedFronts.add(front.dataset.planetIndex):expandedFronts.delete(front.dataset.planetIndex);
+            const p=allPlanets.find(p=>String(p.index)===front.dataset.planetIndex);if(p)openFrontPanel(p,frontPanelIndex!==String(p.index));
+        }else if(frontPanelIndex===front.dataset.planetIndex){closeFrontPanel();}
     }
     function formatFrontRate(rate){return Number.isFinite(rate)?(rate>0?'+':'')+rate.toFixed(2).replace('.',',')+'%/h':'—';}
     function frontMetrics(p,now=Date.now()) {
@@ -1053,15 +1054,9 @@
         const tone=m.rate==null?'neutral':m.rate>needed?'good':m.rate<needed?'bad':'neutral';
         return {rate:m.rate,rateLabel:m.source,tone,title:m.rate==null?'COLETANDO RITMO':defending?(tone==='good'?'TENDÊNCIA DE VITÓRIA':'DEFESA EM RISCO'):'RITMO DA LIBERTAÇÃO',detail:m.rate==null?'Aguardando uma nova leitura válida para calcular a tendência.':m.source+': '+formatFrontRate(m.rate)+(eta?' · conclusão estimada em '+eta:'')+'. O resultado pode mudar.',eta};
     }
-    function renderTopFronts() {
-        const host=$('mapa-top-fronts');if(!host)return;
-        const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
-        const active=new Set(top.map(p=>String(p.index)));
-        if(window.matchMedia('(max-width:700px)').matches&&expandedFronts.size>1){const keep=[...expandedFronts].at(-1);expandedFronts.clear();expandedFronts.add(keep);}
-        for(const key of expandedFronts)if(!active.has(key))expandedFronts.delete(key);
-        host.innerHTML=top.length?top.map(p=>{
+    function frontMarkup(p) {
             const defending=!!p.event,c=campaigns.find(c=>c.planet?.index===p.index);
-            const kind=window.HDBRCampaignMetrics?.classify(p,c)||{label:defending?'Defesa':'Libertação',symbol:defending?'🛡':'⚑'};
+            const kind=window.HDBRCampaignMetrics?.classify(p,c)||{label:defending?'Defesa':'Libertação',symbol:''};
             const m=window.HDBRCampaignMetrics?frontMetrics(p):{progress:warProgress(p),rate:null,enemyProgress:invasionProgress(p),enemyRate:null,source:'Aguardando nova leitura'};
             const enemy=p.event?.faction||p.currentOwner,color=factionColor(enemy);
             const deadline=m.remainingHours!=null?durationLabel(m.remainingHours):'Prazo indisponível';
@@ -1070,8 +1065,55 @@
             const bar=(label,value,fill)=>`<div class="mapa-front-bar"><span>${escapeHTML(label)}<b>${formatPercentDetailed(value)}</b></span><div><i style="width:${value==null?0:Math.max(0,Math.min(100,value))}%;background:${fill}"></i></div></div>`;
             const metric=(label,value,note,cls='')=>`<div class="${cls}"><small>${label}</small><strong>${value}</strong><span>${escapeHTML(note)}</span></div>`;
             const pressure=defending?m.enemyRate:regenPercentPerHour(p);
-            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${kind.symbol} ${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><details class="mapa-front-regions"><summary>Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0}</summary>${window.HDBRRegions?.render(p,'planets')||'<small>Nenhuma região informada.</small>'}</details><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
-        }).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
+    }
+    function renderTopFronts() {
+        const host=$('mapa-top-fronts');if(!host)return;
+        const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
+        const active=new Set(top.map(p=>String(p.index)));
+        if(expandedFronts.size>1){const keep=[...expandedFronts].at(-1);expandedFronts.clear();expandedFronts.add(keep);}
+        for(const key of expandedFronts)if(!active.has(key))expandedFronts.delete(key);
+        host.innerHTML=top.length?top.map(p=>frontMarkup(p).split('<div class="mapa-front-expanded">')[0]+'</details>').join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
+        if(frontPanelIndex!=null){const p=allPlanets.find(p=>String(p.index)===frontPanelIndex);if(p)openFrontPanel(p,false);else closeFrontPanel();}
+        if(frontRegionsIndex!=null){const p=allPlanets.find(p=>String(p.index)===frontRegionsIndex);if(p)openFrontRegions(p,false);else closeFrontRegions();}
+    }
+    function positionFloatingPanel(panel,anchor){
+        if(!panel?.classList.contains('open'))return;
+        const wrap=panel.parentElement,mobile=window.matchMedia('(max-width:700px)').matches;
+        panel.style.right='auto';panel.style.bottom='auto';
+        const margin=mobile?8:14,gap=12,width=Math.min(panel.offsetWidth||320,wrap.clientWidth-margin*2);
+        const cap=Math.max(100,wrap.clientHeight-(mobile?140:92));panel.style.maxHeight=cap+'px';
+        let left=margin,top=mobile?72:76;
+        if(!mobile&&anchor){const rect=anchor.getBoundingClientRect?.(),bounds=wrap.getBoundingClientRect?.();
+            if(rect&&bounds){const sx=wrap.clientWidth/bounds.width,sy=wrap.clientHeight/bounds.height;left=(rect.right-bounds.left)*sx+gap;top=Math.max(72,(rect.top-bounds.top)*sy);}
+            else left=(parseFloat(anchor.style?.left)||margin)+(anchor.offsetWidth||290)+gap;
+        }
+        if(!mobile&&left+width>wrap.clientWidth-margin&&anchor){const alternative=(parseFloat(anchor.style?.left)||margin)-gap-width;if(alternative>=margin)left=alternative;}
+        left=Math.max(margin,Math.min(left,wrap.clientWidth-width-margin));
+        panel.style.left=left+'px';panel.style.top=Math.min(top,Math.max(mobile?72:76,wrap.clientHeight-200))+'px';
+    }
+    function floatingAnchor(){return $('mapa-front-panel')?.classList.contains('open')?$('mapa-front-panel'):$('mapa-intel-card');}
+    function openFrontPanel(p,focus=true){
+        if(focus&&frontPanelIndex!==String(p.index)){hideQuickIntel();closeFrontRegions();}
+        frontPanelIndex=String(p.index);expandedFronts.clear();expandedFronts.add(frontPanelIndex);
+        const panel=$('mapa-front-panel'),content=$('mapa-front-panel-content');if(!panel||!content)return;
+        const scroll=content.scrollTop||0;
+        content.innerHTML=frontMarkup(p).split('<div class="mapa-front-expanded">')[1].replace(/<\/div><\/details>$/,'');content.scrollTop=scroll;
+        $('mapa-front-panel-title').textContent=planetName(p);panel.style.setProperty('--accent',factionColor(p.event?.faction||p.currentOwner));
+        panel.classList.add('open');panel.inert=false;panel.setAttribute('aria-hidden','false');
+        $('mapa-tools').open=false;$('mapa-operations').open=false;positionFloatingPanel(panel,$('mapa-top-fronts')?.parentElement);
+        if(focus)panel.querySelector('[data-close-floating]')?.focus({preventScroll:true});
+    }
+    function closeFrontRegions(){frontRegionsIndex=null;const panel=$('mapa-regions-panel');panel?.classList.remove('open');if(panel){panel.inert=true;panel.setAttribute('aria-hidden','true');}}
+    function closeFrontPanel(){if(frontPanelIndex!=null&&dossierPlanetIndex===frontPanelIndex)closePlanetModal(false);frontPanelIndex=null;expandedFronts.clear();const panel=$('mapa-front-panel');panel?.classList.remove('open');if(panel){panel.inert=true;panel.setAttribute('aria-hidden','true');}closeFrontRegions();$('mapa-top-fronts')?.querySelectorAll('details[data-planet-index]').forEach(front=>{front.open=false;});}
+    function openFrontRegions(p,focus=true){
+        if(focus)closePlanetModal(false);
+        frontRegionsIndex=String(p.index);const panel=$('mapa-regions-panel'),content=$('mapa-regions-panel-content');if(!panel||!content)return;
+        const open=[...content.querySelectorAll('details[open]')].map(d=>d.querySelector('strong')?.textContent),scroll=content.scrollTop||0;
+        content.innerHTML=window.HDBRRegions?.render(p,'planets')||'<p>Nenhuma região informada nesta leitura.</p>';
+        content.querySelectorAll('details').forEach(d=>{if(open.includes(d.querySelector('strong')?.textContent))d.open=true;});content.scrollTop=scroll;
+        $('mapa-regions-panel-title').textContent='Regiões · '+planetName(p);panel.classList.add('open');panel.inert=false;panel.setAttribute('aria-hidden','false');
+        $('mapa-operations').open=false;positionFloatingPanel(panel,floatingAnchor());if(focus)panel.querySelector('[data-close-floating]')?.focus({preventScroll:true});
     }
 
     function renderOffensiveCampaigns() {
@@ -1162,6 +1204,7 @@
     }
     function positionDossier() {
         const modal=$('planet-modal'),card=$('mapa-intel-card');
+        if(frontPanelIndex!=null&&$('mapa-front-panel')?.classList.contains('open')){positionFloatingPanel(modal,$('mapa-front-panel'));return;}
         if(!modal?.classList.contains('open'))return;
         if(!card?.classList.contains('open')||window.matchMedia('(max-width:700px)').matches){positionInspector(modal);return;}
         modal.style.visibility='visible';modal.style.right='auto';modal.style.bottom='auto';
@@ -1298,6 +1341,7 @@
         const card = $('mapa-intel-card');
         if (!card || !p) return;
         cancelQuickIntelHide();
+        if(frontPanelIndex!=null){closeFrontPanel();}
         if(quickIntelIndex!==String(p.index)) closePlanetModal(false);
         card.inert=false;
         quickIntelPlanet = p;
@@ -1368,7 +1412,7 @@
         $('mapa-intel-regen').textContent = `${formatRate(regen)}/h`;
         $('mapa-intel-regions').textContent = regions.toLocaleString('pt-BR');
         const regionBox = $('mapa-intel-region-bars');
-        regionBox.innerHTML = specialLocation(p) ? '' : (window.HDBRRegions?.render(p, 'planets') || '');
+        regionBox.innerHTML = specialLocation(p)||!Array.isArray(p.regions)||!p.regions.length ? '' : `<button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${p.regions.length} ↗</button>`;
         regionBox.hidden = !regionBox.innerHTML;
         $('mapa-intel-attacking').textContent = attacks.toLocaleString('pt-BR');
 
@@ -2296,6 +2340,11 @@
     function openPlanetModal(p, focus = true) {
         const modal = $('planet-modal');
         if (!modal) return;
+        const modalScroll=modal.scrollTop||0;
+        const previousRegions=dossierPlanetIndex===String(p.index)?[...($('planet-dossier-regions')?.querySelectorAll?.('details[open]')||[])].map(d=>d.querySelector('strong')?.textContent):[];
+        renderPlanetEffects(p);
+        $('mapa-intel-biome').textContent=biomeLabel(p);
+        $('mapa-intel-climate').textContent=planetClimateLabel(p);
         const owner=p.currentOwner||p.owner;
         modal.querySelector('.tactical-modal-card').style.setProperty('--accent',factionColor(p.event?.faction||owner));
         $('planet-modal-title').textContent=planetName(p);
@@ -2323,6 +2372,9 @@
             $('planet-dossier-advice').innerHTML='<p>Local inacessível. Não há preparação de missão aplicável.</p>';
             $('planet-dossier-regions').innerHTML='<p>Local indisponível para operações.</p>';
         }
+        $('planet-dossier-regions')?.querySelectorAll?.('details').forEach(d=>{if(previousRegions.includes(d.querySelector('strong')?.textContent))d.open=true;});
+        dossierPlanetIndex=String(p.index);
+        $('mapa-tools').open=false;$('mapa-operations').open=false;
         modal.classList.add('open');
         modal.inert=false;
         $('mapa-intel-card').inert=window.matchMedia('(max-width:700px)').matches;
@@ -2330,11 +2382,13 @@
         modal.setAttribute('aria-hidden', 'false');
         $('mapa-intel-details')?.setAttribute('aria-expanded','true');
         positionDossier();
+        if(!focus)modal.scrollTop=modalScroll;
         if (focus) modal.querySelector('[data-close-planet]')?.focus({preventScroll:true});
     }
     function closePlanetModal(restoreFocus = true) {
         const modal = $('planet-modal');
         if (!modal) return;
+        dossierPlanetIndex=null;
         modal.classList.remove('open');
         modal.inert=true;
         $('mapa-intel-card').inert=!$('mapa-intel-card').classList.contains('open');
@@ -2407,6 +2461,7 @@
                 await new Promise(resolve=>setTimeout(resolve,100));
             }
             const dossierOpen = $('planet-modal')?.classList.contains('open');
+            const savedDossierIndex=dossierPlanetIndex;
             const selected=selectedIndex;
             const inspector=quickIntelIndex;
             const sticky=$('mapa-intel-card')?.dataset.sticky==='1';
@@ -2429,6 +2484,7 @@
                     if (dossierOpen) openPlanetModal(p, false);
                 }
             }
+            if(dossierOpen&&savedDossierIndex!=null){const p=allPlanets.find(p=>String(p.index)===savedDossierIndex);if(p)openPlanetModal(p,false);}
             $('mapa-loading')?.classList.add('hidden');
             const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');
             if(status) status.textContent=window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA · SEM ATUALIZAÇÃO':campaignResult.status==='rejected'?'CAMPANHAS INDISPONÍVEIS':'ATUALIZADO · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
@@ -2458,7 +2514,13 @@
             image.src=info.primary;button.prepend(image);
         });
         document.querySelectorAll('.mapa-layer').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('active'))));
-        $('mapa-top-fronts')?.addEventListener('click',event=>{const button=event.target.closest?.('[data-front-dossier]');if(!button)return;const p=allPlanets.find(p=>String(p.index)===button.dataset.frontDossier);if(p){hideQuickIntel();openPlanetModal(p,false);}});
+        [$('mapa-front-panel'),$('mapa-regions-panel'),$('mapa-intel-card')].forEach(panel=>panel?.addEventListener('click',event=>{
+            const close=event.target.closest?.('[data-close-floating]');if(close){close.dataset.closeFloating==='front'?closeFrontPanel():closeFrontRegions();return;}
+            const button=event.target.closest?.('[data-front-regions],[data-front-dossier]');if(!button)return;
+            const p=allPlanets.find(p=>String(p.index)===(button.dataset.frontRegions??button.dataset.frontDossier));if(!p)return;
+            if(button.dataset.frontRegions!=null)openFrontRegions(p);else{closeFrontRegions();openPlanetModal(p);}
+        }));
+        window.addEventListener('resize',()=>{positionFloatingPanel($('mapa-front-panel'),$('mapa-top-fronts')?.parentElement);positionFloatingPanel($('mapa-regions-panel'),floatingAnchor());positionDossier();});
         $('mapa-top-fronts')?.addEventListener('toggle',event=>handleFrontToggle(event.target),true);
         $('mapa-top-fronts')?.addEventListener('error',event=>{if(event.target.tagName==='IMG')event.target.hidden=true;},true);
         [$('mapa-tools'),$('mapa-operations')].forEach(panel=>panel?.addEventListener('toggle',()=>{if(panel.open){[$('mapa-tools'),$('mapa-operations')].forEach(other=>{if(other!==panel)other.open=false;});}}));
@@ -2517,6 +2579,7 @@
         $('mapa-intel-details')?.addEventListener('click', () => {
             if (!quickIntelPlanet) return;
             setSelectedPlanet(quickIntelPlanet.index);
+            closeFrontRegions();
             openPlanetModal(quickIntelPlanet);
         });
         $('mapa-intel-card')?.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') cancelQuickIntelHide(); });
@@ -2529,6 +2592,8 @@
             if (event.key === 'Escape') {
                 $('mapa-tools').open=false;$('mapa-operations').open=false;
                 if ($('planet-modal')?.classList.contains('open')) closePlanetModal();
+                else if(frontRegionsIndex!=null)closeFrontRegions();
+                else if(frontPanelIndex!=null)closeFrontPanel();
                 else hideQuickIntel();
             }
         });

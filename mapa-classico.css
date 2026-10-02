@@ -1236,3 +1236,8 @@ html:has(body.mapa-immersive){zoom:1!important;}
 #mapa-viewport.mapa-is-moving .mapa-route-energy{animation-play-state:paused;}
 #mapa-pan-host.optimized-mode #mapa-viewport.mapa-is-moving .mapa-route-energy{display:none;}
 @media (prefers-reduced-motion:reduce){.mapa-route-energy{display:none;animation:none;}}
+
+/* Ícones reais dos planetas: cores originais, sem filtros ou transparência. */
+.mapa-planet-artwork{opacity:1;filter:none;pointer-events:none;}
+.mapa-planet-artwork-border{opacity:0;filter:none;}
+.planet-artwork-ready .mapa-planet-artwork-border{opacity:1;}

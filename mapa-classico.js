@@ -98,6 +98,314 @@
 		'fronteria': 'Tropical_Oasis_Biome_Header.png'
 	};
     const PLANET_IMG_PATH = 'imagens/planetas/';
+    const PLANET_ICON_R2_BASE = 'https://pub-f324221f4e5e42b08ecfa5062afd5960.r2.dev/helldivers-br/images/planetas/';
+    const PLANET_ICON_FILES = [
+    "Acamar_IV_Planet_Icon.webp",
+    "Achernar_Secundus_Planet_Icon.webp",
+    "Achird_III_Planet_Icon.webp",
+    "Acrab_XI_Planet_Icon.webp",
+    "Acrux_IX_Planet_Icon.webp",
+    "Acubens_Prime_Planet_Icon.webp",
+    "Adhara_Planet_Icon.webp",
+    "Aesir_Pass_Planet_Icon.webp",
+    "Afoyay_Bay_Planet_Icon.webp",
+    "Ain-5_Planet_Icon.webp",
+    "Alairt_III_Planet_Icon.webp",
+    "Alamak_VII_Planet_Icon.webp",
+    "Alaraph_Planet_Icon.webp",
+    "Alathfar_XI_Planet_Icon.webp",
+    "Alderidge_Cove_Planet_Icon.webp",
+    "Alta_V_Planet_Icon.webp",
+    "Andar_Planet_Icon.webp",
+    "Angel's_Venture_Planet_Icon.webp",
+    "Arkturus_Planet_Icon.webp",
+    "Asperoth_Prime_Planet_Icon.webp",
+    "Atrama_Planet_Icon.webp",
+    "Aurora_Bay_Planet_Icon.webp",
+    "Azterra_Planet_Icon.webp",
+    "Azur_Secundus_Planet_Icon.webp",
+    "Baldrick_Prime_Planet_Icon.webp",
+    "Barabos_Planet_Icon.webp",
+    "Bashyr_Planet_Icon.webp",
+    "Basquine_VIII_Planet_Icon.webp",
+    "Bekvam_III_Planet_Icon.webp",
+    "Bellatrix_Planet_Icon.webp",
+    "Big_Rock_Planet_Icon.webp",
+    "Blistica_Planet_Icon.webp",
+    "Borea_Planet_Icon.webp",
+    "Bore_Rock_Planet_Icon.webp",
+    "Botein_Planet_Icon.webp",
+    "Brilliance_Planet_Icon.webp",
+    "Brink-2_Planet_Icon.webp",
+    "Bunda_Secundus_Planet_Icon.webp",
+    "Calypso_Planet_Icon.webp",
+    "Canopus_Planet_Icon.webp",
+    "Caph_Planet_Icon.webp",
+    "Caramoor_Planet_Icon.webp",
+    "Castor_Planet_Icon.webp",
+    "Cerberus_IIIc_Planet_Icon.webp",
+    "Charbal-VII_Planet_Icon.webp",
+    "Charon_Prime_Planet_Icon.webp",
+    "Choepessa_IV_Planet_Icon.webp",
+    "Choohe_Planet_Icon.webp",
+    "Chort_Bay_Planet_Icon.webp",
+    "Cirrus_Planet_Icon.webp",
+    "Claorell_Planet_Icon.webp",
+    "Clasa_Planet_Icon.webp",
+    "Crimsica_Planet_Icon.webp",
+    "Crucible_Planet_Icon.webp",
+    "Curia_Planet_Icon.webp",
+    "Cyberstan_Planet_Icon.webp",
+    "Darius_II_Planet_Icon.webp",
+    "Darrowsport_Planet_Icon.webp",
+    "Demiurg_Planet_Icon.webp",
+    "Deneb_Secundus_Planet_Icon.webp",
+    "Diaspora_X_Planet_Icon.webp",
+    "Diluvia_Planet_Icon.webp",
+    "Dolph_Planet_Icon.webp",
+    "Draupnir_Planet_Icon.webp",
+    "Duma_Tyr_Planet_Icon.webp",
+    "Durgen_Planet_Icon.webp",
+    "East_Iridium_Trading_Bay_Planet_Icon.webp",
+    "Effluvia_Planet_Icon.webp",
+    "Electra_Bay_Planet_Icon.webp",
+    "Elysian_Meadows_Planet_Icon.webp",
+    "Emeria_Planet_Icon.webp",
+    "Emorath_Planet_Icon.webp",
+    "Enuliale_Planet_Icon.webp",
+    "Epsilon_Phoencis_VI_Planet_Icon.webp",
+    "Erata_Prime_Planet_Icon.webp",
+    "Erson_Sands_Planet_Icon.webp",
+    "Esker_Planet_Icon.webp",
+    "Estanu_Planet_Icon.webp",
+    "Eukoria_Planet_Icon.webp",
+    "Euphoria_III_Planet_Icon.webp",
+    "Fenmire_Planet_Icon.webp",
+    "Fenrir_III_Planet_Icon.webp",
+    "Fori_Prime_Planet_Icon.webp",
+    "Fornskogur_II_Planet_Icon.webp",
+    "Fort_Justice_Planet_Icon.webp",
+    "Fort_Sanctuary_Planet_Icon.webp",
+    "Fort_Union_Planet_Icon.webp",
+    "Freedom_Peak_Planet_Icon.webp",
+    "Fronteria_Planet_Icon.webp",
+    "Fury_Planet_Icon.webp",
+    "Gacrux_Planet_Icon.webp",
+    "Gaellivare_Planet_Icon.webp",
+    "Gar_Haren_Planet_Icon.webp",
+    "Gatria_Planet_Icon.webp",
+    "Gemma_Planet_Icon.webp",
+    "Gemstone_Bluffs_Planet_Icon.webp",
+    "Genesis_Prime_Planet_Icon.webp",
+    "Grafmere_Planet_Icon.webp",
+    "Grand_Errant_Planet_Icon.webp",
+    "Gunvald_Planet_Icon.webp",
+    "Hadar_Planet_Icon.webp",
+    "Haka_Planet_Icon.webp",
+    "Haldus_Planet_Icon.webp",
+    "Halies_Port_Planet_Icon.webp",
+    "Heeth_Planet_Icon.webp",
+    "Hellmire_Planet_Icon.webp",
+    "Herthon_Secundus_Planet_Icon.webp",
+    "Hesoe_Prime_Planet_Icon.webp",
+    "Heze_Bay_Planet_Icon.webp",
+    "Hort_Planet_Icon.webp",
+    "Hydrobius_Planet_Icon.webp",
+    "Hydrofall_Prime_Planet_Icon.webp",
+    "Igla_Planet_Icon.webp",
+    "Ilduna_Prime_Planet_Icon.webp",
+    "Imber_Planet_Icon.webp",
+    "Inari_Planet_Icon.webp",
+    "Ingmar_Planet_Icon.webp",
+    "Iridica_Planet_Icon.webp",
+    "Iro_Planet_Icon.webp",
+    "Irulta_Planet_Icon.webp",
+    "Ivis_Planet_Icon.webp",
+    "Julheim_Planet_Icon.webp",
+    "Karlia_Planet_Icon.webp",
+    "Keid_Planet_Icon.webp",
+    "Kelvinor_Planet_Icon.webp",
+    "Kerth_Secundus_Planet_Icon.webp",
+    "Khandark_Planet_Icon.webp",
+    "Kharst_Planet_Icon.webp",
+    "Kirrik_Planet_Icon.webp",
+    "Klaka_5_Planet_Icon.webp",
+    "Klen_Dahth_II_Planet_Icon.webp",
+    "Kneth_Port_Planet_Icon.webp",
+    "Krakabos_Planet_Icon.webp",
+    "Krakatwo_Planet_Icon.webp",
+    "Kraz_Planet_Icon.webp",
+    "Kuma_Planet_Icon.webp",
+    "Kuper_Planet_Icon.webp",
+    "K_Planet_Icon.webp",
+    "Lastofe_Planet_Icon.webp",
+    "Leng_Secundus_Planet_Icon.webp",
+    "Lesath_Planet_Icon.webp",
+    "Liberty_Ridge_Planet_Icon.webp",
+    "Luxuriant_Planet_Icon.webp",
+    "Maia_Planet_Icon.webp",
+    "Malevelon_Creek_Planet_Icon.webp",
+    "Mantes_Planet_Icon.webp",
+    "Marfark_Planet_Icon.webp",
+    "Marre_IV_Planet_Icon.webp",
+    "Mars_Planet_Icon.webp",
+    "Martale_Planet_Icon.webp",
+    "Martyr's_Bay_Planet_Icon.webp",
+    "Mastia_Planet_Icon.webp",
+    "Matar_Bay_Planet_Icon.webp",
+    "Maw_Planet_Icon.webp",
+    "Meissa_Planet_Icon.webp",
+    "Mekbuda_Planet_Icon.webp",
+    "Menkent_Planet_Icon.webp",
+    "Merak_Planet_Icon.webp",
+    "Merga_IV_Planet_Icon.webp",
+    "Meridia_Planet_Icon.webp",
+    "Midasburg_Planet_Icon.webp",
+    "Minchir_Planet_Icon.webp",
+    "Mintoria_Planet_Icon.webp",
+    "Mog_Planet_Icon.webp",
+    "Moradesh_Planet_Icon.webp",
+    "Mordia_9_Planet_Icon.webp",
+    "Mortax_Prime_Planet_Icon.webp",
+    "Mort_Planet_Icon.webp",
+    "Mox_Planet_Icon.webp",
+    "Myradesh_Planet_Icon.webp",
+    "Myrium_Planet_Icon.webp",
+    "Nabatea_Secundus_Planet_Icon.webp",
+    "Navi_VII_Planet_Icon.webp",
+    "New_Haven_Planet_Icon.webp",
+    "New_Kiruna_Planet_Icon.webp",
+    "New_Stockholm_Planet_Icon.webp",
+    "Nivel_43_Planet_Icon.webp",
+    "Nublaria_I_Planet_Icon.webp",
+    "Oasis_Planet_Icon.webp",
+    "Obari_Planet_Icon.webp",
+    "Okul_VI_Planet_Icon.webp",
+    "Omicron_Planet_Icon.webp",
+    "Oshaune_Planet_Icon.webp",
+    "Oslo_Station_Planet_Icon.webp",
+    "Osupsam_Planet_Icon.webp",
+    "Outpost_32_Planet_Icon.webp",
+    "Overgoe_Prime_Planet_Icon.webp",
+    "Pandion-XXIV_Planet_Icon.webp",
+    "Parsh_Planet_Icon.webp",
+    "Partion_Planet_Icon.webp",
+    "Pathfinder_V_Planet_Icon.webp",
+    "Peacock_Planet_Icon.webp",
+    "Penta_Planet_Icon.webp",
+    "Phact_Bay_Planet_Icon.webp",
+    "Pherkad_Secundus_Planet_Icon.webp",
+    "Pilen_V_Planet_Icon.webp",
+    "Pioneer_II_Planet_Icon.webp",
+    "Polaris_Prime_Planet_Icon.webp",
+    "Pollux_31_Planet_Icon.webp",
+    "Prasa_Planet_Icon.webp",
+    "Primordia_Planet_Icon.webp",
+    "Propus_Planet_Icon.webp",
+    "Prosperity_Falls_Planet_Icon.webp",
+    "Providence_Planet_Icon.webp",
+    "Pöpli_IX_Planet_Icon.webp",
+    "Rasp_Planet_Icon.webp",
+    "Ras_Algethi_Planet_Icon.webp",
+    "Ratch_Planet_Icon.webp",
+    "RD-4_Planet_Icon.webp",
+    "Reaf_Planet_Icon.webp",
+    "Regnus_Planet_Icon.webp",
+    "Rirga_Bay_Planet_Icon.webp",
+    "Rogue_5_Planet_Icon.webp",
+    "Sangis_Planet_Icon.webp",
+    "Seasse_Planet_Icon.webp",
+    "Senge_23_Planet_Icon.webp",
+    "Setia_Planet_Icon.webp",
+    "Seyshel_Beach_Planet_Icon.webp",
+    "Shallus_Planet_Icon.webp",
+    "Shelt_Planet_Icon.webp",
+    "Shete_Planet_Icon.webp",
+    "Siemnot_Planet_Icon.webp",
+    "Sirius_Planet_Icon.webp",
+    "Skaash_Planet_Icon.webp",
+    "Skat_Bay_Planet_Icon.webp",
+    "Skitter_Planet_Icon.webp",
+    "Slif_Planet_Icon.webp",
+    "Socorro_III_Planet_Icon.webp",
+    "Solghast_Planet_Icon.webp",
+    "Spherion_Planet_Icon.webp",
+    "Stor_Tha_Prime_Planet_Icon.webp",
+    "Stout_Planet_Icon.webp",
+    "Sulfura_Planet_Icon.webp",
+    "Super_Earth_Planet_Icon.webp",
+    "Tarsh_Planet_Icon.webp",
+    "Termadon_Planet_Icon.webp",
+    "Terrek_Planet_Icon.webp",
+    "The_Weir_Planet_Icon.webp",
+    "Tibit_Planet_Icon.webp",
+    "Tien_Kwan_Planet_Icon.webp",
+    "Trandor_Planet_Icon.webp",
+    "Troost_Planet_Icon.webp",
+    "Turing_Planet_Icon.webp",
+    "Ubanea_Planet_Icon.webp",
+    "Ursica_XI_Planet_Icon.webp",
+    "Ustotu_Planet_Icon.webp",
+    "Valgaard_Planet_Icon.webp",
+    "Valmox_Planet_Icon.webp",
+    "Vandalon_IV_Planet_Icon.webp",
+    "Varylia_5_Planet_Icon.webp",
+    "Vega_Bay_Planet_Icon.webp",
+    "Veil_Planet_Icon.webp",
+    "Veld_Planet_Icon.webp",
+    "Vernen_Wells_Planet_Icon.webp",
+    "Vindemitarix_Prime_Planet_Icon.webp",
+    "Viridia_Prime_Planet_Icon.webp",
+    "Vog-Sojoth_Planet_Icon.webp",
+    "Volterra_Planet_Icon.webp",
+    "Wasat_Planet_Icon.webp",
+    "Wezen_Planet_Icon.webp",
+    "Widow's_Harbor_Planet_Icon.webp",
+    "Wilford_Station_Planet_Icon.webp",
+    "Wraith_Planet_Icon.webp",
+    "X-45_Planet_Icon.webp",
+    "Yed_Prior_Planet_Icon.webp",
+    "Zagon_Prime_Planet_Icon.webp",
+    "Zea_Rugosia_Planet_Icon.webp",
+    "Zefia_Planet_Icon.webp",
+    "Zegema_Paradise_Planet_Icon.webp",
+    "Zosma_Planet_Icon.webp",
+    "Zygos_Planet_Icon.webp",
+    "Zzaniah_Prime_Planet_Icon.webp"
+];
+    function planetIconKey(name) {
+        return String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+    }
+    const planetIconFilesByName=new Map(PLANET_ICON_FILES.map(file=>[planetIconKey(file.replace(/_Planet_Icon\.webp$/,'')),file]));
+    const failedPlanetIcons=new Set();
+    function planetIconUrl(p) {
+        // Preserva buracos negros, destroços e a arte personalizada da Super Terra.
+        if(!p || specialLocation(p) || isSuperEarth(p)) return '';
+        const file=planetIconFilesByName.get(planetIconKey(p.name));
+        return file ? PLANET_ICON_R2_BASE+encodeURIComponent(file) : '';
+    }
+    function appendPlanetArtwork(group,p,x,y,radius,symbol) {
+        const url=planetIconUrl(p);
+        if(!url || failedPlanetIcons.has(url)) return null;
+        const clipId='planet-art-clip-'+planetIconKey(p.index??p.name);
+        const clip=svgEl('clipPath',{id:clipId,clipPathUnits:'userSpaceOnUse'});
+        clip.appendChild(svgEl('circle',{cx:x,cy:y,r:radius}));
+        const image=svgEl('image',{class:'mapa-planet-artwork',x:x-radius,y:y-radius,width:radius*2,height:radius*2,
+            preserveAspectRatio:'xMidYMid meet','clip-path':`url(#${clipId})`,'pointer-events':'none','aria-hidden':'true'});
+        const border=svgEl('circle',{class:'mapa-planet-artwork-border',cx:x,cy:y,r:radius*1.04,fill:'none',
+            stroke:factionColor(p.currentOwner||p.owner),'stroke-width':radius*.07,'pointer-events':'none','aria-hidden':'true'});
+        image.dataset.src=url;
+        image.addEventListener('load',()=>{symbol.style.display='none';group.classList.add('planet-artwork-ready');});
+        image.addEventListener('error',()=>{failedPlanetIcons.add(url);image.remove();border.remove();clip.remove();symbol.style.display='';group.classList.remove('planet-artwork-ready');});
+        group.appendChild(image);
+        group.appendChild(border);
+        group.appendChild(clip);
+        return image;
+    }
+    function loadVisiblePlanetArtwork(group,image) {
+        if(image && !group.classList.contains('filtered-out') && !image.getAttribute('href')) image.setAttribute('href',image.dataset.src);
+    }
+
     // Classificação visual editorial do portal; não altera os dados da API.
     const SPECIAL_LOCATIONS = {
         'penta': {file:'penta.png', label:'Buraco negro', color:'#ffc75a'},
@@ -1582,6 +1890,7 @@
                 x:x-iconSize/2,y:y-iconSize/2,width:iconSize,height:iconSize,'aria-hidden':'true'
             });
             group.appendChild(symbol);
+            const artwork=appendPlanetArtwork(group,raw,x,y,(underAttack||offensive)?baseRadius*1.38:baseRadius,symbol);
             if(special) {
                 const size=baseRadius*5;
                 // Símbolo de reserva se o PNG ainda não estiver instalado.
@@ -1667,7 +1976,7 @@
                 showQuickIntel(raw,{sticky:true});
             });
             dotsGroup.appendChild(group);
-            nodeByIndex.set(String(raw.index), { data:raw, group, circle });
+            nodeByIndex.set(String(raw.index), { data:raw, group, circle, artwork });
         });
 
         updateHUD(planets, drawn.size);
@@ -1682,7 +1991,7 @@
     // ================================================================
     function applyFilters() {
         const q = searchText(searchQuery),matching=new Set();
-        nodeByIndex.forEach(({ data, group }) => {
+        nodeByIndex.forEach(({ data, group, artwork }) => {
             const owner = data.currentOwner || data.owner;
             const matchesFaction = activeFaction === 'all' || (!specialLocation(data) && factionKey(owner) === activeFaction);
             const matchesSearch = !q || matchesPlanetSearch(data,q);
@@ -1692,6 +2001,7 @@
             group.setAttribute('tabindex',show?'0':'-1');
             group.classList.toggle('filtered-out', !show);
             group.classList.toggle('search-match', !!q && show);
+            if(show) loadVisiblePlanetArtwork(group,artwork);
         });
         lineRecords.forEach(({a,b,line,base})=>{
             const hidden=!!q&&!matching.has(String(a))&&!matching.has(String(b));

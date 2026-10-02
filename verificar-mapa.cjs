@@ -1,5 +1,5 @@
 const fs=require('fs'),crypto=require('crypto'),path=require('path');
-const checks={"mapa-classico.html": ["6d6c44eb1e44ad6830d407f571b7587334beb847e23814be1ac9225778864e78", "fcec4b7495da35ac6cde312f9974d379b060c8588b2232d1db87b578b59c24d4"], "mapa-classico.css": ["df434c14b45f5bcbd1f3ea24fe9bd7e26805f835c2ab264356e9cc0cd0cd98b6", "a01250cc4e2feaeec8e66453712e1a8dda8fcf59663243259bbace284c4048e1"], "mapa-classico.js": ["6db814c2d2becc7d21a74bd89fa95bb80a68b9f47f912899d6086880f4e6dd9a", "9731288eecb30312c92e925317d96feaab9ab43c781b80e22ac616416285a3a7"]};
+const checks={"mapa-classico.html": ["fcec4b7495da35ac6cde312f9974d379b060c8588b2232d1db87b578b59c24d4", "3fe023667db2e62df9b7ea6b45809b3e054a171026343d64844c28dea35c3f58"], "mapa-classico.css": ["a01250cc4e2feaeec8e66453712e1a8dda8fcf59663243259bbace284c4048e1", "cdc0a92e509e893b41fe10bc0800b4e3fd801e9b4e8890757f3f5d4501d17869"], "mapa-classico.js": ["9731288eecb30312c92e925317d96feaab9ab43c781b80e22ac616416285a3a7", "5baebef278600be2b56dd896f85613407e29011ea79aca6c1d35d2c1b48c975b"]};
 let failed=false;
 for(const [name,accepted] of Object.entries(checks)){
  const file=path.join(process.cwd(),name);

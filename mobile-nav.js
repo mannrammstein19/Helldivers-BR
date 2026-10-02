@@ -12,10 +12,11 @@
   target.append(img,document.createTextNode(label));
  }
  function init(){
+  if(document.body.classList.contains('mapa-immersive'))return;
   if(document.querySelector('[data-hd-navigation]'))return;
   document.querySelector('.mobile-dock')?.remove();
   const nav=document.createElement('nav');nav.className='mobile-dock';nav.dataset.hdNavigation='';nav.setAttribute('aria-label','Navegação principal');
-  const entries=[['index.html','⌂','Início'],['guerra.html','⚔','Guerra'],['ordem.html','◆','Ordem'],['mapa-galatico.html','◎','Mapa'],['estratagemas.html','↯','Arsenal']];
+  const entries=[['index.html','⌂','Início'],['guerra.html','⚔','Guerra'],['ordem.html','◆','Ordem'],['mapa-classico.html','◎','Mapa'],['estratagemas.html','↯','Arsenal']];
   for(const [path,icon,label] of entries){
    const link=document.createElement('a');link.href=new URL(path,base);appendIcon(link,label,icon);nav.append(link);
   }
@@ -37,7 +38,7 @@
    const root=normalize(base.pathname);
    const relative=path===root?'':path.slice(root==='/'?0:root.length);
    // Both map views belong to Mapa; individual stratagems belong to Arsenal.
-   if(relative==='/mapa-classico')path=normalize(new URL('mapa-galatico.html',base).pathname);
+   if(relative==='/mapa-galatico')path=normalize(new URL('mapa-classico.html',base).pathname);
    if(relative.startsWith('/estratagemas/'))path=normalize(new URL('estratagemas.html',base).pathname);
    if(relative==='/guerra'&&location.hash==='#ordem-maior')path=normalize(new URL('ordem.html',base).pathname);
    nav.querySelectorAll('a').forEach(a=>{

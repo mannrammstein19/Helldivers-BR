@@ -25,7 +25,6 @@
         { title:'Terminídeos — Lore', category:'Facção', url:'inimigos/terminideos.html', icon:'imagens/inimigos/terminids/terminideos-horizontal.jpg', keywords:'terminideos terminídeos terminids insetos bugs lore' },
         { title:'Iluminados — Lore', category:'Facção', url:'inimigos/iluminados.html', icon:'imagens/inimigos/illuminates/iluminados-horizontal.jpg', keywords:'iluminados illuminate illuminates squid molusco lore' },
         { title:'Mapa Galáctico Tático', category:'Mapa', url:'mapa-classico.html', icon:'imagens/fundos/mapa/universo-fundo.jpg', keywords:'mapa galaxia galáxia planetas setores rotas suprimento' },
-        { title:'Mapa Galáctico 3D', category:'Mapa', url:'mapa-galatico.html', icon:'imagens/fundos/mapa/universo-fundo.jpg', keywords:'mapa 3d galaxia galáxia planetas' },
         { title:'Passes de Guerra', category:'Warbonds', url:'warbonds/warbonds-wiki.html', icon:'imagens/fundos/site/warbonds.png', keywords:'warbond warbonds passe passes guerra medalhas' }
     ];
 

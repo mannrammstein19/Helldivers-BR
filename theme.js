@@ -468,7 +468,7 @@
 (() => {
  const base=new URL('.',document.currentScript.src);
  const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('mobile-nav.css?v=20260928',base);document.head.append(css);
- const script=document.createElement('script');script.src=new URL('mobile-nav.js?v=20260928',base);script.async=false;document.head.append(script);
+ const script=document.createElement('script');script.src=new URL('mobile-nav.js?v=mapa-tela1',base);script.async=false;document.head.append(script);
 })();
 
 /* Aplicativos Android: entrada única no menu compartilhado. */

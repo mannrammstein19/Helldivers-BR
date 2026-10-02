@@ -983,3 +983,82 @@ body.tactical-modal-open { overflow:hidden; }
 #mapa-viewport .mapa-supply-line.route-connected{stroke-width:var(--route-selected,1.55);}
 .mapa-hero .mapa-subtitle{margin-bottom:6px;}
 .mapa-hero .mapa-author{margin-bottom:0;}
+
+/* Tela tática: layout próprio, sem navegação do portal sobre o mapa. */
+body.mapa-immersive{margin:0;padding:0!important;overflow:hidden;background:#060911;}
+.mapa-immersive .sidebar,.mapa-immersive .mobile-header,.mapa-immersive .mobile-dock,.mapa-immersive #hd-install{display:none!important;}
+.mapa-immersive .main-content.mapa-main{position:fixed;inset:0;margin:0!important;padding:0!important;width:100%;max-width:none;height:100dvh;}
+.mapa-immersive .mapa-shell{max-width:none;height:100%;display:flex;flex-direction:column;}
+.mapa-screen-header{position:relative;z-index:20;display:flex;align-items:center;gap:14px;flex:none;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));background:#10151c;border-bottom:1px solid #38414b;color:#fff;}
+.mapa-home{display:grid;place-items:center;width:44px;height:44px;flex:none;border:1px solid #4a535e;border-radius:10px;background:#19212a;color:var(--hd-yellow);}
+.mapa-home svg{width:25px;height:25px;}
+.mapa-screen-header h1{font:700 22px 'Oswald',Impact,sans-serif;letter-spacing:.6px;text-transform:uppercase;margin:0;white-space:nowrap;}
+.mapa-screen-header .mapa-search{margin-left:auto;flex:0 1 300px;width:100px;border-radius:9px;height:42px;}
+.mapa-tools summary,.mapa-operations summary{cursor:pointer;list-style:none;padding:12px 14px;border:1px solid #46515e;border-radius:9px;background:#18212b;color:#e3e8ef;font:700 12px Arial,sans-serif;}
+.mapa-tools summary::-webkit-details-marker,.mapa-operations summary::-webkit-details-marker{display:none;}
+.mapa-tools[open]>summary,.mapa-operations[open]>summary{border-color:var(--hd-yellow);color:var(--hd-yellow);}
+.mapa-tools .mapa-toolbar{position:absolute;right:16px;top:calc(100% + 8px);width:min(390px,calc(100vw - 32px));box-sizing:border-box;max-height:70dvh;overflow:auto;margin:0;padding:14px;background:#101820;border:1px solid #46515e;border-radius:12px;box-shadow:0 10px 30px #0009;gap:12px;}
+.mapa-tools .mapa-filters,.mapa-tools .mapa-layer-controls{display:flex;gap:6px;margin:0;width:100%;}
+.mapa-tools .mapa-filter,.mapa-tools .mapa-layer{flex:1 1 110px;border-radius:8px;min-height:42px;height:auto;padding:9px;font-size:10px;}
+.mapa-immersive .mapa-panel{flex:1;min-height:0;border:0;margin:0;box-shadow:none;background:transparent;}
+.mapa-immersive .mapa-viewport-wrap{height:100%;min-height:0;background:#060911 url('imagens/mapa/plano-fundo.jpg') center/cover no-repeat;}
+.mapa-immersive .mapa-viewport-wrap::before,.mapa-immersive .mapa-viewport-wrap::after{display:none;}
+.mapa-immersive .mapa-galaxy-background{opacity:1;}
+.mapa-immersive .mapa-hint,.mapa-immersive .mapa-footer{display:none;}
+.mapa-immersive .mapa-tactical-hud{top:auto;left:auto;right:70px;bottom:14px;width:auto;max-width:min(300px,calc(100% - 150px));padding:8px 11px;border-radius:8px;z-index:5;background:#101820ed;}
+.mapa-immersive .mapa-hud-grid,.mapa-immersive .mapa-optimized-toggle{display:none;}
+.mapa-immersive .mapa-legend{display:none;}
+.mapa-immersive .mapa-zoom-controls{top:auto;right:14px;bottom:14px;z-index:6;}
+.mapa-top-fronts{position:absolute;left:16px;top:16px;width:245px;z-index:5;}
+.mapa-top-fronts h2{display:inline-block;margin:0 0 9px;padding:8px 10px;border-radius:8px;background:#101820ed;color:#ffe800;font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.8px;}
+#mapa-top-fronts{display:grid;gap:8px;}
+#mapa-top-fronts>p{padding:12px;background:#101820ed;border-radius:9px;color:#bbc4ce;font-size:12px;}
+.mapa-top-front{display:flex;align-items:center;gap:10px;min-width:0;width:100%;text-align:left;border:1px solid #46515e;border-left:3px solid var(--accent);border-radius:10px;padding:9px;background:#101820f2;color:#fff;cursor:pointer;box-shadow:0 3px 12px #0005;}
+.mapa-top-front:hover,.mapa-top-front:focus-visible{border-color:var(--accent);background:#1c2834;}
+.mapa-top-front img{width:54px;height:48px;border-radius:6px;object-fit:cover;flex:none;}
+.mapa-top-front span{min-width:0;}
+.mapa-top-front strong{display:block;font:700 14px 'Oswald',Impact,sans-serif;overflow-wrap:anywhere;}
+.mapa-top-front small{display:block;margin-top:5px;color:#c1cbd5;font:10px/1.4 Arial,sans-serif;font-variant-numeric:tabular-nums;}
+.mapa-immersive #mapa-intel-card{width:min(360px,calc(100% - 32px));z-index:10;background:#101820;}
+.mapa-immersive .mapa-intel-visual{height:145px;}
+.mapa-immersive .mapa-intel-title{font-size:27px;}
+.mapa-immersive .mapa-intel-visual-shade{display:none;}
+.mapa-immersive #planet-modal{width:min(400px,calc(100% - 32px));background:#101820;}
+.mapa-immersive .mapa-intel-grid strong,.mapa-immersive .tactical-modal-metrics strong{font-variant-numeric:tabular-nums;}
+.mapa-dossier-open #mapa-intel-card{visibility:hidden!important;pointer-events:none;}
+.mapa-operations{position:absolute;left:16px;bottom:14px;z-index:15;}
+.mapa-operations-content{position:absolute;left:0;bottom:calc(100% + 10px);width:min(600px,calc(100vw - 32px));max-height:75dvh;overflow:auto;background:#101820;border:1px solid #46515e;border-radius:12px;padding:14px;box-sizing:border-box;overscroll-behavior:contain;}
+.mapa-operations .mapa-command-section{margin:0 0 14px;}
+.mapa-operations .mapa-offensive-grid{grid-template-columns:1fr;}
+.mapa-immersive #mapa-viewport.only-active-fronts .mapa-planet-group.front-visible,
+.mapa-immersive #mapa-viewport.only-active-fronts .mapa-planet-group.search-match{display:block;}
+.mapa-immersive #mapa-viewport .mapa-planet-group.filtered-out{display:none!important;}
+.mapa-immersive :focus-visible{outline:2px solid #ffe800;outline-offset:3px;}
+@media(max-width:700px){
+ .mapa-screen-header{gap:8px;padding:8px;padding-top:max(8px,env(safe-area-inset-top));}
+ .mapa-screen-header h1{display:none;}
+ .mapa-screen-header .mapa-search{flex:1;margin:0;min-width:0;}
+ .mapa-tools summary{font-size:10px;padding:14px 9px;}
+ .mapa-tools .mapa-toolbar{right:8px;width:calc(100vw - 16px);}
+ .mapa-top-fronts{left:8px;right:8px;top:8px;width:auto;}
+ .mapa-top-fronts h2{font-size:9px;padding:6px 8px;margin-bottom:5px;}
+ #mapa-top-fronts{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
+ .mapa-top-front{padding:7px;min-height:61px;gap:0;}
+ .mapa-top-front img{display:none;}
+ .mapa-top-front strong{font-size:11px;}
+ .mapa-top-front small{font-size:8px;margin-top:3px;}
+ .mapa-immersive #mapa-intel-card,.mapa-immersive #planet-modal{width:calc(100% - 16px);right:8px;border-radius:14px;}
+ .mapa-immersive .mapa-intel-visual{height:100px;}
+ .mapa-immersive .mapa-intel-body{padding:12px;}
+ .mapa-immersive .mapa-tactical-hud{bottom:max(12px,env(safe-area-inset-bottom));right:64px;max-width:calc(100% - 230px);padding:7px;}
+ .mapa-immersive .mapa-hud-status{font-size:8px;letter-spacing:0;}
+ .mapa-operations{left:8px;bottom:max(12px,env(safe-area-inset-bottom));}
+ .mapa-operations summary{font-size:10px;padding:11px 9px;}
+ .mapa-operations-content{width:calc(100vw - 16px);max-height:65dvh;}
+}
+@media(prefers-reduced-motion:reduce){.mapa-immersive *{animation:none!important;scroll-behavior:auto!important;}}
+/* O mapa usa seu próprio zoom; não herda a ampliação de leitura do portal. */
+html:has(body.mapa-immersive){zoom:1!important;}
+.mapa-tools .mapa-optimized-toggle{width:100%;min-height:42px;color:#d7d52c;background:#18212b;border:1px solid #46515e;border-radius:8px;cursor:pointer;}
+.mapa-tools .mapa-optimized-toggle.active{border-color:#498967;background:#143527;color:#b6efce;}
+.mapa-immersive .mapa-intel-photo{opacity:1;}

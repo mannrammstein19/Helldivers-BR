@@ -292,7 +292,7 @@
     let quickIntelIndex = null;
     let quickIntelPlanet = null;
     let quickIntelHideTimer = 0;
-    const layerVisibility = { routes:true, territories:true, sectors:true, invasions:true, activeFronts:false };
+    const layerVisibility = { routes:true, territories:true, sectors:true, invasions:true, activeFronts:true };
     // Arte personalizada da capital; o símbolo anterior permanece como fallback.
     const SUPER_EARTH_CUSTOM_IMAGE = 'icons/super-terra-personalizada.png';
     let invasionLinks = [];
@@ -641,6 +641,25 @@
         }).sort((a,b)=>Number(b?.planet?.statistics?.playerCount||0)-Number(a?.planet?.statistics?.playerCount||0));
     }
 
+    function activePlanet(p) {
+        return !!p.event || campaignIndexes.has(String(p.index)) || (!campaignsKnown && Number(p.statistics?.playerCount)>0);
+    }
+    function markActiveNeighborhood() {
+        const active=new Set(allPlanets.filter(activePlanet).map(p=>String(p.index)));
+        const visible=new Set(active);
+        lineRecords.forEach(({a,b})=>{if(active.has(String(a))||active.has(String(b))){visible.add(String(a));visible.add(String(b));}});
+        nodeByIndex.forEach(({group},key)=>group.classList.toggle('front-visible',visible.has(String(key))));
+        lineRecords.forEach(({a,b,line,base})=>{
+            const front=active.has(String(a))||active.has(String(b));
+            line.classList.toggle('active-front-route',front);base?.classList.toggle('active-front-route',front);
+        });
+    }
+    function renderTopFronts() {
+        const host=$('mapa-top-fronts');if(!host)return;
+        const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
+        host.innerHTML=top.length?top.map(p=>`<button type="button" class="mapa-top-front" data-planet-index="${Number(p.index)}" style="--accent:${factionColor(p.event?.faction||p.currentOwner)}"><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Em operação'} · ${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</small></span></button>`).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
+    }
+
     function renderOffensiveCampaigns() {
         const grid=$('mapa-offensive-grid'),counter=$('mapa-offensive-count');
         if(!grid) return;
@@ -697,65 +716,19 @@
         $('mapa-offensive-no-results').hidden=!cards.length||visible>0;
     }
 
-    function positionDossier() {
-        const dossier=$('planet-modal'),card=$('mapa-intel-card');
-        if(!dossier?.classList.contains('open')||!card)return;
-        if(window.matchMedia('(max-width: 600px)').matches) {
-            dossier.style.visibility='visible';dossier.style.left='8px';dossier.style.top='8px';dossier.style.maxHeight='calc(100% - 16px)';return;
-        }
-        dossier.style.visibility=card.style.visibility;
-        const wrap=card.parentElement,w=wrap.clientWidth,h=wrap.clientHeight,margin=8;
-        dossier.style.maxHeight=Math.max(80,h-margin*2)+'px';
-        const width=dossier.offsetWidth,height=dossier.offsetHeight;
-        const x=parseFloat(card.style.left)||margin,y=parseFloat(card.style.top)||margin;
-        let left=x+card.offsetWidth+12;
-        if(left+width>w-margin) left=x-width-12>=margin?x-width-12:x+16;
-        dossier.style.left=Math.max(margin,Math.min(w-width-margin,left))+'px';
-        dossier.style.top=Math.max(margin,Math.min(h-height-margin,y+12))+'px';
+    function positionInspector(panel) {
+        if(!panel?.classList.contains('open'))return;
+        const wrap=panel.parentElement, mobile=window.matchMedia('(max-width: 700px)').matches;
+        panel.style.visibility='visible';
+        panel.style.left=mobile?'8px':Math.max(8,wrap.clientWidth-panel.offsetWidth-16)+'px';
+        panel.style.top=mobile?'auto':'16px';
+        panel.style.bottom=mobile?'8px':'auto';
+        panel.style.maxHeight=mobile?'62%':Math.max(80,wrap.clientHeight-32)+'px';
     }
-
+    function positionDossier() { positionInspector($('planet-modal')); }
     function positionQuickIntel() {
-        const card=$('mapa-intel-card'),svg=$('mapa-svg');
-        if(!card?.classList.contains('open')||!quickIntelPlanet) return;
-        if(window.matchMedia('(max-width: 600px)').matches) {
-            card.style.visibility='visible';card.style.left='8px';card.style.top='auto';
-            card.style.maxHeight='58%';$('mapa-intel-leader')?.setAttribute('hidden','');
-            positionDossier();return;
-        }
-        const node=nodeByIndex.get(String(quickIntelPlanet.index));
-        if(!node) return;
-        const wrap=card.parentElement,wr=wrap.getBoundingClientRect();
-        const dot=node.circle.getBoundingClientRect();
-        const sx=wrap.clientWidth/wr.width,sy=wrap.clientHeight/wr.height;
-        const x=(dot.left+dot.width/2-wr.left)*sx,y=(dot.top+dot.height/2-wr.top)*sy;
-        const w=wrap.clientWidth,h=wrap.clientHeight;
-        if(x<0||x>w||y<0||y>h) {card.style.visibility='hidden';$('mapa-intel-leader')?.setAttribute('hidden','');positionDossier();return;}
-        card.style.visibility='visible';
-        // Réserve espaço para o planeta e seus anéis antes de posicionar o cartão.
-        const gap=Math.max(32,dot.width*sx/2+20),margin=8;
-        const cw=card.offsetWidth;
-        const rightFits=x+gap+cw<=w-margin,leftFits=x-gap-cw>=margin;
-        const above=y-gap-margin,below=h-y-gap-margin;
-        const available=rightFits||leftFits?h-margin*2:Math.max(above,below);
-        card.style.maxHeight=Math.max(80,Math.min(680,available))+'px';
-        const ch=card.offsetHeight;
-        let left,top;
-        if(rightFits||leftFits){
-            left=rightFits?x+gap:x-gap-cw;
-            top=Math.max(margin,Math.min(h-ch-margin,y-ch/2));
-        }else{
-            left=Math.max(margin,Math.min(w-cw-margin,x-cw/2));
-            top=above>=below?y-gap-ch:y+gap;
-        }
-        card.style.left=left+'px';card.style.top=top+'px';
-        const leader=$('mapa-intel-leader');
-        if(leader) {
-            leader.removeAttribute('hidden');
-            leader.setAttribute('viewBox',`0 0 ${w} ${h}`);
-            const anchorX=x<left?left:x>left+cw?left+cw:Math.max(left+16,Math.min(left+cw-16,x));
-            const anchorY=y<top?top:y>top+ch?top+ch:Math.max(top,Math.min(top+ch,y));
-            leader.querySelector('path').setAttribute('d',`M ${x} ${y} L ${anchorX} ${anchorY}`);
-        }
+        positionInspector($('mapa-intel-card'));
+        $('mapa-intel-leader')?.setAttribute('hidden','');
         positionDossier();
     }
 
@@ -848,6 +821,7 @@
         const card = $('mapa-intel-card');
         if (!card || !p) return;
         cancelQuickIntelHide();
+        card.inert=false;
         if(quickIntelIndex!==String(p.index)) closePlanetModal(false);
         quickIntelPlanet = p;
         quickIntelIndex = String(p.index);
@@ -988,6 +962,7 @@
         if (!card) return;
         cancelQuickIntelHide();
         card.classList.remove('open', 'sticky');
+        card.inert=true;
         card.style.visibility='';
         $('mapa-intel-leader')?.setAttribute('hidden','');
         card.setAttribute('aria-hidden', 'true');
@@ -1123,6 +1098,7 @@
         viewport.classList.toggle('hide-sectors', !layerVisibility.sectors);
         viewport.classList.toggle('hide-invasions', !layerVisibility.invasions);
         viewport.classList.toggle('only-active-fronts', !!layerVisibility.activeFronts);
+        applyFilters();
     }
 
     function setSelectedPlanet(index) {
@@ -1547,11 +1523,12 @@
 
             group.addEventListener('keydown', event => {
                 if(event.key==='Enter'||event.key===' ') {
-                    event.preventDefault();setSelectedPlanet(raw.index);showQuickIntel(raw,{sticky:true});
+                    event.preventDefault();$('mapa-tools').open=false;$('mapa-operations').open=false;setSelectedPlanet(raw.index);showQuickIntel(raw,{sticky:true});
                 }
             });
             group.addEventListener('click', event => {
                 event.stopPropagation();
+                $('mapa-tools').open=false;$('mapa-operations').open=false;
                 setSelectedPlanet(raw.index);
                 showQuickIntel(raw,{sticky:true});
             });
@@ -1560,6 +1537,7 @@
         });
 
         updateHUD(planets, drawn.size);
+        markActiveNeighborhood();
         applyFilters();
         applyLayerVisibility();
         setupPanZoom(svg, viewport);
@@ -1574,7 +1552,9 @@
             const owner = data.currentOwner || data.owner;
             const matchesFaction = activeFaction === 'all' || (!specialLocation(data) && factionKey(owner) === activeFaction);
             const matchesSearch = !q || (clean(data.name).toLowerCase().includes(q) || planetName(data).toLowerCase().includes(q)) || clean(data.sector).toLowerCase().includes(q);
-            const show = matchesFaction && matchesSearch;
+            const inFront=group.classList.contains('front-visible')||isSuperEarth(data);
+            const show = matchesFaction && matchesSearch && (!layerVisibility.activeFronts || inFront || !!q);
+            group.setAttribute('tabindex',show?'0':'-1');
             group.classList.toggle('filtered-out', !show);
             group.classList.toggle('search-match', !!q && show);
         });
@@ -1854,6 +1834,9 @@
             $('planet-dossier-regions').innerHTML='<p>Local indisponível para operações.</p>';
         }
         modal.classList.add('open');
+        modal.inert=false;
+        $('mapa-intel-card').inert=true;
+        document.body.classList.add('mapa-dossier-open');
         modal.setAttribute('aria-hidden', 'false');
         $('mapa-intel-details')?.setAttribute('aria-expanded','true');
         positionDossier();
@@ -1863,6 +1846,9 @@
         const modal = $('planet-modal');
         if (!modal) return;
         modal.classList.remove('open');
+        modal.inert=true;
+        $('mapa-intel-card').inert=!$('mapa-intel-card').classList.contains('open');
+        document.body.classList.remove('mapa-dossier-open');
         modal.setAttribute('aria-hidden', 'true');
         $('mapa-intel-details')?.setAttribute('aria-expanded','false');
         if(restoreFocus) $('mapa-intel-details')?.focus({preventScroll:true});
@@ -1934,6 +1920,7 @@
             const inspector=quickIntelIndex;
             const sticky=$('mapa-intel-card')?.dataset.sticky==='1';
             buildMap(allPlanets);
+            renderTopFronts();
             lastTelemetryRender = renderStamp;
             if(campaignResult.status==='fulfilled' || campaigns.length) renderOffensiveCampaigns();
             else {
@@ -1980,6 +1967,14 @@
             image.src=info.primary;button.prepend(image);
         });
         document.querySelectorAll('.mapa-layer').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('active'))));
+        $('mapa-top-fronts')?.addEventListener('click',event=>{
+            const button=event.target.closest('[data-planet-index]');if(!button)return;
+            const p=allPlanets.find(p=>String(p.index)===button.dataset.planetIndex);if(!p)return;
+            $('mapa-tools').open=false;$('mapa-operations').open=false;
+            setSelectedPlanet(p.index);showQuickIntel(p,{sticky:true});
+        });
+        $('mapa-top-fronts')?.addEventListener('error',event=>{if(event.target.tagName==='IMG')event.target.hidden=true;},true);
+        [$('mapa-tools'),$('mapa-operations')].forEach(panel=>panel?.addEventListener('toggle',()=>{if(panel.open){[$('mapa-tools'),$('mapa-operations')].forEach(other=>{if(other!==panel)other.open=false;});}}));
         window.addEventListener('resize',positionQuickIntel);
         if(window.ResizeObserver) new ResizeObserver(positionQuickIntel).observe($('mapa-intel-card'));
         $('mapa-intel-photo')?.addEventListener('load',positionQuickIntel);
@@ -1999,8 +1994,9 @@
             const layer = btn.dataset.layer;
             if (!(layer in layerVisibility)) return;
             layerVisibility[layer] = !layerVisibility[layer];
-            btn.classList.toggle('active', layerVisibility[layer]);
-            btn.setAttribute('aria-pressed',String(layerVisibility[layer]));
+            const on=layer==='activeFronts'?!layerVisibility[layer]:layerVisibility[layer];
+            btn.classList.toggle('active',on);
+            btn.setAttribute('aria-pressed',String(on));
             applyLayerVisibility();
         });
         $('planet-modal')?.addEventListener('click', event => {
@@ -2012,7 +2008,7 @@
             if(index==null) return;
             const p=allPlanets.find(item=>String(item.index)===String(index));
             if(!p) return;
-            document.querySelector('.mapa-panel')?.scrollIntoView({behavior:'smooth',block:'center'});
+            $('mapa-tools').open=false;$('mapa-operations').open=false;
             setSelectedPlanet(p.index);
             showQuickIntel(p,{sticky:true});
             window.setTimeout(positionQuickIntel,420);
@@ -2043,6 +2039,7 @@
 
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape') {
+                $('mapa-tools').open=false;$('mapa-operations').open=false;
                 if ($('planet-modal')?.classList.contains('open')) closePlanetModal();
                 else hideQuickIntel();
             }

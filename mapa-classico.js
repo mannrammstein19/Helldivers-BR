@@ -304,6 +304,16 @@
         return el;
     }
 
+    function appendInvasionPulses(group,planet,x,y,radius){
+        if(!planet?.event||specialLocation(planet))return;
+        [0,1].forEach(i=>group.appendChild(svgEl('circle',{
+            class:'mapa-invasion-pulse',cx:x,cy:y,r:radius*3.1,
+            fill:'none',stroke:'#ff414b','stroke-width':1.2,
+            'vector-effect':'non-scaling-stroke','pointer-events':'none',
+            style:`animation-delay:${i*1.2}s`,'aria-hidden':'true'
+        })));
+    }
+
     function formatCompactNumber(value) {
         const n = Number(value || 0);
         if (n >= 1000000) return `${(n / 1000000).toFixed(n >= 10000000 ? 0 : 1).replace('.', ',')}M`;
@@ -722,12 +732,33 @@
 
     function positionInspector(panel) {
         if(!panel?.classList.contains('open'))return;
-        const wrap=panel.parentElement, mobile=window.matchMedia('(max-width: 700px)').matches;
+        const wrap=panel.parentElement,mobile=window.matchMedia('(max-width: 700px)').matches;
         panel.style.visibility='visible';
-        panel.style.left=mobile?'8px':Math.max(8,wrap.clientWidth-panel.offsetWidth-16)+'px';
-        panel.style.top=mobile?'auto':'72px';
-        panel.style.bottom=mobile?'8px':'auto';
-        panel.style.maxHeight=mobile?'62%':Math.max(80,wrap.clientHeight-88)+'px';
+        panel.style.right='auto';
+        if(mobile){
+            panel.style.left='8px';panel.style.top='auto';panel.style.bottom='8px';panel.style.maxHeight='62%';
+            return;
+        }
+        const margin=14,gap=20,minTop=72;
+        const height=Math.max(80,Math.min(520,wrap.clientHeight-minTop-margin));
+        panel.style.maxHeight=height+'px';panel.style.bottom='auto';
+        const width=panel.offsetWidth,panelHeight=Math.min(panel.offsetHeight||height,height);
+        const clamp=(value,min,max)=>Math.max(min,Math.min(value,Math.max(min,max)));
+        let left=wrap.clientWidth-width-margin,top=minTop;
+        const marker=nodeByIndex.get(String(quickIntelIndex))?.circle;
+        const rect=marker?.getBoundingClientRect?.(),bounds=wrap.getBoundingClientRect?.();
+        if(rect&&bounds&&rect.width>0&&rect.height>0){
+            const scaleX=wrap.clientWidth/bounds.width,scaleY=wrap.clientHeight/bounds.height;
+            const x=((rect.left+rect.right)/2-bounds.left)*scaleX,y=((rect.top+rect.bottom)/2-bounds.top)*scaleY;
+            const radius=rect.width*scaleX/2;
+            // O retângulo real do SVG acompanha os dois motores de zoom/pan.
+            // Se o planeta saiu da tela, mantém o painel acessível junto à borda.
+            const right=x+radius+gap,leftSide=x-radius-gap-width;
+            left=right+width<=wrap.clientWidth-margin?right:leftSide>=margin?leftSide:(x<wrap.clientWidth/2?right:leftSide);
+            left=clamp(left,margin,wrap.clientWidth-width-margin);
+            top=clamp(y-70,minTop,wrap.clientHeight-panelHeight-margin);
+        }
+        panel.style.left=left+'px';panel.style.top=top+'px';
     }
     function positionDossier() { positionInspector($('planet-modal')); }
     function positionQuickIntel() {
@@ -1399,6 +1430,8 @@
                 fill:accent
             });
             group.appendChild(halo);
+
+            appendInvasionPulses(group,raw,x,y,baseRadius);
 
             if (underAttack || offensive) {
                 const ringColor=underAttack?'#4da6ff':FACTION_COLORS.human;

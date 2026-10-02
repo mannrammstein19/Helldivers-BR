@@ -1130,3 +1130,16 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-operations .mapa-mo-task-top,.mapa-operations .mapa-mo-task-status{font-size:9px;}
 .mapa-operations .mapa-mo-progress-row{font-size:10px;flex-wrap:wrap;}
 .mapa-operations .mapa-mo-progress-row strong{font-size:14px;}
+
+/* Patch 03: painéis limitados e presos à posição do planeta no PC. */
+.mapa-immersive #mapa-intel-card,.mapa-immersive #planet-modal{box-sizing:border-box;right:auto;bottom:auto;min-height:0;height:auto;transform:none;}
+.mapa-immersive #planet-modal{width:min(410px,calc(100% - 28px));max-width:410px;max-height:min(520px,calc(100dvh - 86px));overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;}
+.mapa-immersive #planet-modal .tactical-modal-card{width:100%;min-width:0;max-width:100%;padding:14px;box-sizing:border-box;}
+.mapa-invasion-pulse{transform-box:fill-box;transform-origin:center;animation:mapa-invasion-alert 2.4s ease-out infinite;opacity:0;pointer-events:none;}
+@keyframes mapa-invasion-alert{0%{transform:scale(.82);opacity:.85;}85%,100%{transform:scale(2.05);opacity:0;}}
+#mapa-viewport.hide-invasions .mapa-invasion-pulse{display:none;}
+#mapa-viewport.mapa-is-moving .mapa-invasion-pulse{animation-play-state:paused;}
+@media(prefers-reduced-motion:reduce){.mapa-invasion-pulse{animation:none;opacity:.5;}.mapa-invasion-pulse+ .mapa-invasion-pulse{display:none;}}
+@media(max-width:700px){
+ .mapa-immersive #mapa-intel-card,.mapa-immersive #planet-modal{width:calc(100% - 16px);max-width:none;bottom:8px;}
+}

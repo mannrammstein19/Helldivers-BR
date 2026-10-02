@@ -292,6 +292,7 @@
     let quickIntelIndex = null;
     let quickIntelPlanet = null;
     let quickIntelHideTimer = 0;
+    const expandedFronts=new Set();
     const layerVisibility = { routes:true, territories:true, sectors:true, invasions:true, activeFronts:true };
     // Arte personalizada da capital; o símbolo anterior permanece como fallback.
     const SUPER_EARTH_CUSTOM_IMAGE = 'icons/super-terra-personalizada.png';
@@ -477,7 +478,7 @@
         const ratio=rate/needed;
         const tone=ratio>1.05?'good':ratio<.95?'bad':'neutral';
         const title=tone==='good'?'TENDÊNCIA DE VITÓRIA':tone==='bad'?'DEFESA EM RISCO':'DISPUTA EQUILIBRADA';
-        return {tone,title,detail:`Estimativa pelo ${source}: ${rate.toFixed(1).replace('.',',')}%/h. Necessário: ${needed.toFixed(1).replace('.',',')}%/h. Restam ${durationLabel(remaining)}. O resultado pode mudar.`};
+        return {tone,title,rate,rateLabel:source,detail:`Estimativa pelo ${source}: ${rate.toFixed(1).replace('.',',')}%/h. Necessário: ${needed.toFixed(1).replace('.',',')}%/h. Restam ${durationLabel(remaining)}. O resultado pode mudar.`};
     }
     function durationLabel(hours) {
         const mins=Math.max(0,Math.ceil(hours*60));
@@ -663,14 +664,23 @@
             line.classList.toggle('active-front-route',front);base?.classList.toggle('active-front-route',front);
         });
     }
+    function forecastMetrics(p){
+        const defending=!!p.event,forecast=defending?defenseForecast(p):offensiveForecast(p);
+        const rate=Number.isFinite(forecast.rate)?forecast.rate:null;
+        const end=eventDates(p.event).end;
+        const eta=defending?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000)+' restantes':'Prazo indisponível'):(forecast.eta||(rate==null?'Coletando estimativa':rate<=0?'Sem avanço líquido':'Sem prazo confiável'));
+        return `<div class="mapa-observed-metrics"><div><small>${defending?'RITMO DA DEFESA':'AVANÇO LÍQUIDO / HORA'}</small><strong>${rate==null?'—':(rate>0?'+':'')+rate.toFixed(2).replace('.',',')+'%/h'}</strong><span>${rate==null?'Aguardando amostras':escapeHTML(forecast.rateLabel||'Ritmo observado')}</span></div><div><small>${defending?'TEMPO RESTANTE':'CONCLUSÃO ESTIMADA'}</small><strong>${escapeHTML(eta)}</strong><span>${defending?'Prazo informado pela API':'Projeção no ritmo atual'}</span></div></div>`;
+    }
     function renderTopFronts() {
         const host=$('mapa-top-fronts');if(!host)return;
         const top=allPlanets.filter(activePlanet).sort((a,b)=>Number(b.statistics?.playerCount||0)-Number(a.statistics?.playerCount||0)||Number(a.index)-Number(b.index)).slice(0,3);
+        const active=new Set(top.map(p=>String(p.index)));
+        for(const key of expandedFronts)if(!active.has(key))expandedFronts.delete(key);
         host.innerHTML=top.length?top.map(p=>{
             const progress=warProgress(p),forecast=p.event?null:offensiveForecast(p);
             const end=eventDates(p.event).end;
             const time=p.event?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000)+' restantes':'Prazo indisponível'):(forecast?.eta?'Estimativa: '+forecast.eta:'Coletando estimativa');
-            return `<button type="button" class="mapa-top-front" data-planet-index="${Number(p.index)}" style="--accent:${factionColor(p.event?.faction||p.currentOwner)}"><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Libertação'} <b>${formatPercentDetailed(progress)}</b></small>${progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,progress))}%"></i></span>`}<span class="mapa-front-meta"><span>${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(time)}</span></span></span></button>`;
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${factionColor(p.event?.faction||p.currentOwner)}"><summary><img src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${p.event?'Sob ataque':'Libertação'} <b>${formatPercentDetailed(progress)}</b></small>${progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(time)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(p.event?.faction||p.currentOwner))}</span></div>${forecastMetrics(p)}<p>Pressão inimiga: ${formatRate(regenPercentPerHour(p))}/h</p></div></details>`;
         }).join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
     }
 
@@ -760,10 +770,29 @@
         }
         panel.style.left=left+'px';panel.style.top=top+'px';
     }
-    function positionDossier() { positionInspector($('planet-modal')); }
+    function positionDossier() {
+        const modal=$('planet-modal'),card=$('mapa-intel-card');
+        if(!modal?.classList.contains('open'))return;
+        if(!card?.classList.contains('open')||window.matchMedia('(max-width:700px)').matches){positionInspector(modal);return;}
+        modal.style.visibility='visible';modal.style.right='auto';modal.style.bottom='auto';
+        const wrap=modal.parentElement,margin=14,gap=12,qWidth=card.offsetWidth,mWidth=modal.offsetWidth;
+        let qLeft=parseFloat(card.style.left)||margin,mLeft;
+        if(qLeft+qWidth+gap+mWidth<=wrap.clientWidth-margin)mLeft=qLeft+qWidth+gap;
+        else if(qLeft-gap-mWidth>=margin)mLeft=qLeft-gap-mWidth;
+        else{
+            qLeft=Math.max(margin,Math.min(qLeft,wrap.clientWidth-qWidth-mWidth-gap-margin));
+            card.style.left=qLeft+'px';mLeft=qLeft+qWidth+gap;
+        }
+        const cap=Math.max(80,Math.min(600,wrap.clientHeight-86));
+        modal.style.maxHeight=cap+'px';
+        const top=Math.max(72,Math.min(parseFloat(card.style.top)||72,wrap.clientHeight-Math.min(modal.offsetHeight||cap,cap)-margin));
+        modal.style.left=mLeft+'px';modal.style.top=top+'px';
+    }
     function positionQuickIntel() {
         positionInspector($('mapa-intel-card'));
         $('mapa-intel-leader')?.setAttribute('hidden','');
+        const card=$('mapa-intel-card');
+        if($('planet-modal')?.classList.contains('open'))card.inert=window.matchMedia('(max-width:700px)').matches;
         positionDossier();
     }
 
@@ -973,6 +1002,7 @@
                 forecast.dataset.tone=prediction.tone;
                 forecast.querySelector('strong').textContent=prediction.title;
                 forecast.querySelector('p').textContent=prediction.detail;
+                if($('mapa-intel-forecast-metrics'))$('mapa-intel-forecast-metrics').innerHTML=forecastMetrics(p);
             }
         }
         if(special) {
@@ -1872,7 +1902,7 @@
         }
         modal.classList.add('open');
         modal.inert=false;
-        $('mapa-intel-card').inert=true;
+        $('mapa-intel-card').inert=window.matchMedia('(max-width:700px)').matches;
         document.body.classList.add('mapa-dossier-open');
         modal.setAttribute('aria-hidden', 'false');
         $('mapa-intel-details')?.setAttribute('aria-expanded','true');
@@ -2004,12 +2034,11 @@
             image.src=info.primary;button.prepend(image);
         });
         document.querySelectorAll('.mapa-layer').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('active'))));
-        $('mapa-top-fronts')?.addEventListener('click',event=>{
-            const button=event.target.closest('[data-planet-index]');if(!button)return;
-            const p=allPlanets.find(p=>String(p.index)===button.dataset.planetIndex);if(!p)return;
-            $('mapa-tools').open=false;$('mapa-operations').open=false;
-            setSelectedPlanet(p.index);showQuickIntel(p,{sticky:true});
-        });
+        $('mapa-top-fronts')?.addEventListener('toggle',event=>{
+            const front=event.target;
+            if(!front.matches?.('details[data-planet-index]')||!front.isConnected)return;
+            front.open?expandedFronts.add(front.dataset.planetIndex):expandedFronts.delete(front.dataset.planetIndex);
+        },true);
         $('mapa-top-fronts')?.addEventListener('error',event=>{if(event.target.tagName==='IMG')event.target.hidden=true;},true);
         [$('mapa-tools'),$('mapa-operations')].forEach(panel=>panel?.addEventListener('toggle',()=>{if(panel.open){[$('mapa-tools'),$('mapa-operations')].forEach(other=>{if(other!==panel)other.open=false;});}}));
         window.addEventListener('resize',positionQuickIntel);

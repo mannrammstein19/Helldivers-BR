@@ -1143,3 +1143,37 @@ html:has(body.mapa-immersive){zoom:1!important;}
 @media(max-width:700px){
  .mapa-immersive #mapa-intel-card,.mapa-immersive #planet-modal{width:calc(100% - 16px);max-width:none;bottom:8px;}
 }
+/* Patch 04: resumo e dossiê lado a lado no PC; expansão local das frentes. */
+@media(min-width:701px){
+ .mapa-immersive.mapa-dossier-open #mapa-intel-card{visibility:visible!important;pointer-events:auto;}
+ .mapa-immersive #mapa-intel-card{width:min(360px,calc(100% - 28px));}
+ .mapa-immersive #planet-modal{width:430px;max-width:430px;max-height:min(600px,calc(100dvh - 86px));}
+}
+@media(min-width:701px) and (max-width:1100px){
+ .mapa-immersive #mapa-intel-card{width:300px;}
+ .mapa-immersive #planet-modal{width:360px;max-width:360px;}
+}
+.mapa-top-front{display:block;min-height:0;}
+.mapa-top-front>summary{display:grid;grid-template-columns:66px minmax(0,1fr);min-height:104px;list-style:none;cursor:pointer;}
+.mapa-top-front>summary::-webkit-details-marker{display:none;}
+.mapa-top-front>summary:focus-visible{outline:2px solid #ffe800;outline-offset:-3px;}
+.mapa-top-front[open]{border-color:var(--accent);}
+.mapa-top-front .mapa-front-helmet{display:inline-block;width:14px;height:14px;min-height:0;border-radius:0;object-fit:contain;vertical-align:middle;margin-right:5px;}
+.mapa-front-expanded{padding:10px;border-top:1px solid #46515e;cursor:default;}
+.mapa-front-facts{display:flex;justify-content:space-between;gap:8px;color:#b7c7d6;font:10px/1.4 Arial,sans-serif;}
+.mapa-front-expanded>p{font:11px/1.4 Arial,sans-serif;color:#c8d2db;margin:10px 0 0;}
+.mapa-observed-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:9px 0 0;}
+.mapa-observed-metrics>div{min-width:0;padding:10px;border:1px solid #3c4956;border-radius:8px;background:#0b1219;}
+.mapa-observed-metrics small{display:block;color:#9db0c2;font:9px/1.4 Arial,sans-serif;margin:0;}
+.mapa-observed-metrics strong{display:block;color:#f2f5f8;font:700 18px/1.25 'Oswald',Impact,sans-serif;margin-top:5px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
+.mapa-observed-metrics span{display:block;color:#9cacba;font:10px/1.4 Arial,sans-serif;margin-top:4px;}
+.mapa-metric-helmet{width:14px;height:14px;object-fit:contain;vertical-align:middle;}
+.mapa-immersive .mapa-intel-grid strong{font-size:22px;}
+.mapa-immersive .mapa-intel-forecast{display:flex;flex-direction:column;}
+.mapa-immersive .mapa-intel-forecast>strong{order:0;}
+.mapa-immersive #mapa-intel-forecast-metrics{order:1;}
+.mapa-immersive .mapa-intel-forecast>p{order:2;font-size:10px;margin-top:8px;}
+.mapa-immersive .mapa-intel-forecast[hidden]{display:none;}
+.mapa-front-expanded .mapa-observed-metrics{grid-template-columns:1fr;}
+.mapa-front-expanded .mapa-observed-metrics strong{font-size:16px;}
+@media(max-width:700px){.mapa-top-front>summary{display:block;min-height:0;}.mapa-front-expanded{padding:7px;}.mapa-front-expanded .mapa-front-facts{display:grid;}.mapa-front-expanded .mapa-observed-metrics>div{padding:6px;}}

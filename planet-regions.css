@@ -49,8 +49,7 @@
 .mapa-immersive .hd-region-list{cursor:default;touch-action:pan-y;}
 .hd-region-card>summary{cursor:pointer;}
 
-/* Patch 03: arte com as cores originais; legenda abaixo da faixa. */
-.mapa-immersive .hd-region-card>summary{display:block;padding:0;min-height:0;background:#101820;}
-.mapa-immersive .hd-region-banner{position:relative;inset:auto;display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;opacity:1;filter:none;}
-.mapa-immersive .hd-region-title{padding:10px 30px 10px 12px;}
-.mapa-immersive .hd-region-card>summary::after{position:absolute;right:12px;bottom:12px;margin:0;}
+/* Patch 04: mesmo enquadramento do Patch 02, apenas cores integrais. */
+.mapa-immersive .hd-region-banner{opacity:1;filter:none;}
+.mapa-immersive .hd-region-title{color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;}
+.mapa-immersive .hd-region-card>summary::after{text-shadow:0 1px 3px #000;}

@@ -1177,3 +1177,42 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-front-expanded .mapa-observed-metrics{grid-template-columns:1fr;}
 .mapa-front-expanded .mapa-observed-metrics strong{font-size:16px;}
 @media(max-width:700px){.mapa-top-front>summary{display:block;min-height:0;}.mapa-front-expanded{padding:7px;}.mapa-front-expanded .mapa-front-facts{display:grid;}.mapa-front-expanded .mapa-observed-metrics>div{padding:6px;}}
+/* Patch 05: nomes, leitura técnica e controles mais claros. */
+.mapa-immersive #mapa-viewport .mapa-planet-label{fill:var(--planet-name-color,#d7d52c)!important;text-transform:none;letter-spacing:.12px;stroke-width:1.2px;}
+.mapa-immersive .mapa-intel-title,.mapa-immersive .tactical-modal-title,.mapa-immersive .mapa-offensive-title strong,.mapa-immersive .mapa-mo-task h3,.mapa-immersive .mapa-mo-task-top strong{text-transform:none;}
+.mapa-top-front>summary .mapa-front-content>strong{color:var(--planet-name-color,var(--accent));text-transform:none;}
+.mapa-tools .mapa-optimized-toggle{display:flex!important;align-items:center;justify-content:center;}
+#mapa-viewport .search-route-hidden{display:none!important;}
+#mapa-viewport:not(.hide-routes) .mapa-lines .search-route-match{display:block!important;}
+#mapa-viewport:not(.hide-routes) .mapa-lines .search-route-hidden{display:none!important;}
+.mapa-operations-content{width:min(380px,calc(100vw - 28px));padding:16px;}
+.mapa-order-empty{display:grid;justify-items:center;gap:12px;padding:24px 12px;min-height:140px;color:#c9d4df;text-align:center;font:14px/1.6 Arial,sans-serif;}
+.mapa-order-empty>span{color:#ffe800;font-size:30px;}
+.mapa-order-empty>strong{color:#ffe800;font:700 20px 'Oswald',Impact,sans-serif;}
+.mapa-order-empty>p{margin:0;}
+.mapa-telemetry-content>p{display:grid;gap:4px;padding-bottom:10px;border-bottom:1px solid #354250;}
+.mapa-telemetry-content .telemetry-name{color:#ffe800;}
+.mapa-telemetry-content .telemetry-time{color:#bfe5d3;font-variant-numeric:tabular-nums;}
+.mapa-telemetry-content .telemetry-source{color:#75baff;}
+.mapa-telemetry-content .telemetry-state{color:#e7bf80;font-size:11px;}
+/* No motor otimizado, alivia o desenho durante o gesto e restaura ao soltar. */
+#mapa-pan-host.optimized-mode #mapa-viewport.mapa-is-moving .mapa-player-label,
+#mapa-pan-host.optimized-mode #mapa-viewport.mapa-is-moving .mapa-sector-group,
+#mapa-pan-host.optimized-mode #mapa-viewport.mapa-is-moving .mapa-planet-group:not(.selected) .mapa-planet-label{display:none!important;}
+#mapa-pan-host.optimized-mode .mapa-invasion-arrow{filter:none;}
+@media(max-width:700px){
+ .mapa-operations-content{width:calc(100vw - 16px);max-height:75dvh;padding:16px;}
+ .mapa-operations .mapa-mo-task{padding:14px;}
+ .mapa-operations .mapa-mo-task h3{font-size:18px;}
+ .mapa-operations .mapa-mo-summary strong{font-size:17px;}
+ .mapa-top-fronts{max-height:min(55dvh,400px);}
+ #mapa-top-fronts{display:flex;align-items:flex-start;gap:5px;}
+ #mapa-top-fronts>.mapa-top-front{flex:1 1 0;min-width:0;transition:flex-grow .2s ease,flex-basis .2s ease;}
+ #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front[open]{flex:1 1 0;}
+ #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]){flex:0 0 36px;}
+ #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) .mapa-front-content{padding:8px;}
+ #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) .mapa-front-content>strong{writing-mode:vertical-rl;max-height:120px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+ #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) :is(small,.mapa-front-track,.mapa-front-meta){display:none;}
+ .mapa-front-expanded{max-height:220px;overflow:auto;overscroll-behavior:contain;}
+}
+@media(prefers-reduced-motion:reduce){#mapa-top-fronts>.mapa-top-front{transition:none;}}

@@ -21,7 +21,15 @@
    const panel=document.createElement('div');panel.className='mapa-telemetry-content';
    const title=document.createElement('strong');title.textContent=stale.length?'Atualização pendente · dados preservados':'Leituras da telemetria';panel.append(title);
    const names={planets:'Planetas',campaigns:'Planetas e regiões',assignments:'Ordem Maior',dispatches:'Despachos',dss:'DSS',steam:'Steam'},origins={direct:'API direta',community:'Community API',steam:'Steam'};
-   for(const m of all){const line=document.createElement('p');line.textContent=(names[m.name]||m.name)+' · '+(m.time?new Date(m.time).toLocaleString('pt-BR'):'sem leitura válida')+' · '+(origins[m.source]||m.source||'fonte pendente')+(m.stale?' · última leitura salva':'')+(m.error?' · '+m.error:'');panel.append(line);}
+   for(const m of all){
+    const line=document.createElement('p');
+    const name=document.createElement('strong');name.className='telemetry-name';name.textContent=names[m.name]||m.name;
+    const stamp=document.createElement('span');stamp.className='telemetry-time';stamp.textContent=m.time?new Date(m.time).toLocaleString('pt-BR'):'Sem leitura válida';
+    const source=document.createElement('span');source.className='telemetry-source';source.textContent=origins[m.source]||m.source||'Fonte pendente';
+    line.append(name,stamp,source);
+    if(m.stale||m.error){const status=document.createElement('span');status.className='telemetry-state';status.textContent=(m.stale?'Última leitura salva':'')+(m.error?' · '+m.error:'');line.append(status);}
+    panel.append(line);
+   }
    const button=document.createElement('button');button.type='button';button.textContent='Tentar atualizar';button.disabled=inflight.size>0;button.addEventListener('click',refresh);panel.append(button);
    box.replaceChildren(summary,panel);return;
   }

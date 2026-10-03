@@ -29,19 +29,27 @@ window.HDBRPresences=(()=>{'use strict';
  function render(p,reading){
   const values=list(p);if(!values.length)return '';
   const stale=reading?.stale===true;
-  return `<section class="planet-presences" aria-label="Presenças no planeta"><div class="presence-heading">PRESENÇAS${stale?' · ÚLTIMA LEITURA':''}</div><div class="presence-list">${values.map(e=>`<span class="presence-chip presence-${e.faction}" title="${esc(e.name)}${stale?' · última leitura salva':''}" style="--presence-color:${e.color}">${icon(e)}<span>${esc(e.name)}</span></span>`).join('')}</div></section>`;
+  return `<section class="planet-presences presence-icons-only${stale?' presence-stale':''}" aria-label="Presenças${stale?' · ÚLTIMA LEITURA':''}"><div class="presence-list">${values.map(e=>`<span class="presence-chip presence-${e.faction}" tabindex="0" role="img" aria-label="${esc(e.name)}${stale?' · ÚLTIMA LEITURA':''}" title="${esc(e.name)}${stale?' · última leitura salva':''}" style="--presence-color:${e.color}">${icon(e)}</span>`).join('')}</div></section>`;
+ }
+ function vitrine(status,p,reading){
+  const states=[];if(status)states.push({text:status,color:/PERDENDO|RECUO|RECUANDO|RISCO/i.test(status)?'#ff4242':/GANHANDO|VENCENDO|AVANÇO|AVANCANDO/i.test(status)?'#7edb9a':'#b8c3cd'});
+  for(const e of list(p))states.push({text:(reading?.stale?'Última leitura: ':'Presença: ')+e.name,color:e.color});
+  if(!states.length)return '';
+  const sequence=states.length>1?[...states,states[0]]:states;
+  return `<span class="presence-vitrine${states.length>1&&!reading?.stale?' is-rotating':''}" aria-label="${esc(states.map(r=>r.text).join(' · '))}" style="--vitrine-count:${states.length};--vitrine-duration:${states.length*10}s"><span class="presence-vitrine-track" aria-hidden="true">${sequence.map(r=>`<span class="presence-vitrine-row" style="color:${r.color}">${esc(r.text)}</span>`).join('')}</span></span>`;
  }
  function mapBadges(group,p,x,y,radius,svg){
   const values=list(p);if(!values.length)return;
-  const layer=svg('g',{'class':'mapa-presences','pointer-events':'none'}),title=svg('title',{});title.textContent=values.map(e=>e.name).join(' · ');layer.appendChild(title);
+  const stale=window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale;
+  const layer=svg('g',{'class':'mapa-presences'+(stale?' presence-stale':''),'pointer-events':'none'}),title=svg('title',{});title.textContent=values.map(e=>e.name).join(' · ');layer.appendChild(title);
   const shown=values.slice(0,3),size=Math.max(7,Math.min(11,radius*1.5)),gap=size+3;
   shown.forEach((e,i)=>{
-   const left=x+(i-(shown.length-1)/2)*gap-size/2,top=y+radius*1.8+3;
+   const left=x+radius*4.05+i*gap,top=y-radius*3.2;
    layer.appendChild(svg('rect',{x:left-1,y:top-1,width:size+2,height:size+2,rx:2,fill:'#11151b',stroke:e.color,'stroke-width':.6}));
    const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true'});layer.appendChild(image);
   });
-  if(values.length>shown.length){const count=svg('text',{x:x+shown.length*gap/2+3,y:y+radius*1.8+size+2,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}
+  if(values.length>shown.length){const count=svg('text',{x:x+radius*4.05+shown.length*gap+3,y:y-radius*3.2+size,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}
   group.appendChild(layer);
  }
- return {list,render,mapBadges,catalog};
+ return {list,render,vitrine,mapBadges,catalog};
 })();

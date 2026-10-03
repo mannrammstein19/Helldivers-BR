@@ -3,13 +3,14 @@ const html=fs.readFileSync('mapa-classico.html','utf8');
 class Classes{constructor(...xs){this.values=new Set(xs)}contains(x){return this.values.has(x)}toggle(x,on){on??=!this.contains(x);on?this.values.add(x):this.values.delete(x);return on}add(...xs){xs.forEach(x=>this.values.add(x))}remove(...xs){xs.forEach(x=>this.values.delete(x))}}
 function element(...classes){return {classList:new Classes(...classes),attrs:{},children:[],appendChild(child){this.children.push(child)},style:{setProperty(){}},querySelectorAll(){return []},dataset:{},parentElement:{clientWidth:1440,clientHeight:800},offsetWidth:360,getAttribute(k){return this.attrs[k]},setAttribute(k,v){this.attrs[k]=String(v)},removeAttribute(k){delete this.attrs[k]},querySelector(){return {style:{setProperty(){}},focus(){}}}}}
 const ids=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],element()]));
+ids.forEach((element,id)=>element.id=id);
 ids.set('mapa-viewport',element());
 ids.set('mapa-intel-boss-note',element());
 const document={getElementById:id=>ids.get(id),querySelectorAll(){return []},addEventListener(){},body:element(),createElementNS(){return element()}};
 let mobile=false;
 const window={matchMedia:()=>({matches:mobile})};
 const sandbox={document,window,localStorage:{getItem(){return null},setItem(){}},navigator:{maxTouchPoints:0},console,Map,Set,Date,Number,Math,JSON,setTimeout,clearTimeout};
-const source=fs.readFileSync('mapa-classico.js','utf8').replace(/\}\)\(\);\s*$/,`window.testMap={activePlanet,markActiveNeighborhood,renderTopFronts,applyFilters,applyLayerVisibility,positionInspector,positionDossier,openPlanetModal,closePlanetModal,showQuickIntel,hideQuickIntel,appendInvasionPulses,drawSectors,focusSearchedPlanet,loadPlanets,refreshSimulation(){buildMap=()=>hideQuickIntel({clearSelection:false});renderOffensiveCampaigns=()=>{};renderMajorOrder=()=>{};},handleFrontToggle,openFrontPanel,openFrontRegions,closeFrontPanel,closeFrontRegions,positionFloatingPanel,frontMarkup,titlePlanetName,planetName,layerVisibility,setFixture(ps,cs,nodes,lines){allPlanets=ps;campaignIndexes=new Set(cs.map(String));campaignsKnown=true;nodeByIndex.clear();nodes.forEach((v,k)=>nodeByIndex.set(k,v));lineRecords=lines},search(q){searchQuery=q},faction(f){activeFaction=f}};})();`);
+const source=fs.readFileSync('mapa-classico.js','utf8').replace(/\}\)\(\);\s*$/,`window.testMap={activePlanet,markActiveNeighborhood,renderTopFronts,applyFilters,applyLayerVisibility,positionInspector,positionDossier,openPlanetModal,closePlanetModal,showQuickIntel,hideQuickIntel,appendInvasionPulses,drawSectors,focusSearchedPlanet,loadPlanets,refreshSimulation(){buildMap=()=>hideQuickIntel({clearSelection:false});renderOffensiveCampaigns=()=>{};renderMajorOrder=()=>{};},handleFrontToggle,openFrontPanel,openFrontRegions,closeFrontPanel,closeFrontRegions,positionFloatingPanel,layoutIntelPanels,frontMarkup,titlePlanetName,planetName,layerVisibility,setFixture(ps,cs,nodes,lines){allPlanets=ps;campaignIndexes=new Set(cs.map(String));campaignsKnown=true;nodeByIndex.clear();nodes.forEach((v,k)=>nodeByIndex.set(k,v));lineRecords=lines},search(q){searchQuery=q},faction(f){activeFaction=f}};})();`);
 vm.runInNewContext(fs.readFileSync("campaign-metrics.js","utf8"),sandbox);vm.runInNewContext(source,sandbox);const api=window.testMap;
 const fixture=[{index:1,name:'ALPHA',currentOwner:'Automatons',statistics:{playerCount:5}},{index:2,name:'BETA',currentOwner:'Humans',statistics:{playerCount:0}},{index:3,name:'GAMMA',currentOwner:'Terminids',statistics:{playerCount:99999}},{index:4,name:'DELTA',currentOwner:'Humans',event:{faction:'Automatons'},statistics:{playerCount:20}},{index:5,name:'EPSILON',currentOwner:'Illuminates',statistics:{playerCount:10}}];
 const planets=fixture;
@@ -41,11 +42,11 @@ const anchored=element('open');anchored.offsetWidth=330;anchored.offsetHeight=30
 anchored.parentElement={clientWidth:1440,clientHeight:800,getBoundingClientRect:()=>({left:100,top:50,width:1440,height:800})};
 let point={left:690,right:710,top:440,bottom:460,width:20,height:20};
 nodes.get('5').circle={getBoundingClientRect:()=>point};api.setFixture(fixture,[1,5],nodes,lines);
-api.positionInspector(anchored);assert.equal(anchored.style.left,'630px');assert.equal(anchored.style.top,'330px');assert.equal(anchored.style.maxHeight,'520px');assert.equal(anchored.style.right,'auto');
-point={left:1490,right:1510,top:795,bottom:815,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'1040px','right-edge planet opens inspector to its left');assert.equal(anchored.style.top,'486px','panel stays above bottom edge');
-point={left:105,right:125,top:55,bottom:75,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'45px');assert.equal(anchored.style.top,'72px','top controls remain accessible');
+api.positionInspector(anchored);assert.equal(anchored.style.left,'435px');assert.equal(anchored.style.top,'72px');assert.equal(anchored.style.maxHeight,'520px');assert.equal(anchored.style.right,'auto');
+point={left:1490,right:1510,top:795,bottom:815,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'1096px','right-edge planet opens inspector to its left');assert.equal(anchored.style.top,'425px','panel stays above bottom edge');
+point={left:105,right:125,top:55,bottom:75,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'14px');assert.equal(anchored.style.top,'72px','top controls remain accessible');
 anchored.parentElement={clientWidth:1440,clientHeight:800,getBoundingClientRect:()=>({left:100,top:50,width:720,height:400})};
-point={left:395,right:405,top:245,bottom:255,width:10,height:10};api.positionInspector(anchored);assert.equal(anchored.style.left,'630px','coordinate scaling preserves anchor position');
+point={left:395,right:405,top:245,bottom:255,width:10,height:10};api.positionInspector(anchored);assert.equal(anchored.style.left,'435px','coordinate scaling preserves anchor position');
 mobile=true;api.positionInspector(anchored);assert.equal(anchored.style.left,'8px');assert.equal(anchored.style.bottom,'8px');assert.equal(anchored.style.maxHeight,'62%');
 const pulses=element();api.appendInvasionPulses(pulses,{name:'Test',currentOwner:'Humans',event:{faction:'Automatons'}},100,100,2);assert.equal(pulses.children.length,2);assert.ok(pulses.children.every(p=>p.attrs.stroke==='#ff414b'&&p.attrs['pointer-events']==='none'));
 const peaceful=element();api.appendInvasionPulses(peaceful,{name:'Test',currentOwner:'Humans'},100,100,2);assert.equal(peaceful.children.length,0);
@@ -57,11 +58,20 @@ mobile=false;
 const quick=ids.get('mapa-intel-card'),dossier=ids.get('planet-modal');
 quick.classList.add('open');dossier.classList.add('open');quick.offsetWidth=360;dossier.offsetWidth=430;
 quick.style.left='600px';quick.style.top='120px';dossier.parentElement={clientWidth:1440,clientHeight:800};dossier.offsetHeight=540;
-api.positionDossier();assert.equal(dossier.style.left,'972px');assert.equal(dossier.style.maxHeight,'600px');
-quick.style.left='1066px';api.positionDossier();assert.equal(dossier.style.left,'624px','dossier opens left when right side is full');
-quick.style.left='450px';dossier.parentElement.clientWidth=1000;api.positionDossier();assert.equal(quick.style.left,'184px');assert.equal(dossier.style.left,'556px');assert.ok(parseFloat(quick.style.left)+quick.offsetWidth<parseFloat(dossier.style.left),'pair does not overlap');
+api.positionDossier();assert.equal(dossier.style.left,'972px');assert.equal(dossier.style.maxHeight,'714px');
+quick.style.left='1066px';api.positionDossier();assert.equal(quick.style.left,'624px');assert.equal(dossier.style.left,'996px');
+for(const width of [1440,1024,800]){
+ quick.parentElement.clientWidth=width;
+ const regions=ids.get('mapa-regions-panel');regions.classList.add('open');
+ api.layoutIntelPanels();
+ const row=[quick,regions,dossier];
+ row.forEach((p,i)=>{const left=parseFloat(p.style.left),size=parseFloat(p.style.width);assert.ok(left>=14);assert.ok(left+size<=width-14);if(i)assert.ok(left>=parseFloat(row[i-1].style.left)+parseFloat(row[i-1].style.width)+12);assert.equal(p.inert,false);});
+ regions.classList.remove('open');
+}
+quick.parentElement.clientWidth=1440;
 api.openPlanetModal(fixture[0],false);assert.equal(quick.inert,false,'desktop keeps summary clickable while dossier is open');api.closePlanetModal(false);assert.equal(quick.inert,false);
 mobile=true;api.openPlanetModal(fixture[0],false);assert.equal(quick.inert,true,'mobile still uses a single active sheet');api.closePlanetModal(false);
+api.openFrontRegions(fixture[0],false);assert.equal(quick.inert,true);api.closeFrontRegions();assert.equal(quick.inert,false,'closing regions restores quick inspector controls');
 api.setFixture(fixture,[1,5],nodes,lines);api.renderTopFronts();const fronts=ids.get('mapa-top-fronts').innerHTML;assert.equal((fronts.match(/<details class="mapa-top-front"/g)||[]).length,3);assert.ok(!fronts.includes('mapa-front-expanded'));assert.ok(fronts.includes('helldiver.png'));assert.ok(!fronts.includes('data-front-regions'));api.openFrontPanel(fixture[0],false);assert.ok(ids.get('mapa-front-panel').classList.contains('open'));assert.ok(ids.get('mapa-front-panel-content').innerHTML.includes('data-front-regions'));assert.ok(!ids.get('mapa-front-panel-content').innerHTML.includes('🛡'));api.openFrontRegions(fixture[0],false);assert.ok(ids.get('mapa-regions-panel').classList.contains('open'));api.closeFrontPanel();
 console.log('PASS: dossier beside summary on either side, no overlap when repositioning pair, desktop controls remain active, mobile sheet, Top 3 local disclosures with helmet.');
 

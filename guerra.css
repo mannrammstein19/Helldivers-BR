@@ -1120,3 +1120,9 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .planet-progress-help-dialog p{margin:0 0 16px}
 .planet-progress-help-dialog form{margin:0;text-align:right}
 .planet-progress-help-dialog button{min-height:44px;padding:8px 18px;border:1px solid #d7d52c;border-radius:8px;background:#242914;color:#f1ef80;font:bold 13px Arial;cursor:pointer}
+/* Climate left, faction presences right, inside the existing photo. */
+.frente-photo{position:relative}
+.frente-presences-overlay{position:absolute;right:9px;bottom:9px;z-index:4;max-width:48%}
+.frente-presences-overlay .presence-list{justify-content:flex-end}
+.frente-hazards-overlay{right:auto;max-width:48%}
+.frente-status-mini{min-width:0;max-width:55%}

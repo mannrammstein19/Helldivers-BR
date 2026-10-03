@@ -1141,7 +1141,7 @@
             const factionLabel = defense ? 'Impacto inimigo / hora' : `Pressão ${factionName(enemy)}`;
             const dssHere = isDssPlanet(p);
             return `<article class="frente-card ${defense ? 'defesa' : ''}${defenseAlertClass}" style="--accent:${color}" data-planet-key="${escapeHTML(String(p.index ?? name))}" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
-                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/guerra/operacoes/defesa.png' : 'imagens/guerra/operacoes/libertacao.png'}" alt="">${escapeHTML(window.HDBRCampaignMetrics?.classify(p,c).label|| (defense?'DEFESA':'LIBERTAÇÃO'))}</span><span class="frente-status-mini">${trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
+                <div class="frente-strip"><span class="frente-evento"><img class="frente-evento-icone" src="${defense ? 'imagens/guerra/operacoes/defesa.png' : 'imagens/guerra/operacoes/libertacao.png'}" alt="">${escapeHTML(window.HDBRCampaignMetrics?.classify(p,c).label|| (defense?'DEFESA':'LIBERTAÇÃO'))}</span><span class="frente-status-mini">${window.HDBRPresences?.vitrine(clean(trend),p,window.HDBRWarData?.meta(`${V1}/campaigns`))||trend}</span><span class="frente-tempo">${escapeHTML(etaLabel)}</span></div>
                 <div class="frente-head">
                     <div class="frente-head-row">
                         <div class="frente-title-block"><div class="frente-title">${escapeHTML(name)}</div><div class="frente-sector">${escapeHTML(sector)}</div></div>
@@ -1149,11 +1149,12 @@
                     </div>
                 </div>
                 <div class="frente-photo" style="background-image:url('${bgImg}')">
+                    <div class="frente-presences-overlay">${window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`))||''}</div>
                     ${dssHere ? `<div class="frente-dss-badge" title="Estação Democracia (DSS) atualmente neste planeta"><img src="${DSS_ICON}" alt="DSS"><span>DSS</span></div>` : ''}
                     ${hazards.length ? `<div class="frente-hazards-overlay" aria-label="Condições planetárias">${hazardDetails.map(h=>`<span class="frente-hazard-chip${h.possible?' effect-possible':''}" tabindex="0" aria-label="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; catálogo':'Informado pela API'}" title="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; não confirmado na leitura atual':'Informado pela API'}">${iconHTML(h)}<span class="hazard-fallback">${h.icon}</span></span>`).join('')}</div>` : ''}
                 </div>
                 <div class="frente-content">
-                    ${window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`))||''}
+
                     ${defense ? `
                     <div class="frente-row defesa-bar-label"><span>Defesa Helldivers</span><strong>${progressText(pct)}</strong></div>
                     <div class="progress defesa-progress-blue"><i style="width:${pct ?? 0}%;--accent:#3d9dff"></i></div>

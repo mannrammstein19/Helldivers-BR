@@ -512,7 +512,7 @@
         const effects=planetEffects(p);
         const box=$('mapa-intel-effects');
         box.hidden=!effects.length&&!window.HDBRPresences?.list(p).length;
-        box.innerHTML=effects.map(info=>`<span class="intel-effect${info.possible?' effect-possible':''}" tabindex="0" role="img" aria-label="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}" title="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)} · ${info.possible?'possível':'API'}</span></span>`).join('');
+        box.innerHTML='<div class="intel-weather-icons">'+effects.map(info=>`<span class="intel-effect${info.possible?' effect-possible':''}" tabindex="0" role="img" aria-label="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}" title="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)} · ${info.possible?'possível':'API'}</span></span>`).join('')+'</div>';
         box.innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||'';
         $('planet-dossier-effects').innerHTML=effects.length?effects.map(info=>`<div class="dossier-effect">${hazardIconHTML(info)}<span>${escapeHTML(info.name)}<small class="effect-source">${info.possible?'Possível no planeta · catálogo':'Informado pela API'}</small></span></div>`).join(''):'<p>Nenhum efeito adicional informado.</p>';
         $('planet-dossier-effects').innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||'';
@@ -1036,7 +1036,7 @@
         const defending=!!p.event,forecast=defending?defenseForecast(p):offensiveForecast(p);
         const rate=Number.isFinite(forecast.rate)?forecast.rate:null;
         const end=eventDates(p.event).end;
-        const eta=defending?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000)+' restantes':'Prazo indisponível'):(forecast.eta||(rate==null?'Coletando estimativa':rate<=0?'Sem avanço líquido':'Sem prazo confiável'));
+        const eta=defending?(Number.isFinite(end)&&end>Date.now()?durationLabel((end-Date.now())/3600000):'Prazo indisponível'):(forecast.eta||(rate==null?'Coletando estimativa':rate<=0?'Sem avanço líquido':'Sem prazo confiável'));
         return `<div class="mapa-observed-metrics"><div><small>${defending?'RITMO DA DEFESA':'AVANÇO LÍQUIDO / HORA'}</small><strong>${rate==null?'—':(rate>0?'+':'')+rate.toFixed(2).replace('.',',')+'%/h'}</strong><span>${rate==null?'Aguardando amostras':escapeHTML(forecast.rateLabel||'Ritmo observado')}</span></div><div><small>${defending?'TEMPO RESTANTE':'CONCLUSÃO ESTIMADA'}</small><strong>${escapeHTML(eta)}</strong><span>${defending?'Prazo informado pela API':'Projeção no ritmo atual'}</span></div></div>`;
     }
     function handleFrontToggle(front){
@@ -1071,7 +1071,12 @@
             const bar=(label,value,fill)=>`<div class="mapa-front-bar"><span>${escapeHTML(label)}<b>${formatPercentDetailed(value)}</b></span><div><i style="width:${value==null?0:Math.max(0,Math.min(100,value))}%;background:${fill}"></i></div></div>`;
             const metric=(label,value,note,cls='')=>`<div class="${cls}"><small>${label}</small><strong>${value}</strong><span>${escapeHTML(note)}</span></div>`;
             const pressure=defending?m.enemyRate:regenPercentPerHour(p);
-            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded">${window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||''}<div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
+            const reading=window.HDBRWarData?.meta(`${V1}/planets`);
+            const presence=window.HDBRPresences?.render(p,reading)||'';
+            const vitrine=window.HDBRPresences?.vitrine(m.progress!=null&&m.enemyProgress!=null&&defending?(m.progress>m.enemyProgress?'GANHANDO':m.progress<m.enemyProgress?'PERDENDO':'EQUILIBRADO'):'',p,reading)||'';
+            const weather=planetEffects(p).map(h=>`<span class="front-weather-icon${h.possible?' effect-possible':''}" title="${escapeHTML(h.name)}${h.possible?' · possível no planeta':''}" aria-label="${escapeHTML(h.name)}" tabindex="0">${hazardIconHTML(h)}</span>`).join('');
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><div class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}${defending?`<span class="front-invasion-mini" style="color:${color}">Inimigo ${formatPercentDetailed(m.enemyProgress)}</span>`:''}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span><div class="front-summary-status">${vitrine}</div><div class="front-summary-conditions"><span class="front-weather">${weather}</span>${presence}</div></div></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${vitrine||escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><div class="mapa-front-visual"><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async"><div class="front-visual-conditions"><span class="front-weather">${weather}</span>${presence}</div></div>${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
+
     }
     function renderTopFronts() {
         const host=$('mapa-top-fronts');if(!host)return;
@@ -1097,6 +1102,7 @@
         if(!mobile&&left+width>wrap.clientWidth-margin&&anchor){const alternative=(parseFloat(anchor.style?.left)||margin)-gap-width;if(alternative>=margin)left=alternative;}
         left=Math.max(margin,Math.min(left,wrap.clientWidth-width-margin));
         panel.style.left=left+'px';panel.style.top=Math.min(top,Math.max(mobile?72:76,wrap.clientHeight-200))+'px';
+        layoutIntelPanels();
     }
     function floatingAnchor(){return $('mapa-front-panel')?.classList.contains('open')?$('mapa-front-panel'):$('mapa-intel-card');}
     function openFrontPanel(p,focus=true){
@@ -1110,10 +1116,10 @@
         $('mapa-tools').open=false;$('mapa-operations').open=false;positionFloatingPanel(panel,$('mapa-top-fronts')?.parentElement);
         if(focus)panel.querySelector('[data-close-floating]')?.focus({preventScroll:true});
     }
-    function closeFrontRegions(){frontRegionsIndex=null;const panel=$('mapa-regions-panel');panel?.classList.remove('open');if(panel){panel.inert=true;panel.setAttribute('aria-hidden','true');}}
+    function closeFrontRegions(){frontRegionsIndex=null;const panel=$('mapa-regions-panel');panel?.classList.remove('open');if(panel){panel.inert=true;panel.setAttribute('aria-hidden','true');}layoutIntelPanels();}
     function closeFrontPanel(){if(frontPanelIndex!=null&&dossierPlanetIndex===frontPanelIndex)closePlanetModal(false);frontPanelIndex=null;expandedFronts.clear();const panel=$('mapa-front-panel');panel?.classList.remove('open');if(panel){panel.inert=true;panel.setAttribute('aria-hidden','true');}closeFrontRegions();$('mapa-top-fronts')?.querySelectorAll('details[data-planet-index]').forEach(front=>{front.open=false;});}
     function openFrontRegions(p,focus=true){
-        if(focus)closePlanetModal(false);
+        if(focus&&dossierPlanetIndex!==String(p.index))closePlanetModal(false);
         frontRegionsIndex=String(p.index);const panel=$('mapa-regions-panel'),content=$('mapa-regions-panel-content');if(!panel||!content)return;
         const open=[...content.querySelectorAll('details[open]')].map(d=>d.querySelector('strong')?.textContent),scroll=content.scrollTop||0;
         content.innerHTML=window.HDBRRegions?.render(p,'planets')||'<p>Nenhuma região informada nesta leitura.</p>';
@@ -1201,32 +1207,32 @@
             const radius=rect.width*scaleX/2;
             // O retângulo real do SVG acompanha os dois motores de zoom/pan.
             // Se o planeta saiu da tela, mantém o painel acessível junto à borda.
-            const right=x+radius+gap,leftSide=x-radius-gap-width;
-            left=right+width<=wrap.clientWidth-margin?right:leftSide>=margin?leftSide:(x<wrap.clientWidth/2?right:leftSide);
+            left=x-width/2;
             left=clamp(left,margin,wrap.clientWidth-width-margin);
-            top=clamp(y-70,minTop,wrap.clientHeight-panelHeight-margin);
+            top=clamp(y-radius-gap-panelHeight,minTop,wrap.clientHeight-panelHeight-margin);
         }
         panel.style.left=left+'px';panel.style.top=top+'px';
     }
-    function positionDossier() {
-        const modal=$('planet-modal'),card=$('mapa-intel-card');
-        if(frontPanelIndex!=null&&$('mapa-front-panel')?.classList.contains('open')){positionFloatingPanel(modal,$('mapa-front-panel'));return;}
-        if(!modal?.classList.contains('open'))return;
-        if(!card?.classList.contains('open')||window.matchMedia('(max-width:700px)').matches){positionInspector(modal);return;}
-        modal.style.visibility='visible';modal.style.right='auto';modal.style.bottom='auto';
-        const wrap=modal.parentElement,margin=14,gap=12,qWidth=card.offsetWidth,mWidth=modal.offsetWidth;
-        let qLeft=parseFloat(card.style.left)||margin,mLeft;
-        if(qLeft+qWidth+gap+mWidth<=wrap.clientWidth-margin)mLeft=qLeft+qWidth+gap;
-        else if(qLeft-gap-mWidth>=margin)mLeft=qLeft-gap-mWidth;
-        else{
-            qLeft=Math.max(margin,Math.min(qLeft,wrap.clientWidth-qWidth-mWidth-gap-margin));
-            card.style.left=qLeft+'px';mLeft=qLeft+qWidth+gap;
-        }
-        const cap=Math.max(80,Math.min(600,wrap.clientHeight-86));
-        modal.style.maxHeight=cap+'px';
-        const top=Math.max(72,Math.min(parseFloat(card.style.top)||72,wrap.clientHeight-Math.min(modal.offsetHeight||cap,cap)-margin));
-        modal.style.left=mLeft+'px';modal.style.top=top+'px';
+    function layoutIntelPanels() {
+        const front=$('mapa-front-panel'),quick=$('mapa-intel-card');
+        const root=front?.classList.contains('open')?front:quick?.classList.contains('open')?quick:null;
+        const panels=[root,$('mapa-regions-panel'),$('planet-modal')].filter(p=>p?.classList.contains('open'));
+        if(!panels.length)return;
+        const mobile=window.matchMedia('(max-width:700px)').matches,wrap=panels[0].parentElement;
+        if(mobile){panels.forEach((p,i)=>{p.inert=i!==panels.length-1;p.style.width='';p.style.maxWidth='';if(p.id!=='mapa-intel-card'){p.style.left='8px';p.style.top='72px';p.style.bottom='auto';p.style.maxHeight=Math.max(100,wrap.clientHeight-140)+'px';}});return;}
+        const margin=14,gap=12,cap=Math.max(80,wrap.clientHeight-86);
+        const preferred=panels.map(p=>p.id==='planet-modal'?430:p.id==='mapa-regions-panel'?300:360);
+        const available=Math.max(80,wrap.clientWidth-margin*2-gap*(panels.length-1));
+        const factor=Math.min(1,available/preferred.reduce((a,b)=>a+b,0));
+        const widths=preferred.map(v=>Math.floor(v*factor));
+        const total=widths.reduce((a,b)=>a+b,0)+gap*(panels.length-1);
+        let left=Math.max(margin,Math.min(parseFloat(root?.style.left)||margin,wrap.clientWidth-total-margin));
+        panels.forEach((p,i)=>{p.inert=false;p.style.visibility='visible';p.style.width=widths[i]+'px';p.style.maxWidth=widths[i]+'px';p.style.maxHeight=cap+'px';});
+        const tallest=Math.max(...panels.map(p=>Math.min(p.offsetHeight||cap,cap)));
+        const top=Math.max(72,Math.min(parseFloat(root?.style.top)||72,wrap.clientHeight-tallest-margin));
+        panels.forEach((p,i)=>{p.style.right='auto';p.style.bottom='auto';p.style.left=left+'px';p.style.top=top+'px';left+=widths[i]+gap;});
     }
+    function positionDossier() { layoutIntelPanels(); }
     function positionQuickIntel() {
         positionInspector($('mapa-intel-card'));
         $('mapa-intel-leader')?.setAttribute('hidden','');
@@ -1348,7 +1354,7 @@
         if (!card || !p) return;
         cancelQuickIntelHide();
         if(frontPanelIndex!=null){closeFrontPanel();}
-        if(quickIntelIndex!==String(p.index)) closePlanetModal(false);
+        if(quickIntelIndex!==String(p.index)){closePlanetModal(false);if(frontRegionsIndex!=null&&frontRegionsIndex!==String(p.index))closeFrontRegions();}
         card.inert=false;
         quickIntelPlanet = p;
         quickIntelIndex = String(p.index);
@@ -1464,8 +1470,8 @@
             if(event||offensive) {
                 const prediction=event?defenseForecast(p):offensiveForecast(p);
                 forecast.dataset.tone=prediction.tone;
-                forecast.querySelector('strong').textContent=prediction.title;
-                forecast.querySelector('p').textContent=prediction.detail;
+                forecast.querySelector('strong').innerHTML=window.HDBRPresences?.vitrine(prediction.title,p,window.HDBRWarData?.meta(`${V1}/planets`))||escapeHTML(prediction.title);
+                forecast.querySelector('p').textContent='';
                 if($('mapa-intel-forecast-metrics'))$('mapa-intel-forecast-metrics').innerHTML=forecastMetrics(p);
             }
         }
@@ -2037,13 +2043,14 @@
                     badge.appendChild(svgEl('use',{href:`#faction-icon-${attacker}`,x:x+baseRadius*1.75,y:y-baseRadius*3.55,width:baseRadius*1.8,height:baseRadius*1.8}));
                     const title=svgEl('title');title.textContent='Atacante: '+factionName(raw.event.faction);badge.appendChild(title);group.appendChild(badge);
                 }
-                const eventLabel = svgEl('text', { class:'mapa-event-label', x, y:y-baseRadius*3.45, 'text-anchor':'middle', fill:factionColor(raw.event?.faction || owner) });
+                const eventLabel = svgEl('text', { class:'mapa-event-label', x:x-baseRadius*3.1, y:y-baseRadius*5.6, 'text-anchor':'middle', fill:factionColor(raw.event?.faction || owner) });
                 eventLabel.textContent = formatPercentDetailed(progress);
                 eventLabel.setAttribute('fill','#4da6ff');
                 eventLabel.setAttribute('aria-label','Defesa: '+formatPercentDetailed(progress));
                 group.appendChild(eventLabel);
-                const enemyLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*6.2,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
-                enemyLabel.textContent=`INVASÃO ${formatPercentDetailed(invasionProgress(raw))}`;
+                const enemyLabel=svgEl('text',{class:'mapa-event-label',x:x+baseRadius*2.65,y:y-baseRadius*4.15,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
+                enemyLabel.textContent=formatPercentDetailed(invasionProgress(raw));
+                enemyLabel.setAttribute('aria-label','Invasão inimiga: '+enemyLabel.textContent);
                 group.appendChild(enemyLabel);
             } else if(offensive) {
                 const eventLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*3.45,'text-anchor':'middle',fill:FACTION_COLORS.human});
@@ -2402,6 +2409,7 @@
         document.body.classList.remove('mapa-dossier-open');
         modal.setAttribute('aria-hidden', 'true');
         $('mapa-intel-details')?.setAttribute('aria-expanded','false');
+        layoutIntelPanels();
         if(restoreFocus) $('mapa-intel-details')?.focus({preventScroll:true});
     }
 
@@ -2530,7 +2538,7 @@
             const close=event.target.closest?.('[data-close-floating]');if(close){close.dataset.closeFloating==='front'?closeFrontPanel():closeFrontRegions();return;}
             const button=event.target.closest?.('[data-front-regions],[data-front-dossier]');if(!button)return;
             const p=allPlanets.find(p=>String(p.index)===(button.dataset.frontRegions??button.dataset.frontDossier));if(!p)return;
-            if(button.dataset.frontRegions!=null)openFrontRegions(p);else{closeFrontRegions();openPlanetModal(p);}
+            if(button.dataset.frontRegions!=null)openFrontRegions(p);else{openPlanetModal(p);}
         }));
         window.addEventListener('resize',()=>{positionFloatingPanel($('mapa-front-panel'),$('mapa-top-fronts')?.parentElement);positionFloatingPanel($('mapa-regions-panel'),floatingAnchor());positionDossier();});
         $('mapa-top-fronts')?.addEventListener('toggle',event=>handleFrontToggle(event.target),true);
@@ -2591,7 +2599,6 @@
         $('mapa-intel-details')?.addEventListener('click', () => {
             if (!quickIntelPlanet) return;
             setSelectedPlanet(quickIntelPlanet.index);
-            closeFrontRegions();
             openPlanetModal(quickIntelPlanet);
         });
         $('mapa-intel-card')?.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') cancelQuickIntelHide(); });

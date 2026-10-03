@@ -1295,3 +1295,42 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-top-front>summary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#071018d9,#071018a6 60%,#07101873);z-index:1;pointer-events:none;border-radius:inherit;}
 .mapa-top-front>summary .mapa-front-content{position:relative;z-index:2;box-sizing:border-box;min-height:132px;padding:11px 13px;text-shadow:0 1px 3px #000;}
 @media(max-width:700px){.mapa-top-front>summary .mapa-front-content{padding:9px;min-height:115px;}.mapa-top-front>summary{min-height:115px;}}
+/* Patch 14: bounded floating panels and compact information overlays. */
+.mapa-intel-visual{position:relative}
+#mapa-intel-effects{position:absolute;left:9px;right:9px;bottom:9px;z-index:4;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0}
+#mapa-intel-effects[hidden]{display:none}
+.intel-weather-icons{display:flex;flex-wrap:wrap;gap:5px;max-width:48%}
+#mapa-intel-effects .planet-presences{max-width:48%}
+#mapa-intel-effects .presence-list{justify-content:flex-end}
+#mapa-intel-forecast:empty{display:none}
+.front-summary-conditions,.front-visual-conditions{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.front-weather-icons{display:flex;gap:4px;flex-wrap:wrap;max-width:48%}
+.front-weather-icon{display:inline-flex;width:28px;height:28px;background:#091019c9;border:1px solid #ffffff45;border-radius:7px;align-items:center;justify-content:center}
+.front-weather-icon .hazard-img{display:block!important;position:static!important;width:22px!important;height:22px!important;min-height:0!important;object-fit:contain;opacity:1!important;margin:0}
+.front-summary-conditions{margin-top:7px}
+.front-summary-status{min-width:0;margin-top:4px}
+.front-summary-enemy{display:flex;justify-content:space-between;font-size:10px;margin-top:5px}
+.mapa-front-visual{position:relative}
+.front-visual-conditions{position:absolute;left:8px;right:8px;bottom:8px}
+.front-visual-conditions .presence-list{justify-content:flex-end}
+.mapa-top-front>summary .mapa-front-content{min-height:160px}
+.mapa-front-battle-strip .presence-vitrine{min-width:0;flex:1;text-align:right}
+@media(min-width:701px){
+ .mapa-top-fronts[open]{width:383px}
+ .mapa-viewport-wrap:has(#mapa-regions-panel.open) #mapa-front-panel,.mapa-viewport-wrap:has(#planet-modal.open) #mapa-front-panel,body.mapa-dossier-open #mapa-intel-card{visibility:visible!important;pointer-events:auto!important}
+ #mapa-intel-card,#mapa-front-panel,#mapa-regions-panel,#planet-modal{box-sizing:border-box;min-width:0}
+}
+@media(max-width:700px){
+ .mapa-top-front>summary .mapa-front-content{min-height:140px;padding:8px}
+ .front-summary-conditions{gap:3px}.front-weather-icon{width:22px;height:22px}.front-weather-icon .hazard-img{width:18px!important;height:18px!important}
+ .front-summary-conditions .presence-chip{width:25px;height:25px;padding:2px}
+ .mapa-viewport-wrap:has(#mapa-regions-panel.open) #mapa-intel-card,.mapa-viewport-wrap:has(#planet-modal.open) #mapa-regions-panel{visibility:hidden!important;pointer-events:none!important}
+}
+
+.front-weather{display:flex;flex-wrap:wrap;gap:4px;max-width:48%}
+.front-invasion-mini{display:block;font-size:10px;margin:4px 0}
+.mapa-front-strip .presence-vitrine{max-width:190px;text-align:right}
+#mapa-intel-forecast p:empty{display:none}
+.mapa-presences:not(.presence-stale) rect{animation:map-presence-glow 2.8s ease-in-out infinite}
+@keyframes map-presence-glow{0%,100%{stroke-opacity:.55}50%{stroke-opacity:1;stroke-width:1.2}}
+@media(prefers-reduced-motion:reduce){.mapa-presences:not(.presence-stale) rect{animation:none}}

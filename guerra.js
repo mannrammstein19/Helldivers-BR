@@ -1411,7 +1411,7 @@
         regionBox.innerHTML = window.HDBRRegions?.render(p) || '';
         let presenceBox=modal.querySelector('[data-presence-panel]');
         if(!presenceBox){presenceBox=document.createElement('div');presenceBox.dataset.presencePanel='';modal.querySelector('.tactical-modal-hazards').before(presenceBox);}
-        presenceBox.innerHTML=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`))||'';
+        presenceBox.innerHTML=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`),{labels:true})||'';
         const event = p.event;
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';

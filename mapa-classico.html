@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://mannrammstein19.github.io/Helldivers-BR/mapa-classico.html">
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mapa-classico.css?v=refino14">
+<link rel="stylesheet" href="mapa-classico.css?v=refino15">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <script src="pwa.js" defer></script>
 <link rel="stylesheet" href="planet-regions.css?v=mapa4">
-<link rel="stylesheet" href="planet-presences.css?v=refino14">
+<link rel="stylesheet" href="planet-presences.css?v=refino15">
 </head>
 <body class="fundo-guerra mapa-immersive">
 
@@ -48,7 +48,6 @@
             <button class="mapa-layer active" type="button" data-layer="invasions">INVASÕES</button>
             <button class="mapa-layer active" type="button" data-layer="territories">TERRITÓRIOS</button>
             <button class="mapa-layer active" type="button" data-layer="sectors">SETORES</button>
-            <button class="mapa-layer" type="button" data-layer="activeFronts" title="Exibir todos os planetas; desligado mostra frentes ativas e seus vizinhos">TODOS OS PLANETAS</button>
         </div>
                 <button class="mapa-optimized-toggle" id="mapa-optimized-toggle" type="button" aria-pressed="false" disabled title="Alternar a movimentação do mapa sem sair da página">Versão otimizada · OFF</button>
     </div>
@@ -60,6 +59,7 @@
             <details open class="mapa-top-fronts" aria-label="Três planetas com mais Helldivers em atividade">
                 <summary>Frentes em destaque</summary><div id="mapa-top-fronts" aria-live="polite"><p>Aguardando telemetria…</p></div>
             </details>
+            <details class="mapa-settings" id="mapa-settings"><summary aria-label="Opções do mapa" title="Opções do mapa">⚙</summary><div class="mapa-settings-content"><h2>Opções do mapa</h2><div class="mapa-presentation-controls" aria-label="Visualização"><button type="button" data-map-presentation="complete" aria-pressed="true" class="active">Completo</button><button type="button" data-map-presentation="clean" aria-pressed="false">Limpo</button></div><p>Limpo mantém planetas, rotas e anéis. Os detalhes continuam disponíveis ao tocar no planeta.</p><button class="mapa-layer" type="button" data-layer="activeFronts" title="Exibir todos os planetas; desligado mostra frentes ativas e seus vizinhos">TODOS OS PLANETAS</button></div></details>
             <div class="mapa-loading" id="mapa-loading">
                 <div class="loading">Carregando cartografia galáctica...</div>
             </div>
@@ -181,8 +181,8 @@
 <script src="order-targets.js?v=20260928"></script>
 <script src="order-state.js?v=revisao12"></script>
 <script src="campaign-metrics.js?v=patch9"></script>
-<script src="planet-presences.js?v=refino14"></script>
-<script src="mapa-classico.js?v=refino14"></script>
+<script src="planet-presences.js?v=refino15"></script>
+<script src="mapa-classico.js?v=refino15"></script>
 
 </body>
 </html>

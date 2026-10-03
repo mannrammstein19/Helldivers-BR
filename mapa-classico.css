@@ -1334,3 +1334,23 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-presences:not(.presence-stale) rect{animation:map-presence-glow 2.8s ease-in-out infinite}
 @keyframes map-presence-glow{0%,100%{stroke-opacity:.55}50%{stroke-opacity:1;stroke-width:1.2}}
 @media(prefers-reduced-motion:reduce){.mapa-presences:not(.presence-stale) rect{animation:none}}
+/* Patch 15 — map preferences and unambiguous control rings. */
+.mapa-settings{position:fixed;left:14px;bottom:68px;z-index:8;color:#d5dfe9}
+.mapa-settings>summary{display:grid;place-items:center;width:36px;height:36px;border:1px solid #66717d;border-radius:50%;background:#101820ed;color:#ffe800;font:24px Arial,sans-serif;cursor:pointer;list-style:none}
+.mapa-settings>summary::-webkit-details-marker{display:none}
+.mapa-settings-content{position:absolute;left:0;bottom:46px;width:min(290px,calc(100vw - 28px));padding:14px;box-sizing:border-box;max-height:55dvh;overflow:auto;border:1px solid #46515e;border-radius:14px;background:#101820;box-shadow:0 10px 35px #0009;font:12px/1.5 Arial,sans-serif}
+.mapa-settings-content h2{font-size:14px;color:#ffe800;margin:0 0 10px}.mapa-settings-content p{color:#b5c0cc;font-size:11px}
+.mapa-presentation-controls{display:flex;gap:7px}.mapa-presentation-controls button{flex:1;border:1px solid #46515e;border-radius:9px;padding:10px;background:#172532;color:#d5dfe9;cursor:pointer}
+.mapa-presentation-controls button.active{border-color:#ffe800;color:#ffe800;background:#2a3019}
+.mapa-settings-content .mapa-layer{display:block;width:100%;margin-top:10px}
+#mapa-viewport.mapa-clean :is(.mapa-player-label,.mapa-event-label,.mapa-event-icon,.mapa-attacker-badge,.mapa-presences){display:none!important}
+.mapa-owner-fill,.mapa-owner-track,.mapa-control-fill,.mapa-control-track{pointer-events:none;animation:none;transition:none}
+/* A floating close button must not consume image width. */
+.mapa-immersive #mapa-intel-card{position:absolute;isolation:isolate}
+.mapa-immersive #mapa-intel-close{position:absolute;float:none;top:10px;right:10px;margin:0;z-index:8;width:38px;height:38px;min-width:38px;min-height:38px;display:grid;place-items:center;box-sizing:border-box;padding:0;line-height:1}
+.mapa-intel-visual{width:100%;box-sizing:border-box;overflow:hidden}
+.mapa-intel-photo{width:100%;max-width:100%;display:block}
+.mapa-intel-faction-badge{bottom:auto;top:10px;left:10px;right:auto;max-width:calc(100% - 70px);padding:5px 7px;font-size:9px}
+.mapa-intel-faction-badge span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mapa-intel-effects{bottom:8px}
+@media(max-width:700px){.mapa-settings{left:8px;bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))}.mapa-telemetry{z-index:8}}

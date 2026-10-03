@@ -1126,3 +1126,29 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .frente-presences-overlay .presence-list{justify-content:flex-end}
 .frente-hazards-overlay{right:auto;max-width:48%}
 .frente-status-mini{min-width:0;max-width:55%}
+/* Patch 15: a bounded overlay, all information retained. */
+#tactical-modal{padding:24px;box-sizing:border-box;align-items:center}
+#tactical-modal .tactical-modal-card{width:min(720px,calc(100vw - 48px));max-height:min(78dvh,780px);box-sizing:border-box;padding:16px;overscroll-behavior:contain;scrollbar-width:thin;border-radius:18px;background:#0b1017;overflow:auto}
+#tactical-modal .dossier-premium-header{position:sticky;top:-16px;z-index:5;background:#0b1017;margin:-16px -16px 0;padding:15px 66px 12px 16px;border-bottom:1px solid #354250}
+#tactical-modal .tactical-modal-close{position:absolute;top:14px;right:14px;float:none;margin:0;width:38px;height:38px;display:grid;place-items:center;box-sizing:border-box;padding:0;line-height:1;border-radius:10px}
+#tactical-modal :is(.tactical-modal-title,.tactical-modal-kicker){padding-right:0}
+#tactical-modal .tactical-modal-title{font-size:28px;line-height:1.15}
+#tactical-modal .tactical-modal-photo{height:130px;border-radius:12px;background-size:contain}
+#tactical-modal .tactical-modal-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#tactical-modal .tactical-modal-metrics>div{padding:11px;border-radius:12px;background:#111923}
+#tactical-modal .tactical-modal-metrics strong{font-size:22px;line-height:1.2;font-variant-numeric:tabular-nums}
+#tactical-modal .tactical-modal-metrics small{font-size:10px;color:#a8b4c0}
+#tactical-modal .tactical-modal-metrics span{font-size:10px;color:#a8b4c0}
+#tactical-modal .tactical-modal-intel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#tactical-modal .tactical-modal-intel>div{min-width:0;box-sizing:border-box;border:1px solid #354250;border-radius:10px;padding:10px;background:#111923;overflow-wrap:anywhere}
+#tactical-modal .tactical-modal-hazards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#tactical-modal .tactical-hazard{border:1px solid #354250;border-radius:10px;padding:10px}
+@media(max-width:700px){#tactical-modal{padding:12px}#tactical-modal .tactical-modal-card{width:calc(100vw - 24px);max-height:78dvh;padding:12px}#tactical-modal .dossier-premium-header{top:-12px;margin:-12px -12px 0;padding-left:12px}#tactical-modal .tactical-modal-photo{height:105px}#tactical-modal .tactical-modal-hazards{grid-template-columns:1fr}#tactical-modal .tactical-modal-metrics strong{font-size:20px}}
+@media(max-width:360px){#tactical-modal .tactical-modal-intel{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){#tactical-modal .tactical-modal-card{animation:none}}
+#tactical-modal .tactical-modal-intel{display:block}
+#tactical-modal .tactical-modal-intel>.tactical-intel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border:0;padding:0;background:none}
+#tactical-modal .tactical-intel-grid>div{padding:10px;border:1px solid #354250;border-radius:10px;background:#111923;min-width:0}
+#tactical-modal .tactical-intel-grid small{font-size:10px;color:#a8b4c0}
+#tactical-modal .tactical-intel-grid strong{font-size:15px;color:#e8edf2}
+@media(max-width:360px){#tactical-modal .tactical-modal-intel>.tactical-intel-grid{grid-template-columns:1fr}}

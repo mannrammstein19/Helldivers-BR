@@ -26,10 +26,10 @@ window.HDBRPresences=(()=>{'use strict';
  function icon(e){const src=base+e.file;return e.file.endsWith('.svg')?
   `<span class="presence-icon presence-mask" style="--presence-color:${e.color};--presence-image:url('${esc(src)}')" aria-hidden="true"></span>`:
   `<img class="presence-icon" src="${esc(src)}" alt="" loading="lazy" decoding="async">`;}
- function render(p,reading){
+ function render(p,reading,options={}){
   const values=list(p);if(!values.length)return '';
   const stale=reading?.stale===true;
-  return `<section class="planet-presences presence-icons-only${stale?' presence-stale':''}" aria-label="Presenças${stale?' · ÚLTIMA LEITURA':''}"><div class="presence-list">${values.map(e=>`<span class="presence-chip presence-${e.faction}" tabindex="0" role="img" aria-label="${esc(e.name)}${stale?' · ÚLTIMA LEITURA':''}" title="${esc(e.name)}${stale?' · última leitura salva':''}" style="--presence-color:${e.color}">${icon(e)}</span>`).join('')}</div></section>`;
+  return `<section class="planet-presences ${options.labels?'presence-labeled':'presence-icons-only'}${stale?' presence-stale':''}" aria-label="Presenças${stale?' · ÚLTIMA LEITURA':''}"><div class="presence-list">${values.map(e=>`<span class="presence-chip presence-${e.faction}" tabindex="0" role="img" aria-label="${esc(e.name)}${stale?' · ÚLTIMA LEITURA':''}" title="${esc(e.name)}${stale?' · última leitura salva':''}" style="--presence-color:${e.color}">${icon(e)}${options.labels?`<span class="presence-name">${esc(e.name)}</span>`:''}</span>`).join('')}</div></section>`;
  }
  function vitrine(status,p,reading){
   const states=[];if(status)states.push({text:status,color:/PERDENDO|RECUO|RECUANDO|RISCO/i.test(status)?'#ff4242':/GANHANDO|VENCENDO|AVANÇO|AVANCANDO/i.test(status)?'#7edb9a':'#b8c3cd'});

@@ -136,12 +136,13 @@ function taskTargetMeta(t){
 }
 function taskRate(o,i,p,g){
  if(!g||g<=1)return null;
- const now=Date.now(),all=store(TASK_HIST,{}),orderKey=String(o?.id??o?.index??o?.id32??'ordem'),key=`${orderKey}:${i}:${g}`,old=all[key];
+ const reading=window.HDBRWarData?.meta(`${API}/assignments`);if(reading?.stale||!Number.isFinite(reading?.time))return null;
+ const now=reading.time,all=store(TASK_HIST,{}),orderKey=String(o?.id??o?.index??o?.id32??'ordem'),key=`${orderKey}:${i}:${g}`,old=all[key];
  let r=null;
  if(old&&Number(old.goal)===Number(g)){
    const elapsed=now-Number(old.time||0),h=elapsed/3600000;
    if(elapsed>=30000&&h>0&&p>=Number(old.progress||0))r=(p-Number(old.progress||0))/h;
-   else if(elapsed<30000&&Number.isFinite(Number(old.rate)))r=Number(old.rate);
+   else if(elapsed<30000&&typeof old.rate==='number'&&Number.isFinite(old.rate))r=Number(old.rate);
  }
  if(!old||now-Number(old.time||0)>=30000){
    all[key]={time:now,progress:p,goal:g,rate:Number.isFinite(r)?r:null};
@@ -162,11 +163,8 @@ function taskPercent(progress,goal,state){
  return Math.max(0,Math.min(100,(progress/goal)*100));
 }
 function taskIsDone(progress,goal,state){return state==='completed'||Boolean(goal&&progress>=goal)}
-function orderExpiration(o){
- if(o?.expiration||o?.expiresAt||o?.expireTime)return o.expiration||o.expiresAt||o.expireTime;
- const sec=Number(o?.expiresIn);
- return Number.isFinite(sec)&&sec>0?new Date(Date.now()+sec*1000).toISOString():null;
-}
+function orderExpiration(o){return window.HDBROrderState.expiration(o,window.HDBRWarData?.meta(`${API}/assignments`)?.time??Date.now())}
+
 let liveCampaigns=[];
 const liveSamples=new Map(store('hdbr_home_samples_v1',[]));
 const taskLogos={term:'imagens/guerra/faccoes/logo terminids.png',auto:'imagens/guerra/faccoes/logo automatons.png',illum:'imagens/guerra/faccoes/logo illuminats.png',human:'imagens/ui/icons/logo super terra.svg'};
@@ -179,15 +177,17 @@ function taskLiveView(o,t,i,state){
  const live=state==='active'&&[11,12,13].includes(Number(t.type))&&planet&&valid;
  const percent=assignedDone?100:live?(1-Number(health)/Number(max))*100:taskPercent(progress,goal,state);
  const fc=planet&&[11,12,13].includes(Number(t.type))?fClass(planet.event?.faction||planet.currentOwner):taskFactionClass(t);
- return {goal,progress,planet,live,percent,fc,done:assignedDone||(live&&percent>=99.999)};
+ return {goal,progress,planet,live,percent,fc,done:assignedDone};
 }
 function sampleCampaigns(list){
- const now=window.HDBRWarData?.meta(`${API}/campaigns`)?.time||Date.now();
+ const reading=window.HDBRWarData?.meta(`${API}/campaigns`);if(reading?.stale)return;
+ const now=reading?.time||Date.now();
+ window.HDBRCampaignMetrics?.observe(list.map(c=>c.planet).filter(Boolean),reading);
  const active=new Set();
  for(const c of list){
   const p=c?.planet,d=p?.event||p;if(!p||d.health==null||!Number(d.maxHealth))continue;
   const pct=(1-Number(d.health)/Number(d.maxHealth))*100;if(!Number.isFinite(pct)||pct<0||pct>100)continue;
-  const key=String(p.index),signature=JSON.stringify([p.event?.id,p.event?.startTime,p.currentOwner,d.maxHealth]);active.add(key);
+  const key=String(p.index),signature=window.HDBRCampaignMetrics?.identity(p)||JSON.stringify([p.event?.id,p.currentOwner,d.maxHealth]);active.add(key);
   let old=liveSamples.get(key);
   if(!old||old.signature!==signature||now-old.time>1800000)old={signature,time:now,pct,rate:null};
   else if(now-old.time>=30000){old={signature,time:now,pct,rate:(pct-old.pct)/((now-old.time)/3600000)};}
@@ -199,7 +199,9 @@ function sampleCampaigns(list){
 function orderTaskCard(o,t,i,state){
  const v=taskLiveView(o,t,i,state),g=v.goal,p=v.progress,pc=v.percent,done=v.done,fc=v.fc;
  const currentSample=v.planet?liveSamples.get(String(v.planet.index)):null;
- const rate=state==='active'&&!done?(v.live?(currentSample&&Date.now()-currentSample.time<=180000?currentSample.rate:null):taskRate(o,i,p,g)):null;
+ const campaignReading=window.HDBRWarData?.meta(`${API}/campaigns`);
+ const liveRate=window.HDBRCampaignMetrics&&v.planet?window.HDBRCampaignMetrics.metrics(v.planet,campaignReading).rate:!campaignReading?.stale&&currentSample&&Date.now()-currentSample.time<=180000?currentSample.rate:null;
+ const rate=state==='active'&&!done?(v.live?liveRate:taskRate(o,i,p,g)):null;
  const estimate=state==='active'&&!done?eta(v.live?pc:p,v.live?100:g,rate):null;
  const title=taskTitle(t,i),type=taskTypeName(t),meta=taskTargetMeta(t);
  const progressText=v.live?`${type} · CAMPANHA ATIVA`:g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:'TELEMETRIA EM ACOMPANHAMENTO';
@@ -310,7 +312,7 @@ function renderOrder(d,opt={}){
  </div>${orderAboutHTML()}`;
  bindOrderAbout(b);
 }
-function renderWar(d){const cs=arr(d);if(!cs.length)return;const total=cs.reduce((n,c)=>n+Number(c?.planet?.statistics?.playerCount||0),0),def=cs.filter(c=>c?.planet?.event).length,atk=cs.length-def;set('hd-ov-players',fmt(total));set('hd-ov-fronts',fmt(cs.length));set('hd-ov-attacks',fmt(atk));set('hd-ov-defenses',fmt(def));const defenseCard=document.querySelector('.hd-war-number.defenses');if(defenseCard)defenseCard.classList.toggle('invasion-alert',def>0);const by={term:0,auto:0,illum:0};cs.forEach(c=>{const k=fClass(c?.planet?.event?.faction||c?.planet?.currentOwner);if(by[k]!=null)by[k]+=Number(c?.planet?.statistics?.playerCount||0)});const mx=Math.max(by.term,by.auto,by.illum,1);['term','auto','illum'].forEach(k=>{set('hd-num-'+k,fmt(by[k]));const e=$('hd-bar-'+k);if(e)e.style.width=(by[k]/mx*100).toFixed(1)+'%'});const ranked=[...cs].sort((a,b)=>Number(b?.planet?.statistics?.playerCount||0)-Number(a?.planet?.statistics?.playerCount||0));$('hd-ov-front-list').innerHTML=ranked.slice(0,4).map(c=>{const p=c.planet||{},n=clean(p.name)||'PLANETA',pc=Number(p.statistics?.playerCount||0),fc=fClass(p.event?.faction||p.currentOwner),bg=planetImageUrl(p);return`<div class="hd-front-row" style="--planet-bg:url('${esc(bg)}')"><span class="front-name"><i class="front-faction-logo ${fc}" aria-hidden="true"></i><span>${esc(n)}</span></span><span class="hd-front-count"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong class="${fc}">${fmt(pc)}</strong></span></div>`}).join('')||'<div class="hd-ov-loading">SEM FRENTES ATIVAS.</div>';const p=ranked[0]?.planet;if(p){const fc=fName(p.event?.faction||p.currentOwner),pc=Number(p.statistics?.playerCount||0),lib=p.health!=null&&p.maxHealth?Math.max(0,Math.min(100,(1-p.health/p.maxHealth)*100)):0,bg=planetImageUrl(p);$('hd-ov-campaign').innerHTML=`<div class="hd-ov-campaign" style="background-image:url('${esc(bg)}')" title="${esc(clean(p.name)||'Planeta')}"><div class="hd-campaign-tag">${p.event?'DEFESA EM DESTAQUE':'FRENTE EM DESTAQUE'}</div><div class="hd-campaign-name">${esc(clean(p.name)||'PLANETA')}</div><div class="hd-campaign-planet">${esc(clean(p.sector)||'SETOR')} · ${esc(fc)}</div><p class="hd-campaign-desc">A frente com maior concentração de Helldivers no momento. Acompanhe a situação detalhada na Central de Guerra.</p><div class="hd-campaign-meta"><span class="hd-campaign-chip"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS <b>${fmt(pc)}</b></span><span class="hd-campaign-chip">CONTROLE <b>${lib.toFixed(1)}%</b></span></div></div>`}}
+function renderWar(d){const cs=arr(d);const total=cs.reduce((n,c)=>n+Number(c?.planet?.statistics?.playerCount||0),0),def=cs.filter(c=>c?.planet?.event).length,atk=cs.length-def;set('hd-ov-players',fmt(total));set('hd-ov-fronts',fmt(cs.length));set('hd-ov-attacks',fmt(atk));set('hd-ov-defenses',fmt(def));const defenseCard=document.querySelector('.hd-war-number.defenses');if(defenseCard)defenseCard.classList.toggle('invasion-alert',def>0);const by={term:0,auto:0,illum:0};cs.forEach(c=>{const k=fClass(c?.planet?.event?.faction||c?.planet?.currentOwner);if(by[k]!=null)by[k]+=Number(c?.planet?.statistics?.playerCount||0)});const mx=Math.max(by.term,by.auto,by.illum,1);['term','auto','illum'].forEach(k=>{set('hd-num-'+k,fmt(by[k]));const e=$('hd-bar-'+k);if(e)e.style.width=(by[k]/mx*100).toFixed(1)+'%'});const ranked=[...cs].sort((a,b)=>Number(b?.planet?.statistics?.playerCount||0)-Number(a?.planet?.statistics?.playerCount||0));$('hd-ov-front-list').innerHTML=ranked.slice(0,4).map(c=>{const p=c.planet||{},n=clean(p.name)||'PLANETA',pc=Number(p.statistics?.playerCount||0),fc=fClass(p.event?.faction||p.currentOwner),bg=planetImageUrl(p);return`<div class="hd-front-row" style="--planet-bg:url('${esc(bg)}')"><span class="front-name"><i class="front-faction-logo ${fc}" aria-hidden="true"></i><span>${esc(n)}</span></span><span class="hd-front-count"><img class="hd-count-icon" src="imagens/ui/icons/helldiver.png" alt="Helldivers" onerror="this.style.display='none'"><strong class="${fc}">${fmt(pc)}</strong></span></div>`}).join('')||'<div class="hd-ov-loading">SEM FRENTES ATIVAS.</div>';const p=ranked[0]?.planet;if(p){const fc=fName(p.event?.faction||p.currentOwner),pc=Number(p.statistics?.playerCount||0),source=p.event||p,lib=typeof source.health==='number'&&typeof source.maxHealth==='number'&&source.maxHealth>0&&source.health>=0&&source.health<=source.maxHealth?(1-source.health/source.maxHealth)*100:null,bg=planetImageUrl(p);$('hd-ov-campaign').innerHTML=`<div class="hd-ov-campaign" style="background-image:url('${esc(bg)}')" title="${esc(clean(p.name)||'Planeta')}"><div class="hd-campaign-tag">${p.event?'DEFESA EM DESTAQUE':'FRENTE EM DESTAQUE'}</div><div class="hd-campaign-name">${esc(clean(p.name)||'PLANETA')}</div><div class="hd-campaign-planet">${esc(clean(p.sector)||'SETOR')} · ${esc(fc)}</div><p class="hd-campaign-desc">A frente com maior concentração de Helldivers no momento. Acompanhe a situação detalhada na Central de Guerra.</p><div class="hd-campaign-meta"><span class="hd-campaign-chip"><img class="hd-active-icon" src="imagens/ui/icons/helldiver.png" alt="" aria-hidden="true">HELLDIVERS <b>${fmt(pc)}</b></span><span class="hd-campaign-chip">${p.event?'DEFESA':'LIBERTAÇÃO'} <b>${lib==null?'indisponível':lib.toFixed(1)+'%'}</b></span></div></div>`}else if($('hd-ov-campaign'))$('hd-ov-campaign').innerHTML='<div class="hd-ov-loading">NENHUMA CAMPANHA ATIVA NESTA LEITURA.</div>';}
 function relative(iso){if(!iso)return'AGORA';const s=Math.max(0,Math.floor((Date.now()-new Date(iso))/1000));return s<60?'AGORA':s<3600?'HÁ '+Math.floor(s/60)+'MIN':s<86400?'HÁ '+Math.floor(s/3600)+'H':'HÁ '+Math.floor(s/86400)+'D'}
 function renderDispatch(d){const a=arr(d).slice(0,3),b=$('hd-ov-feed');if(!b)return;b.innerHTML=a.length?a.map(x=>`<div class="hd-feed-item"><div class="hd-feed-time">${esc(relative(x.published||x.publishedAt||x.date))}</div><div class="hd-feed-text">${esc(clean(x.message)||'Comunicação do Alto Comando.')}</div></div>`).join(''):'<div class="hd-ov-loading">NENHUM DESPACHO RECENTE.</div>'}
 let updating=false;
@@ -325,7 +327,7 @@ async function update(){
   else if(!liveCampaigns.length){for(const id of ['hd-ov-front-list','hd-ov-campaign'])if($(id))$(id).textContent='Sem comunicação e sem leitura anterior. Nova tentativa automática.';}
   // Mantém a última renderização se não houver resposta nem cache utilizável.
   const snap=snapshot.status==='fulfilled'?snapshot.value:null;
-  const resolved=window.HDBROrderState.resolve(orders.status==='fulfilled'?order(orders.value):null,snap,Date.now(),{dispatches:dispatches.status==='fulfilled'?dispatches.value:[],catalog:planetCatalog});
+  const resolved=window.HDBROrderState.resolve(orders.status==='fulfilled'?order(orders.value):null,snap,Date.now(),{readAt:window.HDBRWarData?.meta(`${API}/assignments`)?.time,dispatches:dispatches.status==='fulfilled'?dispatches.value:[],catalog:planetCatalog});
   renderOrder(null,resolved);
   if(st){st.textContent=orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale()?'DADOS ATUALIZADOS':'TELEMETRIA PARCIAL / ÚLTIMO REGISTRO';st.classList.toggle('live',orders.status==='fulfilled'&&camp.status==='fulfilled'&&!window.HDBRWarData.hasStale());}
   if(dispatches.status==='fulfilled')renderDispatch(dispatches.value);

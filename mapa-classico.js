@@ -511,9 +511,11 @@
     function renderPlanetEffects(p) {
         const effects=planetEffects(p);
         const box=$('mapa-intel-effects');
-        box.hidden=!effects.length;
+        box.hidden=!effects.length&&!window.HDBRPresences?.list(p).length;
         box.innerHTML=effects.map(info=>`<span class="intel-effect${info.possible?' effect-possible':''}" tabindex="0" role="img" aria-label="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}" title="${escapeHTML(info.name)} — ${info.possible?'Possível no planeta':'Informado pela API'}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)} · ${info.possible?'possível':'API'}</span></span>`).join('');
+        box.innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||'';
         $('planet-dossier-effects').innerHTML=effects.length?effects.map(info=>`<div class="dossier-effect">${hazardIconHTML(info)}<span>${escapeHTML(info.name)}<small class="effect-source">${info.possible?'Possível no planeta · catálogo':'Informado pela API'}</small></span></div>`).join(''):'<p>Nenhum efeito adicional informado.</p>';
+        $('planet-dossier-effects').innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||'';
     }
     function planetClimateLabel(p) {
         const direct = clean(p?.weather?.name || p?.weather?.description || p?.climate || p?.weatherName || (typeof p?.weather === 'string' ? p.weather : ''));
@@ -592,6 +594,7 @@
     let campaigns = [];
     let campaignsKnown = false;
     let majorOrderData = null;
+    let orderDispatches = [], orderSnapshot = null;
     let loadingPlanets = false;
     let geometryCache = null;
     let allPlanets = [];               // lista crua vinda da API
@@ -945,9 +948,7 @@
     }
 
     function majorOrderExpiration(order) {
-        if(order?.expiration||order?.expiresAt||order?.expireTime) return order.expiration||order.expiresAt||order.expireTime;
-        const seconds=Number(order?.expiresIn);
-        return Number.isFinite(seconds)&&seconds>0?new Date(Date.now()+seconds*1000).toISOString():null;
+        return window.HDBROrderState.expiration(order,window.HDBRWarData.meta(`${V1}/assignments`)?.time??Date.now());
     }
 
     function remainingMajorOrder(iso) {
@@ -961,7 +962,12 @@
     function renderMajorOrder(assignments) {
         const box=$('mapa-major-order');
         if(!box) return;
-        const order=majorOrderPick(assignments);
+        const resolved=window.HDBROrderState.resolve(majorOrderPick(assignments),orderSnapshot,Date.now(),{
+            readAt:window.HDBRWarData.meta(`${V1}/assignments`)?.time,
+            dispatches:orderDispatches,catalog:Object.fromEntries(allPlanets.map(p=>[String(p.index),p]))
+        });
+        const {order,state}=resolved;
+        const statusLabel={active:'EM EXECUÇÃO',pending:'AGUARDANDO CONFIRMAÇÃO DO RESULTADO',unknown:'RESULTADO AINDA NÃO CONFIRMADO',completed:'ORDEM MAIOR CUMPRIDA',failed:'ORDEM MAIOR PERDIDA'}[state];
         if(!order) {
             box.innerHTML='<div class="mapa-order-empty"><span aria-hidden="true">◆</span><strong>Aguardando novas diretrizes</strong><p>Nenhuma Ordem Maior ativa foi informada até o momento.</p></div>';
             return;
@@ -970,17 +976,17 @@
         const expiration=majorOrderExpiration(order);
         const taskData=tasks.map((task,index)=>{
             const goal=majorOrderTaskGoal(task),progress=majorOrderTaskProgress(order,task,index);
-            const assignmentDone=Boolean(goal&&progress>=goal);
-            const campaign=majorOrderTaskCampaign(task),live=majorOrderTaskLivePercent(task,assignmentDone);
+            const assignmentDone=state==='completed'||Boolean(goal&&progress>=goal);
+            const campaign=majorOrderTaskCampaign(task),live=state==='active'?majorOrderTaskLivePercent(task,assignmentDone):null;
             const hasLive=Number.isFinite(live);
             const percent=hasLive?Math.max(0,Math.min(100,live)):(goal?Math.max(0,Math.min(100,progress/goal*100)):0);
-            const done=assignmentDone||percent>=99.999;
+            const done=assignmentDone;
             const planet=campaign?.planet;
             const cls=planet?factionKey(planet.event?.faction||planet.currentOwner||planet.owner):majorOrderTaskFactionClass(task);
             return {task,index,goal,progress,percent,done,cls};
         });
         const doneCount=taskData.filter(item=>item.done).length;
-        const timeLabel=remainingMajorOrder(expiration);
+        const timeLabel=state==='completed'||state==='failed'?'ENCERRADA':remainingMajorOrder(expiration);
         const cards=taskData.map(item=>{
             const title=majorOrderTaskTitle(item.task,item.index);
             const type=majorOrderTaskTypeName(item.task);
@@ -991,12 +997,12 @@
                 <h3>${escapeHTML(title)}</h3>
                 <div class="mapa-mo-progress"><i style="width:${item.percent>0?`max(${item.percent.toFixed(2)}%, 2px)`:'0%'}"></i></div>
                 <div class="mapa-mo-progress-row"><span>${escapeHTML(counter)}</span><strong>${formatPercentDetailed(item.percent)}</strong></div>
-                <div class="mapa-mo-task-status">${item.done?'✓ CUMPRIDO':'EM ANDAMENTO'}</div>
+                <div class="mapa-mo-task-status">${item.done?'✓ CUMPRIDO':state==='active'?'EM ANDAMENTO':'ENCERRADO · RESULTADO DA ORDEM ACIMA'}</div>
             </article>`;
         }).join('');
         box.innerHTML=`<article class="mapa-mo-shell">
             <div class="mapa-mo-summary">
-                <div><small>STATUS</small><strong>${doneCount===taskData.length&&taskData.length?'OBJETIVOS CUMPRIDOS':'EM EXECUÇÃO'}</strong></div>
+                <div><small>STATUS</small><strong>${escapeHTML(statusLabel)}</strong></div>
                 <div><small>TEMPO RESTANTE</small><strong>${escapeHTML(timeLabel)}</strong></div>
                 <div><small>OBJETIVOS</small><strong>${doneCount} / ${taskData.length}</strong></div>
             </div>
@@ -1065,7 +1071,7 @@
             const bar=(label,value,fill)=>`<div class="mapa-front-bar"><span>${escapeHTML(label)}<b>${formatPercentDetailed(value)}</b></span><div><i style="width:${value==null?0:Math.max(0,Math.min(100,value))}%;background:${fill}"></i></div></div>`;
             const metric=(label,value,note,cls='')=>`<div class="${cls}"><small>${label}</small><strong>${value}</strong><span>${escapeHTML(note)}</span></div>`;
             const pressure=defending?m.enemyRate:regenPercentPerHour(p);
-            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span></span></summary><div class="mapa-front-expanded">${window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||''}<div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async">${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'AVANÇO LÍQUIDO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
     }
     function renderTopFronts() {
         const host=$('mapa-top-fronts');if(!host)return;
@@ -1972,6 +1978,7 @@
             });
             group.appendChild(symbol);
             const artwork=appendPlanetArtwork(group,raw,x,y,(underAttack||offensive)?baseRadius*1.38:baseRadius,symbol);
+            if(!special)window.HDBRPresences?.mapBadges(group,raw,x,y,baseRadius,svgEl);
             if(special) {
                 const size=baseRadius*5;
                 // Símbolo de reserva se o PNG ainda não estiver instalado.
@@ -2422,10 +2429,12 @@
         loadingPlanets = true;
         try {
             const dssTask = loadDSS();
-            const [planetResult, campaignResult, assignmentResult] = await Promise.allSettled([
+            const [planetResult, campaignResult, assignmentResult, dispatchResult, snapshotResult] = await Promise.allSettled([
                 fetchJSON(`${V1}/planets`, 'planets'),
                 fetchJSON(`${V1}/campaigns`, 'campaigns'),
-                fetchJSON(`${V1}/assignments`, 'assignments')
+                fetchJSON(`${V1}/assignments`, 'assignments'),
+                fetchJSON(`${V1}/dispatches`, 'dispatches'),
+                window.HDBROrderState?.loadSnapshot?.()
             ]);
             if (planetResult.status !== 'fulfilled') throw planetResult.reason;
             const data=planetResult.value;
@@ -2447,10 +2456,13 @@
                 }
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
+            if(dispatchResult.status==='fulfilled') orderDispatches=dispatchResult.value;
+            if(snapshotResult.status==='fulfilled'&&snapshotResult.value) orderSnapshot=snapshotResult.value;
 
             await dssTask;
-            const renderStamp = JSON.stringify(['planets','campaigns','assignments'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0));
+            const renderStamp = JSON.stringify(['planets','campaigns','assignments','dispatches'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0));
             if (lastTelemetryRender === renderStamp && nodeByIndex.size) {
+                if(majorOrderData)renderMajorOrder(majorOrderData);
                 const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');
                 if(status) status.textContent=window.HDBRWarData.hasStale()?'ÚLTIMA LEITURA · TENTANDO ATUALIZAR':'DADOS ATUALIZADOS';
                 return;

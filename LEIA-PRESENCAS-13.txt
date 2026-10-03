@@ -1,0 +1,78 @@
+HELLDIVERS-BR — PRESENÇAS / PATCH 13
+Base: Helldivers-BR(20261003-010752).zip.
+
+APLICAÇÃO
+- Este pacote inclui as presenças E as correções já aprovadas no Patch 12.
+  O ZIP recebido correspondia à base anterior ao Patch 12. Não aplique o Patch 12 depois deste.
+- Faça backup dos arquivos que serão substituídos.
+- Opcional: copie SOMENTE verificar-presencas13.cjs para a raiz atual do projeto e execute:
+  node .\verificar-presencas13.cjs
+  Aceita a base enviada, a versão com Patch 12 e este Patch 13. Se houver DIFERENTE/AUSENTE,
+  compare antes de substituir. O verificador não edita nem apaga arquivos.
+- Copie os arquivos deste pacote para a raiz do projeto e mescle a pasta imagens.
+  NÃO apague suas outras imagens ou pastas.
+- As imagens ficam em imagens/guerra/presencas/. Já estão incluídas e com caminhos configurados.
+  Não precisam ir ao R2.
+- Commit/push no GitHub e aguarde o deploy do Cloudflare Pages.
+- NÃO precisa rodar npm run deploy na central-api. Worker e configuração da API não foram alterados.
+- Este pacote é do SITE. Não altera nem compila o aplicativo nativo.
+
+PRESENÇAS IMPLEMENTADAS
+Cyborgs; Brigada Jetpack; Corpo Incendiário; Cepa Predadora;
+Cepa Rompedora; Cepa de Esporos; Massas Sem Mente; Apropriadores;
+Raptores de Votos; Frota de Invasão; Forte presença da SEAF.
+
+ONDE APARECEM
+- Marcadores do mapa: até três pequenos ícones, com +N se houver mais.
+  Não interceptam os cliques nos planetas.
+- Ficha rápida do mapa e dossiê.
+- Frente expandida entre os destaques do mapa.
+- Cartões e dossiê da Central de Guerra.
+- SVGs coloridos na exibição: Autômatos vermelho, Terminídios amarelo,
+  Iluminados roxo. SEAF identificada como aliada em azul.
+- PNG/WebP preservam suas cores originais; a borda/legenda identifica a facção.
+- Cyborgs recebeu viewBox para escalar sem alterar o desenho. Demais imagens preservadas.
+- Superearth_sprite.png não foi utilizado: a SEAF usa o WebP específico enviado.
+
+COMO OS DADOS FUNCIONAM
+A Central existente já transmite os códigos activeEffects. O novo módulo interpreta
+somente códigos conhecidos ou nomes exatos do catálogo, sem chamadas extras à API.
+Nenhuma presença foi vinculada a um planeta fixo.
+Códigos de duas variantes do mesmo efeito viram um único ícone.
+Uma leitura válida sem o efeito remove o ícone; uma leitura salva mantém o último estado
+com identificação de última leitura nas fichas. O título dos marcadores lista as presenças.
+Conquistar o planeta, sozinho, não remove o efeito: vale a lista informada pelo jogo.
+Fábricas Jetpack não são classificadas como presença da brigada.
+O sufixo (Enemies) da SEAF não a transforma em inimiga.
+Não há novo canal de notificações, alerta de movimento ou inferência de migração neste patch.
+Nomes novos/desconhecidos não são adivinhados. O mapa não deduz presença pela facção dona.
+
+CORREÇÕES DA REVISÃO 12 INCLUÍDAS
+Lista vazia válida limpa frentes e contadores antigos na Home e na Guerra.
+Defesa em destaque usa a vida do evento, não a vida do planeta.
+Objetivo quase em 100% não é marcado cumprido sem o contador correspondente.
+Métricas usam o horário original da leitura e ignoram amostras duplicadas/stale.
+Home e Ordem compartilham o módulo de métricas com Guerra e Mapa.
+Mapa compartilha o resolvedor de resultado da ordem: prazo encerrado não é EM EXECUÇÃO.
+Prazo expiresIn é ancorado à leitura; id32 é reconhecido; registro persistente null é tolerado.
+Vitória/derrota dependem de resultado confirmado, não de estimativa ou fim de prazo isolado.
+
+VALIDAÇÃO
+Na raiz do projeto, opcionais:
+  node .\test-presences.cjs
+  node .\test-review12.cjs
+  node .\test-campaign-metrics.cjs
+  node .\test-patch10.cjs
+Os dois primeiros estão neste pacote; os outros já constam no projeto.
+Todos passaram: códigos das 11 presenças e assets; deduplicação; SEAF aliada;
+fábricas versus tropa; código desconhecido; efeito de outro planeta; captura versus remoção;
+cache identificado; remoção em nova leitura; integração real de fichas/mapa/Guerra;
+ordem dos scripts; nenhuma consulta adicional; cenários de Ordem e regressões do mapa.
+Sintaxe de todos os arquivos JS/CJS validada; SVGs validados como XML.
+
+LIMITES
+A validação automatizada usa DOM controlado, não mede FPS ou garante visual em cada aparelho.
+A pasta central-api atual não veio neste ZIP; sua versão não foi alterada/auditada nesta entrega.
+Os nomes PT-BR das presenças são rótulos do portal; não se apresentam como tradução oficial.
+Referência dos códigos: https://raw.githubusercontent.com/helldivers-2/json/master/effects/planetEffects.json
+Conferida em 03/10/2026 UTC (02/10 no Brasil).

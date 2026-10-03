@@ -1,0 +1,55 @@
+// Cenários de regressão: executam funções reais com leituras e DOM controlados.
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+let now=Date.parse('2026-10-02T12:00:00Z'),reading={time:now,stale:false};
+class Clock extends Date{constructor(...args){super(...(args.length?args:[now]))}static now(){return now}}
+const saved=new Map(),nodes=new Map();
+const node=id=>{if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',style:{},classList:{toggle(){},contains(){return false}},dataset:{}});return nodes.get(id)};
+const context={window:{HDBRWarData:{meta:()=>reading}},document:{getElementById:node,querySelector:()=>null,addEventListener(){}},localStorage:{getItem:k=>saved.get(k)??null,setItem:(k,v)=>saved.set(k,v)},Date:Clock,console,setTimeout,clearTimeout,AbortSignal};
+vm.createContext(context);
+for(const file of ['order-state.js','campaign-metrics.js'])vm.runInContext(fs.readFileSync(file,'utf8'),context);
+const state=context.window.HDBROrderState;
+const order={id32:7,title:'Protect the Strategic Corridor',expiration:new Date(now+60000).toISOString(),tasks:[]};
+assert.equal(state.resolve(order,null,now).state,'active');
+now+=60001;assert.equal(state.resolve(order,null,now).state,'pending');
+now+=1800000;assert.equal(state.resolve(null,null,now).state,'unknown');
+let dispatch={assignmentId:8,title:'Major Order Completed',published:new Date(now).toISOString()};
+assert.equal(state.resolve(null,null,now,{dispatches:[dispatch]}).state,'unknown','unrelated victory rejected');
+dispatch.assignmentId=7;assert.equal(state.resolve(null,null,now,{dispatches:[dispatch]}).state,'completed');
+assert.equal(state.resolve(order,null,now).state,'completed','old live order cannot reopen confirmed result');
+const next={...order,id32:8,expiration:new Date(now+60000).toISOString()};
+assert.equal(state.resolve(next,null,now).state,'active','new order replaces old confirmed victory');
+assert.equal(state.resolve(next,null,now,{dispatches:[{...dispatch,assignmentId:8,title:'Major Order Failed'}]}).state,'failed');
+saved.set('hdbr_order_evidence_v2','null');assert.equal(state.resolve(null,null,now).order,null,'damaged saved object is tolerated');
+assert.equal(state.expiration({expiresIn:60},now-120000),new Date(now-60000).toISOString());
+assert.equal(state.resolve({id32:9,expiresIn:60},null,now,{readAt:now-120000}).state,'pending','cached relative deadline cannot restart');
+assert.equal(state.expiration({expiration:'invalid'},now),null);
+console.log('PASS: new order, expiry, unconfirmed outcome, explicit win/loss, unrelated dispatch, persistent terminal result, raw ID, relative cached deadline and corrupt storage.');
+vm.runInContext(fs.readFileSync('overview.js','utf8').replace(/\}\)\(\);\s*$/, ';window.reviewHome={renderWar,taskRate,taskLiveView,setCampaigns(v){liveCampaigns=v}};})();'),context);
+const h=context.window.reviewHome;
+const planet={index:199,name:'MARTALE',currentOwner:'Humans',health:0,maxHealth:1000,event:{id:4,faction:'Automatons',health:800,maxHealth:1000},statistics:{playerCount:12}};
+h.renderWar([{planet}]);assert.match(node('hd-ov-campaign').innerHTML,/20\.0%/);assert.doesNotMatch(node('hd-ov-campaign').innerHTML,/100\.0%/);
+planet.event.health=null;h.renderWar([{planet}]);assert.match(node('hd-ov-campaign').innerHTML,/indisponível/);
+h.renderWar([]);assert.equal(node('hd-ov-players').textContent,'0');assert.match(node('hd-ov-front-list').innerHTML,/SEM FRENTES/);assert.match(node('hd-ov-campaign').innerHTML,/NENHUMA CAMPANHA/);
+planet.event=null;planet.health=0.001;h.setCampaigns([{planet}]);
+const objective={type:11,valueTypes:[12,3],values:[199,1]};
+assert.equal(h.taskLiveView({tasks:[objective],progress:[0]},objective,0,'active').done,false,'near 100 percent is not official completion');
+reading={time:now,stale:false};assert.equal(h.taskRate({id:80},0,10,100),null);assert.equal(h.taskRate({id:80},0,10,100),null,'duplicate reading does not turn null into zero');
+reading.time+=60000;assert.equal(h.taskRate({id:80},0,20,100),600);
+const history=saved.get('hdbr_home_order_task_history_v2');reading={time:reading.time+60000,stale:true};assert.equal(h.taskRate({id:80},0,30,100),null);assert.equal(saved.get('hdbr_home_order_task_history_v2'),history);
+console.log('PASS: Home defense uses event health, missing health is unknown, valid empty campaigns clear old panels, no premature objective success, task rate uses only fresh distinct readings.');
+vm.runInContext(fs.readFileSync('mapa-classico.js','utf8').replace(/\}\)\(\);\s*$/, 'window.reviewMap={renderMajorOrder,set(v,ds=[]){allPlanets=v;campaigns=v.map(planet=>({planet}));orderDispatches=ds}};})();'),context);
+const m=context.window.reviewMap;m.set([planet]);reading={time:now,stale:false};saved.delete('hdbr_order_evidence_v2');
+const mo={id:90,title:'Major Order',tasks:[objective],progress:[0],expiration:new Date(now+60000).toISOString()};
+m.renderMajorOrder([mo]);assert.match(node('mapa-major-order').innerHTML,/EM EXECUÇÃO/);assert.doesNotMatch(node('mapa-major-order').innerHTML,/✓ CUMPRIDO/);
+now+=60001;m.renderMajorOrder([mo]);assert.match(node('mapa-major-order').innerHTML,/AGUARDANDO CONFIRMAÇÃO/);assert.doesNotMatch(node('mapa-major-order').innerHTML,/EM EXECUÇÃO/);
+m.set([planet],[{assignmentId:90,title:'Major Order Failed',published:new Date(now).toISOString()}]);m.renderMajorOrder([]);assert.match(node('mapa-major-order').innerHTML,/ORDEM MAIOR PERDIDA/);
+console.log('PASS: real map renderer distinguishes active, expired/unconfirmed and dispatch-confirmed defeat, and rejects false completion at 99.999 percent.');
+for(const [file,consumer] of [['index.html','overview.js'],['guerra.html','guerra.js'],['ordem.html','guerra.js'],['mapa-classico.html','mapa-classico.js']]){
+ const html=fs.readFileSync(file,'utf8');assert.ok(html.indexOf('order-state.js')<html.indexOf(consumer+'?'));assert.ok(html.indexOf('campaign-metrics.js')<html.indexOf(consumer+'?'));
+}
+console.log('PASS: all four consumers load shared result and metrics helpers before use.');
+vm.runInContext(fs.readFileSync('guerra.js','utf8').replace(/\}\)\(\);\s*$/, 'window.reviewWar={renderCampaigns,majorOrderTaskRate,getCampaigns:()=>campaigns,setCampaigns(v){campaigns=v}};})();'),context);
+const w=context.window.reviewWar;w.setCampaigns([{planet}]);w.renderCampaigns([]);assert.equal(w.getCampaigns().length,0);assert.equal(String(node('stat-fronts').textContent),'0');assert.equal(node('stat-players').textContent,'0');
+w.setCampaigns([{planet}]);w.renderCampaigns(null);assert.equal(w.getCampaigns().length,1,'invalid payload must not clear last valid campaigns');
+reading={time:now,stale:false};assert.equal(w.majorOrderTaskRate({id:100},0,5,200),null);assert.equal(w.majorOrderTaskRate({id:100},0,5,200),null);reading.time+=60000;assert.equal(w.majorOrderTaskRate({id:100},0,15,200),600);reading.stale=true;assert.equal(w.majorOrderTaskRate({id:100},0,25,200),null);
+console.log('PASS: real Guerra functions clear confirmed empty campaigns, preserve them on invalid input, and reject duplicate/stale samples in objective rates.');

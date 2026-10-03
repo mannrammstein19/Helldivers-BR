@@ -603,7 +603,9 @@
 
     function majorOrderTaskRate(order, index, progress, goal) {
         if (!goal || goal <= 1) return null;
-        const now = Date.now();
+        const reading=window.HDBRWarData?.meta(`${V1}/assignments`);
+        if(reading?.stale||!Number.isFinite(reading?.time))return null;
+        const now = reading.time;
         const all = readMajorOrderStorage(ORDER_TASK_HISTORY_KEY, {});
         const orderKey = String(order?.id ?? order?.index ?? order?.id32 ?? 'ordem');
         const key = `${orderKey}:${index}:${goal}`;
@@ -615,7 +617,7 @@
             const hours = elapsed / 3600000;
             if (elapsed >= 30000 && hours > 0 && progress >= Number(old.progress || 0)) {
                 rate = (progress - Number(old.progress || 0)) / hours;
-            } else if (elapsed < 30000 && Number.isFinite(Number(old.rate))) {
+            } else if (elapsed < 30000 && typeof old.rate==='number'&&Number.isFinite(old.rate)) {
                 rate = Number(old.rate);
             }
         }
@@ -650,15 +652,7 @@
         return state === 'completed' || Boolean(goal && progress >= goal);
     }
 
-    function majorOrderExpiration(order) {
-        if (order?.expiration || order?.expiresAt || order?.expireTime) {
-            return order.expiration || order.expiresAt || order.expireTime;
-        }
-        const seconds = Number(order?.expiresIn);
-        return Number.isFinite(seconds) && seconds > 0
-            ? new Date(Date.now() + seconds * 1000).toISOString()
-            : null;
-    }
+    function majorOrderExpiration(order) {return window.HDBROrderState.expiration(order,window.HDBRWarData?.meta(`${V1}/assignments`)?.time??Date.now());}
 
     function majorOrderReward(order) {
         return window.HDBRRewards.render(order);
@@ -728,7 +722,7 @@
         if (!box) return;
 
         const [snapshot] = await Promise.all([loadMajorOrderSnapshot(),loadPlanetCatalog()]);
-        const {order, state, snapshot: resolvedSnapshot} = window.HDBROrderState.resolve(majorOrderPick(assignments), snapshot, Date.now(), {dispatches,catalog:planetCatalog});
+        const {order, state, snapshot: resolvedSnapshot} = window.HDBROrderState.resolve(majorOrderPick(assignments), snapshot, Date.now(), {readAt:window.HDBRWarData?.meta(`${V1}/assignments`)?.time,dispatches,catalog:planetCatalog});
 
         if (!order) {
             box.innerHTML = '<div class="empty-state">Nenhuma Ordem Maior registrada no momento.</div>';
@@ -746,14 +740,8 @@
         const completed = state === 'completed';
         const failed = state === 'failed';
         const pending = state === 'pending' || state === 'unknown';
-        const doneCount = completed
-            ? taskData.length
-            : taskData.filter(item=>{
-                if (majorOrderTaskDone(item.progress,item.goal,state)) return true;
-                if (state !== 'active') return false;
-                const live = majorOrderTaskLivePercent(item.task, false);
-                return Number.isFinite(live) && live >= 99.999;
-            }).length;
+        const doneCount = completed ? taskData.length
+            : taskData.filter(item=>majorOrderTaskDone(item.progress,item.goal,state)).length;
 
         const reward = majorOrderReward(order);
         const expiration = majorOrderExpiration(order);
@@ -780,7 +768,7 @@
             const livePlanet = liveCampaign?.planet || null;
             const livePercent = state === 'active' ? majorOrderTaskLivePercent(task, assignmentDone) : null;
             const hasLivePercent = Number.isFinite(livePercent);
-            const done = assignmentDone || (state === 'active' && hasLivePercent && livePercent >= 99.999);
+            const done = assignmentDone;
             const percent = hasLivePercent
                 ? Math.max(0, Math.min(100, livePercent))
                 : majorOrderTaskPercent(progress, goal, state);
@@ -1064,7 +1052,7 @@
     function renderCampaigns(data) {
         const box = $('frentes');
         if (!box) return;
-        if (!Array.isArray(data) || !data.length) { box.innerHTML = '<div class="empty-state">Nenhuma frente de batalha ativa foi encontrada.</div>'; return; }
+        if (!Array.isArray(data))return;
         campaigns = data;
         recordPlanetSnapshots(data);
         const totalPlayers = data.reduce((sum, c) => sum + Number(c?.planet?.statistics?.playerCount || 0), 0);
@@ -1165,6 +1153,7 @@
                     ${hazards.length ? `<div class="frente-hazards-overlay" aria-label="Condições planetárias">${hazardDetails.map(h=>`<span class="frente-hazard-chip${h.possible?' effect-possible':''}" tabindex="0" aria-label="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; catálogo':'Informado pela API'}" title="${escapeHTML(h.name)} — ${h.possible?'Possível no planeta; não confirmado na leitura atual':'Informado pela API'}">${iconHTML(h)}<span class="hazard-fallback">${h.icon}</span></span>`).join('')}</div>` : ''}
                 </div>
                 <div class="frente-content">
+                    ${window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`))||''}
                     ${defense ? `
                     <div class="frente-row defesa-bar-label"><span>Defesa Helldivers</span><strong>${progressText(pct)}</strong></div>
                     <div class="progress defesa-progress-blue"><i style="width:${pct ?? 0}%;--accent:#3d9dff"></i></div>
@@ -1419,6 +1408,9 @@
             modal.querySelector('.tactical-modal-metrics').before(regionBox);
         }
         regionBox.innerHTML = window.HDBRRegions?.render(p) || '';
+        let presenceBox=modal.querySelector('[data-presence-panel]');
+        if(!presenceBox){presenceBox=document.createElement('div');presenceBox.dataset.presencePanel='';modal.querySelector('.tactical-modal-hazards').before(presenceBox);}
+        presenceBox.innerHTML=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/campaigns`))||'';
         const event = p.event;
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';

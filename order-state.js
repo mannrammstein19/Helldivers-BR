@@ -1,13 +1,19 @@
 /* Resultado automático: anúncio explícito + vínculo com a ordem + data válida. */
 window.HDBROrderState = (() => {
   const terminal = s => ['completed', 'failed'].includes(s);
-  const key = o => o && String(o.id ?? o.assignmentId ?? o.assignmentID ?? o.settingId ?? o.settingID ?? [o.title,o.description,o.expiration??o.expiresAt].join('|'));
+  const key = o => o && String(o.id ?? o.id32 ?? o.assignmentId ?? o.assignmentID ?? o.settingId ?? o.settingID ?? [o.title,o.description,o.expiration??o.expiresAt].join('|'));
   const clean = v => String(typeof v === 'object' && v ? v['pt-BR'] || v['en-US'] || Object.values(v)[0] || '' : v ?? '').replace(/<[^>]*>/g, ' ');
   const norm = v => clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim();
   const date = v => v == null || v === '' ? NaN : typeof v === 'number' ? (v < 1e10 ? v*1000 : v) : Date.parse(v);
-  const read = () => {try{return JSON.parse(localStorage.getItem('hdbr_order_evidence_v2')||'{}')}catch{return {}}};
+  const read = () => {try{const v=JSON.parse(localStorage.getItem('hdbr_order_evidence_v2')||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch{return {}}};
   const save = value => {try{localStorage.setItem('hdbr_order_evidence_v2',JSON.stringify(value))}catch{}};
   const contains = (text, phrase) => phrase && (' '+text+' ').includes(' '+phrase+' ');
+  function expiration(order,readAt=Date.now()) {
+    const explicit=order?.expiration??order?.expiresAt??order?.expireTime;
+    if(explicit!=null&&explicit!=='')return Number.isFinite(date(explicit))?new Date(date(explicit)).toISOString():null;
+    const seconds=order?.expiresIn;
+    return typeof seconds==='number'&&Number.isFinite(seconds)&&seconds>=0&&Number.isFinite(readAt)?new Date(readAt+seconds*1000).toISOString():null;
+  }
   function targetIds(order) {
     return [...new Set((order.tasks||[]).map(t=>{const i=(t.valueTypes||[]).indexOf(12);return i>=0?String(t.values?.[i]??''):''}).filter(v=>v&&v!=='0'))];
   }
@@ -53,6 +59,7 @@ window.HDBROrderState = (() => {
     const history=read();
     let order=live||snapshot?.order||history.order;
     if(!order)return {order:null,state:'pending',snapshot};
+    if(!order.expiration&&!order.expiresAt&&!order.expireTime){const end=expiration(order,options.readAt??now);if(end)order={...order,expiration:end};}
     const id=key(order),same=snapshot?.order&&key(snapshot.order)===id;
     const remembered=history.key===id?history:null;
     let basis=same?snapshot:remembered||{key:id,order,first_seen_at:new Date(now).toISOString()};
@@ -70,5 +77,18 @@ window.HDBROrderState = (() => {
     basis={...basis,key:id,order,state};save(basis);
     return {order,state,snapshot:basis};
   }
-  return {resolve,outcome};
+  async function loadSnapshot() {
+    const cacheKey='hdbr_major_order_snapshot_v1';
+    let cached;try{cached=JSON.parse(localStorage.getItem(cacheKey)||'null')}catch{}
+    if(cached?.data?.order&&Date.now()-cached.time<30000)return cached.data;
+    for(const base of ['https://raw.githubusercontent.com/mannrammstein19/Helldivers-BR/main/dados/major-order.json','dados/major-order.json']) {
+      try {
+        const response=await globalThis.fetch(`${base}?v=${Math.floor(Date.now()/30000)}`,{cache:'no-store',signal:AbortSignal.timeout(6000)});
+        if(!response.ok)continue;const data=await response.json();
+        if(data?.order){try{localStorage.setItem(cacheKey,JSON.stringify({time:Date.now(),data}))}catch{}return data;}
+      }catch{}
+    }
+    return cached?.data||null;
+  }
+  return {resolve,outcome,expiration,loadSnapshot};
 })();

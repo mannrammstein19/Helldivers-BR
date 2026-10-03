@@ -26,3 +26,9 @@
 .presence-labeled{margin:10px 0;background:#101820;border:1px solid #354250;border-radius:12px;padding:10px}
 .presence-labeled .presence-chip{width:auto;height:auto;min-height:32px;padding:6px 8px;white-space:normal}
 .presence-labeled .presence-name{color:var(--presence-color);font:700 11px/1.4 Arial,sans-serif}
+
+/* Nave decorativa somente na presença catalogada da Frota de Invasão. */
+.mapa-presence-ship .presence-ship-hull{animation:presence-ship-hover 4s ease-in-out infinite}
+@keyframes presence-ship-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.presence-stale .presence-ship-hull,#mapa-pan-host.optimized-mode .presence-ship-hull{animation:none}
+@media(prefers-reduced-motion:reduce){.mapa-presence-ship .presence-ship-hull{animation:none}}

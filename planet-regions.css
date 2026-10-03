@@ -53,3 +53,6 @@
 .mapa-immersive .hd-region-banner{opacity:1;filter:none;}
 .mapa-immersive .hd-region-title{color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;}
 .mapa-immersive .hd-region-card>summary::after{text-shadow:0 1px 3px #000;}
+
+/* Cor exclusivamente do dono regional confirmado; tipo e progresso preservados. */
+.hd-region-owner-icon{display:block;flex:none;width:30px;height:30px;background:var(--region-owner-color);mask:var(--region-icon) center/contain no-repeat;-webkit-mask:var(--region-icon) center/contain no-repeat}

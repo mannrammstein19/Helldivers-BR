@@ -1354,3 +1354,7 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-intel-faction-badge span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #mapa-intel-effects{bottom:8px}
 @media(max-width:700px){.mapa-settings{left:8px;bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))}.mapa-telemetry{z-index:8}}
+
+/* Refinamento 16: o aviso fica acima do ícone, dentro da imagem. */
+.intel-effect-label{top:auto;bottom:calc(100% + 7px);max-width:180px;width:max-content;white-space:normal;box-sizing:border-box;pointer-events:none;z-index:20}
+.intel-effect:hover,.intel-effect:focus{z-index:21}

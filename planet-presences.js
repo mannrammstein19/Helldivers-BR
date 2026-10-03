@@ -47,6 +47,11 @@ window.HDBRPresences=(()=>{'use strict';
    const left=x+radius*4.05+i*gap,top=y-radius*3.2;
    layer.appendChild(svg('rect',{x:left-1,y:top-1,width:size+2,height:size+2,rx:2,fill:'#11151b',stroke:e.color,'stroke-width':.6}));
    const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true'});layer.appendChild(image);
+   if(e.key==='fleet'){
+    // Ornamento vetorial: presença confirmada, sem inferir posição/movimento real.
+    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true',transform:`translate(${left+size/2} ${top-4})`});
+    const hull=svg('path',{'class':'presence-ship-hull',d:'M -5 0 L -2 -2 L 3 -1 L 6 0 L 3 1 L -2 2 Z',fill:e.color,stroke:'#e9ddff','stroke-width':.35});ship.appendChild(hull);layer.appendChild(ship);
+   }
   });
   if(values.length>shown.length){const count=svg('text',{x:x+radius*4.05+shown.length*gap+3,y:y-radius*3.2+size,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}
   group.appendChild(layer);

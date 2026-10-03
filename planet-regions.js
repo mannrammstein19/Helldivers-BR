@@ -26,12 +26,13 @@
             const owner = String(r.owner ?? '').trim().toLowerCase();
             const human = ['1', 'human', 'humans'].includes(owner);
             const enemy = ['2', '3', '4', 'terminids', 'automatons', 'illuminate'].includes(owner);
+            const ownerColor = ({'1':'#4da6ff',human:'#4da6ff',humans:'#4da6ff','2':'#ff9900',terminid:'#ff9900',terminids:'#ff9900','3':'#ff4242',automaton:'#ff4242',automatons:'#ff4242','4':'#bf83ff',illuminate:'#bf83ff',illuminates:'#bf83ff'})[owner] || null;
             const validHealth = health !== null && max !== null && max > 0 && health >= 0 && health <= max;
             const completed = human && r.isAvailable === false;
             const state = r.isAvailable === true ? 'active' : completed ? 'controlled' : enemy && r.isAvailable === false ? 'unavailable' : 'unknown';
             // Indisponibilidade sem controle confirmado não prova conquista.
             const percent = state === 'controlled' ? 100 : state === 'active' && enemy && validHealth ? (1 - health / max) * 100 : null;
-            return {readAt: number(r.telemetryReadAtMillis), stale: r.telemetryStale === true, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
+            return {ownerColor, readAt: number(r.telemetryReadAtMillis), stale: r.telemetryStale === true, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
                 players: state === 'active' && players !== null && players >= 0 ? Math.floor(players) : null,
                 status: state === 'controlled' ? 'Limpo / Recuperado' : state === 'active' ? 'Disponível para operações' : state === 'unavailable' ? 'Bloqueado para operações' : 'Aguardando confirmação',
                 note: state === 'controlled' ? 'Controle humano confirmado pela API regional.' : state === 'unavailable' ? 'A região ainda não está disponível para operações.' : state === 'unknown' ? 'A leitura não confirma a disponibilidade ou recuperação.' : ''};
@@ -54,7 +55,7 @@
                 const art = {active:'region_operacao',unavailable:'region_bloqueado',controlled:'region_recuperado'}[r.state];
                 const banner = art && document.body.classList.contains('mapa-immersive') ? `<img class="hd-region-banner" src="${escape(new URL('imagens/regioes/'+art+'.webp',assetBase).href)}" alt="" loading="lazy">` : '';
                 return `<${tag} class="hd-region-card hd-region-${r.state}">${mapMode?'<summary>':''}${banner}<div class="hd-region-title"><strong>${escape(r.name)}</strong><span>${escape(r.status)}</span></div>
-                ${mapMode?'</summary>':''}${r.identity ? `<div class="hd-region-kind"><img src="${escape(r.identity.icon)}" width="30" height="30" alt="" loading="lazy"><span>${escape(r.identity.label)}</span></div>` : ''}
+                ${mapMode?'</summary>':''}${r.identity ? `<div class="hd-region-kind">${r.ownerColor ? `<span class="hd-region-owner-icon" aria-hidden="true" style="--region-owner-color:${r.ownerColor};--region-icon:url('${escape(r.identity.icon)}')"></span>` : `<img src="${escape(r.identity.icon)}" width="30" height="30" alt="" loading="lazy">`}<span>${escape(r.identity.label)}</span></div>` : ''}
                 <div class="hd-region-value"><span>Progresso da região</span><strong>${label}</strong></div>
                 ${pct === null ? (r.note ? '' : '<div class="hd-region-unknown">Aguardando uma leitura válida da região.</div>') : `<div class="hd-region-track" role="progressbar" aria-label="${escape(r.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>`}
                 ${r.note ? `<div class="hd-region-note">${escape(r.note)}</div>` : ''}

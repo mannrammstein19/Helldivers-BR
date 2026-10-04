@@ -31,14 +31,32 @@ window.HDBROrderState = (() => {
     const a=pairs(words),b=pairs(announcement);
     return common.size>=4&&[...a].filter(pair=>b.has(pair)).length>=2;
   }
+  function cycleMatch(order,snapshot,time,timeline,targets) {
+    // O resultado pode sair antes do prazo e não repetir os nomes dos alvos.
+    // Vinculamos o anúncio à abertura da mesma ordem, sem atravessar uma nova.
+    const start=date(snapshot?.first_seen_at),expiry=date(order.expiration??order.expiresAt??order.expireTime);
+    if(!Number.isFinite(start)||!Number.isFinite(expiry)||time>expiry+86400000)return false;
+    const next=/^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL))|NOVO PEDIDO PRINCIPAL)\b/;
+    const opening=timeline.filter(({d,time:t})=>t<=time&&(next.test(norm(d.title))||next.test(norm(d.message)))).sort((a,b)=>b.time-a.time)[0];
+    if(!opening||opening.time>start+300000||time<=opening.time)return false;
+    const d=opening.d,linked=d.assignmentId??d.assignmentID??d.majorOrderId;
+    if(linked!=null)return String(linked)===key(order);
+    const message=[norm(d.title),norm(d.message)].join(' ');
+    if(targets.length)return targets.every(name=>name&&contains(message,name));
+    const words=contextWords([order.title,order.briefing,order.description].map(clean).join(' '));
+    const other=contextWords(message),shared=new Set(other);
+    const pairs=new Set(other.slice(1).map((word,i)=>other[i]+' '+word));
+    return new Set(words.filter(w=>shared.has(w))).size>=4&&words.slice(1).filter((word,i)=>pairs.has(words[i]+' '+word)).length>=2;
+  }
   function outcome(order, snapshot, dispatches, catalog={}, now=Date.now()) {
     const start=date(snapshot?.first_seen_at);
     if(!Number.isFinite(start))return null;
     const ids=targetIds(order);
     const targets=ids.map(id=>norm(catalog[id]?.name||catalog[id]?.names||snapshot?.target_planets?.[id]||''));
-    const candidates=(Array.isArray(dispatches)?dispatches:[]).map(d=>({d,time:date(d.published??d.publishedAt??d.date??d.timestamp)})).filter(x=>Number.isFinite(x.time)&&x.time>=start&&x.time<=now+300000).sort((a,b)=>b.time-a.time);
-    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|ORDEM (?:MAIOR|PRINCIPAL) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b/;
-    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|ORDEM (?:MAIOR|PRINCIPAL) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|DERROTA NA ORDEM MAIOR)\b/;
+    const timeline=(Array.isArray(dispatches)?dispatches:[]).map(d=>({d,time:date(d.published??d.publishedAt??d.date??d.timestamp)})).filter(x=>Number.isFinite(x.time)&&x.time<=now+300000).sort((a,b)=>b.time-a.time);
+    const candidates=timeline.filter(x=>x.time>=start);
+    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b/;
+    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b/;
     for(const {d,time} of candidates){
       const title=norm(d.title),body=norm(d.message),msg=[title,body].filter(Boolean).join(' ');
       const success=win.test(title)||win.test(body),failure=lose.test(title)||lose.test(body);
@@ -50,7 +68,7 @@ window.HDBROrderState = (() => {
       const orderTitle=norm(order.title);
       const specificTitle=orderTitle.split(' ').length>=3&&!['MAJOR ORDER','ORDEM MAIOR','PEDIDO PRINCIPAL'].includes(orderTitle)&&contains(msg,orderTitle);
       const contextual=ids.length===0&&contextualMatch(order,msg,time,candidates);
-      if(!explicit&&!planetMatch&&!(ids.length===0&&specificTitle)&&!contextual)continue;
+      if(!explicit&&!planetMatch&&!(ids.length===0&&specificTitle)&&!contextual&&!cycleMatch(order,snapshot,time,timeline,targets))continue;
       return {state:success?'completed':'failed',outcome_source:'dispatch',outcome_dispatch:{id:d.id??null,published:new Date(time).toISOString(),message:clean(d.message||d.title)},ended_at:new Date(time).toISOString()};
     }
     return null;

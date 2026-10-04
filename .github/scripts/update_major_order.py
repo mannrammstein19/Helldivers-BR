@@ -239,6 +239,31 @@ def contextual_dispatch_match(order, message, time, candidates):
     return len(common) >= 4 and len(pairs) >= 2
 
 
+def cycle_dispatch_match(order, snapshot, time, timeline, names):
+    """Resultado explícito pertence à abertura vinculada; não exige esperar o prazo."""
+    start = parse_date(snapshot.get("first_seen_at"))
+    expiry = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
+    if not start or not expiry or time > expiry + timedelta(hours=24):
+        return False
+    new_order = re.compile(r"^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL))|NOVO PEDIDO PRINCIPAL)\b")
+    openings = [(dt, d) for dt, d in timeline if dt <= time and
+                (new_order.search(normalized(d.get("title"))) or new_order.search(normalized(d.get("message"))))]
+    if not openings:
+        return False
+    dt, opening = max(openings, key=lambda x: x[0])
+    if dt > start + timedelta(minutes=5) or time <= dt:
+        return False
+    linked = opening.get("assignmentId", opening.get("assignmentID", opening.get("majorOrderId")))
+    if linked is not None:
+        return str(linked) == order_key(order)
+    message = f" {normalized(opening.get('title'))} {normalized(opening.get('message'))} "
+    if names:
+        return all(name and f" {name} " in message for name in names)
+    words = context_words(" ".join(clean_text(order.get(k)) for k in ("title", "briefing", "description")))
+    other = context_words(message)
+    return len(set(words) & set(other)) >= 4 and len(set(zip(words, words[1:])) & set(zip(other, other[1:]))) >= 2
+
+
 def dispatch_outcome(dispatches, snapshot, now=None):
     now = now or now_utc()
     start = parse_date(snapshot.get("first_seen_at"))
@@ -247,15 +272,17 @@ def dispatch_outcome(dispatches, snapshot, now=None):
     order = snapshot["order"]
     ids = target_ids(order)
     names = [normalized(snapshot.get("target_planets", {}).get(i, "")) for i in ids]
-    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|ORDEM (?:MAIOR|PRINCIPAL) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
-    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|ORDEM (?:MAIOR|PRINCIPAL) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|DERROTA NA ORDEM MAIOR)\b")
-    candidates = []
+    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
+    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b")
+    candidates, timeline = [], []
     for d in as_list(dispatches):
         if not isinstance(d, dict):
             continue
         dt = published_time(d)
-        if dt and start <= dt <= now + timedelta(minutes=5):
-            candidates.append((dt, d))
+        if dt and dt <= now + timedelta(minutes=5):
+            timeline.append((dt, d))
+            if dt >= start:
+                candidates.append((dt, d))
     for dt, d in sorted(candidates, key=lambda x: x[0], reverse=True):
         title, body = normalized(d.get("title")), normalized(d.get("message"))
         msg = f" {title} {body} "
@@ -271,7 +298,7 @@ def dispatch_outcome(dispatches, snapshot, now=None):
         order_title = normalized(order.get("title"))
         specific = len(order_title.split()) >= 3 and order_title not in {"MAJOR ORDER", "ORDEM MAIOR", "PEDIDO PRINCIPAL"} and f" {order_title} " in msg
         contextual = not ids and contextual_dispatch_match(order, msg, dt, candidates)
-        if not explicit and not planets and not (not ids and specific) and not contextual:
+        if not explicit and not planets and not (not ids and specific) and not contextual and not cycle_dispatch_match(order, snapshot, dt, timeline, names):
             continue
         return {
             "state": "completed" if success else "failed",

@@ -58,5 +58,36 @@ class OrderResultTests(unittest.TestCase):
     def test_expiration_alone_cannot_confirm_failure(self):
         self.assertIsNone(rules.dispatch_outcome([], self.snapshot, self.now))
 
+class DefenseResultTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture = json.loads((Path(__file__).parent / 'fixtures/order-defense-result.json').read_text())
+        self.snapshot = self.fixture['snapshot']
+        self.now = rules.parse_date(self.fixture['now'])
+        self.dispatches = [self.fixture['dispatch'], self.fixture['opening']]
+
+    def test_real_early_victory_without_planet_names(self):
+        self.assertEqual('completed', rules.dispatch_outcome(self.dispatches, self.snapshot, self.now)['state'])
+
+    def test_opening_required_for_early_result(self):
+        self.assertIsNone(rules.dispatch_outcome(self.dispatches[:1], self.snapshot, self.now))
+
+    def test_unrelated_opening(self):
+        self.dispatches[1]['message'] = 'NEW MAJOR ORDER\nDefend unrelated planets.'
+        self.assertIsNone(rules.dispatch_outcome(self.dispatches, self.snapshot, self.now))
+
+    def test_new_opening_even_with_identical_planets(self):
+        self.dispatches.append({**self.fixture['opening'], 'published': '2026-10-04T03:00:00Z'})
+        self.assertIsNone(rules.dispatch_outcome(self.dispatches, self.snapshot, self.now))
+
+    def test_wrong_explicit_result_id(self):
+        self.dispatches[0]['assignmentId'] = 999
+        self.assertIsNone(rules.dispatch_outcome(self.dispatches, self.snapshot, self.now))
+
+    def test_portuguese_results(self):
+        for message, expected in [('GRANDE ORDEM CONQUISTADA', 'completed'), ('ORDEM MAIOR CONQUISTADA', 'completed'), ('FALHA NO PEDIDO PRINCIPAL', 'failed')]:
+            with self.subTest(message=message):
+                self.dispatches[0]['message'] = message
+                self.assertEqual(expected, rules.dispatch_outcome(self.dispatches, self.snapshot, self.now)['state'])
+
 if __name__ == '__main__':
     unittest.main()

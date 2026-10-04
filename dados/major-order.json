@@ -3,8 +3,8 @@
   "state": "active",
   "key": "2991945293",
   "first_seen_at": "2026-10-02T22:21:03.063590Z",
-  "last_seen_at": "2026-10-03T22:13:15.024905Z",
-  "last_progress_update_at": "2026-10-03T22:13:15.024905Z",
+  "last_seen_at": "2026-10-04T00:45:00.294890Z",
+  "last_progress_update_at": "2026-10-04T00:45:00.294890Z",
   "final_percent": 50.0,
   "outcome_source": null,
   "order": {
@@ -58,12 +58,12 @@
         "amount": 30
       }
     ],
-    "expiration": "2026-10-04T19:24:35.3937464Z",
+    "expiration": "2026-10-04T19:24:28.8426376Z",
     "flags": 0
   },
   "target_planets": {
     "173": "GATRIA",
     "245": "WASAT"
   },
-  "last_checked_at": "2026-10-03T22:13:14.689702Z"
+  "last_checked_at": "2026-10-04T00:45:00.053758Z"
 }

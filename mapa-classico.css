@@ -970,8 +970,8 @@ body.tactical-modal-open { overflow:hidden; }
 #mapa-tactical-hud .mapa-optimized-toggle.active{background:#143527;color:#b6efce;border-color:#498967;}
 #mapa-tactical-hud .mapa-optimized-toggle:focus-visible{outline:2px solid #d7d52c;outline-offset:3px;}
 @media(pointer:coarse){#mapa-tactical-hud .mapa-optimized-toggle{min-height:40px;}}
-#mapa-viewport .mapa-sector-border{stroke-width:var(--mapa-border-width,1);}
-#mapa-viewport .mapa-sector-border.sector-enemy{stroke-width:var(--mapa-enemy-border-width,2);}
+#mapa-viewport .mapa-sector-border{stroke-width:var(--mapa-border-width,1.5);}
+#mapa-viewport .mapa-sector-border.sector-enemy{stroke-width:var(--mapa-enemy-border-width,3);}
 /* Evitar transições de opacidade concorrentes durante navegação SVG. */
 #mapa-viewport .mapa-planet-group,#mapa-viewport .mapa-planet-dot,
 #mapa-viewport .mapa-planet-halo,#mapa-viewport .mapa-lines,
@@ -1377,27 +1377,6 @@ html:has(body.mapa-immersive){zoom:1!important;}
 #mapa-pan-host.optimized-mode .mapa-boss-marker,.mapa-boss-marker.presence-stale{animation:none}
 @media(max-width:700px),(pointer:coarse),(prefers-reduced-motion:reduce){.mapa-boss-marker{animation:none}}
 /* Boletim compacto, leitura completa ao tocar; sem mover a cartografia. */
-.mapa-bulletin{position:absolute;top:env(safe-area-inset-top,0px);left:8px;right:8px;z-index:22;background:#101820f5;border:1px solid #36424f;border-radius:6px;color:#dce4ec;font:12px/1.5 Arial,sans-serif}
-.mapa-bulletin>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;padding:3px 8px}.mapa-bulletin>summary::-webkit-details-marker{display:none}
-.mapa-bulletin-tag{color:#ffe800;font-size:10px;font-weight:bold;flex:none}.mapa-bulletin-window{flex:1;min-width:0;overflow:hidden;white-space:nowrap}
-#mapa-bulletin-track{display:inline-block;white-space:nowrap}.mapa-bulletin-item{display:inline-block;padding-right:45px}.mapa-bulletin-item strong{color:#ffe800}
-#mapa-bulletin-track.is-scrolling{animation:mapa-bulletin-scroll var(--bulletin-duration,60s) linear infinite}
-@keyframes mapa-bulletin-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.mapa-bulletin:hover #mapa-bulletin-track,.mapa-bulletin:focus-within #mapa-bulletin-track,.mapa-bulletin[open] #mapa-bulletin-track{animation-play-state:paused}
-#mapa-bulletin-content{max-height:40dvh;overflow:auto;padding:8px 12px;white-space:normal}#mapa-bulletin-content p{border-bottom:1px solid #36424f;margin:0;padding:7px 0}#mapa-bulletin-content strong{color:#ffe800}#mapa-bulletin-content span,#mapa-bulletin-content small{display:block}#mapa-bulletin-content small{color:#92b5d2;font-size:10px}
-.mapa-immersive .mapa-screen-header{top:calc(44px + env(safe-area-inset-top,0px))}.mapa-top-fronts{top:108px}
-@media(max-width:700px){.mapa-immersive .mapa-screen-header{top:calc(36px + env(safe-area-inset-top,0px))}.mapa-top-fronts{top:100px}.mapa-bulletin{font-size:11px}}
-@media(prefers-reduced-motion:reduce){#mapa-bulletin-track.is-scrolling{animation:none}}
-
-/* Boletim: símbolos pequenos, texto legível e original disponível nos detalhes. */
-.mapa-bulletin-faction{width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:7px}
-#mapa-bulletin-content .mapa-bulletin-faction{float:left;margin-top:2px}
-#mapa-bulletin-content details{margin-top:6px;color:#a9bacb;font-size:11px}
-#mapa-bulletin-content details>summary{cursor:pointer}
-
-/* Patch 22: boletim contínuo e cards táticos com imagem e dados separados. */
-.mapa-bulletin-bar{display:flex;align-items:center;gap:9px;padding:4px 9px;cursor:default}
-.mapa-bulletin-tag{letter-spacing:1px;border-right:1px solid #52606c;padding-right:9px}
 .mapa-top-front>summary{background:#0b141c;min-height:0}
 .mapa-top-front>summary::after{display:none}
 .mapa-top-front>summary .mapa-front-content{padding:0;min-height:0;text-shadow:none}
@@ -1430,12 +1409,7 @@ html:has(body.mapa-immersive){zoom:1!important;}
  .front-card-command{font-size:9px;padding:5px 7px}.front-card-name{padding:6px 7px}
  #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) :is(.front-card-command,.front-card-landscape,.front-card-progress,.front-enemy-progress,.front-summary-status,.front-card-rates){display:none}
 }
-@media(prefers-reduced-motion:reduce){
- .mapa-bulletin-window{white-space:normal;max-height:72px;overflow:auto}
- #mapa-bulletin-track{display:block;white-space:normal}
- #mapa-bulletin-track>.mapa-bulletin-item{display:block;padding-right:0}
- #mapa-bulletin-track>span[aria-hidden="true"]{display:none}
-}
+
 @media(min-width:701px) and (max-height:850px){
  .front-card-command{padding:3px 9px;font-size:9px}
  .front-card-name{padding:4px 9px}.front-card-name strong{font-size:20px!important}.front-card-name span{font-size:9px}
@@ -1458,3 +1432,6 @@ html:has(body.mapa-immersive){zoom:1!important;}
  #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) .front-card-name strong{writing-mode:vertical-rl;white-space:nowrap;max-height:120px;overflow:hidden;font-size:12px!important}
  #mapa-top-fronts>.mapa-top-front[open] .front-card-command>span:last-child{display:block}
 }
+
+/* Contornos contínuos; espessura acompanha o zoom sem animação extra. */
+.mapa-sector-border{stroke-dasharray:none}

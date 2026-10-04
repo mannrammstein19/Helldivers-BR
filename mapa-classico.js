@@ -1633,15 +1633,10 @@
                     paint=`url(#${gradientId})`;
                 }
                 territories.appendChild(svgEl('path',{class:'mapa-sector-fill',d:sector.paths.join(' '),fill:paint,'fill-opacity':.20,'data-sector':sector.name}));
-                const hatchId='mapa-sector-hatch-'+enemies[0],defs=$('mapa-svg').querySelector('defs');
-                if(!defs.querySelector('#'+hatchId)){
-                    const pattern=svgEl('pattern',{id:hatchId,width:12,height:12,patternUnits:'userSpaceOnUse',patternTransform:'rotate(28)'});
-                    pattern.appendChild(svgEl('line',{x1:0,y1:0,x2:0,y2:12,stroke:FACTION_COLORS[enemies[0]],'stroke-width':2,'stroke-opacity':.16}));defs.appendChild(pattern);
-                }
-                territories.appendChild(svgEl('path',{class:'mapa-sector-hatch',d:sector.paths.join(' '),fill:`url(#${hatchId})`,'pointer-events':'none','data-sector':sector.name}));
+
             }
             outlines.appendChild(svgEl('path',{
-                class:'mapa-sector-border'+(enemies.length?' sector-enemy':''),'stroke-dasharray':'5 4',
+                class:'mapa-sector-border'+(enemies.length?' sector-enemy':''),
                 d:[...sector.edges.values()].join(' '),
                 style:`--sector-color:${paint}`,
                 'vector-effect':'non-scaling-stroke','data-sector':sector.name
@@ -2211,8 +2206,8 @@
                 }
             }
             // Bordas finas apenas no modo otimizado; compensa a escala CSS.
-            vp.style.setProperty('--mapa-border-width',state.optimized?String(.7/state.scale):String(1/cssScale));
-            vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.1/state.scale):String(2/cssScale));
+            vp.style.setProperty('--mapa-border-width',state.optimized?String(1/state.scale):String(1.5/cssScale));
+            vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.5/state.scale):String(3/cssScale));
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
             if(!state.activePointers.size && !state.zoomBusy && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
@@ -2489,7 +2484,6 @@
             // A leitura DSS pode terminar antes da primeira lista de planetas.
             dssState=window.HDBRMapDSS?.resolve(lastDSSData,allPlanets,window.HDBRWarData?.meta(`${V2}/space-stations`),window.HDBRWarData?.meta(`${V1}/planets`));
             dssHostIndex=dssState?.hostIndex??null;
-            window.HDBRMapBulletin?.render(orderDispatches,allPlanets,window.HDBRWarData.meta(`${V1}/dispatches`),window.HDBRWarData.meta(`${V1}/planets`),{activeIndexes:[...campaignIndexes],metrics:p=>frontMetrics(p),dss:dssState});
             const renderStamp = JSON.stringify(['planets','campaigns','assignments','dispatches'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0,dssState?.hostIndex,dssState?.status,dssState?.stale));
             if (lastTelemetryRender === renderStamp && nodeByIndex.size) {
                 if(majorOrderData)renderMajorOrder(majorOrderData);

@@ -1388,3 +1388,9 @@ html:has(body.mapa-immersive){zoom:1!important;}
 .mapa-immersive .mapa-screen-header{top:calc(44px + env(safe-area-inset-top,0px))}.mapa-top-fronts{top:108px}
 @media(max-width:700px){.mapa-immersive .mapa-screen-header{top:calc(36px + env(safe-area-inset-top,0px))}.mapa-top-fronts{top:100px}.mapa-bulletin{font-size:11px}}
 @media(prefers-reduced-motion:reduce){#mapa-bulletin-track.is-scrolling{animation:none}}
+
+/* Boletim: símbolos pequenos, texto legível e original disponível nos detalhes. */
+.mapa-bulletin-faction{width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:7px}
+#mapa-bulletin-content .mapa-bulletin-faction{float:left;margin-top:2px}
+#mapa-bulletin-content details{margin-top:6px;color:#a9bacb;font-size:11px}
+#mapa-bulletin-content details>summary{cursor:pointer}

@@ -628,7 +628,7 @@
         if(specialLocation(p))return [];
         const owner=factionKey(p.currentOwner||p.owner);
         if(p.event)return [{key:'defense',value:campaignProgress(p),color:SUPER_EARTH_PROGRESS_COLOR,label:'Defesa Helldivers'}, {key:'enemy',value:invasionProgress(p),color:factionColor(p.event.faction),label:'Invasão inimiga'}];
-        if(offensive){const progress=liberationProgress(p);return [{key:'offense',value:progress,color:SUPER_EARTH_PROGRESS_COLOR,label:'Libertação Helldivers'}, {key:'control',value:progress==null?null:100-progress,color:factionColor(p.currentOwner||p.owner),label:'Resistência inimiga restante'}];}
+        if(offensive&&hasVisibleLiberation(p)){const progress=liberationProgress(p);return [{key:'offense',value:progress,color:SUPER_EARTH_PROGRESS_COLOR,label:'Libertação Helldivers'}, {key:'control',value:progress==null?null:100-progress,color:factionColor(p.currentOwner||p.owner),label:'Resistência inimiga restante'}];}
         return owner==='unknown'?[]:[{key:'owner',value:100,color:owner==='human'?SUPER_EARTH_PROGRESS_COLOR:factionColor(p.currentOwner||p.owner),label:'Controle '+factionName(p.currentOwner||p.owner)}];
     }
     function drawPlanetProgressRings(group,p,x,y,baseRadius,offensive=false) {
@@ -682,6 +682,12 @@
         const health=Number(p?.health),max=Number(p?.maxHealth);
         if(!Number.isFinite(health)||!Number.isFinite(max)||max<=0||health<0||health>max) return null;
         return (1-health/max)*100;
+    }
+
+    // Limiar apenas visual: preserva campanhas, dados e interações abaixo dele.
+    function hasVisibleLiberation(p) {
+        const progress=liberationProgress(p);
+        return Number.isFinite(progress)&&progress>=.5-1e-9;
     }
 
     function isOffensiveCampaignPlanet(p) {
@@ -1295,21 +1301,21 @@
 
     function appendCampaignIndicators(group,p,x,y,r,offensive=false) {
         const underAttack=!!p.event;
-        if(!underAttack&&!offensive)return;
+        if(!underAttack&&(!offensive||!hasVisibleLiberation(p)))return;
         // Defesa às 8h; atacante às 10h. Etiquetas fora dos anéis.
         const rows=underAttack?[
-            {kind:'defense',dy:2.1,icon:'imagens/ui/icons/defesa.png',value:campaignProgress(p),color:'#4da6ff',name:'Defesa'},
-            {kind:'enemy',dy:-2.1,faction:factionKey(p.event.faction),value:invasionProgress(p),color:factionColor(p.event.faction),name:'Invasão inimiga'}
-        ]:[{kind:'liberation',dy:-4.1,icon:'imagens/ui/icons/libertacao-v2.png',value:liberationProgress(p),color:FACTION_COLORS.human,name:'Libertação'}];
+            {kind:'defense',dy:1.75,icon:'imagens/ui/icons/defesa.png',value:campaignProgress(p),color:'#4da6ff',name:'Defesa'},
+            {kind:'enemy',dy:-1.75,faction:factionKey(p.event.faction),value:invasionProgress(p),color:factionColor(p.event.faction),name:'Invasão inimiga'}
+        ]:[{kind:'liberation',dy:-1.75,icon:'imagens/ui/icons/libertacao-v2.png',value:liberationProgress(p),color:SUPER_EARTH_PROGRESS_COLOR,name:'Libertação'}];
         rows.forEach(row=>{
-            const cx=x-r*3.7,cy=y+r*row.dy;
+            const cx=x-r*3.3,cy=y+r*row.dy;
             if(row.icon)group.appendChild(svgEl('image',{class:'mapa-event-icon',href:row.icon,x:cx-r*.8,y:cy-r*.8,width:r*1.6,height:r*1.6,preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':row.name}));
             else if(row.faction!=='human'&&row.faction!=='unknown'){
                 const badge=svgEl('g',{class:'mapa-attacker-badge','aria-label':'Atacante: '+factionName(p.event.faction)});
                 badge.appendChild(svgEl('circle',{cx,cy,r:r*.85,fill:'#090d12',stroke:row.color,'stroke-width':.6}));
                 badge.appendChild(svgEl('use',{href:'#faction-icon-'+row.faction,x:cx-r*.7,y:cy-r*.7,width:r*1.4,height:r*1.4}));group.appendChild(badge);
             }
-            if(Number.isFinite(row.value)&&row.value>=.5){
+            if(Number.isFinite(row.value)&&row.value>=.5-1e-9){
                 const label=svgEl('text',{class:'mapa-event-label','data-indicator':row.kind,x:cx-r*1.2,y:cy+r*.35,'text-anchor':'end',fill:row.color,'aria-label':row.name+': '+formatPercentDetailed(row.value)});
                 label.textContent=formatPercentDetailed(row.value);group.appendChild(label);
             }
@@ -1319,7 +1325,7 @@
     function appendOwnerBadge(group,p,x,y,radius,offensive=false) {
         const owner=factionKey(p.currentOwner||p.owner);
         if(specialLocation(p)||p.event||owner==='human'||owner==='unknown')return;
-        const size=radius*1.8,top=y-radius*(offensive?5.7:3.3);
+        const size=radius*1.8,top=y-radius*(offensive&&hasVisibleLiberation(p)?4.85:3.25);
         const badge=svgEl('g',{class:'mapa-owner-badge',role:'img','aria-label':'Controle: '+factionName(p.currentOwner||p.owner)});
         badge.appendChild(svgEl('use',{href:'#faction-icon-'+owner,x:x-size/2,y:top,width:size,height:size,fill:factionColor(p.currentOwner||p.owner),'pointer-events':'none'}));
         group.appendChild(badge);
@@ -1952,6 +1958,7 @@
             const accent = factionColor(owner);
             const underAttack = !special && !!raw.event;
             const offensive = !special && !underAttack && campaignIndexes.has(String(raw.index)) && fKey!=='human' && fKey!=='unknown';
+            const expanded=underAttack||(offensive&&hasVisibleLiberation(raw));
             const progress = underAttack ? campaignProgress(raw) : (offensive ? liberationProgress(raw) : null);
             const displayName = planetName(raw);
             const sectorName = clean(raw.sector) || 'Setor desconhecido';
@@ -1973,8 +1980,10 @@
             const bosses=MAP_BOSS_MARKERS[clean(raw.name).toLowerCase()] || [];
             bosses.forEach((boss,index)=>{
                 const size=baseRadius*2.5;
-                const marker=svgEl('image',{class:'mapa-boss-marker'+(window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale?' presence-stale':''),href:'imagens/guerra/modelos/'+boss.file,
-                    x:x+baseRadius*(3.4+index*.7),y:y+baseRadius*(-4.5+index*3),width:size,height:size,
+                const bx=x+baseRadius*3.05,by=y+baseRadius*(-3.3+index*3);
+                group.appendChild(svgEl('line',{class:'mapa-boss-anchor',x1:x+baseRadius*1.4,y1:y,x2:bx,y2:by+size/2,stroke:accent,'stroke-width':baseRadius*.08,'pointer-events':'none','aria-hidden':'true'}));
+                const marker=svgEl('image',{class:'mapa-boss-marker' +(window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale?' presence-stale':''),href:'imagens/guerra/modelos/'+boss.file,
+                    x:bx,y:by,width:size,height:size,
                     preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':boss.name+' — marcação editorial'});
                 const title=svgEl('title');title.textContent=boss.name+' · Marcação do portal, não confirmação ao vivo da API';
                 marker.appendChild(title);group.appendChild(marker);
@@ -1994,7 +2003,7 @@
             }));
 
             const halo = svgEl('circle', {
-                class:'mapa-planet-halo', cx:x, cy:y, r:baseRadius * ((underAttack || offensive) ? 2.7 : 2.1),
+                class:'mapa-planet-halo', cx:x, cy:y, r:baseRadius * (expanded ? 2.7 : 2.1),
                 fill:accent
             });
             group.appendChild(halo);
@@ -2004,7 +2013,7 @@
             drawPlanetProgressRings(group,raw,x,y,baseRadius,offensive);
             const circle = svgEl('circle', {
                 class:'mapa-planet-dot', cx:x, cy:y,
-                r:(underAttack || offensive) ? baseRadius * 1.38 : baseRadius,
+                r:expanded ? baseRadius * 1.38 : baseRadius,
                 fill:capital ? 'url(#planet-grad-human)' : fKey === 'human' ? '#5089a2' : (fKey === 'unknown' ? '#6b7280' : `url(#planet-grad-${fKey})`)
             });
             const title = svgEl('title', {});
@@ -2014,13 +2023,13 @@
 
             // Símbolo do proprietário dentro da bolinha. O anel externo continua
             // mostrando o atacante quando houver defesa/invasão.
-            const iconSize = baseRadius * (fKey==='human' ? ((underAttack || offensive) ? 2.76 : 2) : ((underAttack || offensive) ? 2.05 : 1.55));
+            const iconSize = baseRadius * (fKey==='human' ? (expanded ? 2.76 : 2) : (expanded ? 2.05 : 1.55));
             const symbol = svgEl('use', {
                 class:'mapa-planet-faction-icon',href:`#faction-icon-${fKey === 'unknown' ? 'human' : fKey}`,
                 x:x-iconSize/2,y:y-iconSize/2,width:iconSize,height:iconSize,'aria-hidden':'true'
             });
             group.appendChild(symbol);
-            const artwork=appendPlanetArtwork(group,raw,x,y,(underAttack||offensive)?baseRadius*1.38:baseRadius,symbol);
+            const artwork=appendPlanetArtwork(group,raw,x,y,expanded?baseRadius*1.38:baseRadius,symbol);
             appendOwnerBadge(group,raw,x,y,baseRadius,offensive);
             if(!special)window.HDBRPresences?.mapBadges(group,raw,x,y,baseRadius,svgEl);
             if(special) {

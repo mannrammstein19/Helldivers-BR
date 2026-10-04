@@ -41,27 +41,28 @@ window.HDBRPresences=(()=>{'use strict';
  function mapBadges(group,p,x,y,radius,svg){
   const values=list(p);if(!values.length)return;
   const stale=window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale;
-  const layer=svg('g',{'class':'mapa-presences'+(stale?' presence-stale':''),'pointer-events':'none'}),title=svg('title',{});title.textContent=values.map(e=>e.name).join(' · ');layer.appendChild(title);
+  const layer=svg('g',{'class':'mapa-presences'+(stale?' presence-stale':''),'pointer-events':'none','data-planet-index':String(p.index),'aria-label':(p.name||'Planeta')+': '+values.map(e=>e.name).join(' · ')}),title=svg('title',{});title.textContent=(p.name||'Planeta')+' [índice '+p.index+']: '+values.map(e=>e.name).join(' · ');layer.appendChild(title);
   const shown=values.slice(0,3),size=Math.max(7,Math.min(11,radius*1.5)),gap=size+3;
   const drawnModels=new Set();
   shown.forEach((e,i)=>{
-   const left=x+radius*4.05+i*gap,top=y-radius*3.2;
+   const left=x+radius*3.05,top=y-radius*.7+i*size*2.65;
+   layer.appendChild(svg('line',{'class':'mapa-presence-anchor',x1:x+radius*1.4,y1:y,x2:left-1,y2:top+size/2,stroke:e.color,'stroke-width':.3,'stroke-opacity':.5}));
    layer.appendChild(svg('rect',{x:left-1,y:top-1,width:size+2,height:size+2,rx:2,fill:'#11151b',stroke:e.color,'stroke-width':.6}));
-   const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true'});layer.appendChild(image);
+   const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true','data-presence-key':e.key});layer.appendChild(image);
    // Arte decorativa vinculada à presença; não representa localização de nave real.
    const model=({fleet:'nave-frota-iluminada',appropriators:'nave-apropriadores',masses:'nave-iluminada',snatchers:'nave-raptores'})[e.key]||(['fire','jet','cyborg'].includes(e.key)?'nave-automata':null);
    if(model&&!drawnModels.has(model)){
     drawnModels.add(model);
-    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true','data-model':model});
+    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true','data-model':model,'data-planet-index':String(p.index)});
     // Três sprites são composição decorativa, não contagem real informada pela API.
     const small=e.key==='masses'||e.key==='snatchers';
-    const formation=small?[[.02,-1.15],[.57,-1.15],[.30,-.74]]:[[0,-1.6]];
-    formation.forEach(([dx,dy])=>ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left+size*dx,y:top+size*dy,width:size*(small?.52:e.faction==='illuminate'?1:1.1),height:size*(small?.36:1.4),preserveAspectRatio:'xMidYMid meet'})));
+    const formation=small?[[.02,-1.15],[.57,-1.15],[.30,-.74]]:[[0,e.faction==='illuminate'?-1.6:-1.1]];
+    formation.forEach(([dx,dy])=>ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left+size*dx,y:top+size*dy,width:size*(small?.52:e.faction==='illuminate'?1:1.65),height:size*(small?.36:1.4),preserveAspectRatio:'xMidYMid meet'})));
 
     layer.appendChild(ship);
    }
   });
-  if(values.length>shown.length){const count=svg('text',{x:x+radius*4.05+shown.length*gap+3,y:y-radius*3.2+size,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}
+  if(values.length>shown.length){const count=svg('text',{x:x+radius*3.05,y:y-radius*.7+shown.length*size*2.65,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}
   group.appendChild(layer);
  }
  return {list,render,vitrine,mapBadges,catalog};

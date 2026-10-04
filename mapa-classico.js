@@ -1293,6 +1293,29 @@
         return `url(#${id})`;
     }
 
+    function appendCampaignIndicators(group,p,x,y,r,offensive=false) {
+        const underAttack=!!p.event;
+        if(!underAttack&&!offensive)return;
+        // Defesa às 8h; atacante às 10h. Etiquetas fora dos anéis.
+        const rows=underAttack?[
+            {kind:'defense',dy:2.1,icon:'imagens/ui/icons/defesa.png',value:campaignProgress(p),color:'#4da6ff',name:'Defesa'},
+            {kind:'enemy',dy:-2.1,faction:factionKey(p.event.faction),value:invasionProgress(p),color:factionColor(p.event.faction),name:'Invasão inimiga'}
+        ]:[{kind:'liberation',dy:-4.1,icon:'imagens/ui/icons/libertacao-v2.png',value:liberationProgress(p),color:FACTION_COLORS.human,name:'Libertação'}];
+        rows.forEach(row=>{
+            const cx=x-r*3.7,cy=y+r*row.dy;
+            if(row.icon)group.appendChild(svgEl('image',{class:'mapa-event-icon',href:row.icon,x:cx-r*.8,y:cy-r*.8,width:r*1.6,height:r*1.6,preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':row.name}));
+            else if(row.faction!=='human'&&row.faction!=='unknown'){
+                const badge=svgEl('g',{class:'mapa-attacker-badge','aria-label':'Atacante: '+factionName(p.event.faction)});
+                badge.appendChild(svgEl('circle',{cx,cy,r:r*.85,fill:'#090d12',stroke:row.color,'stroke-width':.6}));
+                badge.appendChild(svgEl('use',{href:'#faction-icon-'+row.faction,x:cx-r*.7,y:cy-r*.7,width:r*1.4,height:r*1.4}));group.appendChild(badge);
+            }
+            if(Number.isFinite(row.value)&&row.value>=.5){
+                const label=svgEl('text',{class:'mapa-event-label','data-indicator':row.kind,x:cx-r*1.2,y:cy+r*.35,'text-anchor':'end',fill:row.color,'aria-label':row.name+': '+formatPercentDetailed(row.value)});
+                label.textContent=formatPercentDetailed(row.value);group.appendChild(label);
+            }
+        });
+    }
+
     function appendOwnerBadge(group,p,x,y,radius,offensive=false) {
         const owner=factionKey(p.currentOwner||p.owner);
         if(specialLocation(p)||p.event||owner==='human'||owner==='unknown')return;
@@ -2043,36 +2066,7 @@
             playerLabel.textContent = `${formatCompactNumber(players)} HD`;
             group.appendChild(playerLabel);
 
-            if(underAttack || offensive) {
-                const status=underAttack?'Defesa':'Libertação';
-                const icon=svgEl('image',{class:'mapa-event-icon',href:'imagens/ui/icons/'+(underAttack?'defesa.png':'libertacao-v2.png'),
-                    x:x-baseRadius*4.2,y:y-baseRadius*(underAttack?3.75:5),width:baseRadius*2.2,height:baseRadius*2.2,
-                    preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':status});
-                const title=svgEl('title');title.textContent=status;icon.appendChild(title);group.appendChild(icon);
-            }
-            if (underAttack) {
-                const attacker=factionKey(raw.event?.faction);
-                if(attacker!=='human'&&attacker!=='unknown') {
-                    const badge=svgEl('g',{class:'mapa-attacker-badge','aria-label':`Atacante: ${factionName(raw.event.faction)}`});
-                    badge.appendChild(svgEl('circle',{cx:x+baseRadius*2.65,cy:y-baseRadius*2.65,r:baseRadius*1.05,fill:'#090d12',stroke:factionColor(raw.event.faction),'stroke-width':.6}));
-                    badge.appendChild(svgEl('use',{href:`#faction-icon-${attacker}`,x:x+baseRadius*1.75,y:y-baseRadius*3.55,width:baseRadius*1.8,height:baseRadius*1.8}));
-                    const title=svgEl('title');title.textContent='Atacante: '+factionName(raw.event.faction);badge.appendChild(title);group.appendChild(badge);
-                }
-                const eventLabel = svgEl('text', { class:'mapa-event-label', x:x-baseRadius*3.1, y:y-baseRadius*4.15, 'text-anchor':'middle', fill:factionColor(raw.event?.faction || owner) });
-                eventLabel.textContent = formatPercentDetailed(progress);
-                eventLabel.setAttribute('fill','#4da6ff');
-                eventLabel.setAttribute('aria-label','Defesa: '+formatPercentDetailed(progress));
-                group.appendChild(eventLabel);
-                const enemyLabel=svgEl('text',{class:'mapa-event-label',x:x+baseRadius*2.65,y:y-baseRadius*4.15,'text-anchor':'middle',fill:factionColor(raw.event.faction)});
-                enemyLabel.textContent=formatPercentDetailed(invasionProgress(raw));
-                enemyLabel.setAttribute('aria-label','Invasão inimiga: '+enemyLabel.textContent);
-                group.appendChild(enemyLabel);
-            } else if(offensive) {
-                const eventLabel=svgEl('text',{class:'mapa-event-label',x,y:y-baseRadius*3.45,'text-anchor':'middle',fill:FACTION_COLORS.human});
-                eventLabel.textContent=formatPercentDetailed(progress);
-                eventLabel.setAttribute('aria-label','Libertação: '+formatPercentDetailed(progress));
-                group.appendChild(eventLabel);
-            }
+            appendCampaignIndicators(group,raw,x,y,baseRadius,offensive);
 
             group.onkeydown = event => {
                 if(event.key==='Enter'||event.key===' ') {
@@ -2480,6 +2474,7 @@
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
             if(dispatchResult.status==='fulfilled') orderDispatches=dispatchResult.value;
+            window.HDBRMapBulletin?.render(orderDispatches,allPlanets,window.HDBRWarData.meta(`${V1}/dispatches`),window.HDBRWarData.meta(`${V1}/planets`));
             if(snapshotResult.status==='fulfilled'&&snapshotResult.value) orderSnapshot=snapshotResult.value;
 
             await dssTask;

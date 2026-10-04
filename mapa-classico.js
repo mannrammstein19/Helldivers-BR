@@ -1778,8 +1778,8 @@
     // Marcações editoriais, independentes dos efeitos ao vivo da API.
     const MAP_BOSS_MARKERS = {
         omicron: [
-            {name:'Hive Lord',file:'hive-lord.svg'},
-            {name:'Draco Barata',file:'draco-barata.svg'}
+            {name:'Hive Lord',file:'hive-lord.webp'},
+            {name:'Draco Barata',file:'draco-barata.webp'}
         ]
     };
     function drawOuterFactionNames(viewport, defs) {
@@ -1950,7 +1950,7 @@
             const bosses=MAP_BOSS_MARKERS[clean(raw.name).toLowerCase()] || [];
             bosses.forEach((boss,index)=>{
                 const size=baseRadius*2.5;
-                const marker=svgEl('image',{class:'mapa-boss-marker',href:'imagens/ui/icons/'+boss.file,
+                const marker=svgEl('image',{class:'mapa-boss-marker'+(window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale?' presence-stale':''),href:'imagens/guerra/modelos/'+boss.file,
                     x:x+baseRadius*(3.4+index*.7),y:y+baseRadius*(-4.5+index*3),width:size,height:size,
                     preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':boss.name+' — marcação editorial'});
                 const title=svgEl('title');title.textContent=boss.name+' · Marcação do portal, não confirmação ao vivo da API';

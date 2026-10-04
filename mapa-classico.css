@@ -1370,3 +1370,9 @@ html:has(body.mapa-immersive){zoom:1!important;}
 }
 @keyframes mapa-mobile-invasion-alert{0%,100%{opacity:.12}50%{opacity:.45}}
 @media(prefers-reduced-motion:reduce){.mapa-invasion-pulse{animation:none!important}}
+
+/* Modelos decorativos: movimentos suaves, sem filtros de brilho custosos. */
+.mapa-boss-marker{animation:mapa-model-breathe 6s ease-in-out infinite;pointer-events:none}
+@keyframes mapa-model-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+#mapa-pan-host.optimized-mode .mapa-boss-marker,.mapa-boss-marker.presence-stale{animation:none}
+@media(max-width:700px),(pointer:coarse),(prefers-reduced-motion:reduce){.mapa-boss-marker{animation:none}}

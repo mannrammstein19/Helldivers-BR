@@ -43,14 +43,18 @@ window.HDBRPresences=(()=>{'use strict';
   const stale=window.HDBRWarData?.meta('https://api.helldivers2.dev/api/v1/planets')?.stale;
   const layer=svg('g',{'class':'mapa-presences'+(stale?' presence-stale':''),'pointer-events':'none'}),title=svg('title',{});title.textContent=values.map(e=>e.name).join(' · ');layer.appendChild(title);
   const shown=values.slice(0,3),size=Math.max(7,Math.min(11,radius*1.5)),gap=size+3;
+  const drawnModels=new Set();
   shown.forEach((e,i)=>{
    const left=x+radius*4.05+i*gap,top=y-radius*3.2;
    layer.appendChild(svg('rect',{x:left-1,y:top-1,width:size+2,height:size+2,rx:2,fill:'#11151b',stroke:e.color,'stroke-width':.6}));
    const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true'});layer.appendChild(image);
-   if(e.key==='fleet'){
-    // Ornamento vetorial: presença confirmada, sem inferir posição/movimento real.
-    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true',transform:`translate(${left+size/2} ${top-4})`});
-    const hull=svg('path',{'class':'presence-ship-hull',d:'M -5 0 L -2 -2 L 3 -1 L 6 0 L 3 1 L -2 2 Z',fill:e.color,stroke:'#e9ddff','stroke-width':.35});ship.appendChild(hull);layer.appendChild(ship);
+   // Arte decorativa vinculada à presença; não representa localização de nave real.
+   const model=e.key==='fleet'?'nave-iluminada':['fire','jet','cyborg'].includes(e.key)?'nave-automata':null;
+   if(model&&!drawnModels.has(model)){
+    drawnModels.add(model);
+    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true'});
+    ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left-2,y:top-size*1.35,width:size*2.2,height:size*1.1,preserveAspectRatio:'xMidYMid meet'}));
+    layer.appendChild(ship);
    }
   });
   if(values.length>shown.length){const count=svg('text',{x:x+radius*4.05+shown.length*gap+3,y:y-radius*3.2+size,fill:'#fff','font-size':7});count.textContent='+'+(values.length-shown.length);layer.appendChild(count);}

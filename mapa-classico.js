@@ -603,6 +603,8 @@
     let allPlanets = [];               // lista crua vinda da API
     const nodeByIndex = new Map();     // index -> { data, circle, ring, group }
     let dssHostIndex = null;
+    let dssState=null;
+    let lastDSSData=null;
     let activeFaction = 'all';
     let searchQuery = '';
     let selectedIndex = null;
@@ -1061,8 +1063,10 @@
             const kind=window.HDBRCampaignMetrics?.classify(p,c)||{label:defending?'Defesa':'Libertação',symbol:''};
             const m=window.HDBRCampaignMetrics?frontMetrics(p):{progress:warProgress(p),rate:null,enemyProgress:invasionProgress(p),enemyRate:null,source:'Aguardando nova leitura'};
             const enemy=p.event?.faction||p.currentOwner,color=factionColor(enemy);
+            const total=allPlanets.reduce((sum,q)=>sum+Math.max(0,Number(q.statistics?.playerCount)||0),0);
+            const share=total>0?(Math.max(0,Number(p.statistics?.playerCount)||0)/total*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'% do efetivo':'Efetivo no planeta';
             const deadline=m.remainingHours!=null?durationLabel(m.remainingHours):'Prazo indisponível';
-            const eta=m.etaHours!=null?durationLabel(m.etaHours):m.rate==null?'Coletando ritmo':m.rate===0?'Impasse':rate<0?'Recuo':'Concluído';
+            const eta=m.etaHours!=null?durationLabel(m.etaHours):m.rate==null?'Coletando ritmo':m.rate===0?'Impasse':m.rate<0?'Recuo':'Sem prazo confiável';
             const status=defending&&m.progress!=null&&m.enemyProgress!=null?(m.progress>m.enemyProgress?'Vencendo':'Perdendo'):m.rate==null?'Coletando':m.rate>0?'Avançando':m.rate<0?'Recuando':'Estável';
             const bar=(label,value,fill)=>`<div class="mapa-front-bar"><span>${escapeHTML(label)}<b>${formatPercentDetailed(value)}</b></span><div><i style="width:${value==null?0:Math.max(0,Math.min(100,value))}%;background:${fill}"></i></div></div>`;
             const metric=(label,value,note,cls='')=>`<div class="${cls}"><small>${label}</small><strong>${value}</strong><span>${escapeHTML(note)}</span></div>`;
@@ -1071,7 +1075,7 @@
             const presence=window.HDBRPresences?.render(p,reading)||'';
             const vitrine=window.HDBRPresences?.vitrine(m.progress!=null&&m.enemyProgress!=null&&defending?(m.progress>m.enemyProgress?'GANHANDO':m.progress<m.enemyProgress?'PERDENDO':'EQUILIBRADO'):'',p,reading)||'';
             const weather=planetEffects(p).map(h=>`<span class="front-weather-icon${h.possible?' effect-possible':''}" title="${escapeHTML(h.name)}${h.possible?' · possível no planeta':''}" aria-label="${escapeHTML(h.name)}" tabindex="0">${hazardIconHTML(h)}</span>`).join('');
-            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><div class="mapa-front-content"><strong>${escapeHTML(planetName(p))}</strong><small>${escapeHTML(kind.label)} <b>${formatPercentDetailed(m.progress)}</b></small>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}${defending?`<span class="front-invasion-mini" style="color:${color}">Inimigo ${formatPercentDetailed(m.enemyProgress)}</span>`:''}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(defending?deadline:eta)}</span></span><div class="front-summary-status">${vitrine}</div><div class="front-summary-conditions"><span class="front-weather">${weather}</span>${presence}</div></div></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${vitrine||escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><div class="mapa-front-visual"><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async"><div class="front-visual-conditions"><span class="front-weather">${weather}</span>${presence}</div></div>${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'RITMO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
+            return `<details class="mapa-top-front" data-planet-index="${Number(p.index)}" ${expandedFronts.has(String(p.index))?'open':''} style="--accent:${color};--planet-name-color:${factionColor(p.currentOwner||p.owner)}"><summary><div class="mapa-front-content"><div class="front-card-command"><span>${escapeHTML(kind.label)}</span><span>${defending?'Prazo':'Estimativa'} · ${escapeHTML(defending?deadline:eta)}</span></div><div class="front-card-name"><img src="${escapeHTML(factionIconUrl(enemy))}" alt="${escapeHTML(factionName(enemy))}"><div><strong>${escapeHTML(planetName(p))}</strong><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span></div></div><div class="front-card-landscape"><img class="mapa-front-background" src="${escapeHTML(planetImageUrl(p))}" alt="" decoding="async"><span class="front-card-alert">${defending?'INCURSÃO DETECTADA':'CAMPANHA DE LIBERTAÇÃO'}</span><div class="front-summary-conditions"><span class="front-weather">${weather}</span>${presence}</div></div><div class="front-card-progress"><span>${defending?'Defesa':'Libertação'}</span><b>${formatPercentDetailed(m.progress)}</b></div>${m.progress==null?'':`<span class="mapa-front-track"><i style="width:${Math.max(0,Math.min(100,m.progress))}%"></i></span>`}${defending?`<div class="front-enemy-progress"><span>Inimigo</span><b>${formatPercentDetailed(m.enemyProgress)}</b><i style="width:${m.enemyProgress==null?0:Math.max(0,Math.min(100,m.enemyProgress))}%;background:${color}"></i></div>`:''}<span class="mapa-front-meta"><span><img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">${Number(p.statistics?.playerCount||0).toLocaleString('pt-BR')} Helldivers</span><span>${escapeHTML(share)}</span></span><div class="front-summary-status">${vitrine||escapeHTML(status)}</div><div class="front-card-rates"><span>Ritmo <b>${formatFrontRate(m.rate)}</b></span><span>${defending?'Pressão':'Regeneração'} <b>${formatFrontRate(pressure)}</b></span></div></div></summary><div class="mapa-front-expanded"><div class="mapa-front-strip"><span>${escapeHTML(kind.label)}</span><b>${vitrine||escapeHTML(status)}</b></div><div class="mapa-front-facts"><span>${escapeHTML(clean(p.sector)||'Setor não informado')}</span><span>${escapeHTML(factionName(enemy))}</span></div><div class="mapa-front-visual"><img class="mapa-front-landscape" src="${escapeHTML(planetImageUrl(p))}" alt="" loading="lazy" decoding="async"><div class="front-visual-conditions"><span class="front-weather">${weather}</span>${presence}</div></div>${bar(defending?'Defesa Helldivers':kind.label==='Libertação'?'Libertação':'Progresso observado',m.progress,'#4da6ff')}${defending?bar('Invasão '+factionName(enemy),m.enemyProgress,color):''}<div class="mapa-front-metrics">${metric('HELLDIVERS OPERANDO','<img class="mapa-front-helmet" src="imagens/ui/icons/helldiver.png" alt="">'+Number(p.statistics?.playerCount||0).toLocaleString('pt-BR'),'No planeta')}${metric(defending?'AVANÇO DA DEFESA / HORA':'RITMO / HORA',formatFrontRate(m.rate),m.source,'front-human-metric')}${metric('PRESSÃO '+escapeHTML(factionName(enemy)),formatFrontRate(pressure),defending?'Relógio da invasão':'Regeneração planetária','front-enemy-metric')}${metric(defending?'TEMPO DA DEFESA':'VITÓRIA ESTIMADA',escapeHTML(eta),defending?'Prazo inimigo: '+deadline:'Projeção no ritmo atual')}</div><button type="button" class="mapa-front-regions" data-front-regions="${Number(p.index)}">Ver regiões · ${Array.isArray(p.regions)?p.regions.length:0} ↗</button><button type="button" class="mapa-front-dossier" data-front-dossier="${Number(p.index)}">Abrir dossiê tático ↗</button></div></details>`;
 
     }
     function renderTopFronts() {
@@ -1629,9 +1633,15 @@
                     paint=`url(#${gradientId})`;
                 }
                 territories.appendChild(svgEl('path',{class:'mapa-sector-fill',d:sector.paths.join(' '),fill:paint,'fill-opacity':.20,'data-sector':sector.name}));
+                const hatchId='mapa-sector-hatch-'+enemies[0],defs=$('mapa-svg').querySelector('defs');
+                if(!defs.querySelector('#'+hatchId)){
+                    const pattern=svgEl('pattern',{id:hatchId,width:12,height:12,patternUnits:'userSpaceOnUse',patternTransform:'rotate(28)'});
+                    pattern.appendChild(svgEl('line',{x1:0,y1:0,x2:0,y2:12,stroke:FACTION_COLORS[enemies[0]],'stroke-width':2,'stroke-opacity':.16}));defs.appendChild(pattern);
+                }
+                territories.appendChild(svgEl('path',{class:'mapa-sector-hatch',d:sector.paths.join(' '),fill:`url(#${hatchId})`,'pointer-events':'none','data-sector':sector.name}));
             }
             outlines.appendChild(svgEl('path',{
-                class:'mapa-sector-border'+(enemies.length?' sector-enemy':''),
+                class:'mapa-sector-border'+(enemies.length?' sector-enemy':''),'stroke-dasharray':'5 4',
                 d:[...sector.edges.values()].join(' '),
                 style:`--sector-color:${paint}`,
                 'vector-effect':'non-scaling-stroke','data-sector':sector.name
@@ -2051,19 +2061,14 @@
                 group.appendChild(custom);
             }
 
-            if (dssHostIndex != null && String(dssHostIndex) === String(raw.index)) {
-                const size = baseRadius * .95;
-                const cy2 = y - baseRadius * 3.2;
-                const dssHalo = svgEl('circle', { class:'mapa-dss-halo', cx:x, cy:cy2, r:size*1.6, fill:'#ffd23f' });
-                group.appendChild(dssHalo);
-                const diamond = svgEl('path', {
-                    class:'mapa-dss-marker', d:`M ${x} ${cy2-size} L ${x+size} ${cy2} L ${x} ${cy2+size} L ${x-size} ${cy2} Z`,
-                    fill:'url(#planet-grad-dss)', stroke:'#111', 'stroke-width':.3
-                });
-                group.appendChild(diamond);
-                const dssLabel = svgEl('text', { class:'mapa-dss-label', x, y:cy2-size*1.9, 'text-anchor':'middle' });
-                dssLabel.textContent = 'DSS';
-                group.appendChild(dssLabel);
+            if(dssHostIndex!=null&&String(dssHostIndex)===String(raw.index)) {
+                const size=baseRadius*3.1,left=x-baseRadius*4.7,top=y-baseRadius*4.9;
+                const active=dssState?.status==='active',hasStation=active||dssState?.status==='saved';
+                const marker=svgEl('g',{class:'mapa-dss-reference',role:'img',tabindex:'0','aria-label':dssState?.label||'DSS'});
+                marker.appendChild(svgEl('line',{x1:x-baseRadius*1.4,y1:y,x2:left+size/2,y2:top+size,stroke:active?'#ffd23f':'#a8b1bd','stroke-width':baseRadius*.08,'stroke-dasharray':`${baseRadius*.35} ${baseRadius*.25}`}));
+                marker.appendChild(svgEl('image',{href:'imagens/guerra/modelos/'+(hasStation?'dss-operacional.webp':'dss-inoperante.webp'),x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','pointer-events':'none'}));
+                const title=svgEl('title');title.textContent=(dssState?.label||'DSS')+(dssState?.stale?' · última leitura salva':'')+' · '+(active?'Posição informada nesta leitura.':'Última referência registrada: '+(dssState?.last?.name||planetName(raw))+' · '+new Date(dssState?.last?.time).toLocaleString('pt-BR')+'. Não confirma operação atual.');marker.appendChild(title);
+                const note=svgEl('text',{class:'mapa-dss-status',x:left+size/2,y:top-baseRadius*.3,'text-anchor':'middle',fill:active?'#ffd23f':'#bac2cc','font-size':baseRadius*.7});note.textContent=active?'DSS':dssState?.status==='unknown'?'DSS · SEM CONFIRMAÇÃO':dssState?.status==='saved'?'DSS · ÚLTIMA LEITURA':'DSS · INDISPONÍVEL';marker.appendChild(note);group.appendChild(marker);
             }
 
             const label = svgEl('text', { class:'mapa-planet-label', style:`--planet-name-color:${factionColor(owner)}`, x, y:y+baseRadius*2.65, 'text-anchor':'middle' });
@@ -2435,17 +2440,12 @@
     // CARREGAMENTO E ATUALIZAÇÃO
     // ================================================================
     async function loadDSS() {
-        try {
-            const data = await fetchJSON(`${V2}/space-stations`, 'dss');
-            const station = Array.isArray(data) ? data[0] : null;
-            const hostName = clean(station?.planet?.name).toLowerCase();
-            if (!hostName) { dssHostIndex = null; return; }
-            const match = allPlanets.find(p => clean(p.name).toLowerCase() === hostName);
-            dssHostIndex = match ? match.index : (station?.planet?.index ?? null);
-        } catch (err) {
-            console.warn('[Helldivers-BR/Mapa] DSS indisponível:', err);
-            dssHostIndex = null;
-        }
+        let data=null;
+        try {data=await fetchJSON(`${V2}/space-stations`, 'dss');}
+        catch(err){console.warn('[Helldivers-BR/Mapa] Leitura DSS indisponível:',err);}
+        lastDSSData=data;
+        dssState=window.HDBRMapDSS?.resolve(data,allPlanets,window.HDBRWarData?.meta(`${V2}/space-stations`),window.HDBRWarData?.meta(`${V1}/planets`));
+        dssHostIndex=dssState?.hostIndex??null;
     }
 
     let lastTelemetryRender = null;
@@ -2483,11 +2483,14 @@
             }
             if(assignmentResult.status==='fulfilled') majorOrderData=assignmentResult.value;
             if(dispatchResult.status==='fulfilled') orderDispatches=dispatchResult.value;
-            window.HDBRMapBulletin?.render(orderDispatches,allPlanets,window.HDBRWarData.meta(`${V1}/dispatches`),window.HDBRWarData.meta(`${V1}/planets`));
             if(snapshotResult.status==='fulfilled'&&snapshotResult.value) orderSnapshot=snapshotResult.value;
 
             await dssTask;
-            const renderStamp = JSON.stringify(['planets','campaigns','assignments','dispatches'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0));
+            // A leitura DSS pode terminar antes da primeira lista de planetas.
+            dssState=window.HDBRMapDSS?.resolve(lastDSSData,allPlanets,window.HDBRWarData?.meta(`${V2}/space-stations`),window.HDBRWarData?.meta(`${V1}/planets`));
+            dssHostIndex=dssState?.hostIndex??null;
+            window.HDBRMapBulletin?.render(orderDispatches,allPlanets,window.HDBRWarData.meta(`${V1}/dispatches`),window.HDBRWarData.meta(`${V1}/planets`),{activeIndexes:[...campaignIndexes],metrics:p=>frontMetrics(p),dss:dssState});
+            const renderStamp = JSON.stringify(['planets','campaigns','assignments','dispatches'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0,dssState?.hostIndex,dssState?.status,dssState?.stale));
             if (lastTelemetryRender === renderStamp && nodeByIndex.size) {
                 if(majorOrderData)renderMajorOrder(majorOrderData);
                 const status=$('mapa-tactical-hud')?.querySelector('.mapa-hud-status span');

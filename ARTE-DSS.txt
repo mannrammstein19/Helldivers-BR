@@ -1,0 +1,8 @@
+Arte criada com a ferramenta integrada de geração de imagens, usando as duas referências fornecidas.
+Arquivos do projeto:
+imagens/guerra/modelos/dss-operacional.webp
+imagens/guerra/modelos/dss-inoperante.webp
+Prompts:
+Operacional: estação isolada com transparência; preservar o anel orbital largo, torre vertical, perspectiva da primeira referência, metal cinza escuro e luzes douradas discretas; silhueta simplificada e legível em ícone pequeno; sem planeta ou texto.
+Indisponível: preservar silhueta e perspectiva da variante operacional; dessaturar para cinza, apagar luzes e acrescentar ferramentas cruzadas pequenas ao lado inferior direito do anel; transparência; sem texto.
+Saída gerada otimizada para WebP com até 384 pixels.

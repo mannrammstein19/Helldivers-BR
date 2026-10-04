@@ -1,0 +1,27 @@
+HELLDIVERS-BR SITE — PATCH 22
+Base: Patch 21. Apenas arquivos novos ou alterados.
+
+APLICAR
+Copie os arquivos e a pasta imagens deste pacote para a raiz do projeto, mantendo a estrutura e sem apagar suas outras imagens.
+Envie as alterações ao GitHub e aguarde o deploy do Cloudflare Pages.
+A Central API não foi alterada; não precisa rodar npm deploy.
+Este pacote não contém APK ou projeto Android recompilado.
+
+ALTERAÇÕES
+- Corrigida variável rate inexistente no card/painel de libertação, que podia impedir abrir Brilhantismo quando não havia previsão válida.
+- Top 3 continua sendo definido pela quantidade de Helldivers nas campanhas ativas. Desempate por índice. Progresso alto sozinho não muda o ranking.
+- Cards com cabeçalho de campanha, nome/setor, imagem visível, clima e presenças sobre a imagem, barras azul/inimiga independentes, jogadores, participação no efetivo e ritmos. Bordas arredondadas e ajustes para telas menores.
+- Contornos dos setores tracejados e hachuras leves dentro dos setores inimigos, estáticas. Rotas não foram transformadas em tracejados.
+- Boletim de leitura contínua, sem botão de abrir, pausando ao passar o mouse ou focar com teclado. Inclui despachos traduzidos, resumo das campanhas, DSS e sugestões do portal fundamentadas nos ritmos. Sugestões não são ordens oficiais.
+- Textos de leituras salvas continuam identificados como antigos. A faixa pode circular para permitir ler todas as mensagens; isso não atualiza números ou timestamps. Em movimento reduzido, os textos ficam estáticos e acessíveis por rolagem.
+- DSS: modelos transparentes pequenos colorido e cinza com ferramentas. Última referência verificada: AFOYAY BAY, índice 136, efeito planetário 1217; registro direto 03/10/2026 23:36:10 (São Paulo).
+- A leitura bruta consultada não lista estação; isso não confirma motivo de manutenção. Ausência de DSS e falha de conexão têm estados distintos. Posição antiga é identificada como referência anterior.
+- Posição futura informada por leitura válida substitui a referência e é salva no aparelho; indisponibilidade não apaga a posição anterior. Dados salvos não são promovidos a operação atual.
+
+TESTES OPCIONAIS
+node .\test-refinement22.cjs
+node .\test-patch10.cjs
+node .\test-map-stability17.cjs
+
+Também passaram as suítes de progresso, métricas, presenças, modelos, condições ambientais e layouts existentes. A conferência visual no Capacitor real deve ser feita após publicar.
+Se seu Capacitor carrega o endereço remoto do site, recebe o site publicado. Se embute uma cópia dos arquivos, será necessário sincronizar a cópia e recompilar o projeto atual do Capacitor.

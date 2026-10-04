@@ -28,7 +28,10 @@
         'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.5'
     };
 
-    const $ = id => document.getElementById(id);
+    let mapBuildRoot=null;
+    const $ = id => (mapBuildRoot && (id==='mapa-svg'?mapBuildRoot:mapBuildRoot.querySelector('#'+id))) || document.getElementById(id);
+    const stableHTML=(target,markup)=>{if(window.HDBRMapDOM)window.HDBRMapDOM.html(target,markup);else if(target&&target.innerHTML!==markup)target.innerHTML=markup;};
+    const imageSource=(image,src)=>{if(image.dataset.primarySrc!==src){image.dataset.primarySrc=src;image.src=src;}};
 
     function escapeHTML(value) {
         return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -512,10 +515,10 @@
         const effects=planetEffects(p);
         const box=$('mapa-intel-effects');
         box.hidden=!effects.length&&!window.HDBRPresences?.list(p).length;
-        box.innerHTML='<div class="intel-weather-icons">'+effects.map(info=>`<span class="intel-effect${info.possible?' effect-possible':''}" tabindex="0" role="img" aria-label="${escapeHTML(info.name)} — ${info.possible?'Condição possível · ocorrência atual não confirmada':'Condição informada para o planeta · não indica ocorrência neste instante'}" title="${escapeHTML(info.name)} — ${info.possible?'Condição possível · ocorrência atual não confirmada':'Condição informada para o planeta · não indica ocorrência neste instante'}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)} · ${info.possible?'possível; ocorrência não confirmada':'condição do planeta'}</span></span>`).join('')+'</div>';
-        box.innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||'';
-        $('planet-dossier-effects').innerHTML=effects.length?effects.map(info=>`<div class="dossier-effect">${hazardIconHTML(info)}<span>${escapeHTML(info.name)}<small class="effect-source">${info.possible?'Possível no planeta · catálogo; ocorrência atual não confirmada':'Condição informada nos dados do planeta; sem medição em tempo real'}</small></span></div>`).join(''):'<p>Nenhum efeito adicional informado.</p>';
-        $('planet-dossier-effects').innerHTML+=window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`),{labels:true})||'';
+        const weatherMarkup='<div class="intel-weather-icons">'+effects.map(info=>`<span class="intel-effect${info.possible?' effect-possible':''}" tabindex="0" role="img" aria-label="${escapeHTML(info.name)} — ${info.possible?'Condição possível · ocorrência atual não confirmada':'Condição informada para o planeta · não indica ocorrência neste instante'}" title="${escapeHTML(info.name)} — ${info.possible?'Condição possível · ocorrência atual não confirmada':'Condição informada para o planeta · não indica ocorrência neste instante'}">${hazardIconHTML(info)}<span class="intel-effect-label">${escapeHTML(info.name)} · ${info.possible?'possível; ocorrência não confirmada':'condição do planeta'}</span></span>`).join('')+'</div>';
+        stableHTML(box,weatherMarkup+(window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`))||''));
+        const dossierMarkup=effects.length?effects.map(info=>`<div class="dossier-effect">${hazardIconHTML(info)}<span>${escapeHTML(info.name)}<small class="effect-source">${info.possible?'Possível no planeta · catálogo; ocorrência atual não confirmada':'Condição informada nos dados do planeta; sem medição em tempo real'}</small></span></div>`).join(''):'<p>Nenhum efeito adicional informado.</p>';
+        stableHTML($('planet-dossier-effects'),dossierMarkup+(window.HDBRPresences?.render(p,window.HDBRWarData?.meta(`${V1}/planets`),{labels:true})||''));
     }
     function planetClimateLabel(p) {
         const direct = clean(p?.weather?.name || p?.weather?.description || p?.climate || p?.weatherName || (typeof p?.weather === 'string' ? p.weather : ''));
@@ -955,7 +958,7 @@
         const {order,state}=resolved;
         const statusLabel={active:'EM EXECUÇÃO',pending:'AGUARDANDO CONFIRMAÇÃO DO RESULTADO',unknown:'RESULTADO AINDA NÃO CONFIRMADO',completed:'ORDEM MAIOR CUMPRIDA',failed:'ORDEM MAIOR PERDIDA'}[state];
         if(!order) {
-            box.innerHTML='<div class="mapa-order-empty"><span aria-hidden="true">◆</span><strong>Aguardando novas diretrizes</strong><p>Nenhuma Ordem Maior ativa foi informada até o momento.</p></div>';
+            stableHTML(box,'<div class="mapa-order-empty"><span aria-hidden="true">◆</span><strong>Aguardando novas diretrizes</strong><p>Nenhuma Ordem Maior ativa foi informada até o momento.</p></div>');
             return;
         }
         const tasks=majorOrderTasks(order);
@@ -1027,6 +1030,7 @@
     }
     function handleFrontToggle(front){
         if(!front.matches?.('details[data-planet-index]')||!front.isConnected)return;
+        if(front.open===expandedFronts.has(front.dataset.planetIndex))return;
         if(front.open){
             expandedFronts.clear();expandedFronts.add(front.dataset.planetIndex);
             $('mapa-top-fronts').querySelectorAll('details[data-planet-index]').forEach(other=>{if(other!==front)other.open=false;});
@@ -1070,7 +1074,7 @@
         const active=new Set(top.map(p=>String(p.index)));
         if(expandedFronts.size>1){const keep=[...expandedFronts].at(-1);expandedFronts.clear();expandedFronts.add(keep);}
         for(const key of expandedFronts)if(!active.has(key))expandedFronts.delete(key);
-        host.innerHTML=top.length?top.map(p=>frontMarkup(p).split('<div class="mapa-front-expanded">')[0]+'</details>').join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>';
+        stableHTML(host,top.length?top.map(p=>frontMarkup(p).split('<div class="mapa-front-expanded">')[0]+'</details>').join(''):'<p>Nenhuma frente ativa confirmada nesta leitura.</p>');
         if(frontPanelIndex!=null){const p=allPlanets.find(p=>String(p.index)===frontPanelIndex);if(p)openFrontPanel(p,false);else closeFrontPanel();}
         if(frontRegionsIndex!=null){const p=allPlanets.find(p=>String(p.index)===frontRegionsIndex);if(p)openFrontRegions(p,false);else closeFrontRegions();}
     }
@@ -1096,7 +1100,7 @@
         frontPanelIndex=String(p.index);expandedFronts.clear();expandedFronts.add(frontPanelIndex);
         const panel=$('mapa-front-panel'),content=$('mapa-front-panel-content');if(!panel||!content)return;
         const scroll=content.scrollTop||0;
-        content.innerHTML=frontMarkup(p).split('<div class="mapa-front-expanded">')[1].replace(/<\/div><\/details>$/,'');content.scrollTop=scroll;
+        stableHTML(content,frontMarkup(p).split('<div class="mapa-front-expanded">')[1].replace(/<\/div><\/details>$/,''));content.scrollTop=scroll;
         $('mapa-front-panel-title').textContent=planetName(p);panel.style.setProperty('--accent',factionColor(p.event?.faction||p.currentOwner));
         panel.classList.add('open');panel.inert=false;panel.setAttribute('aria-hidden','false');
         $('mapa-tools').open=false;$('mapa-operations').open=false;if($('mapa-settings'))$('mapa-settings').open=false;positionFloatingPanel(panel,$('mapa-top-fronts')?.parentElement);
@@ -1108,7 +1112,7 @@
         if(focus&&dossierPlanetIndex!==String(p.index))closePlanetModal(false);
         frontRegionsIndex=String(p.index);const panel=$('mapa-regions-panel'),content=$('mapa-regions-panel-content');if(!panel||!content)return;
         const open=[...content.querySelectorAll('details[open]')].map(d=>d.querySelector('strong')?.textContent),scroll=content.scrollTop||0;
-        content.innerHTML=window.HDBRRegions?.render(p,'planets')||'<p>Nenhuma região informada nesta leitura.</p>';
+        stableHTML(content,window.HDBRRegions?.render(p,'planets')||'<p>Nenhuma região informada nesta leitura.</p>');
         content.querySelectorAll('details').forEach(d=>{if(open.includes(d.querySelector('strong')?.textContent))d.open=true;});content.scrollTop=scroll;
         $('mapa-regions-panel-title').textContent='Regiões · '+planetName(p);panel.classList.add('open');panel.inert=false;panel.setAttribute('aria-hidden','false');
         $('mapa-operations').open=false;positionFloatingPanel(panel,floatingAnchor());if(focus)panel.querySelector('[data-close-floating]')?.focus({preventScroll:true});
@@ -1282,9 +1286,20 @@
         // Coordenadas reais também funcionam em linhas horizontais/verticais.
         const gradient=svgEl('linearGradient',{id,gradientUnits:'userSpaceOnUse',x1:a.x,y1:a.y,x2:b.x,y2:b.y});
         gradient.appendChild(svgEl('stop',{offset:'0%','stop-color':from}));
+        gradient.appendChild(svgEl('stop',{offset:'40%','stop-color':from}));
+        gradient.appendChild(svgEl('stop',{offset:'60%','stop-color':to}));
         gradient.appendChild(svgEl('stop',{offset:'100%','stop-color':to}));
         defs.appendChild(gradient);
         return `url(#${id})`;
+    }
+
+    function appendOwnerBadge(group,p,x,y,radius,offensive=false) {
+        const owner=factionKey(p.currentOwner||p.owner);
+        if(specialLocation(p)||p.event||owner==='human'||owner==='unknown')return;
+        const size=radius*1.8,top=y-radius*(offensive?5.7:3.3);
+        const badge=svgEl('g',{class:'mapa-owner-badge',role:'img','aria-label':'Controle: '+factionName(p.currentOwner||p.owner)});
+        badge.appendChild(svgEl('use',{href:'#faction-icon-'+owner,x:x-size/2,y:top,width:size,height:size,fill:factionColor(p.currentOwner||p.owner),'pointer-events':'none'}));
+        group.appendChild(badge);
     }
 
     function drawInvasions(planets,group,mapSize) {
@@ -1310,19 +1325,8 @@
                 route.line.classList.add('attack-route');
                 route.line.style.setProperty('--route-attack-color',ROUTE_COLORS[faction]);
             }
-            const path=svgEl('path',{class:'mapa-invasion-arrow',d,stroke:ROUTE_COLORS[faction],'marker-end':`url(#invasion-arrow-${faction})`,...direction});
+            const path=svgEl('path',{class:'mapa-invasion-arrow',d,stroke:'transparent','marker-end':`url(#invasion-arrow-${faction})`,...direction});
             const title=svgEl('title');title.textContent=`${planetName(source)} → ${planetName(target)} · ${faction==='human'?'Libertação':'Invasão'}`;path.appendChild(title);group.appendChild(path);
-            const routePresence=window.HDBRPresences?.list(source).filter(e=>e.faction===faction)||[];
-            const targetPresence=window.HDBRPresences?.list(target).filter(e=>e.faction===faction)||[];
-            const presence=routePresence[0]||targetPresence[0];
-            if(presence){
-                const size=mapSize/260*2.2,mx=x1+(x2-x1)*.62,my=y1+(y2-y1)*.62;
-                const badge=svgEl('g',{class:'mapa-route-presence','pointer-events':'none',...direction});
-                const tip=svgEl('title');tip.textContent=presence.name+' · presença registrada no planeta '+planetName(routePresence.length?source:target);badge.appendChild(tip);
-                badge.appendChild(svgEl('rect',{x:mx-size/2-1,y:my-size/2-1,width:size+2,height:size+2,rx:2,fill:'#0b111b',stroke:presence.color,'stroke-width':.6}));
-                badge.appendChild(svgEl('image',{class:'mapa-presence-icon presence-'+presence.faction+(presence.file.endsWith('.svg')?' presence-svg':''),href:'imagens/guerra/presencas/'+presence.file,x:mx-size/2,y:my-size/2,width:size,height:size,preserveAspectRatio:'xMidYMid meet'}));
-                group.appendChild(badge);
-            }
             // Caminho sempre nasce no atacante: dashoffset decrescente leva o pulso ao alvo.
             group.appendChild(svgEl('path',{class:'mapa-route-energy',d,pathLength:100,stroke:ROUTE_ENERGY_COLORS[faction],...direction,'aria-hidden':'true'}));
         });
@@ -1398,7 +1402,7 @@
         $('mapa-intel-faction-name').textContent = ownerName.toUpperCase();
         const factionImg = $('mapa-intel-faction-icon');
         if (factionImg) {
-            factionImg.src = ownerIcon;
+            imageSource(factionImg,ownerIcon);
             factionImg.alt = `Símbolo ${ownerName}`;
             factionImg.style.display = '';
             factionImg.dataset.fallback = ownerIconInfo.fallback || '';
@@ -1412,7 +1416,7 @@
         }
         const photo = $('mapa-intel-photo');
         if (photo) {
-            photo.src = photoUrl;
+            imageSource(photo,photoUrl);
             photo.alt = `Paisagem de ${clean(p.name) || 'planeta'}`;
             photo.hidden = false;
             photo.onerror = () => { photo.hidden = true; };
@@ -1467,16 +1471,16 @@
             if(event||offensive) {
                 const prediction=event?defenseForecast(p):offensiveForecast(p);
                 forecast.dataset.tone=prediction.tone;
-                forecast.querySelector('strong').innerHTML=window.HDBRPresences?.vitrine(prediction.title,p,window.HDBRWarData?.meta(`${V1}/planets`))||escapeHTML(prediction.title);
+                stableHTML(forecast.querySelector('strong'),window.HDBRPresences?.vitrine(prediction.title,p,window.HDBRWarData?.meta(`${V1}/planets`))||escapeHTML(prediction.title));
                 forecast.querySelector('p').textContent='';
-                if($('mapa-intel-forecast-metrics'))$('mapa-intel-forecast-metrics').innerHTML=forecastMetrics(p);
+                if($('mapa-intel-forecast-metrics'))stableHTML($('mapa-intel-forecast-metrics'),forecastMetrics(p));
             }
         }
         if(special) {
             card.style.setProperty('--accent',special.color);
             $('mapa-intel-status').textContent=special.label.toUpperCase()+' · INACESSÍVEL';
             $('mapa-intel-faction-name').textContent=special.label.toUpperCase();
-            if(factionImg) { factionImg.src=PLANET_IMG_PATH+special.file; factionImg.alt=special.label; factionImg.dataset.fallback=''; }
+            if(factionImg) { imageSource(factionImg,PLANET_IMG_PATH+special.file); factionImg.alt=special.label; factionImg.dataset.fallback=''; }
             if(photo) photo.alt=special.label+' · '+planetName(p);
             progressBox.hidden=true;
             route.hidden=true;
@@ -1798,13 +1802,25 @@
     }
 
     function buildMap(planets) {
-        const svg = $('mapa-svg');
+        const live=$('mapa-svg');if(!live)return;
+        if(!window.HDBRMapDOM || !live.cloneNode){renderMapScene(planets,live);return;}
+        const stage=live.cloneNode(false),oldNodes=new Map(nodeByIndex),oldLines=lineRecords;
+        let completed=false;
+        try{mapBuildRoot=stage;renderMapScene(planets,stage);completed=!!stage.querySelector('#mapa-viewport');}
+        finally{mapBuildRoot=null;if(!completed){nodeByIndex.clear();oldNodes.forEach((v,k)=>nodeByIndex.set(k,v));lineRecords=oldLines;}}
+        if(!completed)return;
+        const mapping=window.HDBRMapDOM.children(live,stage);
+        for(const record of nodeByIndex.values())for(const key of ['group','circle','artwork'])if(record[key])record[key]=mapping.get(record[key])||record[key];
+        lineRecords.forEach(record=>{for(const key of ['line','base'])if(record[key])record[key]=mapping.get(record[key])||record[key];});
+        const viewport=$('mapa-viewport');
+        const vb=stage.getAttribute('viewBox');if(vb&&live.getAttribute('viewBox')!==vb)live.setAttribute('viewBox',vb);
+        setSelectedPlanet(selectedIndex);setupPanZoom(live,viewport);
+    }
+    function renderMapScene(planets,svg) {
         if (!svg) return;
         svg.innerHTML = '';
         nodeByIndex.clear();
         lineRecords = [];
-        selectedIndex = null;
-        hideQuickIntel({ clearSelection:false });
 
         const withPos = planets
             .map(p => {
@@ -1982,6 +1998,7 @@
             });
             group.appendChild(symbol);
             const artwork=appendPlanetArtwork(group,raw,x,y,(underAttack||offensive)?baseRadius*1.38:baseRadius,symbol);
+            appendOwnerBadge(group,raw,x,y,baseRadius,offensive);
             if(!special)window.HDBRPresences?.mapBadges(group,raw,x,y,baseRadius,svgEl);
             if(special) {
                 const size=baseRadius*5;
@@ -2057,17 +2074,17 @@
                 group.appendChild(eventLabel);
             }
 
-            group.addEventListener('keydown', event => {
+            group.onkeydown = event => {
                 if(event.key==='Enter'||event.key===' ') {
                     event.preventDefault();$('mapa-tools').open=false;$('mapa-operations').open=false;if($('mapa-settings'))$('mapa-settings').open=false;setSelectedPlanet(raw.index);showQuickIntel(raw,{sticky:true});
                 }
-            });
-            group.addEventListener('click', event => {
+            };
+            group.onclick = event => {
                 event.stopPropagation();
                 $('mapa-tools').open=false;$('mapa-operations').open=false;if($('mapa-settings'))$('mapa-settings').open=false;
                 setSelectedPlanet(raw.index);
                 showQuickIntel(raw,{sticky:true});
-            });
+            };
             dotsGroup.appendChild(group);
             nodeByIndex.set(String(raw.index), { data:raw, group, circle, artwork });
         });
@@ -2076,7 +2093,7 @@
         markActiveNeighborhood();
         applyFilters();
         applyLayerVisibility();
-        setupPanZoom(svg, viewport);
+        if(!mapBuildRoot)setupPanZoom(svg, viewport);
     }
 
     // ================================================================
@@ -2499,7 +2516,6 @@
                 const p=allPlanets.find(p=>String(p.index)===inspector);
                 if(p) {
                     showQuickIntel(p,{sticky});
-                    if (dossierOpen) openPlanetModal(p, false);
                 }
             }
             if(dossierOpen&&savedDossierIndex!=null){const p=allPlanets.find(p=>String(p.index)===savedDossierIndex);if(p)openPlanetModal(p,false);}

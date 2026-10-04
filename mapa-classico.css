@@ -1226,7 +1226,7 @@ html:has(body.mapa-immersive){zoom:1!important;}
 #mapa-viewport .mapa-front-line{stroke-width:var(--route-front,2.6);opacity:.88;}
 #mapa-viewport .mapa-supply-line.route-connected{stroke-width:var(--route-selected,3.2);opacity:1;}
 #mapa-viewport .mapa-supply-line.route-muted{opacity:.13;}
-#mapa-viewport:not(.hide-invasions) .mapa-supply-line.attack-route{stroke:var(--route-attack-color);}
+/* Ataque usa pulso e ponta próprios; a rota mantém o degradê dos donos. */
 .mapa-route-energy{
  fill:none;stroke-width:var(--mapa-arrow-width,3);stroke-linecap:round;
  stroke-dasharray:12 88;animation:mapa-route-energy-flow 2.6s linear infinite;
@@ -1358,3 +1358,15 @@ html:has(body.mapa-immersive){zoom:1!important;}
 /* Refinamento 16: o aviso fica acima do ícone, dentro da imagem. */
 .intel-effect-label{top:auto;bottom:calc(100% + 7px);max-width:180px;width:max-content;white-space:normal;box-sizing:border-box;pointer-events:none;z-index:20}
 .intel-effect:hover,.intel-effect:focus{z-index:21}
+
+/* Patch 17: reduzir repinturas de SVG dentro do WebView móvel. */
+@media(max-width:700px),(pointer:coarse){
+ .mapa-presences:not(.presence-stale) rect{animation:none;stroke-opacity:1}
+ .mapa-invasion-pulse{animation:mapa-mobile-invasion-alert 2.4s ease-in-out infinite;transform:none}
+ .mapa-floating-panel.open,.tactical-modal-card{animation:none}
+ .mapa-intel-close,.mapa-intel-faction-badge{backdrop-filter:none}
+ .presence-icons-only .presence-chip{animation:none;box-shadow:0 0 3px var(--presence-color)}
+ .mapa-presence-ship .presence-ship-hull{animation:none}
+}
+@keyframes mapa-mobile-invasion-alert{0%,100%{opacity:.12}50%{opacity:.45}}
+@media(prefers-reduced-motion:reduce){.mapa-invasion-pulse{animation:none!important}}

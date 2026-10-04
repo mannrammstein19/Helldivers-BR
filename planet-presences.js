@@ -57,7 +57,8 @@ window.HDBRPresences=(()=>{'use strict';
     // Três sprites são composição decorativa, não contagem real informada pela API.
     const small=e.key==='masses'||e.key==='snatchers';
     const formation=small?[[.02,-1.15],[.57,-1.15],[.30,-.74]]:[[0,e.faction==='illuminate'?-1.6:-1.1]];
-    formation.forEach(([dx,dy])=>ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left+size*dx,y:top+size*dy,width:size*(small?.52:e.faction==='illuminate'?1:1.65),height:size*(small?.36:1.4),preserveAspectRatio:'xMidYMid meet'})));
+    const enlargement=small?1.05:model==='nave-automata'?1.03:1;
+    formation.forEach(([dx,dy])=>ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left+size*dx,y:top+size*dy,width:size*(small?.52:e.faction==='illuminate'?1:1.65)*enlargement,height:size*(small?.36:1.4)*enlargement,preserveAspectRatio:'xMidYMid meet'})));
 
     layer.appendChild(ship);
    }

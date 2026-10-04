@@ -1,4 +1,4 @@
-/* Boletim usa as leituras existentes; tradução reaproveita o serviço do site. */
+/* Boletim limitado, sem chamadas próprias, sem duplicação de faixas. */
 window.HDBRMapBulletin=(()=>{'use strict';
  const text=v=>String(v??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
  const esc=v=>text(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -8,9 +8,17 @@ window.HDBRMapBulletin=(()=>{'use strict';
   {pattern:/illuminat|iluminad/i,name:'Iluminados',file:'logo illuminats.png'}
  ];
  function icons(raw){return factions.filter(f=>f.pattern.test(raw)).map(f=>'<img class="mapa-bulletin-faction" src="imagens/guerra/faccoes/'+f.file+'" alt="'+f.name+'">').join('');}
+ function localized(raw){
+  if(!raw)return '';
+  let cached;try{cached=JSON.parse(localStorage.getItem('hdbr-home-ptbr-v1')||'{}')[raw];}catch{}
+  if(cached)return text(cached);
+  // Without a confirmed translation show a factual notice, not an invented summary.
+  if(/\b(the|our|must|have|has|with|from|will|their|this|that|successfully)\b/i.test(raw))return 'Novo comunicado do Alto Comando disponível nos despachos.';
+  return raw;
+ }
  function items(dispatches,planets,dispatchMeta,planetMeta,options={}){
   const ds=Array.isArray(dispatches)?dispatches:dispatches?.dispatches||[];
-  const out=ds.slice(0,3).map(d=>({name:'Alto Comando',message:text(d.message||d.text),dispatch:true,stale:dispatchMeta?.stale===true,time:dispatchMeta?.time})).filter(d=>d.message);
+  const out=ds.slice(0,3).map(d=>{const raw=text(d.message||d.text);const message=localized(raw);return {name:'Alto Comando',message,dispatch:true,stale:dispatchMeta?.stale===true,time:dispatchMeta?.time};}).filter(d=>d.message);
   const active=new Set((options.activeIndexes||[]).map(String));
   for(const p of (planets||[]).filter(p=>p.event||active.has(String(p.index))).sort((a,b)=>(b.statistics?.playerCount||0)-(a.statistics?.playerCount||0)).slice(0,3)){
    const m=options.metrics?.(p),defending=!!p.event;
@@ -25,33 +33,36 @@ window.HDBRMapBulletin=(()=>{'use strict';
   if(dss?.hostIndex!=null)out.push({name:'DSS',message:dss.status==='active'?'Localização informada nesta leitura: '+text(dss.hostName||dss.last.name):dss.status==='unknown'?'Localização atual sem confirmação · última referência: '+text(dss.last.name):dss.status==='saved'?'Última localização informada: '+text(dss.hostName||dss.last.name):'Indisponível nesta leitura · última referência: '+text(dss.last.name),stale:dss.stale===true,time:dss.last.time});
   return out;
  }
- let signature='',generation=0;
- const failures=new Map();
- function paint(list){
-  const track=document.getElementById('mapa-bulletin-track'),content=document.getElementById('mapa-bulletin-content');if(!track||!content)return;
-  const markup=list.map(d=>'<span class="mapa-bulletin-item">'+icons(d.faction||d.original||d.message)+'<strong>'+esc(d.name)+'</strong> · '+(d.stale?'Última leitura · ':'')+esc(d.message)+'</span>').join('');
-  track.innerHTML=markup?markup+'<span aria-hidden="true">'+markup+'</span>':'Nenhum comunicado disponível nesta leitura.';
-  track.style.setProperty('--bulletin-duration',Math.max(45,list.reduce((sum,d)=>sum+d.message.length,0)/8)+'s');
-  track.classList.toggle('is-scrolling',list.length>0);
-  content.innerHTML=list.map(d=>'<p>'+icons(d.faction||d.original||d.message)+'<strong>'+esc(d.name)+'</strong><span>'+esc(d.message)+'</span>'+(d.original?'<details><summary>Comunicado original</summary><span lang="en">'+esc(d.original)+'</span></details>':'')+'<small>'+(d.stale?'Última leitura salva · ':'Leitura · ')+(d.time?esc(new Date(d.time).toLocaleString('pt-BR')):'Horário não informado')+'</small></p>').join('')||'<p>Nenhum comunicado disponível nesta leitura.</p>';
+ let list=[],index=0,timer=null,signature='',enabled=true,motion=true,lastPaint='';
+ function paint(){
+  const track=document.getElementById('mapa-bulletin-track');if(!track)return;
+  const d=list[index%Math.max(1,list.length)];
+  const message=d?icons(d.faction||d.message)+'<strong>'+esc(d.name)+'</strong> · '+(d.stale?'Última leitura · ':'')+esc(d.message.slice(0,360)):'Nenhum comunicado disponível nesta leitura.';
+  if(message!==lastPaint){
+   track.innerHTML='<span class="mapa-bulletin-message">'+message+'</span>';lastPaint=message;
+   const line=track.firstElementChild;
+   // Measure once per changed message; only the compositor runs between updates.
+   const overflow=line?Math.max(0,line.scrollWidth-track.clientWidth):0;
+   if(motion&&overflow>0&&!window.matchMedia?.('(prefers-reduced-motion:reduce)')?.matches)
+    line.animate?.([{transform:'translateX(0)',offset:0},{transform:'translateX(0)',offset:.15},{transform:'translateX(-'+overflow+'px)',offset:.85},{transform:'translateX(-'+overflow+'px)',offset:1}],{duration:10000,fill:'forwards'});
+  }
  }
- async function render(dispatches,planets,dispatchMeta,planetMeta,options={}){
-  const list=items(dispatches,planets,dispatchMeta,planetMeta,options),key=JSON.stringify(list);
-  if(key===signature&&!list.some(d=>failures.has(d.message)&&Date.now()-failures.get(d.message)>60000))return;
-  signature=key;const token=++generation,translator=window.HDBRMapTranslation;
-  const needs=d=>d.dispatch&&translator?.english(d.message);
-  paint(list.map(d=>needs(d)?{...d,original:d.message,message:'Traduzindo comunicado do Alto Comando…'}:d));
-  const translated=await Promise.all(list.map(async d=>{
-   if(!needs(d))return d;
-   const original=d.message;
-   try{
-    if(failures.has(original)&&Date.now()-failures.get(original)<60000)throw new Error('Aguardar nova tentativa');
-    const message=await translator.translate(original);
-    if(translator.english(message))throw new Error('Tradução indisponível');
-    failures.delete(original);return {...d,message,original};
-   }catch{if(!failures.has(original)||Date.now()-failures.get(original)>=60000)failures.set(original,Date.now());return {...d,original,message:'Tradução indisponível nesta leitura · comunicado do Alto Comando.'};}
-  }));
-  if(token===generation)paint(translated);
+ function schedule(){
+  if(timer!=null)clearTimeout(timer);timer=null;
+  if(!enabled||!motion||document.hidden||window.matchMedia?.('(prefers-reduced-motion:reduce)')?.matches||list.length<2)return;
+  timer=setTimeout(()=>{timer=null;index=(index+1)%list.length;paint();schedule();},10000);
  }
- return {items,render};
+ function configure(options={}){
+  enabled=options.enabled!==false;motion=options.motion!==false;
+  if(!motion||!enabled)document.getElementById('mapa-bulletin-track')?.firstElementChild?.getAnimations?.().forEach(a=>a.cancel());
+  if(enabled)paint();schedule();
+ }
+ function render(dispatches,planets,dispatchMeta,planetMeta,options={}){
+  const next=items(dispatches,planets,dispatchMeta,planetMeta,options).slice(0,7),key=JSON.stringify(next);
+  if(key===signature)return;
+  signature=key;list=next;index%=Math.max(1,list.length);
+  if(enabled)paint();if(timer==null||list.length<2)schedule();
+ }
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&enabled)paint();schedule();});
+ return {items,render,configure};
 })();

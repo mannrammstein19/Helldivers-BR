@@ -643,6 +643,26 @@
             group.appendChild(svgEl('circle',{class:'mapa-'+ring.key+'-fill',cx:x,cy:y,r,fill:'none',stroke:ring.color,'stroke-width':width,'stroke-dasharray':`${filled} ${circumference-filled}`,'stroke-linecap':'butt',transform:`rotate(-90 ${x} ${y})`,role:'img','aria-label':ring.label+': '+formatPercentDetailed(percent),'pointer-events':'none'}));
         });
     }
+    const mapOptionsDefaults={names:true,players:true,progress:true,presences:true,ships:true,stripes:true,bulletin:true,motion:true};
+    let mapOptions={...mapOptionsDefaults};
+    try{const saved=JSON.parse(localStorage.getItem('hdbr-map-options-v1')||'{}');Object.keys(mapOptions).forEach(k=>{if(typeof saved[k]==='boolean')mapOptions[k]=saved[k];});}catch{}
+    function applyMapOptions(){
+        const viewport=$('mapa-viewport');
+        Object.keys(mapOptions).forEach(key=>{
+            viewport?.classList.toggle('map-hide-'+key,!mapOptions[key]);
+            document.querySelectorAll('[data-map-option="'+key+'"]').forEach(input=>{input.checked=mapOptions[key];});
+        });
+        document.body.classList.toggle('map-bulletin-visible',mapOptions.bulletin);
+        document.body.classList.toggle('map-static',!mapOptions.motion);
+        const bulletin=$('mapa-bulletin');if(bulletin)bulletin.hidden=!mapOptions.bulletin;
+        window.HDBRMapBulletin?.configure({enabled:mapOptions.bulletin,motion:mapOptions.motion});
+    }
+    function setMapOption(key,value){
+        if(!Object.hasOwn(mapOptionsDefaults,key))return;
+        mapOptions[key]=!!value;
+        try{localStorage.setItem('hdbr-map-options-v1',JSON.stringify(mapOptions));}catch{}
+        applyMapOptions();
+    }
     let mapPresentation='complete';
     try{if(localStorage.getItem('hdbr-map-presentation')==='clean')mapPresentation='clean';if(localStorage.getItem('hdbr-map-all-planets')==='true')layerVisibility.activeFronts=false;}catch{}
     function setMapPresentation(value) {
@@ -1633,6 +1653,12 @@
                     paint=`url(#${gradientId})`;
                 }
                 territories.appendChild(svgEl('path',{class:'mapa-sector-fill',d:sector.paths.join(' '),fill:paint,'fill-opacity':.20,'data-sector':sector.name}));
+                const hatchId='mapa-sector-hatch-'+enemies[0],defs=$('mapa-svg').querySelector('defs');
+                if(!defs.querySelector('#'+hatchId)){
+                    const pattern=svgEl('pattern',{id:hatchId,width:12,height:12,patternUnits:'userSpaceOnUse',patternTransform:'rotate(28)'});
+                    pattern.appendChild(svgEl('line',{x1:0,y1:0,x2:0,y2:12,stroke:FACTION_COLORS[enemies[0]],'stroke-width':2,'stroke-opacity':.16}));defs.appendChild(pattern);
+                }
+                territories.appendChild(svgEl('path',{class:'mapa-sector-hatch',d:sector.paths.join(' '),fill:`url(#${hatchId})`,'pointer-events':'none','data-sector':sector.name}));
 
             }
             outlines.appendChild(svgEl('path',{
@@ -2484,6 +2510,7 @@
             // A leitura DSS pode terminar antes da primeira lista de planetas.
             dssState=window.HDBRMapDSS?.resolve(lastDSSData,allPlanets,window.HDBRWarData?.meta(`${V2}/space-stations`),window.HDBRWarData?.meta(`${V1}/planets`));
             dssHostIndex=dssState?.hostIndex??null;
+            window.HDBRMapBulletin?.render(orderDispatches,allPlanets,window.HDBRWarData.meta(`${V1}/dispatches`),window.HDBRWarData.meta(`${V1}/planets`),{activeIndexes:[...campaignIndexes],metrics:p=>frontMetrics(p),dss:dssState});
             const renderStamp = JSON.stringify(['planets','campaigns','assignments','dispatches'].map(n=>window.HDBRWarData.meta(`${V1}/${n}`)?.time||0).concat(window.HDBRWarData.meta(`${V2}/space-stations`)?.time||0,dssState?.hostIndex,dssState?.status,dssState?.stale));
             if (lastTelemetryRender === renderStamp && nodeByIndex.size) {
                 if(majorOrderData)renderMajorOrder(majorOrderData);
@@ -2587,6 +2614,8 @@
             applyLayerVisibility();
         }));
         setMapPresentation(mapPresentation);
+        applyMapOptions();
+        $('mapa-settings')?.addEventListener('change',event=>{const key=event.target.dataset?.mapOption;if(key)setMapOption(key,event.target.checked);});
         $('planet-modal')?.addEventListener('click', event => {
             if (event.target.matches('[data-close-planet]') || event.target.closest('[data-close-planet]')) closePlanetModal();
         });

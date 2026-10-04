@@ -53,3 +53,22 @@ assert.equal(browser().resolve(null,defense.snapshot,defenseNow,{dispatches:ds})
 assert.equal(browser().resolve(defense.snapshot.order,defense.snapshot,defenseNow,{dispatches:[]}).state,'completed','reload and stale snapshot cannot reopen');
 assert.equal(browser().resolve({...defense.snapshot.order,id:12345},defense.snapshot,defenseNow,{dispatches:ds}).state,'active','new order does not inherit victory');
 console.log('11 defense and reload checks passed');
+
+let regressions=0;
+function checkResult(entries,expected,label){
+  assert.equal(instance().outcome(defense.snapshot.order,defense.snapshot,entries,{},defenseNow)?.state??null,expected,label);
+  regressions++;
+}
+for(const title of ['NEW MAJOR ORDER','NOVA ORDEM IMPERATIVA','NOVA GRANDE ORDEM']){
+  const opening={published:'2026-10-04T03:00:00Z',message:title+'\nDefend GATRIA and WASAT.'};
+  for(const result of ['MAJOR ORDER WON','MAJOR ORDER FAILED']){
+    checkResult([defense.opening,opening,{...defense.dispatch,message:result+'\nGATRIA and WASAT.'}],null,'new opening blocks repeated targets: '+title+' / '+result);
+  }
+}
+checkResult([defense.opening,{published:'2026-10-04T03:00:00Z',message:'NEW MAJOR ORDER'},{...defense.dispatch,message:'MAJOR ORDER FAILED',assignmentId:defense.snapshot.order.id}],'failed','explicit result ID links previous order');
+checkResult([{...defense.opening,assignmentId:999},{...defense.dispatch,message:'MAJOR ORDER WON\nGATRIA and WASAT.'}],null,'opening ID overrides repeated targets');
+checkResult([...ds,{published:'2026-10-04T04:40:00Z',message:'NEW MAJOR ORDER'}],'completed','result before next opening');
+for(const [title,expected] of [['ORDEM IMPERATIVA CONCLUÍDA','completed'],['ORDEM IMPERATIVA FRACASSADA','failed'],['NOTÍCIAS DA GUERRA',null]]){
+  checkResult([defense.opening,{...defense.dispatch,message:title}],expected,title);
+}
+console.log(regressions+' boundary and imperative checks passed');

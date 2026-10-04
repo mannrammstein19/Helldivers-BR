@@ -221,12 +221,33 @@ def context_words(value):
             if word.isalpha() and len(word) >= 4 and word not in CONTEXT_STOP]
 
 
+NEW_ORDER_TITLE = re.compile(r"^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)\b")
+
+
+def latest_opening(time, timeline):
+    openings = [(dt, d) for dt, d in timeline if dt <= time and
+                (NEW_ORDER_TITLE.search(normalized(d.get("title"))) or NEW_ORDER_TITLE.search(normalized(d.get("message"))))]
+    return max(openings, key=lambda x: x[0]) if openings else None
+
+
+def crosses_order(order, snapshot, time, timeline):
+    opening = latest_opening(time, timeline)
+    if not opening:
+        return False
+    dt, d = opening
+    linked = d.get("assignmentId", d.get("assignmentID", d.get("majorOrderId")))
+    # Um ID explícito tem prioridade; nomes repetidos nunca anulam a troca.
+    if linked is not None:
+        return str(linked) != order_key(order)
+    return dt > parse_date(snapshot["first_seen_at"]) + timedelta(minutes=5)
+
+
 def contextual_dispatch_match(order, message, time, candidates):
     """Título genérico exige prazo, contexto forte e ausência de novo anúncio."""
     expiry = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
     if not expiry or not expiry-timedelta(minutes=5) <= time <= expiry+timedelta(hours=24):
         return False
-    new_order = re.compile(r"^(?:NEW MAJOR ORDER|NOVA ORDEM (?:MAIOR|PRINCIPAL)|NOVO PEDIDO PRINCIPAL)\b")
+    new_order = NEW_ORDER_TITLE
     if any(expiry-timedelta(minutes=5) <= dt <= time and
            (new_order.search(normalized(d.get("title"))) or new_order.search(normalized(d.get("message"))))
            for dt, d in candidates):
@@ -245,12 +266,10 @@ def cycle_dispatch_match(order, snapshot, time, timeline, names):
     expiry = parse_date(order.get("expiration") or order.get("expiresAt") or order.get("expireTime"))
     if not start or not expiry or time > expiry + timedelta(hours=24):
         return False
-    new_order = re.compile(r"^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL))|NOVO PEDIDO PRINCIPAL)\b")
-    openings = [(dt, d) for dt, d in timeline if dt <= time and
-                (new_order.search(normalized(d.get("title"))) or new_order.search(normalized(d.get("message"))))]
-    if not openings:
+    found = latest_opening(time, timeline)
+    if not found:
         return False
-    dt, opening = max(openings, key=lambda x: x[0])
+    dt, opening = found
     if dt > start + timedelta(minutes=5) or time <= dt:
         return False
     linked = opening.get("assignmentId", opening.get("assignmentID", opening.get("majorOrderId")))
@@ -272,8 +291,8 @@ def dispatch_outcome(dispatches, snapshot, now=None):
     order = snapshot["order"]
     ids = target_ids(order)
     names = [normalized(snapshot.get("target_planets", {}).get(i, "")) for i in ids]
-    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
-    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b")
+    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
+    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b")
     candidates, timeline = [], []
     for d in as_list(dispatches):
         if not isinstance(d, dict):
@@ -294,6 +313,8 @@ def dispatch_outcome(dispatches, snapshot, now=None):
         if linked is not None and str(linked) != order_key(order):
             continue
         explicit = linked is not None and str(linked) == order_key(order)
+        if not explicit and crosses_order(order, snapshot, dt, timeline):
+            continue
         planets = bool(ids) and all(name and f" {name} " in msg for name in names)
         order_title = normalized(order.get("title"))
         specific = len(order_title.split()) >= 3 and order_title not in {"MAJOR ORDER", "ORDEM MAIOR", "PEDIDO PRINCIPAL"} and f" {order_title} " in msg

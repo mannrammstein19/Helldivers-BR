@@ -89,5 +89,36 @@ class DefenseResultTests(unittest.TestCase):
                 self.dispatches[0]['message'] = message
                 self.assertEqual(expected, rules.dispatch_outcome(self.dispatches, self.snapshot, self.now)['state'])
 
+class BoundaryTests(unittest.TestCase):
+    setUp = DefenseResultTests.setUp
+    def test_repeated_targets_cannot_cross_new_order(self):
+        for opening_title in ['NEW MAJOR ORDER', 'NOVA ORDEM IMPERATIVA', 'NOVA GRANDE ORDEM']:
+            opening = {'published': '2026-10-04T03:00:00Z', 'message': opening_title + '\nGATRIA and WASAT.'}
+            for title in ['MAJOR ORDER WON', 'MAJOR ORDER FAILED']:
+                with self.subTest(opening=opening_title, title=title):
+                    result = {**self.fixture['dispatch'], 'message': title + '\nGATRIA and WASAT.'}
+                    self.assertIsNone(rules.dispatch_outcome([self.fixture['opening'], opening, result], self.snapshot, self.now))
+
+    def test_explicit_id_still_links_previous_order(self):
+        opening = {'published': '2026-10-04T03:00:00Z', 'message': 'NEW MAJOR ORDER'}
+        result = {**self.fixture['dispatch'], 'message': 'MAJOR ORDER FAILED', 'assignmentId': self.snapshot['order']['id']}
+        self.assertEqual('failed', rules.dispatch_outcome([opening, result], self.snapshot, self.now)['state'])
+
+    def test_wrong_opening_id_blocks_matching_planets(self):
+        opening = {**self.fixture['opening'], 'assignmentId': 999}
+        result = {**self.fixture['dispatch'], 'message': 'MAJOR ORDER WON\nGATRIA and WASAT.'}
+        self.assertIsNone(rules.dispatch_outcome([opening, result], self.snapshot, self.now))
+
+    def test_result_before_new_opening_remains_valid(self):
+        opening = {'published': '2026-10-04T04:40:00Z', 'message': 'NEW MAJOR ORDER'}
+        self.assertEqual('completed', rules.dispatch_outcome(self.dispatches + [opening], self.snapshot, self.now)['state'])
+
+    def test_imperative_and_news(self):
+        for title, expected in [('ORDEM IMPERATIVA CONCLUÍDA', 'completed'), ('ORDEM IMPERATIVA FRACASSADA', 'failed'), ('NOTÍCIAS DA GUERRA', None)]:
+            with self.subTest(title=title):
+                result = {**self.fixture['dispatch'], 'message': title}
+                outcome = rules.dispatch_outcome([self.fixture['opening'], result], self.snapshot, self.now)
+                self.assertEqual(expected, outcome['state'] if outcome else None)
+
 if __name__ == '__main__':
     unittest.main()

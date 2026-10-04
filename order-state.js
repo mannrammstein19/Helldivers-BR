@@ -19,10 +19,22 @@ window.HDBROrderState = (() => {
   }
   const contextStop = new Set('THE AND FOR WITH FROM THAT THIS HAVE HAS WERE WAS ARE INTO THEIR THEM THEY YOUR YOU ITS OUR NOT NOW MUST BEEN WILL SHALL ORDER MAJOR PRINCIPAL ORDEM PEDIDO HELLDIVERS HELLDIVER SUPER EARTH TERRA ENEMIES ENEMY INIMIGOS INIMIGO KILL KILLS KILLED REQUIRED REQUISITE ENSURE RECEIVE RECEIVED PARA PELOS PELAS COMO MAIS ESTA ESTE ESSA ESSE TODOS TODAS SEUS SUAS SENDO DEVE DEVEM'.split(' '));
   const contextWords = v => norm(v).split(' ').filter(w => /^[A-Z]+$/.test(w)&&w.length>=4&&!contextStop.has(w)).map(w=>w.endsWith('S')?w.slice(0,-1):w);
+  const newOrderTitle=/^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)\b/;
+  function latestOpening(time,timeline) {
+    return timeline.filter(({d,time:t})=>t<=time&&(newOrderTitle.test(norm(d.title))||newOrderTitle.test(norm(d.message)))).sort((a,b)=>b.time-a.time)[0];
+  }
+  function crossesOrder(order,snapshot,time,timeline) {
+    const opening=latestOpening(time,timeline);
+    if(!opening)return false;
+    const d=opening.d,linked=d.assignmentId??d.assignmentID??d.majorOrderId;
+    // Um ID explícito tem prioridade; nomes repetidos nunca anulam a troca.
+    if(linked!=null)return String(linked)!==key(order);
+    return opening.time>date(snapshot?.first_seen_at)+300000;
+  }
   function contextualMatch(order,msg,time,candidates) {
     const expiry=date(order.expiration??order.expiresAt??order.expireTime);
     if(!Number.isFinite(expiry)||time<expiry-300000||time>expiry+86400000)return false;
-    const next=/^(?:NEW MAJOR ORDER|NOVA ORDEM (?:MAIOR|PRINCIPAL)|NOVO PEDIDO PRINCIPAL)\b/;
+    const next=newOrderTitle;
     if(candidates.some(({d,time:t})=>t>=expiry-300000&&t<=time&&(next.test(norm(d.title))||next.test(norm(d.message)))))return false;
     const words=contextWords([order.title,order.briefing,order.description].map(clean).join(' '));
     const announcement=contextWords(msg),shared=new Set(announcement);
@@ -36,8 +48,7 @@ window.HDBROrderState = (() => {
     // Vinculamos o anúncio à abertura da mesma ordem, sem atravessar uma nova.
     const start=date(snapshot?.first_seen_at),expiry=date(order.expiration??order.expiresAt??order.expireTime);
     if(!Number.isFinite(start)||!Number.isFinite(expiry)||time>expiry+86400000)return false;
-    const next=/^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL))|NOVO PEDIDO PRINCIPAL)\b/;
-    const opening=timeline.filter(({d,time:t})=>t<=time&&(next.test(norm(d.title))||next.test(norm(d.message)))).sort((a,b)=>b.time-a.time)[0];
+    const opening=latestOpening(time,timeline);
     if(!opening||opening.time>start+300000||time<=opening.time)return false;
     const d=opening.d,linked=d.assignmentId??d.assignmentID??d.majorOrderId;
     if(linked!=null)return String(linked)===key(order);
@@ -55,8 +66,8 @@ window.HDBROrderState = (() => {
     const targets=ids.map(id=>norm(catalog[id]?.name||catalog[id]?.names||snapshot?.target_planets?.[id]||''));
     const timeline=(Array.isArray(dispatches)?dispatches:[]).map(d=>({d,time:date(d.published??d.publishedAt??d.date??d.timestamp)})).filter(x=>Number.isFinite(x.time)&&x.time<=now+300000).sort((a,b)=>b.time-a.time);
     const candidates=timeline.filter(x=>x.time>=start);
-    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b/;
-    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b/;
+    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b/;
+    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b/;
     for(const {d,time} of candidates){
       const title=norm(d.title),body=norm(d.message),msg=[title,body].filter(Boolean).join(' ');
       const success=win.test(title)||win.test(body),failure=lose.test(title)||lose.test(body);
@@ -64,6 +75,7 @@ window.HDBROrderState = (() => {
       const linkedId=d.assignmentId??d.assignmentID??d.majorOrderId;
       if(linkedId!=null&&String(linkedId)!==key(order))continue;
       const explicit=linkedId!=null&&String(linkedId)===key(order);
+      if(!explicit&&crossesOrder(order,snapshot,time,timeline))continue;
       const planetMatch=ids.length>0&&targets.every(name=>name&&contains(msg,name));
       const orderTitle=norm(order.title);
       const specificTitle=orderTitle.split(' ').length>=3&&!['MAJOR ORDER','ORDEM MAIOR','PEDIDO PRINCIPAL'].includes(orderTitle)&&contains(msg,orderTitle);

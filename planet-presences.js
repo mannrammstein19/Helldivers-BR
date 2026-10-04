@@ -49,11 +49,15 @@ window.HDBRPresences=(()=>{'use strict';
    layer.appendChild(svg('rect',{x:left-1,y:top-1,width:size+2,height:size+2,rx:2,fill:'#11151b',stroke:e.color,'stroke-width':.6}));
    const image=svg('image',{href:base+e.file,x:left,y:top,width:size,height:size,preserveAspectRatio:'xMidYMid meet','class':'mapa-presence-icon presence-'+e.faction+(e.file.endsWith('.svg')?' presence-svg':''),'aria-hidden':'true'});layer.appendChild(image);
    // Arte decorativa vinculada à presença; não representa localização de nave real.
-   const model=e.key==='fleet'?'nave-iluminada':['fire','jet','cyborg'].includes(e.key)?'nave-automata':null;
+   const model=({fleet:'nave-frota-iluminada',appropriators:'nave-apropriadores',masses:'nave-iluminada',snatchers:'nave-raptores'})[e.key]||(['fire','jet','cyborg'].includes(e.key)?'nave-automata':null);
    if(model&&!drawnModels.has(model)){
     drawnModels.add(model);
-    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true'});
-    ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left-2,y:top-size*1.35,width:size*2.2,height:size*1.1,preserveAspectRatio:'xMidYMid meet'}));
+    const ship=svg('g',{'class':'mapa-presence-ship','aria-hidden':'true','data-model':model});
+    // Três sprites são composição decorativa, não contagem real informada pela API.
+    const small=e.key==='masses'||e.key==='snatchers';
+    const formation=small?[[.02,-1.15],[.57,-1.15],[.30,-.74]]:[[0,-1.6]];
+    formation.forEach(([dx,dy])=>ship.appendChild(svg('image',{'class':'presence-ship-hull',href:'imagens/guerra/modelos/'+model+'.webp',x:left+size*dx,y:top+size*dy,width:size*(small?.52:e.faction==='illuminate'?1:1.1),height:size*(small?.36:1.4),preserveAspectRatio:'xMidYMid meet'})));
+
     layer.appendChild(ship);
    }
   });

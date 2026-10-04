@@ -26,9 +26,9 @@ for(const [owner,color] of [[1,'#4da6ff'],[2,'#ff9900'],[3,'#ff4242'],[4,'#bf83f
 assert.equal(window.HDBRRegions.normalize({currentOwner:'Automatons',regions:[{isAvailable:true}]})[0].ownerColor,null,'missing region owner cannot inherit planet owner');
 const svg=(tag,attrs)=>{const el=element();el.tag=tag;el.attrs=attrs;return el};
 let group=element();window.HDBRPresences.mapBadges(group,{activeEffects:[1413,1414,1379]},0,0,6,svg);
-assert.equal(group.children[0].children.filter(n=>n.attrs.class==='mapa-presence-ship').length,1,'paired fleet IDs yield one decorative ship');
+assert.equal(group.children[0].children.filter(n=>n.attrs.class==='mapa-presence-ship').length,2,'paired fleet IDs yield one fleet model plus distinct appropriator model');
 group=element();window.HDBRPresences.mapBadges(group,{activeEffects:[1379]},0,0,6,svg);
-assert.equal(group.children[0].children.filter(n=>n.attrs.class==='mapa-presence-ship').length,0,'appropriators alone never manufacture fleet');
+assert.equal(group.children[0].children.filter(n=>n.attrs.class==='mapa-presence-ship').length,1,'appropriators have their own decorative model');
 window.HDBRWarData={meta:()=>({stale:true})};group=element();window.HDBRPresences.mapBadges(group,{activeEffects:[1413]},0,0,6,svg);
 assert.ok(group.children[0].attrs.class.includes('presence-stale'));
 const css=fs.readFileSync('planet-presences.css','utf8');assert.ok(css.includes('.presence-stale .presence-ship-hull'));assert.ok(css.includes('optimized-mode .presence-ship-hull'));assert.ok(css.includes('prefers-reduced-motion'));

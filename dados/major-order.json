@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "state": "pending",
+  "key": "2991945293",
+  "first_seen_at": "2026-10-02T22:21:03.063590Z",
+  "last_seen_at": "2026-10-04T00:45:00.294890Z",
+  "last_progress_update_at": "2026-10-04T00:45:00.294890Z",
+  "final_percent": 50.0,
+  "outcome_source": null,
+  "order": {
+    "id": 2991945293,
+    "progress": [
+      1,
+      0
+    ],
+    "title": "MAJOR ORDER",
+    "briefing": "Defend the designated planets, wielding the TD-110 Maelstrom Tank to support a public awareness sales campaign.",
+    "description": null,
+    "tasks": [
+      {
+        "type": 12,
+        "values": [
+          1,
+          2,
+          1,
+          173
+        ],
+        "valueTypes": [
+          3,
+          1,
+          11,
+          12
+        ]
+      },
+      {
+        "type": 12,
+        "values": [
+          1,
+          3,
+          1,
+          245
+        ],
+        "valueTypes": [
+          3,
+          1,
+          11,
+          12
+        ]
+      }
+    ],
+    "reward": {
+      "type": 1,
+      "amount": 30
+    },
+    "rewards": [
+      {
+        "type": 1,
+        "amount": 30
+      }
+    ],
+    "expiration": "2026-10-04T19:24:28.8426376Z",
+    "flags": 0
+  },
+  "target_planets": {
+    "173": "GATRIA",
+    "245": "WASAT"
+  },
+  "last_checked_at": "2026-10-04T06:26:22.003998Z",
+  "missing_since": "2026-10-04T06:26:22.003998Z"
+}

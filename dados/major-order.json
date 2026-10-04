@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "state": "pending",
+  "state": "completed",
   "key": "2991945293",
   "first_seen_at": "2026-10-02T22:21:03.063590Z",
   "last_seen_at": "2026-10-04T00:45:00.294890Z",
   "last_progress_update_at": "2026-10-04T00:45:00.294890Z",
-  "final_percent": 50.0,
-  "outcome_source": null,
+  "final_percent": 100.0,
+  "outcome_source": "dispatch",
   "order": {
     "id": 2991945293,
     "progress": [
@@ -65,6 +65,11 @@
     "173": "GATRIA",
     "245": "WASAT"
   },
-  "last_checked_at": "2026-10-04T06:26:22.003998Z",
-  "missing_since": "2026-10-04T06:26:22.003998Z"
+  "last_checked_at": "2026-10-04T04:52:47.238057Z",
+  "ended_at": "2026-10-04T04:35:21Z",
+  "outcome_dispatch": {
+    "id": 3944,
+    "published": "2026-10-04T04:35:21Z",
+    "message": "MAJOR ORDER WON \n\nBuoyed by inspiring footage of the Federation's greatest heroes decimating its greatest enemies, Maelstrom Tank sales to the public have skyrocketed. Citizens are clamoring for the opportunity to defend their homes and families with their very own Tank. \n\nThe Maelstrom Tank is available for Helldiver use in perpetuity."
+  }
 }

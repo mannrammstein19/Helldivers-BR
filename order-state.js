@@ -4,6 +4,7 @@ window.HDBROrderState = (() => {
   const key = o => o && String(o.id ?? o.id32 ?? o.assignmentId ?? o.assignmentID ?? o.settingId ?? o.settingID ?? [o.title,o.description,o.expiration??o.expiresAt].join('|'));
   const clean = v => String(typeof v === 'object' && v ? v['pt-BR'] || v['en-US'] || Object.values(v)[0] || '' : v ?? '').replace(/<[^>]*>/g, ' ');
   const norm = v => clean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim();
+  const heading = v => norm(clean(v).trim().split(/\r?\n/)[0]);
   const date = v => v == null || v === '' ? NaN : typeof v === 'number' ? (v < 1e10 ? v*1000 : v) : Date.parse(v);
   const read = () => {try{const v=JSON.parse(localStorage.getItem('hdbr_order_evidence_v2')||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch{return {}}};
   const save = value => {try{localStorage.setItem('hdbr_order_evidence_v2',JSON.stringify(value))}catch{}};
@@ -19,9 +20,9 @@ window.HDBROrderState = (() => {
   }
   const contextStop = new Set('THE AND FOR WITH FROM THAT THIS HAVE HAS WERE WAS ARE INTO THEIR THEM THEY YOUR YOU ITS OUR NOT NOW MUST BEEN WILL SHALL ORDER MAJOR PRINCIPAL ORDEM PEDIDO HELLDIVERS HELLDIVER SUPER EARTH TERRA ENEMIES ENEMY INIMIGOS INIMIGO KILL KILLS KILLED REQUIRED REQUISITE ENSURE RECEIVE RECEIVED PARA PELOS PELAS COMO MAIS ESTA ESTE ESSA ESSE TODOS TODAS SEUS SUAS SENDO DEVE DEVEM'.split(' '));
   const contextWords = v => norm(v).split(' ').filter(w => /^[A-Z]+$/.test(w)&&w.length>=4&&!contextStop.has(w)).map(w=>w.endsWith('S')?w.slice(0,-1):w);
-  const newOrderTitle=/^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)\b/;
+  const newOrderTitle=/^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)$/;
   function latestOpening(time,timeline) {
-    return timeline.filter(({d,time:t})=>t<=time&&(newOrderTitle.test(norm(d.title))||newOrderTitle.test(norm(d.message)))).sort((a,b)=>b.time-a.time)[0];
+    return timeline.filter(({d,time:t})=>t<=time&&(newOrderTitle.test(heading(d.title))||newOrderTitle.test(heading(d.message)))).sort((a,b)=>b.time-a.time)[0];
   }
   function crossesOrder(order,snapshot,time,timeline) {
     const opening=latestOpening(time,timeline);
@@ -29,13 +30,15 @@ window.HDBROrderState = (() => {
     const d=opening.d,linked=d.assignmentId??d.assignmentID??d.majorOrderId;
     // Um ID explícito tem prioridade; nomes repetidos nunca anulam a troca.
     if(linked!=null)return String(linked)!==key(order);
-    return opening.time>date(snapshot?.first_seen_at)+300000;
+    // Sem vínculo por ID, um anúncio posterior ao primeiro registro é outro ciclo.
+    // Empate de horário com o resultado também é ambíguo.
+    return opening.time>date(snapshot?.first_seen_at)||opening.time===time;
   }
   function contextualMatch(order,msg,time,candidates) {
     const expiry=date(order.expiration??order.expiresAt??order.expireTime);
     if(!Number.isFinite(expiry)||time<expiry-300000||time>expiry+86400000)return false;
     const next=newOrderTitle;
-    if(candidates.some(({d,time:t})=>t>=expiry-300000&&t<=time&&(next.test(norm(d.title))||next.test(norm(d.message)))))return false;
+    if(candidates.some(({d,time:t})=>t>=expiry-300000&&t<=time&&(next.test(heading(d.title))||next.test(heading(d.message)))))return false;
     const words=contextWords([order.title,order.briefing,order.description].map(clean).join(' '));
     const announcement=contextWords(msg),shared=new Set(announcement);
     const common=new Set(words.filter(w=>shared.has(w)));
@@ -49,9 +52,10 @@ window.HDBROrderState = (() => {
     const start=date(snapshot?.first_seen_at),expiry=date(order.expiration??order.expiresAt??order.expireTime);
     if(!Number.isFinite(start)||!Number.isFinite(expiry)||time>expiry+86400000)return false;
     const opening=latestOpening(time,timeline);
-    if(!opening||opening.time>start+300000||time<=opening.time)return false;
+    if(!opening||time<=opening.time)return false;
     const d=opening.d,linked=d.assignmentId??d.assignmentID??d.majorOrderId;
     if(linked!=null)return String(linked)===key(order);
+    if(opening.time>start)return false;
     const message=[norm(d.title),norm(d.message)].join(' ');
     if(targets.length)return targets.every(name=>name&&contains(message,name));
     const words=contextWords([order.title,order.briefing,order.description].map(clean).join(' '));
@@ -66,11 +70,11 @@ window.HDBROrderState = (() => {
     const targets=ids.map(id=>norm(catalog[id]?.name||catalog[id]?.names||snapshot?.target_planets?.[id]||''));
     const timeline=(Array.isArray(dispatches)?dispatches:[]).map(d=>({d,time:date(d.published??d.publishedAt??d.date??d.timestamp)})).filter(x=>Number.isFinite(x.time)&&x.time<=now+300000).sort((a,b)=>b.time-a.time);
     const candidates=timeline.filter(x=>x.time>=start);
-    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b/;
-    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b/;
+    const win=/^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)$/;
+    const lose=/^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)$/;
     for(const {d,time} of candidates){
       const title=norm(d.title),body=norm(d.message),msg=[title,body].filter(Boolean).join(' ');
-      const success=win.test(title)||win.test(body),failure=lose.test(title)||lose.test(body);
+      const success=win.test(heading(d.title))||win.test(heading(d.message)),failure=lose.test(heading(d.title))||lose.test(heading(d.message));
       if(success===failure)continue;
       const linkedId=d.assignmentId??d.assignmentID??d.majorOrderId;
       if(linkedId!=null&&String(linkedId)!==key(order))continue;

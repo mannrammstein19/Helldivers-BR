@@ -201,6 +201,11 @@ def normalized(value):
     return re.sub(r"[^A-Z0-9]+", " ", value.upper()).strip()
 
 
+def heading(value):
+    lines = clean_text(value).strip().splitlines()
+    return normalized(lines[0]) if lines else ""
+
+
 def target_ids(order):
     result = []
     for task in order.get("tasks") or []:
@@ -221,12 +226,12 @@ def context_words(value):
             if word.isalpha() and len(word) >= 4 and word not in CONTEXT_STOP]
 
 
-NEW_ORDER_TITLE = re.compile(r"^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)\b")
+NEW_ORDER_TITLE = re.compile(r"^(?:NEW MAJOR ORDER|NOVA (?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA))|NOVO PEDIDO PRINCIPAL)$")
 
 
 def latest_opening(time, timeline):
     openings = [(dt, d) for dt, d in timeline if dt <= time and
-                (NEW_ORDER_TITLE.search(normalized(d.get("title"))) or NEW_ORDER_TITLE.search(normalized(d.get("message"))))]
+                (NEW_ORDER_TITLE.search(heading(d.get("title"))) or NEW_ORDER_TITLE.search(heading(d.get("message"))))]
     return max(openings, key=lambda x: x[0]) if openings else None
 
 
@@ -239,7 +244,8 @@ def crosses_order(order, snapshot, time, timeline):
     # Um ID explícito tem prioridade; nomes repetidos nunca anulam a troca.
     if linked is not None:
         return str(linked) != order_key(order)
-    return dt > parse_date(snapshot["first_seen_at"]) + timedelta(minutes=5)
+    # Sem ID, não atravessar anúncio posterior nem empate com o resultado.
+    return dt > parse_date(snapshot["first_seen_at"]) or dt == time
 
 
 def contextual_dispatch_match(order, message, time, candidates):
@@ -249,7 +255,7 @@ def contextual_dispatch_match(order, message, time, candidates):
         return False
     new_order = NEW_ORDER_TITLE
     if any(expiry-timedelta(minutes=5) <= dt <= time and
-           (new_order.search(normalized(d.get("title"))) or new_order.search(normalized(d.get("message"))))
+           (new_order.search(heading(d.get("title"))) or new_order.search(heading(d.get("message"))))
            for dt, d in candidates):
         return False
     words = context_words(" ".join(clean_text(order.get(k)) for k in ("title", "briefing", "description")))
@@ -270,11 +276,13 @@ def cycle_dispatch_match(order, snapshot, time, timeline, names):
     if not found:
         return False
     dt, opening = found
-    if dt > start + timedelta(minutes=5) or time <= dt:
+    if time <= dt:
         return False
     linked = opening.get("assignmentId", opening.get("assignmentID", opening.get("majorOrderId")))
     if linked is not None:
         return str(linked) == order_key(order)
+    if dt > start:
+        return False
     message = f" {normalized(opening.get('title'))} {normalized(opening.get('message'))} "
     if names:
         return all(name and f" {name} " in message for name in names)
@@ -291,8 +299,8 @@ def dispatch_outcome(dispatches, snapshot, now=None):
     order = snapshot["order"]
     ids = target_ids(order)
     names = [normalized(snapshot.get("target_planets", {}).get(i, "")) for i in ids]
-    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)\b")
-    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)\b")
+    success_re = re.compile(r"^(?:MAJOR ORDER (?:COMPLETED|SUCCESSFUL|SUCCESS|VICTORY|WON)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:CONCLUIDA|COMPLETADA|VENCIDA|GANHA|CUMPRIDA|CONQUISTADA)|PEDIDO PRINCIPAL (?:GANHO|CONCLUIDO)|VITORIA NA ORDEM MAIOR)$")
+    fail_re = re.compile(r"^(?:MAJOR ORDER (?:FAILED|LOST|FAILURE)|(?:GRANDE ORDEM|ORDEM (?:MAIOR|PRINCIPAL|IMPERATIVA)) (?:PERDIDA|FRACASSADA|FALHOU)|PEDIDO PRINCIPAL (?:PERDIDO|FRACASSADO)|FALHA NO PEDIDO PRINCIPAL|DERROTA NA ORDEM MAIOR)$")
     candidates, timeline = [], []
     for d in as_list(dispatches):
         if not isinstance(d, dict):
@@ -305,8 +313,8 @@ def dispatch_outcome(dispatches, snapshot, now=None):
     for dt, d in sorted(candidates, key=lambda x: x[0], reverse=True):
         title, body = normalized(d.get("title")), normalized(d.get("message"))
         msg = f" {title} {body} "
-        success = bool(success_re.search(title) or success_re.search(body))
-        failure = bool(fail_re.search(title) or fail_re.search(body))
+        success = bool(success_re.search(heading(d.get("title"))) or success_re.search(heading(d.get("message"))))
+        failure = bool(fail_re.search(heading(d.get("title"))) or fail_re.search(heading(d.get("message"))))
         if success == failure:
             continue
         linked = d.get("assignmentId", d.get("assignmentID", d.get("majorOrderId")))

@@ -52,7 +52,7 @@
                 const pct = r.percent === null ? null : Math.floor(r.percent * 100 + 1e-8) / 100;
                 const label = pct === null ? 'Progresso indisponível' : pct.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '%';
                 const mapMode=document.body.classList.contains('mapa-immersive'),tag=mapMode?'details':'div';
-                const art = {active:'region_operacao',unavailable:'region_bloqueado',controlled:'region_recuperado'}[r.state];
+                const art = {active:'region_operacao',unavailable:'region_bloqueado',controlled:'region_recuperado',unknown:'region_sem_atualizacao'}[r.state];
                 const banner = art && document.body.classList.contains('mapa-immersive') ? `<img class="hd-region-banner" src="${escape(new URL('imagens/regioes/'+art+'.webp',assetBase).href)}" alt="" loading="lazy">` : '';
                 return `<${tag} class="hd-region-card hd-region-${r.state}">${mapMode?'<summary>':''}${banner}<div class="hd-region-title"><strong>${escape(r.name)}</strong><span>${escape(r.status)}</span></div>
                 ${mapMode?'</summary>':''}${r.identity ? `<div class="hd-region-kind">${r.ownerColor ? `<span class="hd-region-owner-icon" aria-hidden="true" style="--region-owner-color:${r.ownerColor};--region-icon:url('${escape(r.identity.icon)}')"></span>` : `<img src="${escape(r.identity.icon)}" width="30" height="30" alt="" loading="lazy">`}<span>${escape(r.identity.label)}</span></div>` : ''}

@@ -18,7 +18,7 @@
         return {type, label: type === 'factory' ? 'Megafábrica' : (citySizes[region.size] || 'Metrópole'),
             icon: new URL('imagens/ui/' + (type === 'factory' ? 'Automaton_Megafactory_Icon.webp' : 'Megacity_Icon.webp'), assetBase).href};
     }
-    function normalize(planet) {
+    function normalize(planet, readingStale = false) {
         return (Array.isArray(planet?.regions) ? planet.regions : []).filter(r => r && typeof r === 'object').map((r, i) => {
             const health = number(r.health), max = number(r.maxHealth), players = number(r.players);
             // A saúde pode ser reiniciada após a mudança de controle.
@@ -29,20 +29,20 @@
             const ownerColor = ({'1':'#4da6ff',human:'#4da6ff',humans:'#4da6ff','2':'#ff9900',terminid:'#ff9900',terminids:'#ff9900','3':'#ff4242',automaton:'#ff4242',automatons:'#ff4242','4':'#bf83ff',illuminate:'#bf83ff',illuminates:'#bf83ff'})[owner] || null;
             const validHealth = health !== null && max !== null && max > 0 && health >= 0 && health <= max;
             const completed = human && r.isAvailable === false;
-            const state = r.isAvailable === true ? 'active' : completed ? 'controlled' : enemy && r.isAvailable === false ? 'unavailable' : 'unknown';
+            const stale = readingStale || r.telemetryStale === true;
+            const state = stale && !completed ? 'unknown' : r.isAvailable === true ? 'active' : completed ? 'controlled' : enemy && r.isAvailable === false ? 'unavailable' : 'unknown';
             // Indisponibilidade sem controle confirmado não prova conquista.
             const percent = state === 'controlled' ? 100 : state === 'active' && enemy && validHealth ? (1 - health / max) * 100 : null;
-            return {ownerColor, readAt: number(r.telemetryReadAtMillis), stale: r.telemetryStale === true, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: r.isAvailable === true,
-                players: state === 'active' && players !== null && players >= 0 ? Math.floor(players) : null,
+            return {ownerColor, readAt: number(r.telemetryReadAtMillis), stale, identity: identity(r), name: name(r.name) || `Região ${i + 1}`, percent, state, available: state === 'active',
+                players: !stale && state === 'active' && players !== null && players >= 0 ? Math.floor(players) : null,
                 status: state === 'controlled' ? 'Limpo / Recuperado' : state === 'active' ? 'Disponível para operações' : state === 'unavailable' ? 'Bloqueado para operações' : 'Aguardando confirmação',
-                note: state === 'controlled' ? 'Controle humano confirmado pela API regional.' : state === 'unavailable' ? 'A região ainda não está disponível para operações.' : state === 'unknown' ? 'A leitura não confirma a disponibilidade ou recuperação.' : ''};
+                note: state === 'controlled' ? (stale ? 'Recuperação confirmada na última leitura regional; atualização pendente.' : 'Controle humano confirmado pela API regional.') : state === 'unavailable' ? 'A região ainda não está disponível para operações.' : state === 'unknown' ? (stale ? 'Última leitura regional preservada como histórico; situação atual não confirmada.' : 'A leitura não confirma a disponibilidade ou recuperação.') : ''};
         });
     }
-    const activeRegions = planet => normalize(planet).filter(r => r.available && r.state === 'active');
     function details(planet, source = 'campaigns') {
-        const rows = document.body.classList.contains('mapa-immersive') ? normalize(planet) : activeRegions(planet);
-        if (!rows.length) return '';
         const reading = window.HDBRWarData?.meta(`https://api.helldivers2.dev/api/v1/${source}`);
+        const rows = normalize(planet, reading?.stale === true);
+        if (!rows.length) return '';
         const regionTimes = rows.map(r => r.readAt).filter(t => t > 0);
         const stampTime = regionTimes.length ? Math.min(...regionTimes) : reading?.time;
         const stamp = stampTime ? `${reading?.stale || rows.some(r => r.stale) ? 'Última leitura salva' : 'Leitura'}: ${new Date(stampTime).toLocaleString('pt-BR')}` : 'Dados da região informados pela API';
@@ -70,13 +70,13 @@
     function paint() {
         const record = records.get(activeKey);
         if (!record || !dialog) return;
-        if (!activeRegions(record.planet).length) { close(); return; }
+        if (!normalize(record.planet).length) { close(); return; }
         dialog.querySelector('[data-region-content]').innerHTML = details(record.planet, record.source) || '<p>Não há regiões nesta leitura.</p>';
         dialog.querySelector('h2').textContent = 'Regiões · ' + (name(record.planet.name) || 'Planeta');
     }
     function close() { if (dialog?.open) dialog.close(); }
     function open(key, button) {
-        if (!records.has(key) || !activeRegions(records.get(key).planet).length) return;
+        if (!records.has(key) || !normalize(records.get(key).planet).length) return;
         if (!dialog) {
             dialog = document.createElement('dialog');
             dialog.className = 'hd-region-dialog';
@@ -97,7 +97,7 @@
     }
     function render(planet, source = 'campaigns') {
         if(document.body.classList.contains('mapa-immersive')) return details(planet,source);
-        const rows = document.body.classList.contains('mapa-immersive') ? normalize(planet) : activeRegions(planet);
+        const rows = normalize(planet);
         const key = source + ':' + String(planet?.index ?? name(planet?.name));
         records.set(key, {planet, source});
         if (activeKey === key) paint();

@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm');
+const ctx={URL,document:{currentScript:{src:'https://helldivers-br.pages.dev/planet-regions.js'},body:{classList:{contains:()=>true}},addEventListener(){}},window:{}};
+vm.createContext(ctx);vm.runInContext(fs.readFileSync('planet-regions.js','utf8'),ctx);
+const normalize=ctx.window.HDBRRegions.normalize;
+const old={id:0,hash:77,name:'Drywell',owner:'Automatons',isAvailable:true,health:2366,maxHealth:600000,players:16364,telemetryReadAtMillis:1791088141708};
+let r=normalize({regions:[{...old,telemetryStale:true}]})[0];assert.equal(r.state,'unknown');assert.equal(r.percent,null);assert.equal(r.players,null);assert.equal(r.available,false);
+r=normalize({regions:[old]},true)[0];assert.equal(r.state,'unknown');assert.equal(r.players,null);
+r=normalize({regions:[{...old,owner:'Humans',isAvailable:false,telemetryStale:true}]})[0];assert.equal(r.state,'controlled');assert.equal(r.percent,100);assert.equal(r.players,null);
+r=normalize({regions:[old]})[0];assert.equal(r.state,'active');assert.equal(r.players,16364);assert.ok(Math.abs(r.percent-99.6056666667)<0.000001);
+r=normalize({currentOwner:'Humans',regions:[{id:0,owner:null,isAvailable:null}]})[0];assert.equal(r.state,'unknown');assert.equal(r.percent,null);
+console.log('PASS: old active regions are history, confirmed recovery persists, new combat remains valid, planet ownership never invents regional recovery.');

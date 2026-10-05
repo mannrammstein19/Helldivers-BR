@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {CentralStore} from './core.mjs';
+const time=1791088141708;
+const old={id:0,hash:77,owner:'Automatons',isAvailable:true,health:2366,maxHealth:600000,players:16364,telemetryReadAtMillis:time,telemetrySource:'direct'};
+async function store(region=old){const memory=new Map([['resource:planets',{data:[{index:245,regions:[region]}]}]]);const s=new CentralStore({list:async()=>memory,put:async()=>{} });await s.ready;return s;}
+test('Wasat: region absent after conquest does not resurrect 99.60% or 16364 players',async()=>{const s=await store();const r=s.rememberRegions([{index:245,currentOwner:'Humans',regions:[{id:0,hash:77,owner:null}]}],'planets')[0].regions[0];assert.equal(r.owner,null);assert.equal(r.health,null);assert.equal(r.players,null);assert.equal(r.isAvailable,null);assert.equal(r.lastKnown.players,16364);assert.equal(r.telemetryReadAtMillis,time);assert.equal(r.telemetryStale,true);});
+test('repeated absence and restart retain historical timestamp without making it current',async()=>{const s=await store();const p=s.rememberRegions([{index:245,regions:[{id:0,hash:77}]}],'planets')[0];s.memory.set('resource:planets',{data:[p]});const r=s.rememberRegions([{index:245,regions:[{id:0,hash:77}]}],'planets')[0].regions[0];assert.equal(r.lastKnown.telemetryReadAtMillis,time);assert.equal(r.isAvailable,null);});
+test('confirmed recovered region survives absence, but new enemy reading supersedes it',async()=>{const s=await store({...old,owner:'Humans',isAvailable:false});const r=s.rememberRegions([{index:245,regions:[{id:0,hash:77}]}],'planets')[0].regions[0];assert.equal(r.owner,'Humans');assert.equal(r.isAvailable,false);assert.equal(r.players,null);const fresh={...old,telemetryReadAtMillis:time+100000,telemetryStale:false};assert.deepEqual(s.rememberRegions([{index:245,regions:[fresh]}],'planets')[0].regions[0],fresh);});
+test('changed region identity does not inherit history',async()=>{const s=await store();const r=s.rememberRegions([{index:245,regions:[{id:0,hash:78}]}],'planets')[0].regions[0];assert.equal(r.lastKnown,undefined);});

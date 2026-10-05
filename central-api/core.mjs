@@ -50,8 +50,15 @@ export class CentralStore{
   const previous=[...(this.memory.get('resource:planets')?.data||[]),...(this.memory.get('resource:campaigns')?.data||[]).map(c=>c.planet)];
   const byId=new Map();for(const p of previous){const prior=byId.get(p.index);if(!prior||Math.max(...(p.regions||[]).map(r=>r.telemetryReadAtMillis||0),0)>Math.max(...(prior.regions||[]).map(r=>r.telemetryReadAtMillis||0),0))byId.set(p.index,p);}
   const enrich=p=>({...p,regions:(p.regions||[]).map(r=>{
-   if(r.owner)return r;const old=byId.get(p.index)?.regions?.find(x=>x.id===r.id&&x.hash===r.hash&&x.owner&&x.telemetryReadAtMillis);
-   if(!old)return r;return {...r,owner:old.owner,health:old.health,regenPerSecond:old.regenPerSecond,isAvailable:old.isAvailable,availabilityFactor:old.availabilityFactor,players:old.players,telemetryReadAtMillis:old.telemetryReadAtMillis,telemetrySource:old.telemetrySource,telemetryStale:true};
+   if(r.owner&&r.telemetryStale!==true)return r;
+   const old=r.owner&&r.telemetryStale===true?r:byId.get(p.index)?.regions?.find(x=>x.id===r.id&&x.hash===r.hash&&(x.owner||x.lastKnown?.owner));
+   const evidence=old?.owner&&old.telemetryStale!==true?old:(old?.lastKnown||old);
+   if(!evidence?.owner||!evidence.telemetryReadAtMillis)return r;
+   const lastKnown={owner:evidence.owner,health:evidence.health,regenPerSecond:evidence.regenPerSecond,isAvailable:evidence.isAvailable,availabilityFactor:evidence.availabilityFactor,players:evidence.players,telemetryReadAtMillis:evidence.telemetryReadAtMillis,telemetrySource:evidence.telemetrySource};
+   // Ausência não confirma combate ativo nem conquista. Só a recuperação
+   // regional já confirmada permanece como resultado conhecido e datado.
+   const recovered=evidence.owner==='Humans'&&evidence.isAvailable===false;
+   return {...r,owner:recovered?'Humans':null,health:recovered?evidence.health:null,regenPerSecond:null,isAvailable:recovered?false:null,availabilityFactor:null,players:null,telemetryReadAtMillis:evidence.telemetryReadAtMillis,telemetrySource:evidence.telemetrySource,telemetryStale:true,lastKnown};
   })});
   return data.map(x=>name==='planets'?enrich(x):{...x,planet:enrich(x.planet)});
  }

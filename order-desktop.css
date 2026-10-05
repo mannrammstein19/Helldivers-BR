@@ -1,5 +1,5 @@
 @media(min-width:769px){
- .order-desktop-summary{min-height:var(--order-original-height)!important}
+ .order-desktop-summary{min-height:475px!important}
  .order-desktop-summary>.hd-mo-objectives-grid,.order-desktop-summary>.guerra-mo-grid,.order-desktop-summary>.hd-mo-objectives-head,.order-desktop-summary>.guerra-mo-head{display:none}
  .order-desktop-summary>.hd-mo-summary,.order-desktop-summary>.guerra-mo-summary{width:62%;grid-template-columns:repeat(3,minmax(0,1fr))}
  .order-desktop-summary>.hd-ov-brief,.order-desktop-summary>.guerra-order-brief,.order-desktop-summary>.hd-ov-title,.order-desktop-summary>h3,.order-desktop-summary>.hd-ov-kicker,.order-desktop-summary>.guerra-order-kicker{max-width:62%}
@@ -21,7 +21,7 @@
  .order-desktop-summary .order-show-objectives{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px;margin:0;font-size:13px;background:#0b0e10ed;min-height:48px}
  .order-desktop-summary .order-show-objectives span{color:#ccc;font:12px Arial,sans-serif}
  .order-desktop-summary>.hd-ov-order-foot,.order-desktop-summary>.guerra-order-foot{position:absolute;left:22px;right:22px;bottom:15px;max-width:none}
- .order-objectives-panel{position:absolute;bottom:calc(100% + 7px);left:0;right:0;max-height:min(430px,70vh,calc(var(--order-original-height) - 115px));overflow:auto;padding:18px;background:#080b0ef5;border:1px solid #ffe34daa;box-shadow:0 -12px 36px #0009;color:#eee;box-sizing:border-box}
+ .order-objectives-panel{position:absolute;bottom:calc(100% + 7px);left:0;right:0;max-height:min(430px,70vh,var(--order-panel-space,430px));overflow:auto;padding:18px;background:#080b0ef5;border:1px solid #ffe34daa;box-shadow:0 -12px 36px #0009;color:#eee;box-sizing:border-box}
  .order-objectives-panel[hidden]{display:none!important}
  .order-objectives-panel>header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:15px}
  .order-objectives-panel h2{font:700 18px 'Oswald',Arial,sans-serif;color:#ffe34d;margin:0}
@@ -44,3 +44,25 @@
 .order-objectives-panel .order-labeled-progress span{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;min-width:0}
 .order-objectives-panel .order-labeled-progress strong{font:700 11px/1.4 Arial,sans-serif;color:#fff;flex-shrink:0}
 
+
+/* Emblema fornecido: recorte visual das margens, sem deformar o arquivo. */
+.order-hud-title .order-hud-title-text{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.order-hud-title::after{display:none!important}
+.order-hud-emblem{display:block;position:relative;width:100%;aspect-ratio:2037/268;overflow:hidden}
+.order-hud-emblem img{position:absolute!important;left:0;top:-82%;width:100%!important;height:auto!important;max-width:none!important;margin:0!important}
+.order-hud-title{width:min(700px,100%);margin:12px 0 16px!important;line-height:1!important}
+@media(min-width:769px){
+ .guerra-order.order-desktop-summary{min-height:475px!important}
+ .order-objectives-panel>header{position:sticky;top:-18px;background:#080b0e;z-index:4;padding:8px 0}
+}
+@media(max-width:768px){.order-hud-title{width:100%;max-width:100%!important}}
+
+/* Mesma composição compacta no Início e na Central. */
+@media(min-width:769px){
+ #hd-ov-order{align-self:start}
+ #hd-ov-order>.hd-ov-order-main.order-desktop-summary{flex:0 0 auto}
+ .hd-ov-order-main.order-desktop-summary,.guerra-order.order-desktop-summary{box-sizing:border-box;padding:20px 22px 110px!important;min-height:475px!important}
+ .guerra-order.order-desktop-summary::before{width:100%;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)!important;mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.18) 78%,transparent 100%)!important}
+ .order-desktop-summary>.hd-ov-brief,.order-desktop-summary>.guerra-order-brief{margin:0 0 11px;font:12px/1.5 Arial,sans-serif;color:#c1c1c1}
+ .order-desktop-summary>.hd-mo-summary,.order-desktop-summary>.guerra-mo-summary{margin-top:13px}
+}

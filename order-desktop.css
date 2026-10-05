@@ -44,9 +44,3 @@
 .order-objectives-panel .order-labeled-progress span{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;min-width:0}
 .order-objectives-panel .order-labeled-progress strong{font:700 11px/1.4 Arial,sans-serif;color:#fff;flex-shrink:0}
 
-/* Na Central, os objetivos abertos ocupam espaço real, sem recorte pelo cartão. */
-@media(min-width:769px){
- body:not([data-order-only]) #ordem-maior .order-desktop-summary:has(.order-objectives-panel:not([hidden])){padding-bottom:70px!important}
- body:not([data-order-only]) #ordem-maior .order-desktop-summary:has(.order-objectives-panel:not([hidden]))>.order-objectives-popover{position:relative;inset:auto;margin-top:20px}
- body:not([data-order-only]) #ordem-maior .order-desktop-summary .order-objectives-panel:not([hidden]){position:relative;inset:auto;max-height:none;margin-top:10px;overflow:visible}
-}

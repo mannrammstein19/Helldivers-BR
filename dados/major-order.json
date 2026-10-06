@@ -1,48 +1,58 @@
 {
   "schema": 1,
-  "state": "completed",
-  "key": "2991945293",
-  "first_seen_at": "2026-10-02T22:21:03.063590Z",
-  "last_seen_at": "2026-10-04T00:45:00.294890Z",
-  "last_progress_update_at": "2026-10-04T00:45:00.294890Z",
-  "final_percent": 100.0,
-  "outcome_source": "dispatch",
+  "state": "active",
+  "key": "1249406358",
+  "first_seen_at": "2026-10-06T13:31:21.811261Z",
+  "last_seen_at": "2026-10-06T13:31:21.811261Z",
+  "last_progress_update_at": "2026-10-06T13:31:21.811261Z",
+  "final_percent": 0.2,
+  "outcome_source": null,
   "order": {
-    "id": 2991945293,
+    "id": 1249406358,
     "progress": [
-      1,
-      0
+      0,
+      806332
     ],
     "title": "MAJOR ORDER",
-    "briefing": "Defend the designated planets, wielding the TD-110 Maelstrom Tank to support a public awareness sales campaign.",
+    "briefing": "Liberate the designated planet and eliminate the mandated number of Illuminate hostiles in order to televise broadcasts of the sector's pacification.",
     "description": null,
     "tasks": [
       {
-        "type": 12,
+        "type": 11,
         "values": [
           1,
-          2,
           1,
-          173
+          228
         ],
         "valueTypes": [
           3,
-          1,
           11,
           12
         ]
       },
       {
-        "type": 12,
+        "type": 3,
         "values": [
-          1,
-          3,
-          1,
-          245
+          4,
+          0,
+          400000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "valueTypes": [
-          3,
           1,
+          2,
+          3,
+          4,
+          6,
+          5,
+          8,
+          9,
           11,
           12
         ]
@@ -50,26 +60,19 @@
     ],
     "reward": {
       "type": 1,
-      "amount": 30
+      "amount": 35
     },
     "rewards": [
       {
         "type": 1,
-        "amount": 30
+        "amount": 35
       }
     ],
-    "expiration": "2026-10-04T19:24:28.8426376Z",
+    "expiration": "2026-10-09T13:00:48.2991668Z",
     "flags": 0
   },
   "target_planets": {
-    "173": "GATRIA",
-    "245": "WASAT"
+    "228": "SENGE 23"
   },
-  "last_checked_at": "2026-10-04T04:52:47.238057Z",
-  "ended_at": "2026-10-04T04:35:21Z",
-  "outcome_dispatch": {
-    "id": 3944,
-    "published": "2026-10-04T04:35:21Z",
-    "message": "MAJOR ORDER WON \n\nBuoyed by inspiring footage of the Federation's greatest heroes decimating its greatest enemies, Maelstrom Tank sales to the public have skyrocketed. Citizens are clamoring for the opportunity to defend their homes and families with their very own Tank. \n\nThe Maelstrom Tank is available for Helldiver use in perpetuity."
-  }
+  "last_checked_at": "2026-10-06T13:31:21.538663Z"
 }

@@ -673,6 +673,7 @@
     }
 
     async function loadMajorOrderSnapshot() {
+        if (window.HDBRTelemetryConfig?.centralUrl && window.HDBROrderState?.loadSnapshot) return window.HDBROrderState.loadSnapshot();
         const now = Date.now();
         const cached = readMajorOrderStorage(ORDER_SNAPSHOT_CACHE, null);
         if (cached?.data && now - Number(cached.time || 0) < 30000) return cached.data;

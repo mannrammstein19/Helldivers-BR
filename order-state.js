@@ -1,5 +1,5 @@
 /* Resultado automático: anúncio explícito + vínculo com a ordem + data válida. */
-window.HDBROrderState = (() => {
+(typeof window !== 'undefined' ? window : globalThis).HDBROrderState = (() => {
   const terminal = s => ['completed', 'failed'].includes(s);
   const key = o => o && String(o.id ?? o.id32 ?? o.assignmentId ?? o.assignmentID ?? o.settingId ?? o.settingID ?? [o.title,o.description,o.expiration??o.expiresAt].join('|'));
   const clean = v => String(typeof v === 'object' && v ? v['pt-BR'] || v['en-US'] || Object.values(v)[0] || '' : v ?? '').replace(/<[^>]*>/g, ' ');
@@ -115,11 +115,19 @@ window.HDBROrderState = (() => {
     const cacheKey='hdbr_major_order_snapshot_v1';
     let cached;try{cached=JSON.parse(localStorage.getItem(cacheKey)||'null')}catch{}
     if(cached?.data?.order&&Date.now()-cached.time<30000)return cached.data;
-    for(const base of ['https://raw.githubusercontent.com/mannrammstein19/Helldivers-BR/main/dados/major-order.json','dados/major-order.json']) {
+    const central=String(window.HDBRTelemetryConfig?.centralUrl||'').replace(/\/+$/,'');
+    const bases=[...(central?[central+'/api/v1/major-order-state']:[]),'https://raw.githubusercontent.com/mannrammstein19/Helldivers-BR/main/dados/major-order.json','dados/major-order.json'];
+    for(const base of bases) {
       try {
         const response=await globalThis.fetch(`${base}?v=${Math.floor(Date.now()/30000)}`,{cache:'no-store',signal:AbortSignal.timeout(6000)});
         if(!response.ok)continue;const data=await response.json();
-        if(data?.order){try{localStorage.setItem(cacheKey,JSON.stringify({time:Date.now(),data}))}catch{}return data;}
+        if(data?.order){
+          // A delayed GitHub fallback must not replace a newer central cycle.
+          const previous=cached?.data,olderCycle=previous?.order&&key(previous.order)!==key(data.order)&&date(previous.first_seen_at)>date(data.first_seen_at);
+          const confirmed=previous?.order&&key(previous.order)===key(data.order)&&terminal(previous.state);
+          const selected=olderCycle||confirmed?previous:data;
+          try{localStorage.setItem(cacheKey,JSON.stringify({time:Date.now(),data:selected}))}catch{}return selected;
+        }
       }catch{}
     }
     return cached?.data||null;

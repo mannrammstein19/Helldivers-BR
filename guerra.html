@@ -24,6 +24,8 @@
 <script src="order-desktop.js?v=revisao31" defer></script>
 <link rel="stylesheet" href="planet-regions.css?v=refino16">
 <link rel="stylesheet" href="planet-presences.css?v=refino16">
+<link rel="stylesheet" href="personal-order.css?v=pessoal32">
+<script src="personal-order.js?v=pessoal32" defer></script>
 </head>
 <body class="fundo-guerra central-rounded">
 
@@ -119,6 +121,13 @@
         </div>
 
         <aside>
+<section class="hd-personal-order central-personal-order" data-personal-order aria-label="Ordem Pessoal">
+ <div class="hd-personal-deadline" data-personal-deadline hidden><span>Encerra em:</span><strong data-personal-time></strong></div>
+ <div class="hd-personal-title"><svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="16" cy="17" r="12"/><path d="M11 17l4 4 7-10M12 2h8"/></svg><h2>Ordem Pessoal</h2></div>
+ <p class="hd-personal-objective" data-personal-objective>Aguardando informação confirmada.</p>
+ <p class="hd-personal-status" data-personal-status>Consulte sua Ordem Pessoal no jogo.</p>
+ <div class="hd-personal-reward" data-personal-reward hidden><div class="hd-personal-reward-label"><span>RECOMPENSA</span>MEDALHAS DO BÔNUS DE GUERRA</div><div class="hd-personal-medal"><img src="imagens/icones/medals.png" alt="Medalhas" width="30" height="35"><strong data-personal-medals></strong></div></div>
+</section>
             <section class="guerra-panel">
                 <div class="guerra-panel-head"><h2>🛰 DSS</h2><small>Estação Democracia</small></div>
                 <div class="guerra-panel-body" id="dss"><div class="loading">Consultando estação...</div></div>

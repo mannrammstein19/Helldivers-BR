@@ -33,7 +33,7 @@ console.log('PASS: progresso válido/ausente, pressão positiva/negativa, primei
 const nodes=new Map();sandbox.document.getElementById=id=>{if(id==='tactical-modal')return null;if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',value:''});return nodes.get(id)};
 const fixtures=JSON.parse(fs.readFileSync(require('path').join(__dirname,'campanhas-171957.json'),'utf8'));
 a.renderCampaigns(fixtures);let html=nodes.get('frentes').innerHTML;
-assert.equal((html.match(/data-planet-key=/g)||[]).length,40);assert(html.includes('Avanço líquido / hora'));assert(html.includes('consulte o progresso separado'));assert(!html.includes('NaN'));assert(html.includes('-1.00%/h'));
+assert.equal((html.match(/data-planet-key=/g)||[]).length,40);assert(html.includes('Avanço líquido / hora'));assert(html.includes('data-progress-help'));assert(!html.includes('NaN'));assert(html.includes('-1.00%/h'));
 const absent=structuredClone(fixtures[0]);absent.planet.health=null;absent.planet.statistics.playerCount=null;a.renderCampaigns([absent]);assert(nodes.get('frentes').innerHTML.includes('indisponível'));
 const defense=structuredClone(fixtures[0]);defense.planet.event={health:500,maxHealth:1000,startTime:'2026-09-26T00:00:00Z',endTime:'2026-09-27T00:00:00Z'};a.renderCampaigns([defense]);assert(nodes.get('frentes').innerHTML.includes('Avanço da defesa / hora'));assert(nodes.get('frentes').innerHTML.includes('50.00%'));
 console.log('PASS: HTML gerado para 40 campanhas reais, dado ausente e defesa simulada; sem NaN.');

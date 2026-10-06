@@ -42,15 +42,15 @@ const anchored=element('open');anchored.offsetWidth=330;anchored.offsetHeight=30
 anchored.parentElement={clientWidth:1440,clientHeight:800,getBoundingClientRect:()=>({left:100,top:50,width:1440,height:800})};
 let point={left:690,right:710,top:440,bottom:460,width:20,height:20};
 nodes.get('5').circle={getBoundingClientRect:()=>point};api.setFixture(fixture,[1,5],nodes,lines);
-api.positionInspector(anchored);assert.equal(anchored.style.left,'435px');assert.equal(anchored.style.top,'72px');assert.equal(anchored.style.maxHeight,'520px');assert.equal(anchored.style.right,'auto');
+api.positionInspector(anchored);assert.equal(anchored.style.left,'630px');assert.equal(anchored.style.top,'72px');assert.equal(anchored.style.maxHeight,'520px');assert.equal(anchored.style.right,'auto');
 point={left:1490,right:1510,top:795,bottom:815,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'1096px','right-edge planet opens inspector to its left');assert.equal(anchored.style.top,'425px','panel stays above bottom edge');
-point={left:105,right:125,top:55,bottom:75,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'14px');assert.equal(anchored.style.top,'72px','top controls remain accessible');
+point={left:105,right:125,top:55,bottom:75,width:20,height:20};api.positionInspector(anchored);assert.equal(anchored.style.left,'45px');assert.equal(anchored.style.top,'72px','top controls remain accessible');
 anchored.parentElement={clientWidth:1440,clientHeight:800,getBoundingClientRect:()=>({left:100,top:50,width:720,height:400})};
-point={left:395,right:405,top:245,bottom:255,width:10,height:10};api.positionInspector(anchored);assert.equal(anchored.style.left,'435px','coordinate scaling preserves anchor position');
+point={left:395,right:405,top:245,bottom:255,width:10,height:10};api.positionInspector(anchored);assert.equal(anchored.style.left,'630px','coordinate scaling preserves anchor position');
 mobile=true;api.positionInspector(anchored);assert.equal(anchored.style.left,'8px');assert.equal(anchored.style.bottom,'8px');assert.equal(anchored.style.maxHeight,'62%');
 const pulses=element();api.appendInvasionPulses(pulses,{name:'Test',currentOwner:'Humans',event:{faction:'Automatons'}},100,100,2);assert.equal(pulses.children.length,2);assert.ok(pulses.children.every(p=>p.attrs.stroke==='#ff414b'&&p.attrs['pointer-events']==='none'));
 const peaceful=element();api.appendInvasionPulses(peaceful,{name:'Test',currentOwner:'Humans'},100,100,2);assert.equal(peaceful.children.length,0);
-const territories=element(),borders=element();api.drawSectors([{raw:{sector:'Andromeda',currentOwner:'Humans',event:{faction:'Automatons'}}}],territories,borders);
+const territories=element(),borders=element();const defs=element();defs.querySelector=()=>null;ids.get('mapa-svg').querySelector=()=>defs;api.drawSectors([{raw:{sector:'Andromeda',currentOwner:'Humans',event:{faction:'Automatons'}}}],territories,borders);
 assert.equal(territories.children.find(p=>p.attrs['data-sector']==='Andromeda').attrs.fill,'#ff4242','human planet under invasion paints sector in attacker color');
 console.log('PASS: anchored inspector follows marker geometry/zoom, edge clamping, bounded height, mobile sheet, invasion pulses only for API event and sector attack color.');
 

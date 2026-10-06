@@ -377,6 +377,7 @@
     async function autoTranslate(value) {
         const raw = clean(value);
         if (!raw) return '';
+        if(window.HDBRPublicText){try{return await window.HDBRPublicText.translate(raw);}catch{return raw;}}
         if (/^(major order|pedido principal|ordem maior)$/i.test(raw)) return 'ORDEM MAIOR';
 
         const cache = readTranslateCache();
@@ -395,7 +396,7 @@
             return translated;
         } catch (err) {
             console.warn('[Helldivers-BR] tradução automática indisponível, usando dicionário local:', err);
-            return translateDispatch(raw);
+            return raw;
         }
     }
 
@@ -839,7 +840,7 @@
         }).join('');
 
         box.innerHTML = `
-            <article class="guerra-order">
+            <article class="guerra-order" data-order-key="${escapeHTML(String(order.id??order.index??order.id32??rawBriefing))}">
                 <div class="guerra-order-kicker">${escapeHTML(kicker)}</div>
                 <h3>${escapeHTML(rawTitle)}</h3>
                 <p class="guerra-order-brief">${escapeHTML(rawBriefing)}</p>
@@ -875,7 +876,7 @@
         const h3 = article?.querySelector('h3');
         const p = article?.querySelector('.guerra-order-brief');
         if (h3 && title) h3.textContent = title;
-        if (p && briefing) p.textContent = briefing;
+        if (p && briefing) {p.textContent = briefing;const original=window.HDBRPublicText?.english(briefing);p.lang=original?'en':'pt-BR';p.title=original?'Tradução indisponível no momento; texto original.':'';}
     }
 
     function readPlanetHistory() {
@@ -1102,7 +1103,7 @@
             const defense = !!event;
             const enemy = event?.faction || p.currentOwner || 'Humans';
             const color = factionColor(enemy, defense);
-            const name = clean(p.name) || 'Planeta desconhecido';
+            const name = window.HDBRPublicText?.planetName(clean(p.name)) || clean(p.name) || 'Planeta desconhecido';
             const sector = clean(p.sector) || 'Setor desconhecido';
             const rawPlayers = telemetryNumber(p.statistics?.playerCount);
             const players = rawPlayers != null && rawPlayers >= 0 ? rawPlayers : null;
@@ -1110,7 +1111,7 @@
             const playerShare = players == null ? '—' : ((players / totalPlayers) * 100).toFixed(1);
             const hazardDetails = effectDetails(p, enemy, defense);
             const hazards = hazardDetails.map(h => h.name);
-            const biome = clean(p.biome?.name) || 'Bioma desconhecido';
+            const biome = window.HDBRPublicText?.biome(clean(p.biome?.name)) || clean(p.biome?.name) || 'Bioma desconhecido';
             const bgImg = planetImageUrl(p);
             const rate = getPlanetRate(p.index ?? name, defense ? 'defense' : 'attack');
             const defenseRed = defense ? defenseEnemyProgress(event) : null;
@@ -1214,8 +1215,8 @@
         // primeiro (não faz o usuário esperar) e troca pelo texto traduzido
         // automaticamente assim que ele chegar.
         box.innerHTML = items.map((d, i)=>{
-            const quick = translateDispatch(d.message);
-            return `<div class="feed-item" data-feed-index="${i}"><div class="feed-time">${escapeHTML(relativeDate(d.published))}</div><div class="feed-text">${escapeHTML(quick)}</div></div>`;
+            const quick = clean(d.message);
+            return `<div class="feed-item" data-feed-index="${i}"><div class="feed-time">${escapeHTML(relativeDate(d.published))}</div><div class="feed-text" lang="en" title="Texto original enquanto a tradução é carregada">${escapeHTML(quick)}</div></div>`;
         }).join('');
 
         const translations = await Promise.all(items.map(d => autoTranslate(d.message)));
@@ -1223,7 +1224,7 @@
         translations.forEach((text, i) => {
             if (!text) return;
             const el = box.querySelector(`[data-feed-index="${i}"] .feed-text`);
-            if (el) el.textContent = text;
+            if (el) {el.textContent = text;const original=window.HDBRPublicText?.english(text);el.lang=original?'en':'pt-BR';el.title=original?'Tradução indisponível no momento; texto original.':'';}
         });
     }
 
@@ -1416,9 +1417,9 @@
         const defense = !!event;
         const enemy = event?.faction || p.currentOwner || 'Humans';
         const color = factionColor(enemy, defense);
-        const name = clean(p.name) || 'Planeta desconhecido';
+        const name = window.HDBRPublicText?.planetName(clean(p.name)) || clean(p.name) || 'Planeta desconhecido';
         const sector = clean(p.sector) || 'Setor desconhecido';
-        const biome = clean(p.biome?.name) || 'Bioma desconhecido';
+        const biome = window.HDBRPublicText?.biome(clean(p.biome?.name)) || clean(p.biome?.name) || 'Bioma desconhecido';
         const rawPlayers = telemetryNumber(p.statistics?.playerCount);
         const players = rawPlayers != null && rawPlayers >= 0 ? rawPlayers : null;
         const totalPlayers = campaigns.reduce((sum,c)=>sum+Number(c?.planet?.statistics?.playerCount||0),0) || 1;

@@ -1,8 +1,8 @@
 /* Home localization: only public order/dispatch text, using the same translation
    provider already used by the Central. No API data, markup or private text is sent. */
-(() => {
+window.HDBRPublicText=(() => {
  'use strict';
- const KEY='hdbr-home-ptbr-v1',pending=new Map(),seen=new WeakMap();
+ const KEY='hdbr-home-ptbr-v1',pending=new Map();
  let cache={};try{cache=JSON.parse(localStorage.getItem(KEY)||'{}');}catch{}
  const known={
   'MAJOR ORDER':'ORDEM MAIOR','LIBERATE':'LIBERTAR','DEFEND':'DEFENDER',
@@ -29,7 +29,6 @@
  }
  async function translate(raw){
   raw=String(raw||'').trim();if(!raw)return raw;
-  if(window.HDBRPublicText)return window.HDBRPublicText.translate(raw);
   if(known[raw.toUpperCase()])return known[raw.toUpperCase()];
   if(cache[raw])return cache[raw];
   if(!english(raw))return raw;
@@ -51,25 +50,8 @@
   })();
   pending.set(raw,task);try{return await task;}finally{pending.delete(raw);}
  }
- const selector='#hd-ov-order .hd-ov-title,#hd-ov-order .hd-ov-brief,#hd-ov-order .hd-mo-task h4,#hd-ov-feed .hd-feed-text';
- function localize(){
-  document.querySelectorAll(selector).forEach(el=>{
-   const source=el.textContent.trim();if(!source||seen.get(el)===source)return;
-   seen.set(el,source);
-   translate(source).then(result=>{
-    if(!el.isConnected||el.textContent.trim()!==source)return;
-    seen.set(el,result);if(result!==source)el.textContent=result;
-    el.lang=english(result)?'en':'pt-BR';
-    el.title=english(result)?'Tradução indisponível no momento; texto original.':'';
-   }).catch(()=>{if(el.isConnected&&el.textContent.trim()===source){el.lang='en';el.title='Tradução indisponível no momento; texto original.';}});
-  });
- }
- function start(){
-  const overview=document.querySelector('.hd-overview-wrap');if(!overview)return;
-  let scheduled=false;
-  new MutationObserver(()=>{if(!scheduled){scheduled=true;queueMicrotask(()=>{scheduled=false;localize();});}}).observe(overview,{childList:true,subtree:true,characterData:true});
-  localize();
-  window.addEventListener('online',()=>{document.querySelectorAll(selector).forEach(el=>seen.delete(el));localize();});
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ function planetName(raw){return String(raw||'').toLowerCase().replace(/(^|[\s-])([\p{L}])/gu,(_,a,b)=>a+b.toUpperCase()).replace(/\b[ivxlcdm]+\b/gi,v=>v.length>1?v.toUpperCase():v);}
+ const biomes={'deciduous forest':'Floresta decídua','plains':'Planícies','tundra':'Tundra','icy glaciers':'Geleiras','deadlands':'Terras devastadas','desert oasis':'Oásis desértico','hive world':'Mundo colmeia','boneyard':'Cemitério','ionic jungle':'Selva iônica','volcanic jungle':'Selva vulcânica','haunted swamp':'Pântano assombrado','rocky canyons':'Cânions rochosos','desert dunes':'Dunas desérticas','desert cliffs':'Falésias desérticas','acidic badlands':'Terras ácidas','moon':'Lua'};
+ function biome(raw){return biomes[String(raw||'').toLowerCase()]||raw;}
+ return {translate,english,planetName,biome};
 })();

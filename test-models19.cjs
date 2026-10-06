@@ -5,7 +5,7 @@ function render(effects,stale=false){window.HDBRWarData={meta:()=>({stale})};con
 function groups(root){return root.children.flatMap(n=>n.children).filter(n=>n.attrs.class==='mapa-presence-ship')}
 for(const [ids,file,count] of [[[1377,1378],'nave-iluminada',3],[[1402,1403],'nave-raptores',3],[[1379,1380],'nave-apropriadores',1],[[1413,1414],'nave-frota-iluminada',1]]){
  const ships=groups(render(ids));assert.equal(ships.length,1,'paired IDs deduplicate');assert.equal(ships[0].children.length,count);
- for(const im of ships[0].children){assert.equal(im.attrs.href,'imagens/guerra/modelos/'+file+'.webp');assert.ok(fs.existsSync(im.attrs.href));if(count===3)assert.ok(im.attrs.width<=9*.52,'transports at most 52 percent of badge width')}
+ for(const im of ships[0].children){assert.equal(im.attrs.href,'imagens/guerra/modelos/'+file+'.webp');assert.ok(fs.existsSync(im.attrs.href));if(count===3)assert.ok(Math.abs(im.attrs.width-9*.52*1.05)<1e-9,'transport keeps approved five-percent enlargement')}
 }
 assert.equal(groups(render([1379,1413])).length,2,'different overship variants coexist');
 assert.equal(groups(render([1377,1402])).length,2,'different transport groups coexist');

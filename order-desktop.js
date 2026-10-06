@@ -1,6 +1,6 @@
 (() => {
  'use strict';
- const media=matchMedia('(min-width:769px)');let serial=0;
+ const media=matchMedia('(min-width:769px)'),states=new WeakMap();let serial=0;
  function decorate(card){
   const title=card.querySelector(':scope > .hd-ov-title,:scope > h3');
   if(title && /^ordem maior$/i.test(title.textContent.trim()) && !title.querySelector('.order-hud-emblem')){
@@ -16,6 +16,10 @@
  }
  function sync(root){
   const card=root.querySelector('.hd-ov-order-main,.guerra-order');if(!card)return;decorate(card);
+  const key=card.dataset.orderKey||'';
+  let state=states.get(root);
+  if(!state||state.key!==key){state?.resize?.disconnect();state={key,open:false,scroll:0};states.set(root,state);}
+  if(state.card!==card){state.resize?.disconnect();state.card=card;state.resize=null;}
   const grid=card.querySelector(':scope > .hd-mo-objectives-grid,:scope > .guerra-mo-grid');
   if(!grid)return;
   let wrap=card.querySelector('.order-objectives-popover');
@@ -26,12 +30,14 @@
    const id='order-objectives-panel-'+(++serial);
    wrap.innerHTML='<button type="button" class="order-show-objectives" aria-expanded="false" aria-controls="'+id+'">◆ Objetivos da Ordem <span>Mostrar ▴</span></button><section class="order-objectives-panel" id="'+id+'" aria-label="Objetivos da Ordem" hidden><header><h2>◆ Objetivos da Ordem</h2><button type="button" aria-label="Fechar objetivos">✕</button></header><div class="order-objectives-content"></div></section>';
    const button=wrap.firstElementChild,panel=wrap.lastElementChild;
-   const setOpen=(open,focus=false)=>{measure(card);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));button.querySelector('span').textContent=open?'Ocultar ▾':'Mostrar ▴';if(focus)button.focus();};
+   const setOpen=(open,focus=false)=>{state.open=open;measure(card);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));button.querySelector('span').textContent=open?'Ocultar ▾':'Mostrar ▴';if(focus)button.focus();};
    button.addEventListener('click',()=>setOpen(panel.hidden));
    panel.querySelector('button').addEventListener('click',()=>setOpen(false,true));
    wrap.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();setOpen(false,true);}});
    card.append(wrap);card.classList.add('order-desktop-summary');
-   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>measure(card)).observe(card);
+   panel.addEventListener('scroll',()=>{state.scroll=panel.scrollTop;});
+   setOpen(state.open);
+   if(typeof ResizeObserver!=='undefined'){state.resize=new ResizeObserver(()=>measure(card));state.resize.observe(card);}
    requestAnimationFrame(()=>measure(card));
   }
   const signature=grid.outerHTML;
@@ -39,7 +45,7 @@
     const bar=task.querySelector('.hd-mo-task-progress,.guerra-mo-progress');
     const label=task.querySelector('.hd-mo-task-progress-label,.guerra-mo-progress-label');
     if(bar&&label){bar.classList.add('order-labeled-progress');bar.append(label);}
-   });wrap.querySelector('.order-objectives-content').replaceChildren(clone);}
+   });wrap.querySelector('.order-objectives-content').replaceChildren(clone);wrap.lastElementChild.scrollTop=state.scroll;}
  }
  function start(){const roots=[document.getElementById('hd-ov-order'),document.getElementById('ordem-maior')].filter(Boolean);roots.forEach(root=>{new MutationObserver(()=>sync(root)).observe(root,{childList:true,subtree:true,characterData:true});sync(root);});media.addEventListener('change',()=>roots.forEach(sync));}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();

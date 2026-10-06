@@ -66,3 +66,7 @@
  .order-desktop-summary>.hd-ov-brief,.order-desktop-summary>.guerra-order-brief{margin:0 0 11px;font:12px/1.5 Arial,sans-serif;color:#c1c1c1}
  .order-desktop-summary>.hd-mo-summary,.order-desktop-summary>.guerra-mo-summary{margin-top:13px}
 }
+
+/* Recompensas não quebram palavras no resumo compacto. */
+.order-desktop-summary .order-reward{max-width:100%;flex-wrap:wrap}
+.order-desktop-summary .order-reward>span{word-break:normal;overflow-wrap:normal}

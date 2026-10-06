@@ -22,13 +22,45 @@
         panel.hidden = true;
         controls.forEach(control => panel.append(control));
         bar.append(button, panel);
-        main.prepend(bar);
-        function close() { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); }
+        const anchor = document.createComment('preferences-mobile-position');
+        main.prepend(anchor, bar);
+        document.body.classList.add('has-site-preferences');
+        const desktop = matchMedia('(min-width:769px) and (any-hover:hover)');
+        let dock = document.querySelector('.guerra-topbar');
+        if (!dock && document.getElementById('hd-ov-status')) {
+            dock = document.createElement('div');
+            dock.className = 'site-preferences-dock';
+            dock.dataset.home = '';
+            const title = document.createElement('strong');
+            title.textContent = 'HELLDIVERS-BR // COMANDO';
+            dock.append(title);
+            anchor.before(dock);
+        }
+        if (dock) dock.classList.add('preferences-dock');
+        function close() {
+            panel.hidden = true;
+            button.setAttribute('aria-expanded', 'false');
+            dock?.classList.remove('preferences-open');
+        }
+        function layout() {
+            close();
+            if (desktop.matches && dock) {
+                dock.append(bar);
+                if (dock.dataset.home !== undefined) {
+                    const status = document.getElementById('hd-ov-status');
+                    if (status) dock.append(status.closest('.telemetry-inline') || status);
+                }
+            } else anchor.after(bar);
+            document.dispatchEvent(new Event('hdbr:preferencesready'));
+        }
+        desktop.addEventListener('change', layout);
+        layout();
         button.addEventListener('click', () => {
             panel.hidden = !panel.hidden;
             button.setAttribute('aria-expanded', String(!panel.hidden));
+            if (desktop.matches) dock?.classList.toggle('preferences-open', !panel.hidden);
         });
-        document.addEventListener('click', event => { if (!bar.contains(event.target)) close(); });
+        document.addEventListener('click', event => { if (!event.composedPath().includes(bar)) close(); });
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape' && !panel.hidden) { close(); button.focus(); }
         });

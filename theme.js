@@ -411,11 +411,28 @@
         });
     }
 
+    function ensurePreferencesPanel() {
+        if (!document.querySelector('link[data-hd-preferences-style]')) {
+            const css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = new URL('site-preferences.css?v=compact37', SITE_BASE_URL).href;
+            css.dataset.hdPreferencesStyle = '';
+            document.head.append(css);
+        }
+        if (!document.querySelector('script[data-hd-preferences-script]')) {
+            const script = document.createElement('script');
+            script.src = new URL('site-preferences.js?v=compact37', SITE_BASE_URL).href;
+            script.dataset.hdPreferencesScript = '';
+            document.head.append(script);
+        }
+    }
+
     function initializeThemeUI() {
         ensureThemeButton();
         ensureZoomControl();
         ensureAnthemPlayer();
         ensureGlobalSearchScript();
+        ensurePreferencesPanel();
         applyTheme(readTheme());
         applyZoom(readZoom());
     }

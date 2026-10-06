@@ -4,7 +4,7 @@
 .site-preferences-toggle svg{width:19px;height:19px;fill:none;stroke:#e6e84b;stroke-width:2;stroke-linecap:round}
 .site-preferences-toggle:hover,.site-preferences-toggle[aria-expanded="true"]{border-color:#e6e84b;color:#f4ed61;background:#1c2426}
 .site-preferences-toggle[aria-expanded="true"] .preferences-chevron{transform:rotate(180deg)}
-.site-preferences-panel{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:360px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;padding:16px;box-sizing:border-box;border:1px solid #686b3f;border-radius:18px;background:#11181ff7;color:#f1f2d8;box-shadow:0 16px 48px #0009}
+.site-preferences-panel{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:360px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;padding:16px;box-sizing:border-box;border:1px solid #686b3f;border-radius:18px;background:#11181f;color:#f1f2d8;box-shadow:0 16px 48px #0009}
 .site-preferences-panel[hidden]{display:none!important}
 .site-preferences-panel .site-theme-wrap,.site-preferences-panel .site-zoom-wrap,.site-preferences-panel .site-audio-wrap{margin:0!important;padding:0!important;border:0!important;width:100%;box-sizing:border-box}
 .site-preferences-panel .site-zoom-wrap,.site-preferences-panel .site-audio-wrap{margin-top:12px!important}
@@ -42,46 +42,12 @@
 .telemetry-help.opens-above .telemetry-help-panel{top:auto;bottom:100%}
 .mobile-welcome>.telemetry-inline{display:flex;justify-content:flex-end;margin-bottom:10px}
 
-/* Patch38: a própria faixa vira o console de preferências no computador. */
-.site-preferences-dock{display:flex;align-items:center;gap:14px;padding:10px 16px;margin-bottom:16px;border:1px solid #6a7041;border-left:4px solid #e6e84b;border-radius:18px;background:#0c1219e8;font:700 12px/1.4 Arial,sans-serif;color:#e6e84b}
-@media(min-width:769px){
- .preferences-dock{position:relative;z-index:60;border-radius:18px;min-height:48px;box-sizing:border-box}
- .preferences-dock>.site-preferences-bar{margin:0 0 0 auto;width:auto;justify-content:flex-end;flex:none}
- .preferences-dock .site-preferences-toggle{padding:5px 12px;min-height:30px;font-size:11px;box-shadow:none}
- .preferences-dock .site-preferences-toggle span{color:#e6e84b;font-size:11px}
- .preferences-dock.preferences-open>strong,.preferences-dock.preferences-open>.telemetry-inline,.preferences-dock.preferences-open>#hd-ov-status{display:none!important}
- .preferences-dock.preferences-open>.site-preferences-bar{width:100%;display:flex;align-items:center;gap:12px;justify-content:space-between}
- .preferences-dock .site-preferences-panel{position:static;transform:none;display:grid;grid-template-columns:minmax(110px,.7fr) minmax(175px,1fr) minmax(210px,1.15fr);gap:12px;width:auto;max-width:none;max-height:none;overflow:visible;flex:1;min-width:0;padding:0;border:0;background:none;box-shadow:none;text-transform:none;letter-spacing:normal}
- .preferences-dock .site-preferences-panel .site-theme-wrap,.preferences-dock .site-preferences-panel .site-zoom-wrap,.preferences-dock .site-preferences-panel .site-audio-wrap{margin:0!important;min-width:0}
- .preferences-dock .site-preferences-panel .site-theme-toggle{height:64px;border-color:#937cdf;background:linear-gradient(120deg,#282244,#151e2a);box-shadow:inset 3px 0 #b29cff}
- .preferences-dock .site-preferences-panel .site-zoom-panel{border-color:#59a9d2;background:linear-gradient(120deg,#123043,#141e2b);box-shadow:inset 3px 0 #65c8f7}
- .preferences-dock .site-preferences-panel .site-audio-panel{border-color:#cfad4e;background:linear-gradient(120deg,#343018,#1d211c);box-shadow:inset 3px 0 #f7d767}
- .preferences-dock .site-preferences-panel .site-zoom-panel,.preferences-dock .site-preferences-panel .site-audio-panel{padding:7px 10px;height:64px;box-sizing:border-box}
- .preferences-dock .site-preferences-panel small{display:none!important}
- .preferences-dock .site-preferences-panel .site-zoom-head,.preferences-dock .site-preferences-panel .site-audio-head{font-size:9px;line-height:12px;letter-spacing:1px}
- .preferences-dock .site-preferences-panel .site-zoom-controls,.preferences-dock .site-preferences-panel .site-audio-controls{margin-top:5px;gap:7px}
- .preferences-dock .site-preferences-panel .site-zoom-btn,.preferences-dock .site-preferences-panel .site-zoom-reset,.preferences-dock .site-preferences-panel .site-audio-toggle{height:30px;min-height:30px;min-width:32px;font-size:14px}
- .preferences-dock .site-preferences-panel .site-audio-status{display:none}
- .preferences-dock .site-preferences-panel .site-theme-toggle small{display:block!important;font-size:9px}
- .preferences-dock .site-preferences-panel .site-audio-volume{width:100%;height:25px}
-}
-@media(min-width:769px) and (max-width:1000px){
- .preferences-dock.preferences-open>.site-preferences-bar{gap:8px}
- .preferences-dock .site-preferences-panel{gap:6px;grid-template-columns:minmax(75px,.6fr) minmax(120px,1fr) minmax(140px,1.1fr)}
- .preferences-dock .site-preferences-toggle{padding:5px 7px}
- .preferences-dock .site-preferences-toggle>span:not(.preferences-chevron){display:none}
-}
-@media(max-width:768px),(orientation:landscape) and (hover:none) and (pointer:coarse){
- body.has-site-preferences.has-mobile-navigation{padding-top:0!important}
- body.has-site-preferences.has-mobile-navigation .mobile-header{display:none!important}
- body.has-site-preferences.has-mobile-navigation .main-content{padding-top:8px!important}
- body.has-site-preferences.has-mobile-navigation .sidebar{top:0!important;max-height:calc(100dvh - 85px - env(safe-area-inset-bottom))}
- .site-preferences-dock{display:none}
- .site-preferences-bar{margin-top:0;margin-bottom:8px}
- .site-preferences-toggle{min-height:32px;padding:5px 12px}
-}
-.site-preferences-bar{z-index:80}
-.preferences-dock .site-preferences-panel .site-zoom-head span{color:#79d1ff;font-size:9px}
-.preferences-dock .site-preferences-panel .site-audio-head span{color:#ffe28a;font-size:9px}
-.preferences-dock .site-preferences-panel .site-theme-toggle>span{color:#e6deff;font-size:11px}
-.preferences-dock .site-preferences-panel .site-zoom-reset span{color:#e0f3ff;font-size:11px}
+/* Patch39: botão acima da busca; painel lateral fora da rolagem do menu. */
+.sidebar .site-preferences-bar{justify-content:flex-start;margin:12px 0;width:100%;z-index:2400}
+.sidebar .site-preferences-toggle{width:100%;justify-content:flex-start;border-radius:12px}
+.preferences-chevron{margin-left:auto}
+.sidebar .site-preferences-panel{position:fixed;transform:none;top:12px;left:280px;z-index:1700;padding-top:46px;max-width:calc(100vw - 24px)}
+.preferences-close{position:absolute;top:9px;right:12px;width:30px;height:30px;border:1px solid #65717b;border-radius:8px;background:#182229;color:#eef0df;font-size:23px;cursor:pointer}
+.site-preferences-panel .site-theme-toggle{border-color:#937cdf;background:linear-gradient(120deg,#282244,#151e2a);box-shadow:inset 3px 0 #b29cff}
+.site-preferences-panel .site-zoom-panel{border-color:#59a9d2;background:linear-gradient(120deg,#123043,#141e2b);box-shadow:inset 3px 0 #65c8f7}
+.site-preferences-panel .site-audio-panel{border-color:#cfad4e;background:linear-gradient(120deg,#343018,#1d211c);box-shadow:inset 3px 0 #f7d767}

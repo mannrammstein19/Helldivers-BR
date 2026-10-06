@@ -41,8 +41,8 @@
     const anchor=document.createComment('telemetry-position');host.before(anchor,group);group.append(host);
     if(host.id==='hd-ov-status'&&typeof matchMedia==='function'){
      const mobile=matchMedia('(max-width:768px), (orientation:landscape) and (hover:none) and (pointer:coarse)');
-     const place=()=>{const target=document.querySelector('.mobile-welcome');if(mobile.matches&&target){if(getComputedStyle(target).display!=='none')target.prepend(group);else {const bar=document.querySelector('.site-preferences-bar');if(bar)bar.after(group);else anchor.after(group);}}else {const dock=document.querySelector('.site-preferences-dock[data-home]');if(dock)dock.append(group);else anchor.after(group);}};
-     mobile.addEventListener('change',place);document.addEventListener('hdbr:preferencesready',place);place();
+     const place=()=>{const target=document.querySelector('.mobile-welcome');if(mobile.matches&&target&&getComputedStyle(target).display!=='none')target.prepend(group);else anchor.after(group);};
+     mobile.addEventListener('change',place);place();
     }
     box=document.createElement('details');box.id='war-data-status';box.className='telemetry-help';
     const summary=document.createElement('summary');summary.textContent='?';summary.setAttribute('aria-label','Ver horários, fontes e diagnóstico da telemetria');

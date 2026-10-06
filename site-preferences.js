@@ -22,43 +22,49 @@
         panel.hidden = true;
         controls.forEach(control => panel.append(control));
         bar.append(button, panel);
-        const anchor = document.createComment('preferences-mobile-position');
-        main.prepend(anchor, bar);
+        const search = sidebar.querySelector('[data-hd-global-search]');
+        if (search) search.before(bar);
+        else (sidebar.querySelector('.logo-container') || sidebar.firstElementChild).after(bar);
+        // A busca carrega separadamente; conserva a ordem também quando chega depois.
+        const observer = new MutationObserver(() => {
+            const search = sidebar.querySelector('[data-hd-global-search]');
+            if (search && search.previousElementSibling !== bar) search.before(bar);
+        });
+        observer.observe(sidebar, {childList:true});
         document.body.classList.add('has-site-preferences');
-        const desktop = matchMedia('(min-width:769px) and (any-hover:hover)');
-        let dock = document.querySelector('.guerra-topbar');
-        if (!dock && document.getElementById('hd-ov-status')) {
-            dock = document.createElement('div');
-            dock.className = 'site-preferences-dock';
-            dock.dataset.home = '';
-            const title = document.createElement('strong');
-            title.textContent = 'HELLDIVERS-BR // COMANDO';
-            dock.append(title);
-            anchor.before(dock);
-        }
-        if (dock) dock.classList.add('preferences-dock');
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'preferences-close';
+        dismiss.textContent = '×';
+        dismiss.setAttribute('aria-label', 'Fechar preferências');
+        panel.prepend(dismiss);
         function close() {
             panel.hidden = true;
             button.setAttribute('aria-expanded', 'false');
-            dock?.classList.remove('preferences-open');
         }
-        function layout() {
-            close();
-            if (desktop.matches && dock) {
-                dock.append(bar);
-                if (dock.dataset.home !== undefined) {
-                    const status = document.getElementById('hd-ov-status');
-                    if (status) dock.append(status.closest('.telemetry-inline') || status);
-                }
-            } else anchor.after(bar);
-            document.dispatchEvent(new Event('hdbr:preferencesready'));
+        function position() {
+            if (panel.hidden) return;
+            const zoom = Number(document.documentElement.dataset.hdZoom || 100) / 100;
+            const width = document.documentElement.clientWidth / zoom;
+            const height = window.innerHeight / zoom;
+            const edge = sidebar.getBoundingClientRect().right / zoom;
+            const top = button.getBoundingClientRect().top / zoom;
+            const panelWidth = Math.min(360, width - 24);
+            const left = edge + 12 + panelWidth <= width - 12 ? edge + 12 : Math.max(12, width - panelWidth - 12);
+            panel.style.width = panelWidth + 'px';
+            panel.style.left = left + 'px';
+            panel.style.maxHeight = Math.max(100, height - 24) + 'px';
+            panel.style.top = Math.max(12, Math.min(top, height - panel.offsetHeight - 12)) + 'px';
         }
-        desktop.addEventListener('change', layout);
-        layout();
+        // Os controles atualizam o próprio conteúdo; o menu móvel não deve interpretar isso como clique externo.
+        panel.addEventListener('click', event => event.stopPropagation());
+        dismiss.addEventListener('click', () => { close(); button.focus(); });
+        window.addEventListener('resize', position);
+        sidebar.addEventListener('scroll', position, {passive:true});
         button.addEventListener('click', () => {
             panel.hidden = !panel.hidden;
             button.setAttribute('aria-expanded', String(!panel.hidden));
-            if (desktop.matches) dock?.classList.toggle('preferences-open', !panel.hidden);
+            position();
         });
         document.addEventListener('click', event => { if (!event.composedPath().includes(bar)) close(); });
         document.addEventListener('keydown', event => {

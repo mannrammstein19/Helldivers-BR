@@ -1152,3 +1152,39 @@ body.central-rounded .guerra-filter{min-height:44px;}
 #tactical-modal .tactical-intel-grid small{font-size:10px;color:#a8b4c0}
 #tactical-modal .tactical-intel-grid strong{font-size:15px;color:#e8edf2}
 @media(max-width:360px){#tactical-modal .tactical-modal-intel>.tactical-intel-grid{grid-template-columns:1fr}}
+
+/* DSS 36 — estação e ações em cartões compactos, inspirados no HUD. */
+.dss-station{width:100%;min-width:0;color:#dce7ea;font-family:Arial,sans-serif}
+.dss-location{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#090f14;border:1px solid #34444e;border-radius:14px 14px 0 0}
+.dss-location h3{margin:0;color:var(--dss-owner);font:800 19px/1.2 'Oswald',Impact,sans-serif;letter-spacing:.035em;overflow-wrap:anywhere}
+.dss-location p{margin:4px 0 0;font-size:10px;letter-spacing:.12em;color:#bacbd2;text-transform:uppercase}
+.dss-location>img{width:46px;height:46px;object-fit:contain;flex-shrink:0}
+.dss-landscape-frame{height:clamp(110px,15vw,165px);position:relative;overflow:hidden;border-inline:1px solid #34444e;background:#111d29}
+.dss-landscape{width:100%;height:100%;object-fit:cover;display:block}
+.dss-jump{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#090f14;border:1px solid #34444e;border-radius:0 0 14px 14px;padding:10px 12px;font-size:12px;font-variant-numeric:tabular-nums}
+.dss-jump>strong{text-transform:uppercase;font-size:11px;color:#b6d4e2}
+.dss-jump>span{font-weight:800;color:#d8edf6}.dss-jump small{font-size:10px;color:#e5c776}
+.dss-reading-note{margin:9px 0;padding:8px 10px;border:1px solid #6d5b30;border-radius:8px;color:#e2c784;font-size:11px;line-height:1.5}
+.dss-tactical-list{display:grid;gap:10px;margin-top:12px}
+.dss-tactical{border:1px solid #50768a;border-radius:12px;background:#14212a;overflow:hidden;padding:10px;min-width:0}
+.dss-tactical h4{margin:0 0 8px;color:#bdddea;font:800 15px/1.2 'Oswald',Impact,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.dss-tactical-body{display:flex;align-items:stretch;gap:7px}
+.dss-tactical-body>p{flex:1;min-width:0;margin:0;padding:7px 8px;border:1px solid #65717a;background:#0b1117;color:#dce6eb;font-size:11px;line-height:1.45}
+.dss-tactical-icon{width:44px;height:44px;align-self:center;padding:4px;box-sizing:border-box;border:1px solid #65717a;background:#0b1117;object-fit:contain;flex:0 0 44px}
+.dss-tactical-active{border-color:#ffe600;background:#1c1c10}.dss-tactical-active h4{color:#ffe600}.dss-tactical-active .dss-tactical-icon{border-color:#ffe600}
+.dss-active-description{margin:8px 0 0;padding:8px;border:1px solid #b8a600;color:#f0df76;background:#25220b;font-size:11px;line-height:1.45}
+.dss-active-duration{background:#ffe600;color:#10120b;text-align:center;margin:0 -10px -10px;padding:8px 18px;border-top:1px solid #b8a600;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.dss-tactical-state{margin:7px 0 0;color:#c1d8e1;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.dss-funding-row{display:flex;align-items:center;gap:9px;margin-top:7px}
+.dss-funding-track{height:10px;border:2px solid #05090d;background:#34434b;flex:1;min-width:0;overflow:hidden}
+.dss-funding-track i{display:block;height:100%;max-width:100%;background:#b8ddec}
+.dss-resource{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums}
+.dss-resource img{width:15px;height:15px;object-fit:contain}.dss-resource>span{font-weight:bold}
+.dss-estimate{margin:5px 0 0;text-align:center;color:#a9bec9;font-size:10px;line-height:1.4}
+.dss-tactical-pending,.dss-tactical-offline{border-color:#5a6267}.dss-tactical-pending .dss-tactical-state{color:#e2c784}
+@media(max-width:600px){.dss-landscape-frame{height:140px}.dss-location h3{font-size:19px}.dss-tactical h4{font-size:16px}.dss-tactical-body>p{font-size:12px}.dss-tactical-icon{width:48px;height:48px;flex-basis:48px}.dss-jump{font-size:12px}}
+.dss-jump>strong small{display:block;margin-top:3px;color:#9bb3bd;font-size:9px;text-transform:none;font-weight:normal;letter-spacing:0}
+.dss-tactical-pending .dss-active-duration{background:#28313a;color:#e2c784;border-color:#56616b}
+.dss-location>div{flex:1;min-width:0}.dss-location>.dss-location-faction{width:28px;height:28px}
+.dss-tactical-active .dss-tactical-icon{filter:sepia(1) saturate(8) hue-rotate(9deg) brightness(1.8)}
+.dss-tactical:not(.dss-tactical-active) .dss-tactical-icon{filter:grayscale(1);opacity:.85}

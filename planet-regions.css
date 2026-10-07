@@ -56,3 +56,9 @@
 
 /* Cor exclusivamente do dono regional confirmado; tipo e progresso preservados. */
 .hd-region-owner-icon{display:block;flex:none;width:30px;height:30px;background:var(--region-owner-color);mask:var(--region-icon) center/contain no-repeat;-webkit-mask:var(--region-icon) center/contain no-repeat}
+
+/* As mesmas faixas de estado no mapa e na Central de Guerra. */
+.hd-region-list .hd-region-cover{position:relative;min-height:84px;display:flex;align-items:center;margin:-10px -10px 10px;padding:12px;border-radius:11px 11px 0 0;overflow:hidden;background:#1d252b}
+.hd-region-list .hd-region-banner{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;filter:none;pointer-events:none}
+.hd-region-cover .hd-region-title{position:relative;z-index:1;text-shadow:0 1px 3px #000,0 0 6px #000}
+.hd-region-cover .hd-region-title>strong,.hd-region-cover .hd-region-title>span{color:#fff}

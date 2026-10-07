@@ -32,12 +32,11 @@ window.HDBRTCSPulse=(()=>{
   update();timer=setTimeout(run,60);
  }
  function sync(root){
-  if(timer!=null){clearTimeout(timer);timer=null;}
   nodes=root?.querySelectorAll?[...root.querySelectorAll('.mapa-tcs-pulse-frame')]:[];
-  update();run();
+  update();if(timer==null)run();
  }
  function layer(group,p,x,y,radius,svg,state){
-  if(!state||state.stale||!['allied','attacked'].includes(state.state))return;
+  if(!state||!['allied','attacked'].includes(state.state))return;
   const size=radius*8;
   const pulse=svg('svg',{class:'mapa-tcs-pulse',x:x-size/2,y:y-size/2,width:size,height:size,viewBox:'0 0 96 96',overflow:'hidden','pointer-events':'none','aria-hidden':'true'});
   // Borda circular suave evita que os limites quadrados do GIF apareçam no mapa.
@@ -47,9 +46,13 @@ window.HDBRTCSPulse=(()=>{
   gradient.appendChild(svg('stop',{offset:'1','stop-color':'white','stop-opacity':0}));
   const mask=svg('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:96,height:96});
   mask.appendChild(svg('circle',{cx:48,cy:48,r:48,fill:`url(#${id}-gradient)`}));
-  defs.appendChild(gradient);defs.appendChild(mask);pulse.appendChild(defs);
+  defs.appendChild(gradient);defs.appendChild(mask);
+  // Luminância preserva a textura; o pulso inteiro recebe a mesma tonalidade azul.
+  const blueID=id+'-blue',blue=svg('filter',{id:blueID,x:0,y:0,width:'100%',height:'100%',colorInterpolationFilters:'sRGB','color-interpolation-filters':'sRGB'});
+  blue.appendChild(svg('feColorMatrix',{type:'matrix',values:'0.064 0.215 0.021 0 0 0.162 0.544 0.055 0 0 0.213 0.715 0.072 0 0 0 0 0 1 0'}));
+  defs.appendChild(blue);pulse.appendChild(defs);
   const masked=svg('g',{mask:`url(#${id})`});pulse.appendChild(masked);
-  const image=svg('image',{class:'mapa-tcs-pulse-frame',href:'imagens/guerra/infraestrutura/tcs-pulso.png',x:0,y:0,width:frameSize*frameCount,height:frameSize,'data-tcs-planet':String(p.index),transform:`translate(${-frame(p.index)*frameSize} 0)`});
+  const image=svg('image',{class:'mapa-tcs-pulse-frame',filter:`url(#${blueID})`,href:'imagens/guerra/infraestrutura/tcs-pulso.png',x:0,y:0,width:frameSize*frameCount,height:frameSize,'data-tcs-planet':String(p.index),transform:`translate(${-frame(p.index)*frameSize} 0)`});
   masked.appendChild(image);group.appendChild(pulse);
  }
  if(typeof document!=='undefined')document.addEventListener?.('visibilitychange',()=>sync(document.getElementById?.('mapa-svg')||document));

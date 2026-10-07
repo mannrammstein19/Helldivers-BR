@@ -1460,3 +1460,14 @@ html:has(body.mapa-immersive){zoom:1!important;}
 @media(max-width:700px){.map-bulletin-visible.mapa-immersive .mapa-screen-header{top:calc(36px + env(safe-area-inset-top,0px))}.map-bulletin-visible .mapa-top-fronts{top:100px}.mapa-bulletin{font-size:11px}}
 
 .mapa-bulletin-message{display:inline-block;white-space:nowrap;max-width:none}
+
+/* tcs44: painel desktop limitado à tela, com letras maiores. */
+@media(min-width:701px){
+ .mapa-top-fronts[open]{width:320px;max-height:calc(100dvh - 180px);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin}
+ .map-bulletin-visible .mapa-top-fronts[open]{max-height:calc(100dvh - 212px)}
+ .front-card-name strong{font-size:24px!important}
+ .front-card-name span,.front-card-command,.front-card-rates{font-size:12px}
+ .front-card-progress,.front-enemy-progress,.mapa-top-front .mapa-front-meta,.mapa-top-front .front-summary-status{font-size:12px}
+ .front-card-landscape{height:clamp(48px,7dvh,76px)}
+}
+.mapa-immersive #mapa-viewport.only-active-fronts .mapa-planet-group.tcs-visible:not(.filtered-out){display:block}

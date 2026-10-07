@@ -655,7 +655,7 @@
             group.appendChild(svgEl('circle',{class:'mapa-'+ring.key+'-fill',cx:x,cy:y,r,fill:'none',stroke:ring.color,'stroke-width':width,'stroke-dasharray':`${filled} ${circumference-filled}`,'stroke-linecap':'butt',transform:`rotate(-90 ${x} ${y})`,role:'img','aria-label':ring.label+': '+formatPercentDetailed(percent),'pointer-events':'none'}));
         });
     }
-    const mapOptionsDefaults={names:true,players:true,progress:true,presences:true,infrastructure:true,ships:true,stripes:true,bulletin:true,motion:true};
+    const mapOptionsDefaults={names:true,players:true,progress:true,presences:true,infrastructure:true,tcsPlanets:false,ships:true,stripes:true,bulletin:true,motion:true};
     let mapOptions={...mapOptionsDefaults};
     try{const saved=JSON.parse(localStorage.getItem('hdbr-map-options-v1')||'{}');Object.keys(mapOptions).forEach(k=>{if(typeof saved[k]==='boolean')mapOptions[k]=saved[k];});}catch{}
     function applyMapOptions(){
@@ -668,7 +668,7 @@
         document.body.classList.toggle('map-static',!mapOptions.motion);
         const bulletin=$('mapa-bulletin');if(bulletin)bulletin.hidden=!mapOptions.bulletin;
         window.HDBRMapBulletin?.configure({enabled:mapOptions.bulletin,motion:mapOptions.motion});
-        if(!mapBuildRoot)window.HDBRTCSPulse?.sync($('mapa-svg'));
+        if(!mapBuildRoot){window.HDBRTCSPulse?.sync($('mapa-svg'));applyFilters();}
     }
     function setMapOption(key,value){
         if(!Object.hasOwn(mapOptionsDefaults,key))return;
@@ -2149,11 +2149,13 @@
         const q = searchText(searchQuery),matching=new Set();
         nodeByIndex.forEach(({ data, group, artwork }) => {
             const owner = data.currentOwner || data.owner;
-            const matchesFaction = activeFaction === 'all' || (!specialLocation(data) && factionKey(owner) === activeFaction);
+            const tcsVisible=mapOptions.tcsPlanets&&!!window.HDBRInfrastructure?.has(data);
+            group.classList.toggle('tcs-visible',tcsVisible);
+            const matchesFaction = tcsVisible || activeFaction === 'all' || (!specialLocation(data) && factionKey(owner) === activeFaction);
             const matchesSearch = !q || matchesPlanetSearch(data,q);
             if(q&&matchesSearch)matching.add(String(data.index));
             const inFront=group.classList.contains('front-visible')||isSuperEarth(data);
-            const show = matchesFaction && matchesSearch && (!layerVisibility.activeFronts || inFront || !!q);
+            const show = matchesFaction && matchesSearch && (!layerVisibility.activeFronts || inFront || tcsVisible || !!q);
             group.setAttribute('tabindex',show?'0':'-1');
             group.classList.toggle('filtered-out', !show);
             group.classList.toggle('search-match', !!q && show);

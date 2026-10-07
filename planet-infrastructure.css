@@ -1,0 +1,24 @@
+.planet-infrastructure{border:1px solid #344c5d;border-color:color-mix(in srgb,var(--infrastructure-color) 45%,transparent);border-radius:10px;background:#111b25;color:#e9f1f8}
+.planet-infrastructure img{object-fit:contain;flex:none}
+.planet-infrastructure strong{font-size:13px;line-height:1.35}
+.infrastructure-state{display:block;color:var(--infrastructure-color);font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.03em}
+.infrastructure-compact{display:flex;align-items:center;gap:9px;padding:7px 10px;margin:8px 0}
+.infrastructure-dossier{padding:12px}
+.infrastructure-dossier header{display:flex;align-items:center;gap:10px}
+.infrastructure-dossier p{font-size:13px;line-height:1.5;margin:10px 0 0}
+.infrastructure-dossier .infrastructure-note{font-size:11px;color:#bdcbd6}
+.infrastructure-network{margin-top:12px;border-top:1px solid #334451;padding-top:10px}
+.infrastructure-network summary{cursor:pointer;color:#8dd5ff;font-size:12px}
+.infrastructure-network ul{list-style:none;padding:0;margin:8px 0 0;max-height:240px;overflow:auto}
+.infrastructure-network li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #283745;font-size:11px}
+.infrastructure-network li strong{font-size:10px;text-align:right}
+.infrastructure-stale{opacity:.65}
+#mapa-viewport.mapa-clean .mapa-infrastructure,
+#mapa-viewport.map-hide-infrastructure .mapa-infrastructure{display:none!important}
+
+/* Fundo preto do GIF desaparece por composição de luz; o planeta fica na frente. */
+.mapa-tcs-pulse{mix-blend-mode:screen;opacity:.65;overflow:hidden;pointer-events:none}
+#mapa-viewport.mapa-clean .mapa-tcs-pulse,
+#mapa-viewport.map-hide-infrastructure .mapa-tcs-pulse,
+.map-static .mapa-tcs-pulse{display:none!important}
+@media(prefers-reduced-motion:reduce){.mapa-tcs-pulse{display:none!important}}

@@ -1,0 +1,21 @@
+{
+  "source": "opcao 1.gif",
+  "sprite": "tcs-pulso.png",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "columns": 40,
+  "rows": 1,
+  "animatedFrames": 30,
+  "pauseFrames": 10,
+  "frameDurationMs": 120,
+  "cycleDurationMs": 4800,
+  "speedRelativeToOriginal": 0.3333333333333333,
+  "edgeMask": {
+    "shape": "circle",
+    "innerRadiusFraction": 0.7,
+    "outerRadiusFraction": 1
+  },
+  "blendMode": "screen",
+  "opacity": 0.65,
+  "rule": "Effect 1395 + human control; no animated pulse for stale data or unknown/enemy control. Visual rule does not confirm TCS operation."
+}

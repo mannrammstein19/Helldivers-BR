@@ -1206,3 +1206,9 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .dss-tactical-offline>.dss-tactical-state::before{left:5px}.dss-tactical-offline>.dss-tactical-state::after{right:5px}
 @media(max-width:600px){.dss-cooldown-duration{font-size:12px;gap:6px}.dss-cooldown-duration::before,.dss-cooldown-duration::after{flex-basis:30px;height:26px}.dss-funding-panel{padding:7px}.dss-funding-panel .dss-estimate{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.dss-confirmed-active .dss-tactical-icon{animation:none;border-color:#ffe600;box-shadow:0 0 0 1px #ffe60066}}
+
+/* Um único registro discreto; os tempos ficam em primeiro plano. */
+.dss-reading-footer{margin:9px 0 0;padding:0 2px;color:#adb6b9;font-size:10px;line-height:1.4;text-align:right;overflow-wrap:anywhere}
+.dss-jump{justify-content:flex-end}.dss-jump>span{font-size:16px;font-weight:800}
+.dss-funding-panel .dss-estimate{font-size:14px;color:#c7d1d5}
+@media(max-width:600px){.dss-jump>span{font-size:16px}.dss-funding-panel .dss-estimate{font-size:13px}.dss-reading-footer{font-size:10px}}

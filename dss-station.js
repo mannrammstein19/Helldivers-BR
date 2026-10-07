@@ -69,7 +69,7 @@ window.HDBRDssStation = (() => {
         const resource=resources[id];
         const icon=resource ? `<img src="${escape(assets+resource.icon)}" alt="${escape(resource.name)}" title="${escape(resource.name)}">` : '<span title="Recurso não identificado">?</span>';
         const percentage=m.pct===null ? '—' : new Intl.NumberFormat('pt-BR',{minimumFractionDigits:3,maximumFractionDigits:3}).format(m.pct)+'%';
-        return `<div class="dss-funding-panel"><div class="dss-funding-row"><div class="dss-funding-track" role="progressbar" aria-label="${escape(resource?.name || 'Contribuição')}" ${m.pct===null?'':'aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+m.pct+'"'}><i style="width:${m.pct ?? 0}%"></i></div><span class="dss-resource">${icon}<b>${percentage}</b></span></div><p class="dss-estimate">${m.seconds===null ? 'Estimativa indisponível' : (reading.live ? 'Disponibilidade estimada: ' : 'Estimativa na última leitura: ')+duration(m.seconds)}</p></div>`;
+        return `<div class="dss-funding-panel"><div class="dss-funding-row"><div class="dss-funding-track" role="progressbar" aria-label="${escape(resource?.name || 'Contribuição')}" ${m.pct===null?'':'aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+m.pct+'"'}><i style="width:${m.pct ?? 0}%"></i></div><span class="dss-resource">${icon}<b>${percentage}</b></span></div><p class="dss-estimate" title="Tempo estimado de preparação pela taxa de contribuição">${m.seconds===null ? 'Estimativa indisponível' : duration(m.seconds)}</p></div>`;
     }
     function render(station, planet, options = {}) {
         const reading=clock(options.meta,options.now ?? Date.now());
@@ -81,32 +81,32 @@ window.HDBRDssStation = (() => {
         const election=date(station?.electionEnd);
         const priority=['3578080409','3248573007','4091660627'];
         const list=Array.isArray(station?.tacticalActions)?[...station.tacticalActions].sort((a,b)=>(priority.indexOf(String(a.id32))<0?99:priority.indexOf(String(a.id32)))-(priority.indexOf(String(b.id32))<0?99:priority.indexOf(String(b.id32)))):[];
-        const notices=reading.live?'':`<div class="dss-reading-note">Última leitura${reading.time ? ' · '+escape(new Date(reading.time).toLocaleString('pt-BR')) : ''} · situação atual sem confirmação</div>`;
+        const notices=`<footer class="dss-reading-footer">${escape(readingCaption(options.meta,reading))}</footer>`;
         const landscape=options.image ? `<img class="dss-landscape" src="${escape(options.image)}" alt="Paisagem de ${escape(name)}" decoding="async" onerror="this.hidden=true">` : '';
-        return `<div class="dss-station" style="--dss-owner:${color}"><header class="dss-location"><img class="dss-location-faction" src="${escape(factionIcon)}" alt="" onerror="this.hidden=true"><div><h3>${escape(name)}</h3><p>${escape(sector)}</p></div><img src="${assets}DSS_Summary_Model.png" alt="Estação Espacial da Democracia"></header><div class="dss-landscape-frame">${landscape}</div><div class="dss-jump"><strong title="Prazo de encerramento da votação; a transferência depende do jogo">Próximo salto <small>fim da votação</small></strong>${countdown(election,reading,'')}${!reading.live?' <small>na última leitura</small>':''}</div>${notices}<div class="dss-tactical-list">${list.map(action=>{
+        return `<div class="dss-station" style="--dss-owner:${color}"><header class="dss-location"><img class="dss-location-faction" src="${escape(factionIcon)}" alt="" onerror="this.hidden=true"><div><h3>${escape(name)}</h3><p>${escape(sector)}</p></div><img src="${assets}DSS_Summary_Model.png" alt="Estação Espacial da Democracia"></header><div class="dss-landscape-frame">${landscape}</div><div class="dss-jump" aria-label="Tempo até o fim da votação da DSS" title="Tempo até o fim da votação; a transferência depende do jogo">${countdown(election,reading,'')}</div><div class="dss-tactical-list">${list.map(action=>{
             const info=actions[String(action.id32)];
             const label=info?.name || String(action.name || 'Ação tática');
             const state=actionState(action,reading.time);
             const costs=Array.isArray(action.costs)?action.costs:[];
-            return `<article class="dss-tactical dss-tactical-${state.kind}${reading.live && state.kind==='active' ? ' dss-confirmed-active' : ''}"><h4>${escape(label)}</h4><div class="dss-tactical-body"><p>${descriptionHTML(info)}</p>${info?`<img src="${escape(assets+info.icon)}" alt="" class="dss-tactical-icon">`:''}</div>${state.kind==='active'?`<p class="dss-active-description">${escape(info?.detail || 'Ação informada como ativa nesta leitura.')}</p><div class="dss-active-duration">${countdown(state.end,reading,reading.live?'Ativa por: ':'Ativa na última leitura · ' )}</div>`:`<div class="dss-tactical-state">${escape(state.label)}</div>${state.kind==='cooldown'?`<div class="dss-cooldown-duration">${countdown(state.end,reading,reading.live?'Disponível novamente em: ':'Recarga na última leitura · ')}</div>`:''}${state.kind==='funding'?costs.map(cost=>costHTML(cost,reading)).join(''):''}`}</article>`;
-        }).join('') || '<p class="dss-reading-note">Nenhuma ação tática informada nesta leitura.</p>'}</div></div>`;
+            return `<article class="dss-tactical dss-tactical-${state.kind}${reading.live && state.kind==='active' ? ' dss-confirmed-active' : ''}"><h4>${escape(label)}</h4><div class="dss-tactical-body"><p>${descriptionHTML(info)}</p>${info?`<img src="${escape(assets+info.icon)}" alt="" class="dss-tactical-icon">`:''}</div>${state.kind==='active'?`<p class="dss-active-description">${escape(info?.detail || 'Ação informada como ativa nesta leitura.')}</p><div class="dss-active-duration">${countdown(state.end,reading,'Ativa por: ' )}</div>`:`<div class="dss-tactical-state">${escape(state.label)}</div>${state.kind==='cooldown'?`<div class="dss-cooldown-duration">${countdown(state.end,reading,'Disponível em: ')}</div>`:''}${state.kind==='funding'?costs.map(cost=>costHTML(cost,reading)).join(''):''}`}</article>`;
+        }).join('') || '<p class="dss-reading-note">Nenhuma ação tática informada nesta leitura.</p>'}</div>${notices}</div>`;
+    }
+    function readingCaption(meta, reading) {
+        const time=reading.live ? numeric(meta?.time) : reading.time;
+        const stamp=time ? ' · '+new Date(time).toLocaleString('pt-BR') : ' · horário não informado';
+        return (reading.live?'Leitura':'Última leitura')+stamp+(reading.live?'':' · situação atual sem confirmação');
     }
     function tick(root, meta, now=Date.now()) {
         const reading=clock(meta,now);
         if(!reading.live) {
             root?.querySelectorAll('.dss-confirmed-active').forEach(card=>card.classList.remove('dss-confirmed-active'));
-            const station=root?.querySelector('.dss-station');
-            if(station && !station.querySelector('.dss-reading-note')) {
-                const note=document.createElement('div');
-                note.className='dss-reading-note';
-                note.textContent='Última leitura · situação atual sem confirmação';
-                station.querySelector('.dss-jump')?.after(note);
-            }
         }
+        const footer=root?.querySelector('.dss-reading-footer');
+        if(footer) footer.textContent=readingCaption(meta,reading);
         root?.querySelectorAll('[data-dss-deadline]').forEach(node=>{
             const end=Number(node.dataset.dssDeadline);
             const at=reading.time;
-            node.textContent=at===null?'Prazo não informado':end<=at?'Aguardando atualização':(reading.live?'':'Última leitura · ')+node.dataset.dssPrefix+duration((end-at)/1000);
+            node.textContent=at===null?'Prazo não informado':end<=at?'Aguardando atualização':node.dataset.dssPrefix+duration((end-at)/1000);
             if(reading.live && end<=now) {
                 const card=node.closest('.dss-tactical-active');
                 card?.classList.remove('dss-confirmed-active');

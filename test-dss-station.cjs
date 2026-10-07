@@ -51,3 +51,33 @@ for(const page of ['guerra.html','ordem.html']){
 }
 for(const icon of ['common-sample.svg','rare-sample.svg','super-sample.svg']) assert.ok(fs.readFileSync('imagens/guerra/dss/'+icon,'utf8').includes('<svg'));
 console.log('PASS: DSS rendering and real Guerra integration; factual item IDs, funding/ETA, voting deadline, expired/invalid/unknown actions, frozen old readings, absent costs, escaped text, absent station and local assets.');
+// Recarga recebida em produção: status 3 tem prazo próprio, separado do financiamento.
+const deadline=now+4*86400000, cooldown={id32:4091660627,status:3,statusExpire:new Date(deadline).toISOString()};
+assert.equal(api.actionState(cooldown,now).kind,'cooldown');
+for(const end of ['', 'invalid',new Date(now-1).toISOString()]) assert.equal(api.actionState({...cooldown,statusExpire:end},now).kind,'pending');
+assert.equal(api.actionState({...cooldown,status:'recharging'},now).kind,'cooldown');
+assert.equal(api.actionState({...cooldown,status:1},now).kind,'funding');
+let liveHTML=api.render({tacticalActions:[cooldown,{id32:3248573007,status:2,statusExpire:new Date(deadline).toISOString()}]},planet,{meta:{time:now,stale:false},now});
+assert.ok(liveHTML.includes('Recarregando') && liveHTML.includes('Disponível novamente em: '));
+assert.equal((liveHTML.match(/dss-confirmed-active/g)||[]).length,1);
+let frozenHTML=api.render({tacticalActions:[cooldown,{status:2,statusExpire:new Date(deadline).toISOString()}]},planet,{meta:{time:now,stale:true},now});
+assert.ok(!frozenHTML.includes('dss-confirmed-active'));
+assert.ok(frozenHTML.includes('Recarga na última leitura'));
+assert.equal(api.render({tacticalActions:[cooldown,{status:2,statusExpire:new Date(deadline).toISOString()}]},planet,{meta:{time:now,stale:true},now:now+60000}),frozenHTML);
+const activeClasses=new Set(['dss-tactical-active','dss-confirmed-active']);
+const card={classList:{remove:s=>activeClasses.delete(s),replace:(a,b)=>{activeClasses.delete(a);activeClasses.add(b);}}};
+const node={dataset:{dssDeadline:String(now+1000),dssPrefix:'Ativa por: '},closest:s=>s==='.dss-tactical-active'?card:null};
+const root={querySelector:()=>null,querySelectorAll:s=>s==='[data-dss-deadline]'?[node]:s==='.dss-confirmed-active'?[card]:[]};
+api.tick(root,{time:now,stale:false},now+2000);
+assert.ok(!activeClasses.has('dss-confirmed-active') && activeClasses.has('dss-tactical-pending'));
+activeClasses.add('dss-confirmed-active');api.tick(root,{time:now,stale:true},now+2000);assert.ok(!activeClasses.has('dss-confirmed-active'));
+const css=fs.readFileSync('guerra.css','utf8');assert.ok(css.includes('prefers-reduced-motion:reduce') && css.includes('.dss-tactical-icon{filter:none;opacity:1}'));
+assert.ok(!css.includes('filter:grayscale(1);opacity:.85') && !css.includes('filter:sepia(1) saturate(8)'));
+console.log('PASS: cooldown state 3/deadline, no inferred activation after expiry, frozen cached clocks, active-only yellow frame, expiry/stale removes pulse, original icon colors and reduced motion.');
+const visual=api.render({tacticalActions:[{id32:4091660627,status:3,statusExpire:new Date(deadline).toISOString()},{id32:3248573007,status:1},{id32:3578080409,status:1}]},planet,{meta:{time:now,stale:false},now});
+assert.equal((visual.match(/class="dss-keyword"/g)||[]).length,6);
+assert.ok(visual.indexOf('<h4>Distribuição')<visual.indexOf('<h4>Bloqueio') && visual.indexOf('<h4>Bloqueio')<visual.indexOf('<h4>Tempestade'));
+assert.ok(css.includes('filter:none'));
+const visualCss=fs.readFileSync('guerra.css','utf8');assert.ok(visualCss.includes('repeating-linear-gradient(45deg') && visualCss.includes('.dss-tactical-cooldown h4,.dss-tactical-offline h4{color:#db4800}'));
+assert.ok(visualCss.includes('color:#b8dcea;font:800 15px') && visualCss.includes('.dss-keyword{color:#ffe600'));
+console.log('PASS: reference layout order, six escaped Portuguese keyword highlights, blue preparation titles, orange-red unavailable cards and static hazard stripes.');

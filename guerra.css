@@ -1166,25 +1166,43 @@ body.central-rounded .guerra-filter{min-height:44px;}
 .dss-jump>span{font-weight:800;color:#d8edf6}.dss-jump small{font-size:10px;color:#e5c776}
 .dss-reading-note{margin:9px 0;padding:8px 10px;border:1px solid #6d5b30;border-radius:8px;color:#e2c784;font-size:11px;line-height:1.5}
 .dss-tactical-list{display:grid;gap:10px;margin-top:12px}
-.dss-tactical{border:1px solid #50768a;border-radius:12px;background:#14212a;overflow:hidden;padding:10px;min-width:0}
-.dss-tactical h4{margin:0 0 8px;color:#bdddea;font:800 15px/1.2 'Oswald',Impact,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.dss-tactical{border:2px solid #477e99;border-radius:0;background:#162e39;overflow:hidden;padding:10px;min-width:0}
+.dss-tactical h4{margin:0 0 8px;color:#b8dcea;font:800 15px/1.2 'Oswald',Impact,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
 .dss-tactical-body{display:flex;align-items:stretch;gap:7px}
-.dss-tactical-body>p{flex:1;min-width:0;margin:0;padding:7px 8px;border:1px solid #65717a;background:#0b1117;color:#dce6eb;font-size:11px;line-height:1.45}
-.dss-tactical-icon{width:44px;height:44px;align-self:center;padding:4px;box-sizing:border-box;border:1px solid #65717a;background:#0b1117;object-fit:contain;flex:0 0 44px}
-.dss-tactical-active{border-color:#ffe600;background:#1c1c10}.dss-tactical-active h4{color:#ffe600}.dss-tactical-active .dss-tactical-icon{border-color:#ffe600}
+.dss-tactical-body>p{flex:1;min-width:0;margin:0;padding:7px 8px;border:2px solid #8b8b88;background:#202020;color:#c8c8c8;font-size:11px;line-height:1.45}
+.dss-tactical-icon{width:60px;height:60px;align-self:center;padding:4px;box-sizing:border-box;border:2px solid #a87979;background:#202020;object-fit:contain;flex:0 0 60px}
+.dss-tactical-active{border-color:#ffe600;background:#1c1c10}.dss-tactical-active h4{color:#b8dcea}.dss-tactical-active .dss-tactical-icon{border-color:#ffe600}
 .dss-active-description{margin:8px 0 0;padding:8px;border:1px solid #b8a600;color:#f0df76;background:#25220b;font-size:11px;line-height:1.45}
 .dss-active-duration{background:#ffe600;color:#10120b;text-align:center;margin:0 -10px -10px;padding:8px 18px;border-top:1px solid #b8a600;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
 .dss-tactical-state{margin:7px 0 0;color:#c1d8e1;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
 .dss-funding-row{display:flex;align-items:center;gap:9px;margin-top:7px}
-.dss-funding-track{height:10px;border:2px solid #05090d;background:#34434b;flex:1;min-width:0;overflow:hidden}
-.dss-funding-track i{display:block;height:100%;max-width:100%;background:#b8ddec}
+.dss-funding-track{height:13px;border:3px solid #05090d;background:#484848;flex:1;min-width:0;overflow:hidden}
+.dss-funding-track i{display:block;height:100%;max-width:100%;background:#8bd7f4}
 .dss-resource{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums}
 .dss-resource img{width:15px;height:15px;object-fit:contain}.dss-resource>span{font-weight:bold}
-.dss-estimate{margin:5px 0 0;text-align:center;color:#a9bec9;font-size:10px;line-height:1.4}
+.dss-estimate{margin:6px 0 0;text-align:center;color:#a9bec9;font-size:10px;line-height:1.4}
 .dss-tactical-pending,.dss-tactical-offline{border-color:#5a6267}.dss-tactical-pending .dss-tactical-state{color:#e2c784}
-@media(max-width:600px){.dss-landscape-frame{height:140px}.dss-location h3{font-size:19px}.dss-tactical h4{font-size:16px}.dss-tactical-body>p{font-size:12px}.dss-tactical-icon{width:48px;height:48px;flex-basis:48px}.dss-jump{font-size:12px}}
+@media(max-width:600px){.dss-landscape-frame{height:140px}.dss-location h3{font-size:19px}.dss-tactical h4{font-size:16px}.dss-tactical-body>p{font-size:12px}.dss-tactical-icon{width:56px;height:56px;flex-basis:56px}.dss-jump{font-size:12px}}
 .dss-jump>strong small{display:block;margin-top:3px;color:#9bb3bd;font-size:9px;text-transform:none;font-weight:normal;letter-spacing:0}
 .dss-tactical-pending .dss-active-duration{background:#28313a;color:#e2c784;border-color:#56616b}
 .dss-location>div{flex:1;min-width:0}.dss-location>.dss-location-faction{width:28px;height:28px}
-.dss-tactical-active .dss-tactical-icon{filter:sepia(1) saturate(8) hue-rotate(9deg) brightness(1.8)}
-.dss-tactical:not(.dss-tactical-active) .dss-tactical-icon{filter:grayscale(1);opacity:.85}
+/* A arte mantém as cores originais em todos os estados. Só a moldura ativa pulsa. */
+.dss-tactical-icon{filter:none;opacity:1}
+.dss-confirmed-active .dss-tactical-icon{animation:dss-support-frame 1.6s ease-in-out infinite}
+@keyframes dss-support-frame{0%,100%{border-color:#ffe600;box-shadow:0 0 0 1px #ffe60033}50%{border-color:#ffe600;box-shadow:0 0 0 2px #ffe60099,0 0 10px #ffe60066}}
+/* Recarga/indisponível: mesmo painel de alerta e faixas da referência. */
+.dss-keyword{color:#ffe600;background:transparent;font-weight:inherit;padding:0}
+.dss-funding-panel{margin-top:12px;padding:7px 10px;border:2px solid #264a5a;background:#091c24}
+.dss-funding-panel .dss-funding-row{margin-top:0}
+.dss-funding-panel .dss-estimate{font-size:12px;color:#a9adac;font-weight:700}
+.dss-tactical-funding>.dss-tactical-state,.dss-tactical-cooldown>.dss-tactical-state{display:none}
+.dss-tactical-cooldown,.dss-tactical-offline{border-color:#53281b;background:#190e0a}
+.dss-tactical-cooldown h4,.dss-tactical-offline h4{color:#db4800}
+.dss-cooldown-duration{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:5px;background:#512417;color:#ff5200;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;text-align:center;min-height:34px}
+.dss-cooldown-duration::before,.dss-cooldown-duration::after{content:"";display:block;flex:0 0 52px;height:28px;background:repeating-linear-gradient(45deg,#ff5200 0 4px,transparent 4px 8px)}
+.dss-cooldown-duration>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.dss-tactical-offline>.dss-tactical-state{position:relative;margin-top:10px;padding:9px 45px;background:#512417;color:#ff5200;text-align:center;font-weight:800}
+.dss-tactical-offline>.dss-tactical-state::before,.dss-tactical-offline>.dss-tactical-state::after{content:"";position:absolute;top:6px;bottom:6px;width:32px;background:repeating-linear-gradient(45deg,#ff5200 0 4px,transparent 4px 8px)}
+.dss-tactical-offline>.dss-tactical-state::before{left:5px}.dss-tactical-offline>.dss-tactical-state::after{right:5px}
+@media(max-width:600px){.dss-cooldown-duration{font-size:12px;gap:6px}.dss-cooldown-duration::before,.dss-cooldown-duration::after{flex-basis:30px;height:26px}.dss-funding-panel{padding:7px}.dss-funding-panel .dss-estimate{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.dss-confirmed-active .dss-tactical-icon{animation:none;border-color:#ffe600;box-shadow:0 0 0 1px #ffe60066}}

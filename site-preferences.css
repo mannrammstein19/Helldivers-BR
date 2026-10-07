@@ -1,0 +1,53 @@
+/* Painéis compactos do site. Sem efeito sobre o mapa imersivo. */
+.site-preferences-bar{position:relative;display:flex;justify-content:center;margin:0 auto 14px;z-index:60;width:100%;font:600 13px/1.4 Arial,sans-serif}
+.site-preferences-toggle{display:flex;align-items:center;gap:9px;padding:8px 17px;min-height:38px;border:1px solid #5e633d;border-radius:24px;background:#111a21;color:#edf0d0;cursor:pointer;box-shadow:0 4px 16px #0005}
+.site-preferences-toggle svg{width:19px;height:19px;fill:none;stroke:#e6e84b;stroke-width:2;stroke-linecap:round}
+.site-preferences-toggle:hover,.site-preferences-toggle[aria-expanded="true"]{border-color:#e6e84b;color:#f4ed61;background:#1c2426}
+.site-preferences-toggle[aria-expanded="true"] .preferences-chevron{transform:rotate(180deg)}
+.site-preferences-panel{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:360px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;padding:16px;box-sizing:border-box;border:1px solid #686b3f;border-radius:18px;background:#11181f;color:#f1f2d8;box-shadow:0 16px 48px #0009}
+.site-preferences-panel[hidden]{display:none!important}
+.site-preferences-panel .site-theme-wrap,.site-preferences-panel .site-zoom-wrap,.site-preferences-panel .site-audio-wrap{margin:0!important;padding:0!important;border:0!important;width:100%;box-sizing:border-box}
+.site-preferences-panel .site-zoom-wrap,.site-preferences-panel .site-audio-wrap{margin-top:12px!important}
+.site-preferences-panel .site-theme-toggle,.site-preferences-panel .site-zoom-panel,.site-preferences-panel .site-audio-panel{width:100%;box-sizing:border-box;border-radius:10px}
+.site-preferences-panel .site-theme-toggle{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #697246;background:#182229;color:#f2f2d7;cursor:pointer;text-align:left}
+.site-preferences-panel .site-theme-toggle small{display:block;color:#adb7bd;font-size:10px;letter-spacing:1px}
+.site-preferences-panel .site-zoom-panel,.site-preferences-panel .site-audio-panel{padding:12px;border:1px solid #455259;background:#182229}
+.site-preferences-panel .site-zoom-head,.site-preferences-panel .site-audio-head{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#e6e84b}
+.site-preferences-panel .site-zoom-head small,.site-preferences-panel .site-audio-head small{display:block;font-size:9px;color:#afb7bd;margin-top:3px}
+.site-preferences-panel .site-zoom-controls{display:flex;gap:8px;margin-top:9px}
+.site-preferences-panel .site-zoom-btn,.site-preferences-panel .site-zoom-reset,.site-preferences-panel .site-audio-toggle{min-height:38px;border:1px solid #66704b;border-radius:8px;background:#10181d;color:#e6e84b;cursor:pointer}
+.site-preferences-panel .site-zoom-btn,.site-preferences-panel .site-audio-toggle{min-width:40px;font-size:20px}
+.site-preferences-panel .site-zoom-reset{flex:1}
+.site-preferences-panel .site-zoom-reset small{display:block;font-size:8px;color:#afb7bd}
+.site-preferences-panel .site-audio-controls{display:flex;align-items:center;gap:12px;margin-top:9px}
+.site-preferences-panel .site-audio-volume{flex:1;min-width:0;accent-color:#e6e84b}
+.site-preferences-panel .site-audio-status{margin-top:7px;font-size:9px;color:#afb7bd}
+.telemetry-inline{display:inline-flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+.telemetry-help{position:relative;flex:none;font:13px/1.5 Arial,sans-serif;letter-spacing:normal;text-transform:none;z-index:70}
+.telemetry-help>summary{display:grid;place-items:center;width:26px;height:26px;box-sizing:border-box;border:1px solid #60707a;border-radius:50%;background:#131d24;color:#e6e84b;cursor:pointer;list-style:none;font-weight:bold}
+.telemetry-help>summary::-webkit-details-marker{display:none}
+.telemetry-help.is-stale>summary{border-color:#d0a851}
+.telemetry-help-panel{position:absolute;top:100%;right:0;width:360px;max-width:calc(100vw - 32px);max-height:65vh;overflow:auto;box-sizing:border-box;padding:15px;border:1px solid #65717b;border-radius:14px;background:#111a22;box-shadow:0 14px 40px #000a;color:#d8dee2;text-align:left;white-space:normal;overflow-wrap:anywhere}
+.telemetry-help-panel>strong,.telemetry-help-panel .telemetry-name{color:#e6e84b}
+.telemetry-help-panel p{margin:10px 0;padding-bottom:9px;border-bottom:1px solid #ffffff1c}
+.telemetry-help-panel p>*{display:block}
+.telemetry-help-panel .telemetry-time{color:#b9c9d0}
+.telemetry-help-panel .telemetry-source{color:#65baff}
+.telemetry-help-panel .telemetry-state{color:#edc878;font-size:11px}
+.telemetry-help-panel button{padding:8px 12px;border:1px solid #667c88;border-radius:8px;background:#1c2b35;color:#edf0c9;cursor:pointer}
+.site-preferences-toggle:focus-visible,.site-preferences-panel button:focus-visible,.telemetry-help summary:focus-visible{outline:2px solid #ffe800;outline-offset:3px}
+@media(max-width:768px){.site-preferences-bar{margin-bottom:10px}.site-preferences-toggle{padding:7px 13px}.telemetry-inline{gap:5px}.telemetry-help>summary{width:30px;height:30px}.telemetry-help-panel{max-height:60vh}}
+@media(prefers-reduced-motion:reduce){.preferences-chevron{transition:none}}
+
+.telemetry-help.opens-above .telemetry-help-panel{top:auto;bottom:100%}
+.mobile-welcome>.telemetry-inline{display:flex;justify-content:flex-end;margin-bottom:10px}
+
+/* Patch39: botão acima da busca; painel lateral fora da rolagem do menu. */
+.sidebar .site-preferences-bar{justify-content:flex-start;margin:12px 0;width:100%;z-index:2400}
+.sidebar .site-preferences-toggle{width:100%;justify-content:flex-start;border-radius:12px}
+.preferences-chevron{margin-left:auto}
+.sidebar .site-preferences-panel{position:fixed;transform:none;top:12px;left:280px;z-index:1700;padding-top:46px;max-width:calc(100vw - 24px)}
+.preferences-close{position:absolute;top:9px;right:12px;width:30px;height:30px;border:1px solid #65717b;border-radius:8px;background:#182229;color:#eef0df;font-size:23px;cursor:pointer}
+.site-preferences-panel .site-theme-toggle{border-color:#937cdf;background:linear-gradient(120deg,#282244,#151e2a);box-shadow:inset 3px 0 #b29cff}
+.site-preferences-panel .site-zoom-panel{border-color:#59a9d2;background:linear-gradient(120deg,#123043,#141e2b);box-shadow:inset 3px 0 #65c8f7}
+.site-preferences-panel .site-audio-panel{border-color:#cfad4e;background:linear-gradient(120deg,#343018,#1d211c);box-shadow:inset 3px 0 #f7d767}

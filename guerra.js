@@ -673,6 +673,7 @@
     }
 
     async function loadMajorOrderSnapshot() {
+        if (window.HDBRTelemetryConfig?.centralUrl && window.HDBROrderState?.loadSnapshot) return window.HDBROrderState.loadSnapshot();
         const now = Date.now();
         const cached = readMajorOrderStorage(ORDER_SNAPSHOT_CACHE, null);
         if (cached?.data && now - Number(cached.time || 0) < 30000) return cached.data;
@@ -1228,114 +1229,8 @@
         });
     }
 
-    const DSS_INFO = {
-        'eagle storm': { name:'Águia Tempestiva', icon:'EAGLE STORM.png', desc:'A DSS emprega ataques periódicos de Águia para apoiar as operações no planeta.' },
-        'orbital blockade': { name:'Bloqueio Orbital', icon:'ORBITAL BLOCKADE.png', desc:'Impede o início de novas campanhas de Defesa no planeta e fornece suporte adicional às operações.' },
-        'heavy ordnance distribution': { name:'Distribuição de Artilharia Pesada', icon:'HEAVY ORDNANCE DISTRIBUTION.png', desc:'Fornece suporte de artilharia orbital e acelera os esforços de libertação.' }
-    };
-    const DSS_ICON_PATH = 'imagens/guerra/dss/';
-    const DSS_ICON = `${DSS_ICON_PATH}DSS_Summary_Model.png`;
-    const DSS_ICON_FALLBACK = 'https://helldivers.wiki.gg/wiki/Special:Redirect/file/DSS%20Icon.svg';
-    function dssInfo(name) {
-        const raw=clean(name);
-        const key=raw.toLowerCase();
-        const match=Object.keys(DSS_INFO).find(k=>key.includes(k));
-        return match ? DSS_INFO[match] : { name:raw||'Ação Tática', icon:'DSS Action Fallback Icon.svg', desc:'Ação tática da Estação Democracia.' };
-    }
-    function dssIcon(info, cls='dss-action-img') {
-        const local = DSS_ICON_PATH + info.icon;
-        const wikiName = info.icon.endsWith('.png') ? '' : info.icon;
-        const fallback = wikiName ? WIKI_FILE(wikiName) : '';
-        return `<img src=\"${escapeHTML(local)}\" alt=\"\" class=\"${cls}\" ${fallback ? `data-fallback=\"${escapeHTML(fallback)}\"` : ''} onerror=\"if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}\">`;
-    }
-
-
-    /* V19 — status visual das Ações Táticas da DSS.
-       Verde = ativa, amarelo = preparando/ativando, vermelho = recarregando/desativada. */
-    function dssDateValue(value) {
-        if (value == null || value === '') return null;
-        if (typeof value === 'number' && Number.isFinite(value)) {
-            const ms = value < 1e12 ? value * 1000 : value;
-            const d = new Date(ms);
-            return Number.isFinite(d.getTime()) ? d : null;
-        }
-        const d = new Date(value);
-        return Number.isFinite(d.getTime()) ? d : null;
-    }
-
-    function dssFutureDate(action) {
-        const keys = [
-            'statusExpiresAt','statusExpiration','statusExpireTime','statusEndTime',
-            'cooldownEndsAt','cooldownEnd','cooldownExpiration','availableAt','availableTime',
-            'expiresAt','expiration','expireTime','endTime'
-        ];
-        for (const key of keys) {
-            const d = dssDateValue(action?.[key]);
-            if (d && d.getTime() > Date.now()) return d;
-        }
-        return null;
-    }
-
-    function dssTimeLabel(date) {
-        if (!date) return '';
-        let sec = Math.floor((date.getTime() - Date.now()) / 1000);
-        if (!Number.isFinite(sec) || sec <= 0) return '';
-        const d = Math.floor(sec / 86400);
-        const h = Math.floor((sec % 86400) / 3600);
-        const m = Math.floor((sec % 3600) / 60);
-        if (d) return `${d}d ${h}h`;
-        if (h) return `${h}h ${m}min`;
-        return `${Math.max(1,m)}min`;
-    }
-
-    function dssActionState(action, pct) {
-        const raw = clean(action?.statusName || action?.state || action?.statusText || action?.status).toLowerCase();
-        const numeric = Number(action?.status);
-        const active = numeric === 2 || /(^|\b)(active|ativa|activated|ativada)(\b|$)/i.test(raw);
-        const future = dssFutureDate(action);
-
-        if (active) {
-            return {
-                cls:'active',
-                label:'ATIVA',
-                detail: future ? `Termina em ${dssTimeLabel(future)}` : ''
-            };
-        }
-
-        if (/cooldown|recharg|recarreg|unavailable|indispon/i.test(raw)) {
-            return {
-                cls:'recharging',
-                label:'RECARREGANDO',
-                detail: future ? `Disponível novamente em ${dssTimeLabel(future)}` : ''
-            };
-        }
-
-        if (pct != null && pct < 100) {
-            return {
-                cls:'preparing',
-                label:'PREPARANDO',
-                detail:`${pct.toFixed(2).replace(/\.00$/,'').replace(/(\.\d)0$/,'$1')}% FINANCIADO`
-            };
-        }
-
-        if (pct != null && pct >= 100) {
-            return {
-                cls:'preparing',
-                label:'ATIVANDO',
-                detail:'FINANCIAMENTO CONCLUÍDO'
-            };
-        }
-
-        if (future) {
-            return {
-                cls:'recharging',
-                label:'RECARREGANDO',
-                detail:`Disponível novamente em ${dssTimeLabel(future)}`
-            };
-        }
-
-        return { cls:'offline', label:'DESATIVADA', detail:'' };
-    }
+    const DSS_ICON = 'imagens/guerra/dss/DSS_Summary_Model.png';
+    let lastDssReading = null;
 
     function dssUnavailableCard(kind) {
         const copy = kind === 'connection'
@@ -1362,24 +1257,12 @@
         const planet = clean(resolvedDssPlanet?.name || station.planet?.name) || 'desconhecido';
         dssPlanetKey = stationPlanetIndex;
         dssPlanetName = planet.toLowerCase().trim();
-        const actions = Array.isArray(station.tacticalActions) ? station.tacticalActions : [];
-        const dssBg = Object.keys(resolvedDssPlanet).length ? planetImageUrl(resolvedDssPlanet) : '';
-        const dssStyle = dssBg ? ` style="--dss-bg:url('${dssBg.replace(/'/g, '%27')}')"` : '';
-        box.innerHTML = `<div class="dss-card">
-            ${planet === 'desconhecido' ? dssUnavailableCard('location') : `<div class="dss-heading dss-planet-header-bg"${dssStyle}><img src="${DSS_ICON}" alt="DSS" class="dss-main-icon" data-fallback="${DSS_ICON_FALLBACK}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none'}"><div><div class="dss-planet">${escapeHTML(planet)}</div><small>ESTAÇÃO DEMOCRACIA</small></div></div>`}
-            ${actions.length ? actions.map(a=>{
-                const info=dssInfo(a.name);
-                const cost=(a.costs||[])[0];
-                const pct=cost?.targetValue ? Math.max(0,Math.min(100,(Number(cost.currentValue||0)/Number(cost.targetValue))*100)) : null;
-                const state=dssActionState(a,pct);
-                const showProgress=state.cls==='preparing' && pct!=null && pct<100;
-                return `<div class="dss-action dss-state-${state.cls}">
-                    <div class="dss-action-head">${dssIcon(info)}<div class="dss-action-copy"><strong>${escapeHTML(info.name)}</strong><div class="dss-status-line ${state.cls}"><span class="dss-status-dot" aria-hidden="true"></span><span class="dss-status-text">${escapeHTML(state.label)}</span></div>${state.detail?`<small class="dss-status-detail">${escapeHTML(state.detail)}</small>`:''}</div></div>
-                    <p>${escapeHTML(info.desc)}</p>
-                    ${showProgress?`<div class="progress dss-progress"><i style="width:${pct.toFixed(2)}%;--accent:#ffe800"></i></div>`:''}
-                </div>`;
-            }).join('') : '<small class="feed-time">Nenhuma ação tática ativa no momento.</small>'}
-        </div>`;
+        lastDssReading = window.HDBRWarData?.meta(`${V2}/space-stations`) || null;
+        box.innerHTML = window.HDBRDssStation.render(station, resolvedDssPlanet, {
+            name: window.HDBRPublicText?.planetName(planet) || planet,
+            image: Object.keys(resolvedDssPlanet).length ? planetImageUrl(resolvedDssPlanet) : '',
+            meta: lastDssReading
+        });
         if (campaigns.length) renderFrontCards();
     }
 
@@ -1559,6 +1442,10 @@
         loadPlanetCatalog();
         updateAll();
         setInterval(()=>updateAll(),10000);
+        // Atualiza apenas o texto dos prazos; não refaz cartões nem consulta APIs.
+        if ($('dss')) setInterval(()=>{
+            if (!document.hidden) window.HDBRDssStation?.tick($('dss'),lastDssReading);
+        },1000);
         window.addEventListener('hdbr-telemetry-retry',()=>updateAll(true));
     });
 })();

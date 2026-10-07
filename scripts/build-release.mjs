@@ -1,15 +1,15 @@
-import {readdir,readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
+import {readdir,readFile,writeFile,mkdir,copyFile,rm} from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 export async function build(root,output){
  root=path.resolve(root);output=path.resolve(output);
- if(root===output)throw Error('Use a separate output directory');
+ if(root===output||root.startsWith(output+path.sep))throw Error('Use a separate output directory, never an ancestor of the project');
  const files=[];
  async function walk(dir){
   for(const entry of await readdir(dir,{withFileTypes:true})){
    const full=path.join(dir,entry.name),rel=path.relative(root,full).split(path.sep).join('/');
-   if(full===output||(entry.name.startsWith('.')&&entry.name!=='.well-known')||entry.name==='node_modules'||['scripts','_site'].includes(rel)||/\.zip$/i.test(entry.name)||/^LEIA-ME.*\.md$/i.test(entry.name)||rel==='relevant.txt'||rel==='version.json')continue;
+   if(full===output||(entry.name.startsWith('.')&&entry.name!=='.well-known')||entry.name==='node_modules'||['scripts','_site','central-api','verificacao','auditoria-telemetria'].includes(rel)||/^test-.*\.cjs$/i.test(entry.name)||/\.zip$/i.test(entry.name)||/^LEIA-ME.*\.md$/i.test(entry.name)||rel==='relevant.txt'||rel==='version.json')continue;
    if(entry.isDirectory())await walk(full);else if(entry.isFile())files.push(rel);
   }
  }
@@ -21,6 +21,8 @@ export async function build(root,output){
   hash.update(file+'\0');hash.update(createHash('sha256').update(await readFile(path.join(root,file))).digest());
  }
  const version=hash.digest('hex');
+ // Rebuild from scratch so a removed public asset cannot survive an older build.
+ await rm(output,{recursive:true,force:true});
  for(const file of files){
   const target=path.join(output,file);await mkdir(path.dirname(target),{recursive:true});
   if(file==='deploy-check.js'||file==='sw.js'){

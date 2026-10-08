@@ -3,15 +3,15 @@
   "state": "active",
   "key": "1249406358",
   "first_seen_at": "2026-10-06T13:31:21.811261Z",
-  "last_seen_at": "2026-10-07T16:19:03.537378Z",
-  "last_progress_update_at": "2026-10-07T16:19:03.537378Z",
-  "final_percent": 89.02,
+  "last_seen_at": "2026-10-08T01:12:34.210237Z",
+  "last_progress_update_at": "2026-10-08T01:12:34.210237Z",
+  "final_percent": 100.0,
   "outcome_source": null,
   "order": {
     "id": 1249406358,
     "progress": [
       0,
-      356092074
+      400000000
     ],
     "title": "MAJOR ORDER",
     "briefing": "Liberate the designated planet and eliminate the mandated number of Illuminate hostiles in order to televise broadcasts of the sector's pacification.",
@@ -68,11 +68,11 @@
         "amount": 35
       }
     ],
-    "expiration": "2026-10-09T13:01:31.7758018Z",
+    "expiration": "2026-10-09T13:01:32.1908946Z",
     "flags": 0
   },
   "target_planets": {
     "228": "SENGE 23"
   },
-  "last_checked_at": "2026-10-07T16:19:03.271087Z"
+  "last_checked_at": "2026-10-08T01:12:33.872760Z"
 }

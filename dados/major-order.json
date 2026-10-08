@@ -1,24 +1,25 @@
 {
   "schema": 1,
   "state": "active",
-  "key": "1249406358",
-  "first_seen_at": "2026-10-06T13:31:21.811261Z",
-  "last_seen_at": "2026-10-08T07:30:47.980693Z",
-  "last_progress_update_at": "2026-10-08T07:30:47.980693Z",
-  "final_percent": 100.0,
+  "key": "4152388944",
+  "first_seen_at": "2026-10-08T14:55:53.903334Z",
+  "last_seen_at": "2026-10-08T14:55:53.903334Z",
+  "last_progress_update_at": "2026-10-08T14:55:53.903334Z",
+  "final_percent": 2.05,
   "outcome_source": null,
   "order": {
-    "id": 1249406358,
+    "id": 4152388944,
     "progress": [
-      0,
-      400000000
+      1,
+      471236,
+      966202
     ],
     "title": "MAJOR ORDER",
-    "briefing": "Liberate the designated planet and eliminate the mandated number of Illuminate hostiles in order to televise broadcasts of the sector's pacification.",
+    "briefing": "Hold the designated planet and eliminate the mandated number of bile-producing Terminids in order to prove the safety of our chemical airstrikes, and to aid vital and fully planned research into airborne toxicity.",
     "description": null,
     "tasks": [
       {
-        "type": 11,
+        "type": 13,
         "values": [
           1,
           1,
@@ -33,10 +34,37 @@
       {
         "type": 3,
         "values": [
+          2,
+          0,
+          30000000,
+          717622970,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "valueTypes": [
+          1,
+          2,
+          3,
           4,
+          6,
+          5,
+          8,
+          9,
+          11,
+          12
+        ]
+      },
+      {
+        "type": 3,
+        "values": [
+          2,
           0,
-          400000000,
-          0,
+          40000000,
+          444529084,
           0,
           0,
           0,
@@ -60,19 +88,19 @@
     ],
     "reward": {
       "type": 1,
-      "amount": 35
+      "amount": 45
     },
     "rewards": [
       {
         "type": 1,
-        "amount": 35
+        "amount": 45
       }
     ],
-    "expiration": "2026-10-09T13:01:48.3675194Z",
-    "flags": 0
+    "expiration": "2026-10-13T13:41:19.5324706Z",
+    "flags": 1
   },
   "target_planets": {
     "228": "SENGE 23"
   },
-  "last_checked_at": "2026-10-08T07:30:47.737506Z"
+  "last_checked_at": "2026-10-08T14:55:53.555811Z"
 }

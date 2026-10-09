@@ -3,16 +3,16 @@
   "state": "active",
   "key": "4152388944",
   "first_seen_at": "2026-10-08T14:55:53.903334Z",
-  "last_seen_at": "2026-10-09T19:19:58.512321Z",
-  "last_progress_update_at": "2026-10-09T19:19:58.512321Z",
-  "final_percent": 68.42,
+  "last_seen_at": "2026-10-09T23:21:50.370862Z",
+  "last_progress_update_at": "2026-10-09T23:21:50.370862Z",
+  "final_percent": 79.0,
   "outcome_source": null,
   "order": {
     "id": 4152388944,
     "progress": [
       1,
-      14857262,
-      33036851
+      17046746,
+      38251686
     ],
     "title": "MAJOR ORDER",
     "briefing": "Hold the designated planet and eliminate the mandated number of bile-producing Terminids in order to prove the safety of our chemical airstrikes, and to aid vital and fully planned research into airborne toxicity.",
@@ -96,11 +96,11 @@
         "amount": 45
       }
     ],
-    "expiration": "2026-10-13T13:41:33.6677874Z",
+    "expiration": "2026-10-13T13:42:04.6672688Z",
     "flags": 1
   },
   "target_planets": {
     "228": "SENGE 23"
   },
-  "last_checked_at": "2026-10-09T19:19:58.115033Z"
+  "last_checked_at": "2026-10-09T23:21:50.130014Z"
 }

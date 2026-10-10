@@ -18,9 +18,17 @@ window.HDBRPresences=(()=>{'use strict';
  function list(p){
   if(!p)return [];
   const found=new Map();
-  function add(v){if(Array.isArray(v)){v.forEach(add);return}const e=identify(v);if(e)found.set(e.key,e);}
+  function add(v){
+   if(Array.isArray(v)){v.forEach(add);return}
+   if(v&&typeof v==='object'){
+    const bound=v.planetIndex??v.PlanetIndex??v.index??v.Index;
+    if(bound!=null&&(p.index==null||String(bound)!==String(p.index)))return;
+   }
+   const e=identify(v);if(e)found.set(e.key,e);
+  }
+  if(p.effectsAuthoritative===true){add(p.activeEffects);return [...found.values()];}
   for(const key of ['activeEffects','effects','planetEffects','galacticEffects','modifiers'])add(p[key]);
-  if(Array.isArray(p.planetActiveEffects))add(p.planetActiveEffects.filter(e=>String(e.index??e.planetIndex)===String(p.index)));
+  if(Array.isArray(p.planetActiveEffects))add(p.planetActiveEffects.filter(e=>String(e.planetIndex??e.PlanetIndex??e.index??e.Index)===String(p.index)));
   return [...found.values()];
  }
  function icon(e){const src=base+e.file;return e.file.endsWith('.svg')?

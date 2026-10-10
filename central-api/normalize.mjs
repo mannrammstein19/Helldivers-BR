@@ -13,9 +13,35 @@ export function eventClockDate(status,seconds,readAt){
  const value=readAt+(seconds-current)*1000;
  return Number.isFinite(value)&&Math.abs(value)<=8.64e15?new Date(value).toISOString():null;
 }
+// Ambas as listas são do mesmo Status. Ausência numa leitura nova remove o efeito;
+// catálogo e histórico não são fontes de presença atual.
+export function normalizeEffects(status,readAt){
+ const byPlanet=new Map();
+ const number=v=>typeof v==='number'&&Number.isInteger(v)&&v>=0;
+ const add=(index,id,extra={})=>{
+  if(!number(index)||!number(id)||id===0)return;
+  if(!byPlanet.has(index))byPlanet.set(index,new Map());
+  const effects=byPlanet.get(index);
+  if(!effects.has(id))effects.set(id,{galacticEffectId:id,...extra});
+ };
+ for(const e of rows(status,'planetActiveEffects'))add(field(e,'planetIndex')??field(e,'index'),field(e,'galacticEffectId'));
+ const clock=field(status,'time');
+ if(typeof clock==='number'&&Number.isFinite(clock)&&clock>=0){
+  for(const event of rows(status,'globalEvents')){
+   const expiry=field(event,'expireTime');
+   if(typeof expiry!=='number'||!Number.isFinite(expiry)||expiry<=clock)continue;
+   const expiresAt=eventClockDate(status,expiry,readAt);
+   if(!expiresAt)continue;
+   for(const index of rows(event,'planetIndices'))for(const id of rows(event,'effectIds'))
+    add(index,id,{source:'global-event',eventId:field(event,'eventId')??null,expiresAt});
+  }
+ }
+ return byPlanet;
+}
 export function normalizeWar(status,info,catalog=[],readAt=Date.now(),catalogTime=0){
  status=root(status);info=root(info);
  if(!Array.isArray(field(status,'planetStatus'))||rows(status,'planetStatus').length<10||!Array.isArray(field(status,'campaigns'))||!Array.isArray(field(info,'planetInfos')))throw Error('Estado bruto incompleto');
+ const effects=normalizeEffects(status,readAt);
  const cats=new Map(catalog.map(p=>[Number(p.index),p])),infos=new Map(rows(info,'planetInfos').map(p=>[Number(field(p,'index')),p]));
  const events=new Map(rows(status,'planetEvents').map(e=>[Number(field(e,'planetIndex')),e]));
  const regionInfo=new Map(rows(info,'planetRegions').map(r=>[`${field(r,'planetIndex')}:${field(r,'regionIndex')}`,r]));
@@ -39,7 +65,7 @@ export function normalizeWar(status,info,catalog=[],readAt=Date.now(),catalogTim
    attacking:rows(status,'planetAttacks').filter(a=>Number(field(a,'source'))===index).map(a=>field(a,'target')),statistics,statisticsReadAtMillis:catalogTime,
    statisticsSource:'community',event:e?{id:field(e,'id'),eventType:field(e,'eventType'),faction:faction(field(e,'race')),health:field(e,'health'),maxHealth:field(e,'maxHealth'),
     startTime:eventClockDate(status,field(e,'startTime'),readAt),endTime:eventClockDate(status,field(e,'expireTime'),readAt),clockSource:'game-status'}:null,
-   activeEffects:rows(status,'planetActiveEffects').filter(a=>Number(field(a,'index'))===index).map(a=>({galacticEffectId:field(a,'galacticEffectId')})),regions};
+   activeEffects:[...(effects.get(index)?.values()||[])],effectsAuthoritative:true,regions};
  });
  const byId=new Map(planets.map(p=>[p.index,p]));
  const campaigns=rows(status,'campaigns').map(c=>{

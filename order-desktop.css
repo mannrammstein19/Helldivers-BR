@@ -70,3 +70,7 @@
 /* Recompensas não quebram palavras no resumo compacto. */
 .order-desktop-summary .order-reward{max-width:100%;flex-wrap:wrap}
 .order-desktop-summary .order-reward>span{word-break:normal;overflow-wrap:normal}
+
+/* Valores dos objetivos: mantém a tipografia, respeitando as maiúsculas do texto.
+   Compartilhado pelo Início, Central e Ordem, inclusive no layout móvel. */
+.hd-mo-task-meta strong,.guerra-mo-meta strong{ text-transform:none; }

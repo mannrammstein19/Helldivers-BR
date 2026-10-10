@@ -809,15 +809,15 @@
                 ? 'CUMPRIDO'
                 : failed ? 'ENCERRADO' : pending ? 'AGUARDANDO' : 'EM ANDAMENTO';
             const rateText = done
-                ? 'FINALIZADO'
+                ? 'Finalizado'
                 : state !== 'active' ? 'ÚLTIMO REGISTRO'
                 : rate != null
                     ? (hasLivePercent ? formatRate(rate) : `${rate >= 0 ? '+' : ''}${Math.round(rate).toLocaleString('pt-BR')}/h`)
                     : 'COLETANDO';
             const etaText = done
-                ? 'CONCLUÍDO'
+                ? 'Concluído'
                 : state !== 'active' ? '—'
-                : (eta || (rate==null?'AGUARDANDO AMOSTRAS':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'));
+                : (eta || (rate==null?'Coletando':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'));
 
             return `
                 <article class="guerra-mo-task ${factionClassName}${done ? ' is-complete' : ''}">
@@ -834,7 +834,7 @@
                     ${state === 'active' ? (window.HDBRRegions?.render(livePlanet) || '') : ''}
                     <div class="guerra-mo-meta">
                         <div><small>Ritmo observado</small><strong>${escapeHTML(rateText)}</strong></div>
-                        <div><small>Conclusão estimada</small><strong>${escapeHTML(etaText)}</strong></div>
+                        <div><small>Conclusão</small><strong>${escapeHTML(etaText)}</strong></div>
                     </div>
                     <div class="guerra-mo-status">${done ? '✓ ' : ''}${escapeHTML(status)}</div>
                 </article>`;

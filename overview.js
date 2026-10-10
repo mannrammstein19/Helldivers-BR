@@ -206,7 +206,7 @@ function orderTaskCard(o,t,i,state){
  const title=taskTitle(t,i),type=taskTypeName(t),meta=taskTargetMeta(t);
  const progressText=v.live?`${type} · CAMPANHA ATIVA`:g?`${fmt(state==='completed'?g:p)} / ${fmt(g)}`:'TELEMETRIA EM ACOMPANHAMENTO';
  const status=done?'CUMPRIDO':state==='active'?'EM ANDAMENTO':state==='pending'?'AGUARDANDO':'ENCERRADO';
- const rateText=done?'FINALIZADO':state!=='active'?'ÚLTIMO REGISTRO':rate==null?'COLETANDO':v.live?`${rate>=0?'+':''}${rate.toFixed(2).replace('.',',')}%/h`:`${rate>=0?'+':''}${fmt(Math.round(rate))}/h`;
+ const rateText=done?'Finalizado':state!=='active'?'ÚLTIMO REGISTRO':rate==null?'COLETANDO':v.live?`${rate>=0?'+':''}${rate.toFixed(2).replace('.',',')}%/h`:`${rate>=0?'+':''}${fmt(Math.round(rate))}/h`;
  const logo=taskLogos[fc];
  return `<article class="hd-mo-task ${fc}${done?' is-complete':''}">
  <div class="hd-mo-task-kicker"><span>OBJETIVO ${String(i+1).padStart(2,'0')} // ${esc(type)}</span><strong>${esc(meta)}</strong></div>
@@ -214,7 +214,7 @@ function orderTaskCard(o,t,i,state){
  <div class="hd-mo-task-progress"><i style="width:${pc}%"></i></div>
  <div class="hd-mo-task-progress-label"><span>${esc(progressText)}</span><strong>${g||v.live?pc.toFixed(2).replace('.',',')+'%':'—'}</strong></div>
  ${state==='active'?(window.HDBRRegions?.render(v.planet)||''):''}
- <div class="hd-mo-task-meta"><div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div><div><small>Conclusão estimada</small><strong>${esc(done?'CONCLUÍDO':state!=='active'?'—':estimate||(rate==null?'AGUARDANDO AMOSTRAS':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'))}</strong></div></div>
+ <div class="hd-mo-task-meta"><div><small>Ritmo observado</small><strong>${esc(rateText)}</strong></div><div><small>Conclusão</small><strong>${esc(done?'Concluído':state!=='active'?'—':estimate||(rate==null?'Coletando':rate<=0?'SEM AVANÇO LÍQUIDO':'SEM PRAZO CONFIÁVEL'))}</strong></div></div>
  <div class="hd-mo-task-status">${done?'✓ ':''}${status}</div></article>`;
 }
 

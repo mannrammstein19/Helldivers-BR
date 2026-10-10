@@ -3,15 +3,15 @@
   "state": "active",
   "key": "4152388944",
   "first_seen_at": "2026-10-08T14:55:53.903334Z",
-  "last_seen_at": "2026-10-10T08:59:11.853892Z",
-  "last_progress_update_at": "2026-10-10T08:59:11.853892Z",
-  "final_percent": 87.88,
+  "last_seen_at": "2026-10-10T15:14:17.819360Z",
+  "last_progress_update_at": "2026-10-10T15:14:17.819360Z",
+  "final_percent": 91.86,
   "outcome_source": null,
   "order": {
     "id": 4152388944,
     "progress": [
       1,
-      21519401,
+      24298833,
       40000000
     ],
     "title": "MAJOR ORDER",
@@ -96,11 +96,11 @@
         "amount": 45
       }
     ],
-    "expiration": "2026-10-13T13:43:12.1693147Z",
+    "expiration": "2026-10-13T13:43:38.3686357Z",
     "flags": 1
   },
   "target_planets": {
     "228": "SENGE 23"
   },
-  "last_checked_at": "2026-10-10T08:59:11.493045Z"
+  "last_checked_at": "2026-10-10T15:14:17.511330Z"
 }

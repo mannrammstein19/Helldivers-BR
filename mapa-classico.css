@@ -1500,3 +1500,9 @@ html:has(body.mapa-immersive){zoom:1!important;}
 
 /* Gesto completo: promove a superfície sem desligar conteúdo ou animações. */
 #mapa-pan-host.mapa-gesture-active #mapa-pan-surface{will-change:transform;}
+
+/* O arraste da cena move o mapa, sem selecionar rótulos SVG. */
+#mapa-pan-host, #mapa-pan-host *{
+    -webkit-user-select:none;
+    user-select:none;
+}

@@ -1497,3 +1497,6 @@ html:has(body.mapa-immersive){zoom:1!important;}
  .front-inline-bar>b{font-size:10px}
  #mapa-top-fronts:has(>.mapa-top-front[open])>.mapa-top-front:not([open]) .front-inline-bars{display:none}
 }
+
+/* Gesto completo: promove a superfície sem desligar conteúdo ou animações. */
+#mapa-pan-host.mapa-gesture-active #mapa-pan-surface{will-change:transform;}

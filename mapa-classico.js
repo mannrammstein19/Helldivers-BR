@@ -2200,7 +2200,7 @@
             activePointers:new Map(),
             rafId:0,
             dragRect:null,
-            dragViewBox:null
+            dragViewBox:null, pendingWheel:null
         };
         svg._mapaPanZoomState = state;
         svg._activePointers = state.activePointers;
@@ -2209,20 +2209,33 @@
             state.rafId = 0;
             const vp = state.viewport;
             if (!vp) return;
+            // A roda pode emitir vários eventos no mesmo quadro. Calcula o zoom
+            // com uma única leitura de geometria, preservando cada âncora e limite.
+            if(state.pendingWheel){
+                const pending=state.pendingWheel;state.pendingWheel=null;
+                state.wheelRect=host.getBoundingClientRect();
+                for(const event of pending)state.zoomAt(event.x,event.y,event.factor,true);
+                state.wheelRect=null;
+                if(state.zoomBusy){
+                    clearTimeout(state.zoomTimer);
+                    state.zoomTimer=setTimeout(()=>{state.zoomBusy=false;state.requestApply();},160);
+                }
+            }
             const width=host.clientWidth,height=host.clientHeight,vb=svg.viewBox.baseVal;
             const fit=Math.min(width/vb.width,height/vb.height);
             const originX=(width-vb.width*fit)/2-vb.x*fit;
             const originY=(height-vb.height*fit)/2-vb.y*fit;
             const tx=(1-state.scale)*originX+fit*state.tx;
             const ty=(1-state.scale)*originY+fit*state.ty;
-            const mobileGesture=!state.optimized && isCoarseInput() && (state.activePointers.size>0 || state.zoomBusy);
+            const compositedGesture=!state.optimized && (state.activePointers.size>0 || state.zoomBusy);
+            host.classList.toggle('mapa-gesture-active',compositedGesture);
             let cssScale=1;
             if(state.optimized) {
                 vp.removeAttribute('transform');
                 surface.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${state.scale})`;
                 cssScale=state.scale;
                 state.hybrid=false;
-            } else if(mobileGesture) {
+            } else if(compositedGesture) {
                 // Reutiliza o desenho SVG já posicionado durante o gesto.
                 if(!state.hybrid) {
                     vp.setAttribute('transform',`translate(${state.committedTx},${state.committedTy}) scale(${state.committedScale})`);
@@ -2238,6 +2251,11 @@
                 state.committedScale=state.scale;state.committedTx=state.tx;state.committedTy=state.ty;
                 state.hybrid=false;
             }
+            // Durante o gesto só a superfície se move; compensações SVG são
+            // aplicadas ao final, sem invalidar a pintura de todas as rotas.
+            const paintKey=[cssScale,fit,state.scale,state.optimized].join();
+            if(!compositedGesture&&vp.dataset.paintKey!==paintKey){
+            vp.dataset.paintKey=paintKey;
             for(const [name,width] of [['normal',2],['front',2.6],['selected',3.2]]) {
                 vp.style.setProperty('--route-'+name,String(width/cssScale));
             }
@@ -2258,6 +2276,7 @@
             // Bordas finas apenas no modo otimizado; compensa a escala CSS.
             vp.style.setProperty('--mapa-border-width',state.optimized?String(1/state.scale):String(1.5/cssScale));
             vp.style.setProperty('--mapa-enemy-border-width',state.optimized?String(1.5/state.scale):String(3/cssScale));
+            }
             const detailKey=[state.scale>=LABEL_ZOOM_THRESHOLD,state.scale>=5,state.scale>=DETAIL_ZOOM_THRESHOLD,state.scale<LOW_DETAIL_THRESHOLD,state.scale>=4.2].join();
             if(!state.activePointers.size && !state.zoomBusy && vp.dataset.detailKey!==detailKey) {
             vp.dataset.detailKey=detailKey;
@@ -2282,7 +2301,7 @@
         };
 
         const clientToSvgPoint = (clientX, clientY) => {
-            const rect=host.getBoundingClientRect(),vb=svg.viewBox.baseVal;
+            const rect=state.wheelRect||host.getBoundingClientRect(),vb=svg.viewBox.baseVal;
             const x=(clientX-rect.left)*host.clientWidth/rect.width;
             const y=(clientY-rect.top)*host.clientHeight/rect.height;
             const fit=Math.min(host.clientWidth/vb.width,host.clientHeight/vb.height);
@@ -2290,7 +2309,7 @@
                     y:(y-(host.clientHeight-vb.height*fit)/2)/fit+vb.y};
         };
 
-        state.zoomAt = (clientX, clientY, factor) => {
+        state.zoomAt = (clientX, clientY, factor, applying = false) => {
             const before = clientToSvgPoint(clientX, clientY);
             const newScale = Math.max(.5, Math.min(12, state.scale * factor));
             if (newScale === state.scale) return;
@@ -2298,17 +2317,23 @@
             state.ty = before.y - (before.y - state.ty) * (newScale / state.scale);
             state.scale = newScale;
             state.zoomBusy=true;
-            clearTimeout(state.zoomTimer);
-            state.zoomTimer=setTimeout(()=>{state.zoomBusy=false;state.requestApply();},160);
-            state.requestApply();
+            if(!applying){
+                clearTimeout(state.zoomTimer);
+                state.zoomTimer=setTimeout(()=>{state.zoomBusy=false;state.requestApply();},160);
+                state.requestApply();
+            }
         };
 
         host.addEventListener('wheel', event => {
             event.preventDefault();
-            state.zoomAt(event.clientX, event.clientY, event.deltaY < 0 ? 1.18 : 1 / 1.18);
+            if(!event.deltaY)return;
+            const factor=event.deltaY < 0 ? 1.18 : 1 / 1.18;
+            (state.pendingWheel??=[]).push({x:event.clientX,y:event.clientY,factor});
+            state.requestApply();
         }, { passive:false });
 
         host.addEventListener('pointerdown', event => {
+            if(state.pendingWheel)state.requestApply(true);
             state.activePointers.set(event.pointerId, event);
             state.viewport?.classList.add('mapa-is-moving');
             state.dragRect = host.getBoundingClientRect();
@@ -2393,6 +2418,7 @@
             const r=host.getBoundingClientRect(); state.zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.35);
         });
         bindZoomButton('mapa-zoom-reset', () => {
+            state.pendingWheel=null;state.zoomBusy=false;clearTimeout(state.zoomTimer);
             state.scale=1; state.tx=0; state.ty=0; state.requestApply(true);
         });
 
